@@ -1,65 +1,223 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { TourCard } from "@/components/tour-card";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, Award, Users, DollarSign, MapPin } from "lucide-react";
 
-export default function Home() {
+export default function HomePage() {
+  const tours = [
+    {
+      title: "DOLOMITES",
+      duration: "9-hour Full Day",
+      price: "450 €",
+      href: "/tours/dolomites",
+      image: "/dolomites-mountains-unesco-world-heritage.jpg",
+    },
+    {
+      title: "PROSECCO",
+      duration: "9-hour Full Day",
+      price: "450 €",
+      href: "/tours/prosecco",
+      image: "/prosecco-vineyards-rolling-hills-italy.jpg",
+    },
+    {
+      title: "DOLOMITES HIKING TOUR",
+      duration: "11-hour Full Day",
+      price: "500 €",
+      href: "/tours/hiking",
+      image: "/hiking-trail-dolomites-mountains-lake.jpg",
+    },
+    {
+      title: "DOLOMITES AND PROSECCO",
+      duration: "11-hour Full Day",
+      price: "500 €",
+      href: "/tours/dolomites-prosecco",
+      image: "/italian-countryside-mountains-and-vineyards.jpg",
+    },
+    {
+      title: "GREAT WINES TOUR",
+      duration: "11-hour Full Day",
+      price: "500 €",
+      href: "/tours/great-wines",
+      image: "/wine-cellar-barrels-italian-winery.jpg",
+    },
+    {
+      title: "PRIVATE CUSTOM TOURS",
+      duration: "Full Day Tours",
+      price: "450 €",
+      href: "/tours/custom",
+      image: "/italian-hill-towns-scenic-countryside.jpg",
+    },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main>
+      {/* Hero Section */}
+      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <video
+            className="w-full h-full object-cover"
+            src="/bg.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+        </div>
+        <div className="container mx-auto px-4 z-10 text-center">
+          <Badge className="mb-4 bg-accent text-accent-foreground border-0 text-sm px-4 py-1">
+            BEST PRICE GUARANTEED
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
+            Discover the Beauty Outside Venice
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
+            Private tours to the Dolomites, Prosecco region, and Italian
+            countryside. We return the difference in price.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="text-lg px-8">
+              <Link href="#tours">Explore Tours</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20"
+            >
+              <Link href="#book">Book Now</Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Tours Section */}
+      <section id="tours" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR TOURS</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
+              Choose from our carefully curated selection of private tours, each
+              designed to showcase the best of the Veneto region.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tours.map((tour) => (
+              <TourCard key={tour.title} {...tour} />
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+              ABOUT US
+            </h2>
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              Long experience, service, customization, quality, best price, and
+              more.....
+            </p>
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              We take great care to ensure that our tours are the best value for
+              money in the business, and we know that outstanding value means
+              ensuring that all of the ingredients are right. We take care of
+              everything throughout the tour. All you have to do is show up and
+              enjoy.
+            </p>
+            <p className="text-muted-foreground mb-8 leading-relaxed">
+              We employ only the best staff with the most extensive local
+              knowledge, so you can rely upon them to find the best places to
+              go, according to your needs and budget.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+                <Award className="h-12 w-12 text-primary mb-4" />
+                <h3 className="font-semibold mb-2">Best Quality</h3>
+                <p className="text-sm text-muted-foreground">
+                  Premium service and experiences
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+                <DollarSign className="h-12 w-12 text-primary mb-4" />
+                <h3 className="font-semibold mb-2">Best Price</h3>
+                <p className="text-sm text-muted-foreground">
+                  Guaranteed lowest rates
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+                <Users className="h-12 w-12 text-primary mb-4" />
+                <h3 className="font-semibold mb-2">Expert Guides</h3>
+                <p className="text-sm text-muted-foreground">
+                  Extensive local knowledge
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+                <MapPin className="h-12 w-12 text-primary mb-4" />
+                <h3 className="font-semibold mb-2">Customization</h3>
+                <p className="text-sm text-muted-foreground">
+                  Tailored to your interests
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="book" className="py-20 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            READY TO BOOK?
+          </h2>
+          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
+            Start your adventure outside Venice today. Contact us to reserve
+            your private tour.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            variant="secondary"
+            className="text-lg px-8"
+          >
+            <Link href="/rates">View Rates & Book</Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8">
+            WHAT OUR GUESTS SAY
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <a
+              href="https://www.getyourguide.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
+            >
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+              <span className="font-medium">GetYourGuide Reviews</span>
+            </a>
+            <a
+              href="https://www.tripadvisor.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
+            >
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+              <span className="font-medium">Tripadvisor Reviews</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
