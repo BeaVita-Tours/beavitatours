@@ -15,11 +15,15 @@ export default function CustomToursPage() {
             alt="Custom Tours"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0">Fully Customizable</Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">PRIVATE CUSTOM TOURS</h1>
+          <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+            Fully Customizable
+          </Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            PRIVATE CUSTOM TOURS
+          </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Create your perfect Italian adventure tailored to your interests
           </p>
@@ -71,23 +75,27 @@ export default function CustomToursPage() {
             <h2 className="text-3xl font-bold mb-6">About Custom Tours</h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
-                Don't waste your time wandering around with other people from your group with different interests. Only
-                a private customized tour with your personal driver/guide can show you the places most interesting to
-                you.
+                Don't waste your time wandering around with other people from
+                your group with different interests. Only a private customized
+                tour with your personal driver/guide can show you the places
+                most interesting to you.
               </p>
               <p className="leading-relaxed">
-                If you're looking for personal, custom service that's focused on your needs and ensuring a stress free
-                experience planning your trip, you've come to the right place. Our goal is to work with you to meet your
-                unique traveling needs. Whether you are a solo traveler, honeymooners, or a family, we want to work with
-                you to create a meaningful worry free experience.
+                If you're looking for personal, custom service that's focused on
+                your needs and ensuring a stress free experience planning your
+                trip, you've come to the right place. Our goal is to work with
+                you to meet your unique traveling needs. Whether you are a solo
+                traveler, honeymooners, or a family, we want to work with you to
+                create a meaningful worry free experience.
               </p>
               <p className="leading-relaxed">
-                Discover the countryside, the wines, the food, the nature, the cities of art and much more of the region
-                around Venice. A private tour is far more affordable than most people think.
+                Discover the countryside, the wines, the food, the nature, the
+                cities of art and much more of the region around Venice. A
+                private tour is far more affordable than most people think.
               </p>
               <p className="leading-relaxed">
-                Find below some examples of customized day tours from Venice. We are available to organize any other
-                itinerary of your interest.
+                Find below some examples of customized day tours from Venice. We
+                are available to organize any other itinerary of your interest.
               </p>
             </div>
           </div>
@@ -98,7 +106,9 @@ export default function CustomToursPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Popular Custom Itineraries</h2>
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Popular Custom Itineraries
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TourFeature
                 title="HILL TOWNS"
@@ -128,9 +138,12 @@ export default function CustomToursPage() {
       {/* CTA */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Create Your Perfect Tour?</h2>
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Create Your Perfect Tour?
+          </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Contact us to design your custom private tour. Starting from 450€ per group.
+            Contact us to design your custom private tour. Starting from 450€
+            per group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
@@ -148,5 +161,5 @@ export default function CustomToursPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

@@ -15,7 +15,7 @@ interface TourCardProps {
 export function TourCard({ title, duration, price, href, image }: TourCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-[4/3] overflow-hidden">
+      <div className="aspect-4/3 overflow-hidden">
         <Image
           src={image}
           alt={title}

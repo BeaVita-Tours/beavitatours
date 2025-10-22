@@ -15,11 +15,15 @@ export default function DolomitesTourPage() {
             alt="Dolomites Mountains"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0">UNESCO World Heritage Site</Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">DOLOMITES TOUR</h1>
+          <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+            UNESCO World Heritage Site
+          </Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            DOLOMITES TOUR
+          </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Experience the breathtaking beauty of the Queen of the Dolomites
           </p>
@@ -71,19 +75,24 @@ export default function DolomitesTourPage() {
             <h2 className="text-3xl font-bold mb-6">About This Tour</h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
-                The site of the Dolomites comprises a mountain range in the northern Italian Alps, featuring some of the
-                most attractive mountain landscapes in the world, with vertical walls, sheer cliffs and a high density
-                of narrow, deep and long valleys.
+                The site of the Dolomites comprises a mountain range in the
+                northern Italian Alps, featuring some of the most attractive
+                mountain landscapes in the world, with vertical walls, sheer
+                cliffs and a high density of narrow, deep and long valleys.
               </p>
               <p className="leading-relaxed">
-                In a day trip from Venice you can visit the 'Queen of the Dolomites' Cortina d'Ampezzo, one the most
-                popular holiday destinations in the world, Lake Misurina, the 'Pearl of the Dolomites', from where you
-                can enjoy a splendid view of the Tre Cime di Lavaredo, and you can take a ride on the Lagazuoi cable car
-                with a breathtaking view in the heart of the Dolomites from 2.740 m (9,000 ft) above sea level.
+                In a day trip from Venice you can visit the 'Queen of the
+                Dolomites' Cortina d'Ampezzo, one the most popular holiday
+                destinations in the world, Lake Misurina, the 'Pearl of the
+                Dolomites', from where you can enjoy a splendid view of the Tre
+                Cime di Lavaredo, and you can take a ride on the Lagazuoi cable
+                car with a breathtaking view in the heart of the Dolomites from
+                2.740 m (9,000 ft) above sea level.
               </p>
               <p className="leading-relaxed">
-                Pick-up and drop off of our tours are from Venice Piazzale Roma, the car terminal. Of course we can pick
-                you up at any local hotel in the mainland.
+                Pick-up and drop off of our tours are from Venice Piazzale Roma,
+                the car terminal. Of course we can pick you up at any local
+                hotel in the mainland.
               </p>
             </div>
           </div>
@@ -94,7 +103,9 @@ export default function DolomitesTourPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Tour Highlights</h2>
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Tour Highlights
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TourFeature
                 title="UNESCO WORLD NATURAL HERITAGE SITE"
@@ -124,9 +135,12 @@ export default function DolomitesTourPage() {
       {/* CTA */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Explore the Dolomites?</h2>
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Explore the Dolomites?
+          </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Dolomites tour today. Starting from 450€ per group.
+            Book your private Dolomites tour today. Starting from 450€ per
+            group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
@@ -144,5 +158,5 @@ export default function DolomitesTourPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

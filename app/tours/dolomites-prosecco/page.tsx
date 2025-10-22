@@ -15,13 +15,18 @@ export default function DolomitesProseccoTourPage() {
             alt="Dolomites and Prosecco"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0">Two UNESCO Sites in One Day</Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">DOLOMITES AND PROSECCO</h1>
+          <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+            Two UNESCO Sites in One Day
+          </Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            DOLOMITES AND PROSECCO
+          </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Experience both UNESCO World Heritage sites in one unforgettable journey
+            Experience both UNESCO World Heritage sites in one unforgettable
+            journey
           </p>
         </div>
       </section>
@@ -71,23 +76,31 @@ export default function DolomitesProseccoTourPage() {
             <h2 className="text-3xl font-bold mb-6">About This Tour</h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
-                The Prosecco hills and the Dolomites mountains are the most popular destinations for a day tour in the
-                region of Veneto, just outside the crowded Venice.
+                The Prosecco hills and the Dolomites mountains are the most
+                popular destinations for a day tour in the region of Veneto,
+                just outside the crowded Venice.
               </p>
               <p className="leading-relaxed">
-                This tour offers the possibility to visit both these Unesco world heritage sites on the same day!
+                This tour offers the possibility to visit both these Unesco
+                world heritage sites on the same day!
               </p>
               <p className="leading-relaxed">
-                We drive through the ever-changing scenery of the mountains, spending some time in Cortina d'Ampezzo,
-                the 'Queen of the Dolomites', and walking around the Lake Misurina, the 'Pearl of the Dolomites', from
-                where you can enjoy a splendid view of the Tre Cime di Lavaredo, the symbol of the Dolomites.
+                We drive through the ever-changing scenery of the mountains,
+                spending some time in Cortina d'Ampezzo, the 'Queen of the
+                Dolomites', and walking around the Lake Misurina, the 'Pearl of
+                the Dolomites', from where you can enjoy a splendid view of the
+                Tre Cime di Lavaredo, the symbol of the Dolomites.
               </p>
               <p className="leading-relaxed">
-                On the way back we drive through the Prosecco Road that accommodates the finest vines and wineries where
-                the highest quality Proseccos are produced. Finally we end up in a selected winery to enjoy some
-                excellent glasses of prosecco wine in a guided wine tasting.
+                On the way back we drive through the Prosecco Road that
+                accommodates the finest vines and wineries where the highest
+                quality Proseccos are produced. Finally we end up in a selected
+                winery to enjoy some excellent glasses of prosecco wine in a
+                guided wine tasting.
               </p>
-              <p className="leading-relaxed">Then you can relax on your journey back to Venice.</p>
+              <p className="leading-relaxed">
+                Then you can relax on your journey back to Venice.
+              </p>
             </div>
           </div>
         </div>
@@ -97,7 +110,9 @@ export default function DolomitesProseccoTourPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Tour Highlights</h2>
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Tour Highlights
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TourFeature
                 title="CORTINA D'AMPEZZO"
@@ -127,9 +142,12 @@ export default function DolomitesProseccoTourPage() {
       {/* CTA */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready for the Ultimate Day Trip?</h2>
+          <h2 className="text-3xl font-bold mb-4">
+            Ready for the Ultimate Day Trip?
+          </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Dolomites & Prosecco tour today. Starting from 500€ per group.
+            Book your private Dolomites & Prosecco tour today. Starting from
+            500€ per group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
@@ -147,5 +165,5 @@ export default function DolomitesProseccoTourPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

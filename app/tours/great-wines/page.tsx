@@ -15,13 +15,18 @@ export default function GreatWinesTourPage() {
             alt="Great Wines Tour"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0">Amarone & Prosecco</Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">GREAT WINES TOUR</h1>
+          <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+            Amarone & Prosecco
+          </Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            GREAT WINES TOUR
+          </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Discover Veneto's finest wines: Amarone and Prosecco in one unforgettable day
+            Discover Veneto's finest wines: Amarone and Prosecco in one
+            unforgettable day
           </p>
         </div>
       </section>
@@ -71,23 +76,30 @@ export default function GreatWinesTourPage() {
             <h2 className="text-3xl font-bold mb-6">About This Tour</h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
-                Veneto is italian biggest wine region in terms of quantity. Here wine is part of the popular culture and
-                a glass of red or a glass of white will always be on the dining table.
+                Veneto is italian biggest wine region in terms of quantity. Here
+                wine is part of the popular culture and a glass of red or a
+                glass of white will always be on the dining table.
               </p>
               <p className="leading-relaxed">
-                There are no doubts about the most famous wines from Veneto: Prosecco and Amarone. Prosecco is one of
-                the most popular wines in the world thanks to its breeziness and favourable price, while Amarone,
-                produced in the surroundings of Verona, is an Italian excellence.
+                There are no doubts about the most famous wines from Veneto:
+                Prosecco and Amarone. Prosecco is one of the most popular wines
+                in the world thanks to its breeziness and favourable price,
+                while Amarone, produced in the surroundings of Verona, is an
+                Italian excellence.
               </p>
               <p className="leading-relaxed">
-                We drive through the Valpolicella valley and admire the scenic country roads with beautiful landscapes.
-                Then we visit a winery, meet the winemaker and taste the Amarone, one of the most famous and best
-                Italian wines recognized internationally for its elegance, complexity and great aging potential.
+                We drive through the Valpolicella valley and admire the scenic
+                country roads with beautiful landscapes. Then we visit a winery,
+                meet the winemaker and taste the Amarone, one of the most famous
+                and best Italian wines recognized internationally for its
+                elegance, complexity and great aging potential.
               </p>
               <p className="leading-relaxed">
-                In the afternoon we drive through the Prosecco Road that accommodates the finest vines and wineries
-                where the highest quality Proseccos are produced. Finally we end up in a selected winery to enjoy some
-                excellent glasses of prosecco wine in a guided wine tasting.
+                In the afternoon we drive through the Prosecco Road that
+                accommodates the finest vines and wineries where the highest
+                quality Proseccos are produced. Finally we end up in a selected
+                winery to enjoy some excellent glasses of prosecco wine in a
+                guided wine tasting.
               </p>
             </div>
           </div>
@@ -98,7 +110,9 @@ export default function GreatWinesTourPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Tour Highlights</h2>
+            <h2 className="text-3xl font-bold mb-12 text-center">
+              Tour Highlights
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TourFeature
                 title="AMARONE WINE TASTING"
@@ -128,9 +142,12 @@ export default function GreatWinesTourPage() {
       {/* CTA */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Taste Italy's Best Wines?</h2>
+          <h2 className="text-3xl font-bold mb-4">
+            Ready to Taste Italy's Best Wines?
+          </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Great Wines tour today. Starting from 500€ per group.
+            Book your private Great Wines tour today. Starting from 500€ per
+            group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
@@ -148,5 +165,5 @@ export default function GreatWinesTourPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }
