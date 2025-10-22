@@ -2,21 +2,22 @@ import Link from "next/link"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Clock, Users } from "lucide-react"
+import Image from "next/image";
 
 interface TourCardProps {
-  title: string
-  duration: string
-  price: string
-  href: string
-  image: string
+  title: string;
+  duration: string;
+  price: string;
+  href: string;
+  image: any;
 }
 
 export function TourCard({ title, duration, price, href, image }: TourCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="aspect-[4/3] overflow-hidden">
-        <img
-          src={image || "/placeholder.svg"}
+        <Image
+          src={image}
           alt={title}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
@@ -37,7 +38,10 @@ export function TourCard({ title, duration, price, href, image }: TourCardProps)
         </div>
         <p className="text-2xl font-semibold text-primary">
           from {price}
-          <span className="text-sm font-normal text-muted-foreground"> per group</span>
+          <span className="text-sm font-normal text-muted-foreground">
+            {" "}
+            per group
+          </span>
         </p>
       </CardContent>
       <CardFooter>
@@ -46,5 +50,5 @@ export function TourCard({ title, duration, price, href, image }: TourCardProps)
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

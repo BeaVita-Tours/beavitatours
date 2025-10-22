@@ -2,51 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TourCard } from "@/components/tour-card";
-
-const tours = [
-  {
-    title: "DOLOMITES",
-    duration: "9-hour Full Day",
-    price: "450 €",
-    href: "/tours/dolomites",
-    image: "/dolomites-mountains-unesco-world-heritage.jpg",
-  },
-  {
-    title: "PROSECCO",
-    duration: "9-hour Full Day",
-    price: "450 €",
-    href: "/tours/prosecco",
-    image: "/prosecco-vineyards-rolling-hills-italy.jpg",
-  },
-  {
-    title: "DOLOMITES HIKING TOUR",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/hiking",
-    image: "/hiking-trail-dolomites-mountains-lake.jpg",
-  },
-  {
-    title: "DOLOMITES AND PROSECCO",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/dolomites-prosecco",
-    image: "/italian-countryside-mountains-and-vineyards.jpg",
-  },
-  {
-    title: "GREAT WINES TOUR",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/great-wines",
-    image: "/wine-tasting-amarone-valpolicella.jpg",
-  },
-  {
-    title: "PRIVATE CUSTOM TOURS",
-    duration: "Full Day Tours",
-    price: "450 €",
-    href: "/tours/custom",
-    image: "/italian-hill-towns-scenic-countryside.jpg",
-  },
-];
+import tours from "@/lib/tours";
 
 export default function ToursPage() {
   return (
