@@ -80,8 +80,8 @@ export default function FAQPage() {
                   <span className="font-semibold">Do you offer hotel pick up service?</span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  On request we offer pick up service from your hotel. Price of the service depends on the hotel's
-                  location (in the mainland it's free of charge while in Venice island can be rather expensive because
+                  On request we offer pick up service from your hotel. The cost depends on the hotel's
+                  location (in the mainland it's free of charge while in Venice island there is an additional fee because
                   we have to arrange a private water taxi).
                 </AccordionContent>
               </AccordionItem>

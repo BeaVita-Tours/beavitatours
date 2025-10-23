@@ -146,8 +146,7 @@ export default function DolomitesProseccoTourPage() {
             Ready for the Ultimate Day Trip?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Dolomites & Prosecco tour today. Starting from
-            500€ per group.
+            Book your private Dolomites & Prosecco tour today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
