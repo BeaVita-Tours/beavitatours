@@ -23,14 +23,14 @@ export default function HomePage() {
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
           <Badge className="mb-4 bg-accent text-accent-foreground border-0 text-sm px-4 py-1">
-            BEST PRICE GUARANTEED
+            PRIVATE TOURS FROM VENICE
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
             Discover the Beauty Outside Venice
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
             Private tours to the Dolomites, Prosecco region, and Italian
-            countryside. We return the difference in price.
+            countryside.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8">
@@ -74,8 +74,7 @@ export default function HomePage() {
               ABOUT US
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Long experience, service, customization, quality, best price, and
-              more.....
+              Long experience, service, customization, quality, and more.....
             </p>
             <p className="text-muted-foreground mb-6 leading-relaxed">
               We take great care to ensure that our tours are the best value for
@@ -100,9 +99,9 @@ export default function HomePage() {
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
                 <DollarSign className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Best Price</h3>
+                <h3 className="font-semibold mb-2">Best Value</h3>
                 <p className="text-sm text-muted-foreground">
-                  Guaranteed lowest rates
+                  Direct booking, no intermediaries
                 </p>
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">

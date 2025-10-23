@@ -7,12 +7,11 @@ import Image from "next/image";
 interface TourCardProps {
   title: string;
   duration: string;
-  price: string;
   href: string;
   image: any;
 }
 
-export function TourCard({ title, duration, price, href, image }: TourCardProps) {
+export function TourCard({ title, duration, href, image }: TourCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="aspect-4/3 overflow-hidden">
@@ -26,7 +25,7 @@ export function TourCard({ title, duration, price, href, image }: TourCardProps)
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
             <span>{duration}</span>
@@ -36,13 +35,6 @@ export function TourCard({ title, duration, price, href, image }: TourCardProps)
             <span>Private Tour</span>
           </div>
         </div>
-        <p className="text-2xl font-semibold text-primary">
-          from {price}
-          <span className="text-sm font-normal text-muted-foreground">
-            {" "}
-            per group
-          </span>
-        </p>
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
