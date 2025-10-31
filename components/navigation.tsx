@@ -29,7 +29,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {/* {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -41,20 +41,20 @@ export function Navigation() {
             <Button asChild size="sm" className="ml-4">
               <Link href="/#book">Book Now</Link>
             </Button>
-          </div>
+          </div> */}
 
-          {/* Mobile Menu Button */}
-          <button
+            {/* Mobile Menu Button */}
+            {/* <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 text-foreground"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
+          </button> */}
+          </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
+          {/* Mobile Navigation */}
+          {/* {isOpen && (
           <div className="lg:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -74,7 +74,8 @@ export function Navigation() {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
+        </div>
       </div>
     </nav>
   );
