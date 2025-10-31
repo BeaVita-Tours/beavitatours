@@ -1,181 +1,48 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { TourCard } from "@/components/tour-card";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Award, Users, DollarSign, MapPin } from "lucide-react";
-import tours from "@/lib/tours";
-export default function HomePage() {
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import logo from "@/public/logo.png";
+import Image from "next/image";
+
+export default function ComingSoon() {
   return (
-    <main>
-      {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <video
-            className="w-full h-full object-cover"
-            src="/bg.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-linear-to-brom-black/50 via-black/30 to-black/60" />
+    <div className="relative h-screen overflow-hidden bg-black">
+      <video
+        className="w-full h-full object-cover absolute top-0 left-0 opacity-35"
+        src="/bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      />
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
+        <h1 className="text-3xl font-bold mb-8">COMING SOON</h1>
+        <div className="flex flex-col items-center justify-center mb-8">
+          <Image src={logo} alt="Logo" className="z-50 size-48" />
+          <div className="text-white text-xl font-normal">
+            Your Venice tour partner
+          </div>
         </div>
-        <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0 text-sm px-4 py-1">
-            PRIVATE TOURS FROM VENICE
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Discover the Beauty Outside Venice
-          </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
-            Private tours to the Dolomites, Prosecco region, and Italian
-            countryside.
+        <Link
+          href="/tours"
+          className={cn(
+            buttonVariants({ variant: "default", size: "lg" }),
+            "text-lg rounded-xl px-8 py-6"
+          )}
+        >
+          Book Now
+        </Link>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center pb-8">
+        <div className="text-center text-sm text-white opacity-50">
+          <p className="text-sm leading-relaxed">VAT No 04897010262</p>
+          <p className="text-sm leading-relaxed">
+            &copy; {new Date().getFullYear()} OutsideVenice. All rights
+            reserved.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8">
-              <Link href="#tours">Explore Tours</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20"
-            >
-              <Link href="#book">Book Now</Link>
-            </Button>
-          </div>
         </div>
-      </section>
-
-      {/* Tours Section */}
-      <section id="tours" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR TOURS</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Choose from our carefully curated selection of private tours, each
-              designed to showcase the best of the Veneto region.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tours.map((tour) => (
-              <TourCard key={tour.title} {...tour} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-              ABOUT US
-            </h2>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Long experience, service, customization, quality, and more.....
-            </p>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              We take great care to ensure that our tours are the best value for
-              money in the business, and we know that outstanding value means
-              ensuring that all of the ingredients are right. We take care of
-              everything throughout the tour. All you have to do is show up and
-              enjoy.
-            </p>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
-              We employ only the best staff with the most extensive local
-              knowledge, so you can rely upon them to find the best places to
-              go, according to your needs and budget.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
-                <Award className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Best Quality</h3>
-                <p className="text-sm text-muted-foreground">
-                  Premium service and experiences
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
-                <DollarSign className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Best Value</h3>
-                <p className="text-sm text-muted-foreground">
-                  Direct booking, no intermediaries
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
-                <Users className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Expert Guides</h3>
-                <p className="text-sm text-muted-foreground">
-                  Extensive local knowledge
-                </p>
-              </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
-                <MapPin className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Customization</h3>
-                <p className="text-sm text-muted-foreground">
-                  Tailored to your interests
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section id="book" className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            READY TO BOOK?
-          </h2>
-          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Start your adventure outside Venice today. Contact us to reserve
-            your private tour.
-          </p>
-          <Button
-            asChild
-            size="lg"
-            variant="secondary"
-            className="text-lg px-8"
-          >
-            <Link href="/rates">View Rates & Book</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Reviews Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            WHAT OUR GUESTS SAY
-          </h2>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a
-              href="https://www.getyourguide.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
-            >
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="font-medium">
-                GetYourGuide Reviews (nota: link ancora da fornire)
-              </span>
-            </a>
-            <a
-              href="https://www.tripadvisor.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
-            >
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="font-medium">
-                Tripadvisor Reviews (nota: link ancora da fornire)
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
