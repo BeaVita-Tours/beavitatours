@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`font-sans antialiased`}>
         <Navigation />
         {children}
-        <Footer />
+        {/* <Footer /> */}
         <Analytics />
       </body>
     </html>

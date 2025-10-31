@@ -4,6 +4,7 @@ import tourCustom from "@/public/tourcustom.jpg";
 import tourProsecco from "@/public/tourprosecco.jpg";
 import tourWines from "@/public/tourwines.jpg";
 import placeholder from "@/public/placeholder.jpg";
+import prosecco3 from "@/public/prosecco 3.jpg";
 
 export const tours = [
   {
@@ -28,7 +29,7 @@ export const tours = [
     title: "DOLOMITES AND PROSECCO",
     duration: "11-hour Full Day",
     href: "/tours/dolomites-prosecco",
-    image: placeholder,
+    image: prosecco3,
   },
   {
     title: "GREAT WINES TOUR",

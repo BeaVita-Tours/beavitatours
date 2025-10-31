@@ -9,7 +9,7 @@ export default function ComingSoon() {
     <div className="relative h-screen overflow-hidden bg-black">
       <video
         className="w-full h-full object-cover absolute top-0 left-0 opacity-35"
-        src="/bg.mp4"
+        src="/bg.webm"
         autoPlay
         muted
         loop

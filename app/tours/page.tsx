@@ -9,12 +9,16 @@ export default function ToursPage() {
     <main>
       <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
-            src="/dolomites-mountains-panoramic-view-dramatic-peaks.jpg"
-            alt="Dolomites mountains and valleys"
+          <video
             className="w-full h-full object-cover"
+            src="/bg.webm"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-brom-black/50 via-black/30 to-black/60" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
           <Badge className="mb-4 bg-accent text-accent-foreground border-0">
@@ -50,7 +54,7 @@ export default function ToursPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-primary text-primary-foreground">
+      {/* <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Need Help Choosing?</h2>
           <p className="text-lg md:text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
@@ -71,7 +75,7 @@ export default function ToursPage() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
