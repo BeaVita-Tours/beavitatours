@@ -8,10 +8,10 @@ export default function ToursPage() {
   return (
     <main>
       <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-black">
           <video
-            className="w-full h-full object-cover"
-            src="/bg.webm"
+            className="w-full h-full object-cover opacity-60"
+            src="/bg.mp4"
             autoPlay
             muted
             loop
