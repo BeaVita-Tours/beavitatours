@@ -25,7 +25,7 @@ export default function ComingSoon() {
           </div>
         </div>
         <Link
-          href="/tours"
+          href="https://beautifuldolomites.com/booking.html"
           className={cn(
             buttonVariants({ variant: "default", size: "lg" }),
             "text-lg rounded-xl px-8 py-6"
