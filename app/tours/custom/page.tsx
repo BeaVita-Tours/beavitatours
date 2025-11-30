@@ -142,7 +142,8 @@ export default function CustomToursPage() {
             Ready to Create Your Perfect Tour?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Contact us to design your custom private tour.
+            Contact us to design your custom private tour. Starting from 450€
+            per group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">

@@ -11,10 +11,11 @@ export default function RatesPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 bg-accent text-accent-foreground border-0">CONTACT US FOR RATES</Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">BOOK YOUR TOUR</h1>
+            <Badge className="mb-4 bg-accent text-accent-foreground border-0">BEST PRICE GUARANTEED</Badge>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">RATES 2025</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Get in touch to discuss your tour preferences and receive personalized pricing information. All tours are private and can be customized to your needs.
+              We have the lowest rates available in Venice for private tours. Booking directly through the web you don't
+              pay any agency or intermediaries fees.
             </p>
           </div>
         </div>
@@ -25,15 +26,16 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Shield className="h-12 w-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-4">Quality Service Guaranteed</h2>
+            <h2 className="text-2xl font-bold mb-4">Best Price Guaranteed</h2>
             <p className="text-lg text-primary-foreground/90 leading-relaxed">
-              Booking directly with us means no agency or intermediary fees. Get the best value for authentic, personalized experiences.
+              If, after you have made a reservation and prior to your arrival, you find a lower rate, we will guarantee
+              you that lower rate.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Tour Types */}
+      {/* Pricing Cards */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
@@ -49,9 +51,26 @@ export default function RatesPage() {
                   <CardDescription>9-hour private tour</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Perfect for exploring a single destination in depth. Includes professional guide, comfortable transportation, and flexible itinerary.
-                  </p>
+                  <div className="space-y-4">
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">450 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">up to 3 people</p>
+                    </div>
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">540 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 4 to 6 people</p>
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">630 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 7 to 8 people</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -68,9 +87,26 @@ export default function RatesPage() {
                   <CardDescription>11-hour private tour</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Extended tour for multiple destinations or activities. Ideal for combining mountain scenery with wine tasting experiences.
-                  </p>
+                  <div className="space-y-4">
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">500 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">up to 3 people</p>
+                    </div>
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">600 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 4 to 6 people</p>
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">700 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 7 to 8 people</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -84,16 +120,33 @@ export default function RatesPage() {
                   <CardDescription>Multi-day experience</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Immersive multi-day adventures allowing you to fully experience the region's highlights at a relaxed pace.
-                  </p>
+                  <div className="space-y-4">
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">1200 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">up to 3 people</p>
+                    </div>
+                    <div className="border-b border-border pb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">1400 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 4 to 6 people</p>
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-3xl font-bold text-primary">1600 €</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">groups from 7 to 8 people</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
 
             <div className="text-center">
               <Button asChild size="lg">
-                <Link href="/#book">Contact Us to Book</Link>
+                <Link href="/#book">Book Your Tour Now</Link>
               </Button>
             </div>
           </div>
@@ -171,16 +224,20 @@ export default function RatesPage() {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Why Choose Us</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Why Our Rates Are the Best</h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
-                We focus on essential features to deliver quality tours without unnecessary extras. Our private tours offer personalized experiences tailored to your interests.
+                We have removed all the non essential features to keep the price low without sacrifying quality. Our
+                rates for private tours are very cheap and lower than those offered by most of our competitors for
+                regular tours!
               </p>
               <p className="leading-relaxed">
-                Booking directly with us means no agency or intermediary fees - you work directly with your guide and driver.
+                Booking directly through the web you don't pay any agency or intermediaries fees.
               </p>
               <p className="leading-relaxed">
-                We use modern, comfortable vehicles that provide the latest in technology, comfort and safety for your journey through the Veneto region.
+                We don't have luxury limousines because they are really unnecessary for a tour. However all our vehicles
+                are able to satisfy any requirements, being the latest models, the best in technology, comfort and
+                safety.
               </p>
             </div>
           </div>

@@ -146,7 +146,8 @@ export default function GreatWinesTourPage() {
             Ready to Taste Italy's Best Wines?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Great Wines tour today.
+            Book your private Great Wines tour today. Starting from 500€ per
+            group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">

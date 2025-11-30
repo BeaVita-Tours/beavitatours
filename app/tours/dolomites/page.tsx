@@ -139,7 +139,8 @@ export default function DolomitesTourPage() {
             Ready to Explore the Dolomites?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Book your private Dolomites tour today.
+            Book your private Dolomites tour today. Starting from 450€ per
+            group.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
