@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { travelAgencyLeadSchema } from "@/lib/travel-agency";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY!);
 
 function getClientIp(headers: Headers) {
   const forwardedFor = headers.get("x-forwarded-for");
@@ -31,7 +34,13 @@ async function sendEmailStub(params: {
   subject: string;
   text: string;
 }) {
-  // Intentionally not implemented yet.
+  await resend.emails.send({
+    from: `BeaVitaTours Form <${process.env.TRAVEL_AGENCY_FROM_EMAIL}>`,
+    to: params.to,
+    subject: params.subject,
+    text: params.text,
+  });
+
   console.info("[travel-agency] email stub", {
     to: params.to,
     subject: params.subject,
