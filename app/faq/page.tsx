@@ -9,7 +9,9 @@ export default function FAQPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">F.A.Q.</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Frequently Asked Questions
+            </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Frequently Asked Questions about our tours and services
             </p>
@@ -184,7 +186,7 @@ export default function FAQPage() {
                 If you can't find the answer you're looking for, please don't
                 hesitate to contact us. We're here to help!
               </p>
-              <Badge className="bg-primary text-primary-foreground">
+              <Badge className="bg-primary uppercase text-primary-foreground">
                 Contact us for more information
               </Badge>
             </CardContent>

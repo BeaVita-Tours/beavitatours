@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Facebook, Youtube, Mountain } from "lucide-react"
+import Image from "next/image";
+import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
 export function Footer() {
   return (
@@ -8,8 +9,20 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Mountain className="h-6 w-6 text-primary" />
-              <span className="font-semibold text-lg">BeaVitaTours</span>
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-semibold text-lg"
+              >
+                <Image
+                  src={navbarLogo}
+                  alt="BeaVitaTours"
+                  width={480}
+                  height={96}
+                  priority
+                  className="h-12 w-auto"
+                />
+                <span className="sr-only">BeaVitaTours</span>
+              </Link>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               BEA VITA TOURS
@@ -29,34 +42,18 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/tours/prosecco"
+                  href="/tours"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Prosecco Tours
+                  Our Tours
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/tours/dolomites"
+                  href="/travel-agency"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Dolomites Tours
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tours/custom"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Custom Tours
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/rates"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Rates
+                  Are you a Travel Agency?
                 </Link>
               </li>
               <li>
@@ -94,33 +91,12 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-            <div className="flex gap-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube className="h-5 w-5" />
-              </a>
-            </div>
           </div>
         </div>
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            Copyright {new Date().getFullYear()} BeaVitaTours. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} BeaVitaTours. All rights reserved.
           </p>
         </div>
       </div>

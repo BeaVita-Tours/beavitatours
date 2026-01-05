@@ -9,9 +9,9 @@ export default function HomePage() {
     <main>
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-black">
           <video
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-50"
             src="/bg.mp4"
             autoPlay
             muted
@@ -23,7 +23,7 @@ export default function HomePage() {
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
           <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0 text-sm px-4 py-1">
-            Private Tours and Day Trips FROM VENICE
+            Private tours and day trips from Venice
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
             Discover the beauty near Venice
@@ -51,7 +51,7 @@ export default function HomePage() {
       <section id="tours" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR TOURS</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tours</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
               Choose from our carefully curated selection of private tours and
               day trips, each designed to showcase the best of the Veneto
@@ -71,7 +71,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-              ABOUT US
+              About Us
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
               Long experience, service, customization, quality, and more.....
@@ -127,7 +127,7 @@ export default function HomePage() {
       <section id="book" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            READY TO BOOK?
+            Ready to book?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
             Start your adventure near Venice today. Contact us to reserve your
@@ -148,7 +148,7 @@ export default function HomePage() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            WHAT OUR GUESTS SAY
+            What Our Guests Say
           </h2>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a

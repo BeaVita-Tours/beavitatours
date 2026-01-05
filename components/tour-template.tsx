@@ -90,7 +90,7 @@ export function TourTemplate({
           </div>
           <div className="container mx-auto px-4 z-10 text-center">
             {badge ? (
-              <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+              <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
                 {badge}
               </Badge>
             ) : null}

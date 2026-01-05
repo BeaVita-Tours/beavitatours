@@ -11,10 +11,10 @@ export default function RatesPage() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 bg-accent text-accent-foreground border-0">
-              BEST PRICE GUARANTEED
+            <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
+              Best price guaranteed
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">RATES 2025</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Rates</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               We have the lowest rates available in Venice for private tours and
               day trips. Booking directly through the web you don't pay any
@@ -94,8 +94,8 @@ export default function RatesPage() {
               {/* Full Long Day */}
               <Card className="relative border-primary shadow-lg">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground">
-                    POPULAR
+                  <Badge className="bg-primary uppercase text-primary-foreground">
+                    Popular
                   </Badge>
                 </div>
                 <CardHeader>
@@ -205,7 +205,7 @@ export default function RatesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Check className="h-5 w-5 text-primary" />
-                    WHAT'S INCLUDED
+                    What's included
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -242,7 +242,7 @@ export default function RatesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <X className="h-5 w-5 text-muted-foreground" />
-                    EXCLUDED
+                    Excluded
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

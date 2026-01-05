@@ -7,10 +7,10 @@ import tours from "@/lib/tours";
 export default function ToursPage() {
   return (
     <main>
-      <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">
           <video
-            className="w-full h-full object-cover opacity-60"
+            className="w-full h-full object-cover opacity-50"
             src="/bg.mp4"
             autoPlay
             muted
@@ -21,13 +21,13 @@ export default function ToursPage() {
           <div className="absolute inset-0 bg-linear-to-brom-black/50 via-black/30 to-black/60" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0">
-            PRIVATE DAY TRIPS
+          <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0 text-sm px-4 py-1">
+            Private day trips
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
             Explore Our Tours
           </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
             Choose the perfect adventure near Venice. All tours are private,
             customizable, and led by expert local guides.
           </p>
