@@ -12,14 +12,14 @@ import { Wine } from "lucide-react";
 export default function GreatWinesTourPage() {
   return (
     <TourTemplate
-      name="Great Wines"
-      title="Great Wines Tour"
-      subtitle="Discover Veneto's finest wines: Amarone and Prosecco in one unforgettable day"
-      badge="Amarone & Prosecco"
-      image="/wine-tasting-amarone-valpolicella.jpg"
-      imageAlt="Great Wines Tour"
-      ctaHeading="Ready to Taste Italy's Best Wines?"
-      ctaName="Great Wines"
+      name="Cultural Tour"
+      title="Cultural Tour"
+      subtitle="Discover Italy's rich culture: history, art, and traditions in one unforgettable day"
+      badge="Culture & Heritage"
+      image="/gallaplacidia.webp"
+      imageAlt="Cultural Tour"
+      ctaHeading="Ready to Experience Italy's Rich Culture?"
+      ctaName="Cultural Tour"
     >
       <TourDescription>
         <p className="leading-relaxed">

@@ -73,8 +73,8 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
               About Us
             </h2>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Long experience, service, customization, quality, and more.....
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              Long experience, service, customization, quality, and more...
             </p>
             <p className="text-muted-foreground mb-6 leading-relaxed">
               We take great care to ensure that our tours are the best value for

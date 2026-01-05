@@ -15,7 +15,7 @@ export default function DolomitesTourPage() {
       title="Dolomites Tour"
       subtitle="Experience the breathtaking beauty of the Queen of the Dolomites"
       badge="UNESCO World Heritage Site"
-      image="/dolomites-mountains-unesco-world-heritage.jpg"
+      image="/tourdolomites.jpg"
       imageAlt="Dolomites Mountains"
       ctaHeading="Ready to Explore the Dolomites?"
       ctaName="Dolomites"

@@ -16,7 +16,7 @@ export default function ProseccoTourPage() {
       title="Prosecco Tour"
       subtitle="Explore the rolling hills and finest wineries of the Prosecco region"
       badge="UNESCO World Heritage Site"
-      image="/prosecco-vineyards-rolling-hills-italy.jpg"
+      image="/tourprosecco.jpg"
       imageAlt="Prosecco Vineyards"
       ctaHeading="Ready to Experience Prosecco Country?"
       ctaName="Prosecco"

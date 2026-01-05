@@ -31,7 +31,10 @@ const EU_VAT_REGEXES: Record<string, RegExp> = {
 };
 
 function normalizeVatInput(input: string) {
-  const compact = input.trim().toUpperCase().replace(/[\s\-\.\/]/g, "");
+  const compact = input
+    .trim()
+    .toUpperCase()
+    .replace(/[\s\-\.\/]/g, "");
   // Allow Italy VAT pasted as just 11 digits.
   if (/^\d{11}$/.test(compact)) return `IT${compact}`;
   return compact;
