@@ -1,54 +1,64 @@
-import Link from "next/link"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Clock, Users } from "lucide-react"
+"use client";
+
+import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 interface TourCardProps {
   title: string;
-  duration: string;
-  price: string;
   href: string;
   image: any;
 }
 
-export function TourCard({ title, duration, price, href, image }: TourCardProps) {
+export function TourCard({ title, href, image }: TourCardProps) {
+  const router = useRouter();
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow mt-0">
-      <div className="aspect-4/3 overflow-hidden mt-0">
-        <Image
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-      <CardHeader>
-        <CardTitle className="text-xl">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="">
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-          <div className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            <span>{duration}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Users className="h-4 w-4" />
-            <span>Private Tour</span>
-          </div>
+    <Card
+      role="link"
+      tabIndex={0}
+      aria-label={`View ${title} details`}
+      onClick={(event) => {
+        if (event.currentTarget !== event.target) return;
+        router.push(href);
+      }}
+      onKeyDown={(event) => {
+        if (event.currentTarget !== event.target) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          router.push(href);
+        }
+      }}
+      className="group relative mt-0 block aspect-4/3 cursor-pointer overflow-hidden p-0 transition-shadow duration-300 ease-out hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
+      <Image
+        src={image}
+        alt={title}
+        fill
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+      />
+
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/25 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
+
+      <div className="absolute inset-0 flex items-end">
+        <div className="flex w-full items-end justify-between gap-3 p-5">
+          <h3 className="text-lg font-semibold leading-snug text-white">
+            {title}
+          </h3>
+
+          <Button asChild size="icon-lg" className="shrink-0 rounded-xl">
+            <Link href={href} onClick={(event) => event.stopPropagation()}>
+              <ArrowRight />
+              <span className="sr-only">View details</span>
+            </Link>
+          </Button>
         </div>
-        <p className="text-2xl font-semibold text-primary">
-          from {price}
-          <span className="text-sm font-normal text-muted-foreground">
-            {" "}
-            per group
-          </span>
-        </p>
-      </CardContent>
-      <CardFooter>
-        <Button asChild className="w-full">
-          <Link href={href}>View Details</Link>
-        </Button>
-      </CardFooter>
+      </div>
     </Card>
   );
 }

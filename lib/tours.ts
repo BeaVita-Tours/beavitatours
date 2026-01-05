@@ -8,45 +8,33 @@ import prosecco3 from "@/public/prosecco 3.jpg";
 
 export const tours = [
   {
-    title: "DOLOMITES",
-    duration: "9-hour Full Day",
-    price: "450 €",
+    title: "THE DOLOMITES",
     href: "/tours/dolomites",
     image: tourDolomites,
   },
   {
-    title: "PROSECCO",
-    duration: "9-hour Full Day",
-    price: "450 €",
+    title: "THE PROSECCO HILLS",
     href: "/tours/prosecco",
-    image: tourProsecco,
-  },
-  {
-    title: "DOLOMITES HIKING TOUR",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/hiking",
-    image: tourHiking,
-  },
-  {
-    title: "DOLOMITES AND PROSECCO",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/dolomites-prosecco",
-    image: prosecco3,
-  },
-  {
-    title: "GREAT WINES TOUR",
-    duration: "11-hour Full Day",
-    price: "500 €",
-    href: "/tours/great-wines",
     image: tourWines,
   },
   {
-    title: "PRIVATE CUSTOM TOURS",
-    duration: "Full Day Tours",
-    price: "450 €",
-    href: "/tours/custom",
+    title: "WINE AND FOOD",
+    href: "/tours/wine-food",
+    image: prosecco3,
+  },
+  {
+    title: "ACTIVE",
+    href: "/tours/active",
+    image: tourHiking,
+  },
+  {
+    title: "ADVENTURE",
+    href: "/tours/adventure",
+    image: tourProsecco,
+  },
+  {
+    title: "CULTURAL",
+    href: "/tours/cultural",
     image: tourCustom,
   },
 ];

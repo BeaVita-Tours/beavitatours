@@ -15,6 +15,7 @@ export function Navigation() {
     { href: "/tours", label: "All Tours" },
     { href: "/rates", label: "Rates" },
     { href: "/faq", label: "FAQ" },
+    { href: "/travel-agency", label: "Are you a Travel Agency?" },
   ];
 
   return (
@@ -47,7 +48,7 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
-            <Button asChild size="sm" className="ml-4">
+            <Button asChild size="sm">
               <Link href="/#book">Book Now</Link>
             </Button>
           </div>

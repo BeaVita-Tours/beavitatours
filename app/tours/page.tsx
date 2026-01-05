@@ -28,7 +28,7 @@ export default function ToursPage() {
             Explore Our Tours
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Choose the perfect adventure outside Venice. All tours are private,
+            Choose the perfect adventure near Venice. All tours are private,
             customizable, and led by expert local guides.
           </p>
         </div>
