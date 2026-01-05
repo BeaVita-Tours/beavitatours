@@ -34,18 +34,18 @@ async function sendEmailStub(params: {
   subject: string;
   text: string;
 }) {
-  await resend.emails.send({
-    from: `BeaVitaTours Form <${process.env.TRAVEL_AGENCY_FROM_EMAIL}>`,
-    to: params.to,
-    subject: params.subject,
-    text: params.text,
-  });
+    console.info("[travel-agency-form] Sending via Resend:", {
+      to: params.to,
+      subject: params.subject,
+      textLength: params.text.length,
+    });
 
-  console.info("[travel-agency] email stub", {
-    to: params.to,
-    subject: params.subject,
-    textLength: params.text.length,
-  });
+    await resend.emails.send({
+      from: `BeaVitaTours Form <${process.env.TRAVEL_AGENCY_FROM_EMAIL}>`,
+      to: params.to,
+      subject: params.subject,
+      text: params.text,
+    });
 }
 
 export async function POST(request: Request) {
