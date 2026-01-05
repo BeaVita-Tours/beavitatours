@@ -42,29 +42,6 @@ export default function DolomitesTourPage() {
         </p>
       </TourDescription>
 
-      <TourFeatures>
-        <TourFeature
-          title="UNESCO World Natural Heritage Site"
-          description="The Dolomites are mountains of exceptional natural beauty. Their dramatic vertical and pale coloured peaks in a variety of distinctive sculptural forms is extraordinary in a global context. The Dolomites also features one of the best examples of the preservation of Mesozoic carbonate platform systems, with fossil records."
-          image="/dolomites-unesco-heritage-dramatic-peaks.jpg"
-        />
-        <TourFeature
-          title="Cortina d'Ampezzo"
-          description="At 1.224m above sea level in the heart of the Dolomites, is located Cortina d'Ampezzo. The natural beauty of 'Queen of the Dolomites' is irresistible both to visitors looking to break the frenzy of today's way of living within the peaceful mountain environment and to those in search of superb sports facilities, both in winter and in summer."
-          image="/cortina-dampezzo-town-dolomites-mountains.jpg"
-        />
-        <TourFeature
-          title="Lake Misurina"
-          description="The Misurina Lake, at 1754 m above sea level is one of the most beautiful lakes in Italy and the largest natural one in the Cadore area. It is embraced by some of the most noble mountain outlines in the Dolomites such as Tre Cime di Lavaredo, Cristallo and Marmarole. When you are here, it's like you're in a fairy tale!"
-          image="/lake-misurina-dolomites-reflection-mountains.jpg"
-        />
-        <TourFeature
-          title="Lagazuoi Cable Car"
-          description="Starting from Passo Falzarego, the Lagazuoi cable car rides up to 2.740 m (9,000 ft) above sea level, just below the summit of Mt Lagazuoi. Once on top, you will enjoy a breathtaking view in the heart of the Dolomites, an open-air Museum of World War 1, and the Lagazuoi EXPO Dolomiti exhibition."
-          image="/lagazuoi-cable-car-mountain-view-dolomites.jpg"
-        />
-      </TourFeatures>
-
       <TourCTA />
     </TourTemplate>
   );

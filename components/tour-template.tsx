@@ -84,13 +84,13 @@ export function TourTemplate({
             <img
               src={image}
               alt={imageAlt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-[50%_70%]"
             />
             <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
           </div>
           <div className="container mx-auto px-4 z-10 text-center">
             {badge ? (
-              <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
+              <Badge className="mb-4 bg-accent text-accent-foreground border-0">
                 {badge}
               </Badge>
             ) : null}
