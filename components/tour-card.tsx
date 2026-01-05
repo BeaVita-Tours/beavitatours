@@ -14,8 +14,8 @@ interface TourCardProps {
 
 export function TourCard({ title, duration, price, href, image }: TourCardProps) {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-4/3 overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow mt-0">
+      <div className="aspect-4/3 overflow-hidden mt-0">
         <Image
           src={image}
           alt={title}
@@ -25,7 +25,7 @@ export function TourCard({ title, duration, price, href, image }: TourCardProps)
       <CardHeader>
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="">
         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />

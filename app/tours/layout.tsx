@@ -10,9 +10,10 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "OutsideVenice - Private Tours from Venice to Dolomites & Prosecco",
+  title:
+    "BeaVitaTours - Private Tours and Day Trips from Venice to Dolomites & Prosecco",
   description:
-    "Experience the best private tours from Venice to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
+    "Experience the best Private Tours and Day Trips from Venice to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
   generator: "v0.app",
 };
 

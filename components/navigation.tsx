@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { Menu, X, Mountain } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/tours", label: "Tours" },
+    { href: "/tours", label: "All Tours" },
     { href: "/rates", label: "Rates" },
     { href: "/faq", label: "FAQ" },
   ];
@@ -23,13 +25,20 @@ export function Navigation() {
             href="/"
             className="flex items-center gap-2 font-semibold text-lg"
           >
-            <Mountain className="h-6 w-6 text-primary" />
-            <span className="text-foreground">OutsideVenice</span>
+            <Image
+              src={navbarLogo}
+              alt="BeaVitaTours"
+              width={480}
+              height={96}
+              priority
+              className="h-12 w-auto"
+            />
+            <span className="sr-only">BeaVitaTours</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            {/* {navLinks.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -41,20 +50,20 @@ export function Navigation() {
             <Button asChild size="sm" className="ml-4">
               <Link href="/#book">Book Now</Link>
             </Button>
-          </div> */}
+          </div>
 
-            {/* Mobile Menu Button */}
-            {/* <button
+          {/* Mobile Menu Button */}
+          <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 text-foreground"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button> */}
-          </div>
+          </button>
+        </div>
 
-          {/* Mobile Navigation */}
-          {/* {isOpen && (
+        {/* Mobile Navigation */}
+        {isOpen && (
           <div className="lg:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -74,8 +83,7 @@ export function Navigation() {
               </Button>
             </div>
           </div>
-        )} */}
-        </div>
+        )}
       </div>
     </nav>
   );

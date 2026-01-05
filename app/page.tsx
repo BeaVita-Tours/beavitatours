@@ -22,15 +22,14 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-linear-to-brom-black/50 via-black/30 to-black/60" />
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent text-accent-foreground border-0 text-sm px-4 py-1">
-            PRIVATE TOURS FROM VENICE
+          <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0 text-sm px-4 py-1">
+            Private Tours and Day Trips FROM VENICE
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Discover the Beauty Outside Venice
+            Discover the beauty near Venice
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
-            Private tours to the Dolomites, Prosecco region, and Italian
-            countryside.
+            Dolomites, Prosecco hills, Wine & Food Tours, and more...
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8">
@@ -54,8 +53,9 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR TOURS</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Choose from our carefully curated selection of private tours, each
-              designed to showcase the best of the Veneto region.
+              Choose from our carefully curated selection of private tours and
+              day trips, each designed to showcase the best of the Veneto
+              region.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,28 +90,28 @@ export default function HomePage() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <Award className="h-12 w-12 text-primary mb-4" />
                 <h3 className="font-semibold mb-2">Best Quality</h3>
                 <p className="text-sm text-muted-foreground">
                   Premium service and experiences
                 </p>
               </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <DollarSign className="h-12 w-12 text-primary mb-4" />
                 <h3 className="font-semibold mb-2">Best Value</h3>
                 <p className="text-sm text-muted-foreground">
                   Direct booking, no intermediaries
                 </p>
               </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <Users className="h-12 w-12 text-primary mb-4" />
                 <h3 className="font-semibold mb-2">Expert Guides</h3>
                 <p className="text-sm text-muted-foreground">
                   Extensive local knowledge
                 </p>
               </div>
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <MapPin className="h-12 w-12 text-primary mb-4" />
                 <h3 className="font-semibold mb-2">Customization</h3>
                 <p className="text-sm text-muted-foreground">
@@ -130,8 +130,8 @@ export default function HomePage() {
             READY TO BOOK?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Start your adventure outside Venice today. Contact us to reserve
-            your private tour.
+            Start your adventure near Venice today. Contact us to reserve your
+            private tour.
           </p>
           <Button
             asChild
@@ -155,7 +155,7 @@ export default function HomePage() {
               href="https://www.getyourguide.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
+              className="flex items-center gap-2 px-6 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
             >
               <CheckCircle2 className="h-5 w-5 text-primary" />
               <span className="font-medium">
@@ -166,7 +166,7 @@ export default function HomePage() {
               href="https://www.tripadvisor.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-lg hover:shadow-md transition-shadow"
+              className="flex items-center gap-2 px-6 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
             >
               <CheckCircle2 className="h-5 w-5 text-primary" />
               <span className="font-medium">

@@ -9,7 +9,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Mountain className="h-6 w-6 text-primary" />
-              <span className="font-semibold text-lg">OutsideVenice</span>
+              <span className="font-semibold text-lg">BeaVitaTours</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               BEA VITA TOURS
@@ -28,27 +28,42 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/tours/prosecco" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/tours/prosecco"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Prosecco Tours
                 </Link>
               </li>
               <li>
-                <Link href="/tours/dolomites" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/tours/dolomites"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Dolomites Tours
                 </Link>
               </li>
               <li>
-                <Link href="/tours/custom" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/tours/custom"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Custom Tours
                 </Link>
               </li>
               <li>
-                <Link href="/rates" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/rates"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Rates
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/faq"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   FAQ
                 </Link>
               </li>
@@ -103,9 +118,12 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>Copyright {new Date().getFullYear()} OutsideVenice. All rights reserved.</p>
+          <p>
+            Copyright {new Date().getFullYear()} BeaVitaTours. All rights
+            reserved.
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

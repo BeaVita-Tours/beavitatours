@@ -36,28 +36,28 @@ export default function DolomitesProseccoTourPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <div className="flex items-center gap-2 p-4 bg-card rounded-lg">
+              <div className="flex items-center gap-2 p-4 bg-card rounded-xl">
                 <Clock className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Duration</p>
                   <p className="font-semibold">11 hours</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-4 bg-card rounded-lg">
+              <div className="flex items-center gap-2 p-4 bg-card rounded-xl">
                 <Users className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Group Size</p>
                   <p className="font-semibold">Private</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-4 bg-card rounded-lg">
+              <div className="flex items-center gap-2 p-4 bg-card rounded-xl">
                 <MapPin className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Pick-up</p>
                   <p className="font-semibold">Venice</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-4 bg-card rounded-lg">
+              <div className="flex items-center gap-2 p-4 bg-card rounded-xl">
                 <Mountain className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">UNESCO Sites</p>
