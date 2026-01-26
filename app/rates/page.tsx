@@ -16,9 +16,9 @@ export default function RatesPage() {
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Rates</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We have the lowest rates available in Venice for private tours and
-              day trips. Booking directly through the web you don't pay any
-              agency or intermediaries fees.
+              We have the lowest rates available in Venice for tours and day
+              trips. Booking directly through the web you don't pay any agency
+              or intermediaries fees.
             </p>
           </div>
         </div>
@@ -43,7 +43,7 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              Private Tours and Day Trips
+              Tours and Day Trips
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {/* Full Day */}
@@ -289,9 +289,9 @@ export default function RatesPage() {
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p className="leading-relaxed">
                 We have removed all the non essential features to keep the price
-                low without sacrifying quality. Our rates for private tours and
-                day trips are very cheap and lower than those offered by most of
-                our competitors for regular tours!
+                low without sacrifying quality. Our rates for tours and day
+                trips are very cheap and lower than those offered by most of our
+                competitors for regular tours!
               </p>
               <p className="leading-relaxed">
                 Booking directly through the web you don't pay any agency or

@@ -12,10 +12,10 @@ export function Navigation() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/tours", label: "All Tours" },
     { href: "/rates", label: "Rates" },
     { href: "/faq", label: "FAQ" },
-    { href: "/travel-agency", label: "Are you a Travel Agency?" },
+    { href: "/about", label: "About Us" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (

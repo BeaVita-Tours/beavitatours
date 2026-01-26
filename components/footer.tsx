@@ -40,7 +40,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li>
+              {/* <li>
                 <Link
                   href="/tours"
                   className="text-muted-foreground hover:text-foreground transition-colors"
@@ -55,7 +55,7 @@ export function Footer() {
                 >
                   Are you a Travel Agency?
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/faq"
