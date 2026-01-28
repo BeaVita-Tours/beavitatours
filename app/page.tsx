@@ -26,7 +26,7 @@ export default function HomePage() {
             Tours and day trips from Venice
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Discover the beauty near Venice
+            Discover the beauty around Venice
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
             Dolomites, Prosecco hills, Wine & Food Tours, and more...

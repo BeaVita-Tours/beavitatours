@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function FAQPage() {
   return (
@@ -39,14 +39,14 @@ export default function FAQPage() {
               <AccordionItem value="item-2" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
-                    Where do we meet my guide for pick up in Venice?
+                    Where do I meet my guide for pick up in Venice?
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  Our tours depart from Venice Piazzale Roma, the car terminal
-                  of Venice. The meeting point is the area in front of the
-                  'hotel Olimpia' and 'Trattoria al Vinatier'. Please arrive at
-                  the meeting point 15 minutes before the scheduled tour time.
+                  Our private tours depart from Venice Piazzale Roma or from any
+                  address in the mainland. Shared tours depart at designated
+                  meeting points. Please arrive at the meeting point 10 minutes
+                  before the scheduled tour time.
                 </AccordionContent>
               </AccordionItem>
 
@@ -73,23 +73,24 @@ export default function FAQPage() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  Your tour guide is always present at the meting point 15
-                  minutes prior the starting time. He/she will hold a sign,
-                  making it easy for you to spot us.
+                  Your tour guide is always present at the meeting point 15
+                  minutes prior to the starting time. He/she will wear a green
+                  jacket and/or hold a sign, making it easy for you to spot
+                  them.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
-                    Do I need to bring my confirmation email to the meeting
+                    Do I need to bring my confirmation e-mail at the meeting
                     point?
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  You are not obliged to show your confirmation email at the
-                  meeting point, we have your name on the list and that is
-                  sufficient.
+                  You are not obliged to show your voucher at the meeting point,
+                  however please be able to show your reservation (even
+                  digitally) in case of problems.
                 </AccordionContent>
               </AccordionItem>
 
@@ -100,10 +101,11 @@ export default function FAQPage() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  On request we offer pick up service from your hotel. Price of
-                  the service depends on the hotel's location (in the mainland
-                  it's free of charge while in Venice island can be rather
-                  expensive because we have to arrange a private water taxi).
+                  For private tours we offer pick up service from your hotel.
+                  The service is free if your hotel is in the mainland; if your
+                  hotel is in Venice island there is a charge for the private
+                  water taxi. For shared tours we don’t offer hotel pick up
+                  service.
                 </AccordionContent>
               </AccordionItem>
 
@@ -114,26 +116,45 @@ export default function FAQPage() {
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  Our tours are not accessible for children under the age of 8
-                  years. Children who are under 36 kg/ 97 pounds or 150 cm/4ft 9
-                  in must use proper child restraints (we provide booster
-                  seats).
+                  Our private tours are accessible for children. Children who
+                  are under 36 kg / 97 pounds or 150 cm / 4ft 9 must use proper
+                  child restraints (we can provide baby seats and/or booster
+                  seats free of charge, but we need to know a few days in
+                  advance). Please specify the age of children when booking.
+                  Shared tours have children age restrictions.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-8" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
-                    What is your cancellation policy?
+                    Are pets allowed on the tours?
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  BeaVitaTours requires a minimum of 24 hours notice for
-                  cancellations, which must be done by email or whatsapp.
+                  Generally no as we need to consider that by the Italian law a
+                  dog can travel in a vehicle in the passenger compartment only
+                  if secured (e.g., with a leash to a seatbelt attachment) or in
+                  a suitable container. However, if you are planning to travel
+                  with your pet and would still like to book a private tour
+                  please contact us first and we will advise if there is any
+                  solution available. Pets are not allowed on our shared tours.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-9" className="border rounded-xl px-6">
+                <AccordionTrigger className="text-left hover:no-underline">
+                  <span className="font-semibold">
+                    What is your cancellation policy?
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed">
+                  BeaVitaTours requires a minimum of 48 hours notice for
+                  cancellations, which must be done by email or whatsapp.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
                     Are tours accessible for wheelchair users or people with
@@ -147,7 +168,7 @@ export default function FAQPage() {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="item-10" className="border rounded-xl px-6">
+              <AccordionItem value="item-11" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
                     What to wear for the Dolomites tour?
@@ -159,16 +180,16 @@ export default function FAQPage() {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="item-11" className="border rounded-xl px-6">
+              <AccordionItem value="item-12" className="border rounded-xl px-6">
                 <AccordionTrigger className="text-left hover:no-underline">
                   <span className="font-semibold">
-                    Do you cancel tours due to bad weather?
+                    Do you cancel tours due to bad wheather?
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed">
-                  BeaVitaTours tours run everyday rain or shine. We reserve the
-                  right to cancel the Dolomites tour in the event of severe
-                  weather.
+                  BeaVitaTours tours run everyday, rain or shine. We reserve the
+                  right to cancel the Dolomites tour only in the event of severe
+                  weather / calamity.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -176,21 +197,19 @@ export default function FAQPage() {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <Card className="max-w-2xl mx-auto text-center">
-            <CardContent className="pt-8 pb-8">
-              <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                If you can't find the answer you're looking for, please don't
-                hesitate to contact us. We're here to help!
-              </p>
-              <Badge className="bg-primary uppercase text-primary-foreground">
-                Contact us for more information
-              </Badge>
-            </CardContent>
-          </Card>
+      {/* Contact CTA - brand-colored band matching TourCTA */}
+      <section className="py-16 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Still Have Questions?</h2>
+          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
+            If you can't find the answer you're looking for, please don't
+            hesitate to contact us. We're here to help!
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/contact">Contact Us</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </main>

@@ -14,7 +14,7 @@ export default function DolomitesProseccoTourPage() {
     <TourTemplate
       name="Dolomites and Prosecco"
       title="Wine & Food Tour"
-      subtitle="Dolomites & Prosecco Hills: Experience both UNESCO World Heritage sites in one unforgettable journey"
+      subtitle="Discover the Dolomites, the most beautiful mountains in the World. Explore the rolling hills and finest wineries of the Prosecco region"
       badge="Two UNESCO Sites in One Day"
       image="/tourwines.jpg"
       imageAlt="Dolomites and Prosecco"
@@ -23,29 +23,25 @@ export default function DolomitesProseccoTourPage() {
     >
       <TourDescription>
         <p className="leading-relaxed">
-          The Prosecco hills and the Dolomites mountains are the most popular
-          destinations for a day tour in the region of Veneto, just outside the
-          crowded Venice.
+          Italian cuisine, including its essential wine culture, is a UNESCO
+          Heritage: a recognition of the art of Italian cooking as a social
+          ritual of conviviality, shared practices, and deep connection to land
+          and seasons, encompassing the entire food chain from cultivation to
+          the table, with wine acting as a crucial bridge between traditions and
+          generations.
         </p>
         <p className="leading-relaxed">
-          This tour offers the possibility to visit both these Unesco world
-          heritage sites on the same day!
+          Each region has its own specialities and offers food and wine tours to
+          discover the varied and always tasty local cuisine. Veneto Region,
+          thanks to its particular morphology including flat, mountainous and
+          coastal areas, can boast a food and wine industry rich in a wide
+          variety of specialties.
         </p>
         <p className="leading-relaxed">
-          We drive through the ever-changing scenery of the mountains, spending
-          some time in Cortina d'Ampezzo, the 'Queen of the Dolomites', and
-          walking around the Lake Misurina, the 'Gem of the Dolomites', from
-          where you can enjoy a splendid view of the Tre Cime di Lavaredo, the
-          symbol of the Dolomites.
-        </p>
-        <p className="leading-relaxed">
-          On the way back we drive through the Prosecco Road that accommodates
-          the finest vines and wineries where the highest quality Proseccos are
-          produced. Finally we end up in a selected winery to enjoy some
-          excellent glasses of prosecco wine in a guided wine tasting.
-        </p>
-        <p className="leading-relaxed">
-          Then you can relax on your journey back to Venice.
+          To whet your appetite we assist you in setting the table by giving
+          your some tips for a perfect with tours and tastings off the
+          well-trodden tourist track: undisturbed oases of tranquility able to
+          cater for all your tastes and needs.
         </p>
       </TourDescription>
       <TourCTA />

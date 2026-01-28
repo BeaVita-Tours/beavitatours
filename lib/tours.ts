@@ -26,19 +26,19 @@ export const tours = [
     image: tourWines,
   },
   {
-    title: "Active",
-    href: "/tours/active",
-    image: hiking2,
-  },
-  {
-    title: "Adventure",
-    href: "/tours/adventure",
+    title: "Active & Adventure",
+    href: "/tours/active-adventure",
     image: mtb,
   },
   {
     title: "Cultural",
     href: "/tours/cultural",
     image: gallaplacidia,
+  },
+  {
+    title: "Shared Tours",
+    href: "/tours/shared-tours",
+    image: placeholder,
   },
 ];
 

@@ -24,28 +24,22 @@ export default function ProseccoTourPage() {
       <TourDescription>
         <p className="leading-relaxed">
           Just a 45 minute drive from Venice lies the region of Prosecco, UNESCO
-          World Heritage Site.
+          World Heritage Site. The landscape is characterised by hills, forests,
+          small villages and farmland. For centuries, this rough terrain has
+          been shaped and adapted by man.
         </p>
         <p className="leading-relaxed">
-          On this tour we drive through the Prosecco Road that accommodates the
-          finest vines and wineries where the highest quality Proseccos are
-          produced. The landscape is without an end, villas on hills, hamlets,
-          vineries...
+          Thanks to its special terracing system, soil and terrain conservation
+          techniques and viticultural practices, this hilly area has become one
+          of the most beautiful and productive wine-growing areas in the world.
+          Prosecco is Italy's most famous sparkling wine. Thanks to its informal
+          yet refined character, has created a new style of drink.
         </p>
         <p className="leading-relaxed">
-          In a Prosecco full day tour you can visit at least 3 wineries with
-          sightseeing and time for a lunch stop in a family-run restaurant with
-          excellent food and wine!
-        </p>
-        <p className="leading-relaxed">
-          Pick-up and drop off of our tours are from Venice Piazzale Roma, the
-          car terminal, to avoid any stress and waste of time to travel by train
-          or by bus. Of course we can pick you up at any local hotel in the
-          mainland.
-        </p>
-        <p className="leading-relaxed">
-          We provide wine shipping service to all the countries with proper
-          package to ensure that your shipment doesn't get damaged in transit.
+          But the Prosecco Hills are not just wine: they are also culture of
+          taste, authentic hospitality, art, landscape, memory. Castles,
+          villages, mills and abbeys: in the area of the Prosecco hills there is
+          truly something to see for everyone.
         </p>
       </TourDescription>
 
