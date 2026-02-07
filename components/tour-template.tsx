@@ -4,12 +4,24 @@ import * as React from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 import { Clock, MapPin, Mountain, Users, type LucideIcon } from "lucide-react";
 
 type ExtraDetail = {
   label: string;
   value: string;
   icon: LucideIcon;
+};
+
+export type CarouselImage = {
+  src: string;
+  alt: string;
 };
 
 export type TourTemplateProps = {
@@ -20,6 +32,9 @@ export type TourTemplateProps = {
   badge?: string;
   title?: string;
   subtitle?: string;
+
+  /** Images shown in a gallery carousel below the hero. */
+  carouselImages?: CarouselImage[];
 
   /** Used by TourCTA. Defaults are derived from `name`. */
   ctaHeading?: string;
@@ -60,6 +75,7 @@ export function TourTemplate({
   badge,
   title,
   subtitle,
+  carouselImages,
   ctaHeading,
   ctaName,
   children,
@@ -105,9 +121,41 @@ export function TourTemplate({
           </div>
         </section>
 
+        {carouselImages && carouselImages.length > 0 && (
+          <TourGallery images={carouselImages} />
+        )}
+
         {children}
       </main>
     </TourTemplateContext.Provider>
+  );
+}
+
+function TourGallery({ images }: { images: CarouselImage[] }) {
+  return (
+    <section className="py-12 bg-muted/30">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-14">
+          <Carousel opts={{ loop: true }}>
+            <CarouselContent>
+              {images.map((img) => (
+                <CarouselItem key={img.src}>
+                  <div className="overflow-hidden rounded-xl">
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-[500px] object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      </div>
+    </section>
   );
 }
 

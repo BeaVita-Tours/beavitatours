@@ -5,9 +5,14 @@ import {
   TourDescription,
   TourFeatures,
   TourTemplate,
+  type CarouselImage,
 } from "@/components/tour-template";
 import { TourFeature } from "@/components/tour-feature";
 import { Mountain } from "lucide-react";
+
+const carouselImages: CarouselImage[] = [
+  { src: "/imgs/winefood.jpg", alt: "Wine and food experience in Veneto" },
+];
 
 export default function DolomitesProseccoTourPage() {
   return (
@@ -18,6 +23,7 @@ export default function DolomitesProseccoTourPage() {
       badge="Two UNESCO Sites in One Day"
       image="/tourwines.jpg"
       imageAlt="Dolomites and Prosecco"
+      carouselImages={carouselImages}
       ctaHeading="Ready for the Ultimate Day Trip?"
       ctaName="Dolomites & Prosecco"
     >

@@ -5,8 +5,14 @@ import {
   TourDescription,
   TourFeatures,
   TourTemplate,
+  type CarouselImage,
 } from "@/components/tour-template";
 import { TourFeature } from "@/components/tour-feature";
+
+const carouselImages: CarouselImage[] = [
+  { src: "/imgs/dolomites/dolomites1.jpeg", alt: "Dolomites landscape" },
+  { src: "/imgs/dolomites/dolomites2.jpeg", alt: "Dolomites panorama" },
+];
 
 export default function DolomitesTourPage() {
   return (
@@ -15,8 +21,9 @@ export default function DolomitesTourPage() {
       title="The Dolomites"
       subtitle="Discover the Dolomites, the most beautiful mountains in the World"
       badge="UNESCO World Heritage Site"
-      image="/tourdolomites.jpg"
+      image="/imgs/dolomites/dolomitesmain.jpeg"
       imageAlt="Dolomites Mountains"
+      carouselImages={carouselImages}
       ctaHeading="Ready to Explore the Dolomites?"
       ctaName="Dolomites"
     >

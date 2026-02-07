@@ -1,4 +1,3 @@
-import tourDolomites from "@/public/tourdolomites.jpg";
 import tourHiking from "@/public/tourhiking.jpg";
 import hiking2 from "@/public/hiking2.jpg";
 import tourCustom from "@/public/tourcustom.jpg";
@@ -6,14 +5,15 @@ import tourProsecco from "@/public/tourprosecco.jpg";
 import tourWines from "@/public/tourwines.jpg";
 import placeholder from "@/public/placeholder.jpg";
 import prosecco3 from "@/public/prosecco 3.jpg";
-import mtb from "@/public/mtb.webp";
+import mtb from "@/public/imgs/adventure.jpeg";
 import gallaplacidia from "@/public/gallaplacidia.webp";
+import shared from "@/public/shared.jpg";
 
 export const tours = [
   {
     title: "The Dolomites",
     href: "/tours/dolomites",
-    image: tourDolomites,
+    image: "/imgs/dolomites/dolomitesmain.jpeg",
   },
   {
     title: "The Prosecco Hills",
@@ -38,7 +38,7 @@ export const tours = [
   {
     title: "Shared Tours",
     href: "/tours/shared-tours",
-    image: placeholder,
+    image: shared,
   },
 ];
 

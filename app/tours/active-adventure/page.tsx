@@ -5,6 +5,7 @@ import {
   TourDescription,
   TourFeatures,
   TourTemplate,
+  type CarouselImage,
 } from "@/components/tour-template";
 import { TourFeature } from "@/components/tour-feature";
 import { TrendingUp } from "lucide-react";
@@ -15,7 +16,7 @@ export default function HikingTourPage() {
       name="Active & Adventure"
       title="Active & Adventure"
       subtitle="To really get away, try an activity and adventure holiday!s"
-      image="/mtb.webp"
+      image="/imgs/adventure.jpeg"
       imageAlt="Dolomites Adventure Trails"
       ctaHeading="Ready to Embrace the Adventure?"
       ctaName="Dolomites adventure"

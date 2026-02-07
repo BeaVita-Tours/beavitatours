@@ -187,12 +187,9 @@ export default function HomePage() {
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-wrap gap-3 justify-center items-center">
               {OTAS.map((ota) => (
-                <a
+                <div
                   key={ota.name}
-                  href={ota.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-4 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
+                  className="flex items-center gap-3 px-4 py-3 bg-card rounded-xl"
                   aria-label={`${ota.name} reviews`}
                 >
                   <Image
@@ -206,7 +203,7 @@ export default function HomePage() {
                     {ota.rating}
                     <Star className="size-4 fill-amber-400 text-amber-400" />
                   </span>
-                </a>
+                </div>
               ))}
             </div>
           </div>
