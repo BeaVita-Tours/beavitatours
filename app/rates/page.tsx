@@ -16,9 +16,8 @@ export default function RatesPage() {
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Rates</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We have the lowest rates available in Venice for tours and day
-              trips. Booking directly through the web you don't pay any agency
-              or intermediaries fees.
+              We strive to offer the best possible rates without ever
+              compromising on quality.
             </p>
           </div>
         </div>
@@ -40,7 +39,7 @@ export default function RatesPage() {
                 </p>
                 <div className="mt-6">
                   <Button asChild size="lg">
-                    <Link href="/tours">Book a Shared Tour</Link>
+                    <Link href="/tours/shared-tours">Book a Shared Tour</Link>
                   </Button>
                 </div>
               </div>
@@ -52,13 +51,13 @@ export default function RatesPage() {
                 </h3>
                 <ul className="space-y-6 mb-6">
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Half Day (4~5h)</span>
+                    <span className="text-lg md:text-xl">Half Day (~5h)</span>
                     <span className="text-2xl md:text-4xl font-extrabold text-primary">
                       €600
                     </span>
                   </li>
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Full day (~8h)</span>
+                    <span className="text-lg md:text-xl">Full day (~9h)</span>
                     <span className="text-2xl md:text-4xl font-extrabold text-primary">
                       €900
                     </span>
@@ -72,7 +71,7 @@ export default function RatesPage() {
                   <li className="flex justify-between items-center">
                     <span className="text-lg md:text-xl">Bespoke Tour</span>
                     <span className="text-lg md:text-2xl font-semibold">
-                      Please ask
+                      Tailor-Made
                     </span>
                   </li>
                 </ul>
@@ -178,40 +177,7 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Shield className="h-12 w-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-4">Best Price Guaranteed</h2>
-            <p className="text-lg text-primary-foreground/90 leading-relaxed">
-              If, after you have made a reservation and prior to your arrival,
-              you find a lower rate, we will guarantee you that lower rate.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">
-              Why Our Rates Are the Best
-            </h2>
-            <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
-              <p className="leading-relaxed">
-                We have removed all the non essential features to keep the price
-                low without sacrifying quality. Our rates for tours and day
-                trips are very cheap and lower than those offered by most of our
-                competitors for regular tours!
-              </p>
-              <p className="leading-relaxed">
-                Booking directly through the web you don't pay any agency or
-                intermediaries fees.
-              </p>
-              <p className="leading-relaxed">
-                We don't have luxury limousines because they are really
-                unnecessary for a tour. However all our vehicles are able to
-                satisfy any requirements, being the latest models, the best in
-                technology, comfort and safety.
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold mb-4">Best Value for Money</h2>
           </div>
         </div>
       </section>

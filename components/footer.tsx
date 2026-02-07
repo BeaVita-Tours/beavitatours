@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
+import { Facebook, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
@@ -85,28 +86,16 @@ export function Footer() {
 
           <div>
             <h3 className="font-semibold mb-4">Reviews & Social</h3>
-            <ul className="space-y-2 text-sm mb-4">
-              <li>
-                <a
-                  href="https://www.getyourguide.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  GetYourGuide Reviews
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.tripadvisor.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Tripadvisor Reviews
-                </a>
-              </li>
-            </ul>
+            <div className="flex gap-2 flex-row items-center justify-start text-muted-foreground">
+              <Link href="https://www.facebook.com/profile.php?id=100054199344921">
+                <span className="sr-only">Facebook</span>
+                <Facebook />
+              </Link>
+              <Link href="/">
+                <span className="sr-only">Instagram</span>
+                <Instagram />
+              </Link>
+            </div>
           </div>
         </div>
 

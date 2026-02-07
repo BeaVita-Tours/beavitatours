@@ -13,9 +13,8 @@ export default function HikingTourPage() {
   return (
     <TourTemplate
       name="Active & Adventure"
-      title="Active & Adventure Tour"
+      title="Active & Adventure"
       subtitle="To really get away, try an activity and adventure holiday!s"
-      badge="UNESCO World Heritage Site"
       image="/mtb.webp"
       imageAlt="Dolomites Adventure Trails"
       ctaHeading="Ready to Embrace the Adventure?"

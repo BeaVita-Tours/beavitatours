@@ -11,8 +11,8 @@ import { TourFeature } from "@/components/tour-feature";
 export default function DolomitesTourPage() {
   return (
     <TourTemplate
-      name="Dolomites"
-      title="Dolomites"
+      name="The Dolomites"
+      title="The Dolomites"
       subtitle="Discover the Dolomites, the most beautiful mountains in the World"
       badge="UNESCO World Heritage Site"
       image="/tourdolomites.jpg"

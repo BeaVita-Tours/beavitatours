@@ -42,6 +42,7 @@ export function Navigation() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
+                // @ts-ignore just nextjs typed routes quirks
                 href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -49,7 +50,7 @@ export function Navigation() {
               </Link>
             ))}
             <Button asChild size="sm">
-              <Link href="/#book">Book Now</Link>
+              <Link href="/tours/shared-tours">Book Now</Link>
             </Button>
           </div>
 
@@ -70,6 +71,7 @@ export function Navigation() {
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
+                  // @ts-ignore just nextjs typed routes quirks
                   href={link.href}
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

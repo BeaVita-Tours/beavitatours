@@ -13,18 +13,18 @@ export default function ProseccoTourPage() {
   return (
     <TourTemplate
       name="Prosecco"
-      title="Prosecco Tour"
-      subtitle="Explore the rolling hills and finest wineries of the Prosecco region"
+      title="The Prosecco Hills"
+      subtitle="Explore the hills and finest wineries of the Prosecco region"
       badge="UNESCO World Heritage Site"
       image="/tourprosecco.jpg"
       imageAlt="Prosecco Vineyards"
-      ctaHeading="Ready to Experience Prosecco Country?"
-      ctaName="Prosecco"
+      ctaHeading="Ready to Experience The Prosecco Region?"
+      ctaName="Prosecco Hills"
     >
       <TourDescription>
         <p className="leading-relaxed">
           Just a 45 minute drive from Venice lies the region of Prosecco, UNESCO
-          World Heritage Site. The landscape is characterised by hills, forests,
+          World Heritage Site. The landscape is characterized by hills, forests,
           small villages and farmland. For centuries, this rough terrain has
           been shaped and adapted by man.
         </p>

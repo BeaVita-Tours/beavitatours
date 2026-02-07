@@ -13,8 +13,8 @@ export default function DolomitesProseccoTourPage() {
   return (
     <TourTemplate
       name="Dolomites and Prosecco"
-      title="Wine & Food Tour"
-      subtitle="Discover the Dolomites, the most beautiful mountains in the World. Explore the rolling hills and finest wineries of the Prosecco region"
+      title="Wine & Food"
+      subtitle="A journey through the finest wines and authentic flavors of the Veneto region."
       badge="Two UNESCO Sites in One Day"
       image="/tourwines.jpg"
       imageAlt="Dolomites and Prosecco"
