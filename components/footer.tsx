@@ -40,28 +40,44 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              {/* <li>
+              <li>
                 <Link
-                  href="/tours"
+                  href="/"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Our Tours
+                  Home
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/travel-agency"
+                  href="/rates"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Are you a Travel Agency?
+                  Rates
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <Link
                   href="/faq"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   FAQ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Contact
                 </Link>
               </li>
             </ul>

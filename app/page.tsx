@@ -1,9 +1,61 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TourCard } from "@/components/tour-card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Award, Users, DollarSign, MapPin } from "lucide-react";
+import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
 import tours from "@/lib/tours";
+
+const OTAS: Array<{
+  name: string;
+  href: string;
+  rating: number;
+  logoSrc: string;
+}> = [
+  {
+    name: "GetYourGuide",
+    href: "https://www.getyourguide.com/",
+    rating: 4.9,
+    logoSrc: "/ota/getyourguide.svg",
+  },
+  {
+    name: "Viator",
+    href: "https://www.viator.com/",
+    rating: 4.9,
+    logoSrc: "/ota/viator.svg",
+  },
+  {
+    name: "Klook",
+    href: "https://www.klook.com/",
+    rating: 4.9,
+    logoSrc: "/ota/klook.svg",
+  },
+  {
+    name: "Civitatis",
+    href: "https://www.civitatis.com/",
+    rating: 4.9,
+    logoSrc: "/ota/civitatis.svg",
+  },
+  {
+    name: "Musement",
+    href: "https://www.musement.com/",
+    rating: 4.9,
+    logoSrc: "/ota/musement.svg",
+  },
+  {
+    name: "Tripadvisor",
+    href: "https://www.tripadvisor.com/",
+    rating: 4.9,
+    logoSrc: "/ota/tripadvisor.svg",
+  },
+  {
+    name: "Booking",
+    href: "https://www.booking.com/",
+    rating: 4.9,
+    logoSrc: "/ota/booking.svg",
+  },
+];
+
 export default function HomePage() {
   return (
     <main>
@@ -29,7 +81,8 @@ export default function HomePage() {
             Discover the beauty around Venice
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
-            Dolomites, Prosecco hills, Wine & Food Tours, and more...
+            Dolomites, Hills of Prosecco, Cities of Art, Wine & Food, and
+            more...
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8">
@@ -41,7 +94,7 @@ export default function HomePage() {
               variant="outline"
               className="text-lg px-8 bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20"
             >
-              <Link href="#book">Book Now</Link>
+              <Link href="/tours/shared-tours">Book Now</Link>
             </Button>
           </div>
         </div>
@@ -54,7 +107,8 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tours</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
               Choose from our carefully curated selection of tours and day
-              trips, each designed to showcase the best of the Veneto region.
+              trips, each crafted to immerse you in the true essence of the
+              Veneto region.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,29 +120,10 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-              About Us
-            </h2>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              Long experience, service, customization, quality, and more...
-            </p>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              We take great care to ensure that our tours are the best value for
-              money in the business, and we know that outstanding value means
-              ensuring that all of the ingredients are right. We take care of
-              everything throughout the tour. All you have to do is show up and
-              enjoy.
-            </p>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
-              We employ only the best staff with the most extensive local
-              knowledge, so you can rely upon them to find the best places to
-              go, according to your needs and budget.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <Award className="h-12 w-12 text-primary mb-4" />
                 <h3 className="font-semibold mb-2">Best Quality</h3>
@@ -149,29 +184,31 @@ export default function HomePage() {
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             What Our Guests Say
           </h2>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a
-              href="https://www.getyourguide.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
-            >
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="font-medium">
-                GetYourGuide Reviews (nota: link ancora da fornire)
-              </span>
-            </a>
-            <a
-              href="https://www.tripadvisor.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
-            >
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="font-medium">
-                Tripadvisor Reviews (nota: link ancora da fornire)
-              </span>
-            </a>
+          <div className="mx-auto max-w-5xl">
+            <div className="flex flex-wrap gap-3 justify-center items-center">
+              {OTAS.map((ota) => (
+                <a
+                  key={ota.name}
+                  href={ota.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 bg-card rounded-xl hover:shadow-md transition-shadow"
+                  aria-label={`${ota.name} reviews`}
+                >
+                  <Image
+                    src={ota.logoSrc}
+                    alt={ota.name}
+                    width={120}
+                    height={24}
+                    className="h-6 w-auto"
+                  />
+                  <span className="text-sm font-medium text-muted-foreground flex flex-row items-center justify-center gap-1">
+                    {ota.rating}
+                    <Star className="size-4 fill-amber-400 text-amber-400" />
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
