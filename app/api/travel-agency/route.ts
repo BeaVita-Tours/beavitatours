@@ -16,16 +16,16 @@ function getClientIp(headers: Headers) {
 
 function buildLeadEmailText(data: z.infer<typeof travelAgencyLeadSchema>) {
   return [
-    "Qualcuno ha inviato una richiesta tramite il modulo per agenzie di viaggio sul sito BeaVitaTours.",
+    "Qualcuno ha inviato una richiesta tramite il modulo di contatto sul sito BeaVitaTours.",
     "",
     `Nome completo: ${data.fullName}`,
-    `Nome azienda: ${data.companyName}`,
-    `Partita IVA: ${data.vatNumber}`,
+    `Nome azienda: ${data.companyName ?? "(n/a)"}`,
+    `Partita IVA: ${data.vatNumber ?? "(n/a)"}`,
     `Telefono: ${data.phone}`,
     `E-mail: ${data.email}`,
     "",
-    "Indirizzo azienda:",
-    data.companyAddress,
+    "Messaggio:",
+    data.message,
   ].join("\n");
 }
 
@@ -119,9 +119,10 @@ export async function POST(request: Request) {
     );
   }
 
+  const subjectName = data.companyName ?? data.fullName;
   const email = {
     to: inbox,
-    subject: `Travel agency enquiry — ${data.companyName}`,
+    subject: `Contact form — ${subjectName}`,
     text: buildLeadEmailText(data),
   };
 

@@ -20,6 +20,7 @@ export default function CulturalTourPage() {
       title="Cultural"
       subtitle="Veneto enchants with its immense artistic and historical heritage"
       image="/gallaplacidia.webp"
+      badge="UNESCO World Heritage Site"
       imageAlt="Cultural Heritage in Veneto"
       carouselImages={carouselImages}
       ctaHeading="Ready to Explore Veneto's Cultural Heritage?"

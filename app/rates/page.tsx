@@ -12,7 +12,7 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
-              Best price guaranteed
+              Best value for money
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Rates</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -69,9 +69,9 @@ export default function RatesPage() {
                     </span>
                   </li>
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Bespoke Tour</span>
+                    <span className="text-lg md:text-xl">Tailor-made</span>
                     <span className="text-lg md:text-2xl font-semibold">
-                      Tailor-Made
+                      Price on Request
                     </span>
                   </li>
                 </ul>

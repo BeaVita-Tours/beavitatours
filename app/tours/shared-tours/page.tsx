@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SharedTourPage() {
   useEffect(() => {
@@ -55,12 +56,14 @@ export default function SharedTourPage() {
                 />
               </div>
               <div className="relative h-16 w-20">
-                <Image
-                  src="/kayak.png"
-                  alt="Kayak"
-                  fill
-                  className="object-contain"
-                />
+                <Link href="https://www.kayak.co.uk/Cortina-d-Ampezzo.22382.guide">
+                  <Image
+                    src="/kayak.png"
+                    alt="Kayak"
+                    fill
+                    className="object-contain"
+                  />
+                </Link>
               </div>
             </div>
           </div>

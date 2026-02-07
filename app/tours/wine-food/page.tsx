@@ -20,7 +20,7 @@ export default function DolomitesProseccoTourPage() {
       name="Dolomites and Prosecco"
       title="Wine & Food"
       subtitle="A journey through the finest wines and authentic flavors of the Veneto region."
-      badge="Two UNESCO Sites in One Day"
+      badge="UNESCO World Heritage Site"
       image="/tourwines.jpg"
       imageAlt="Dolomites and Prosecco"
       carouselImages={carouselImages}

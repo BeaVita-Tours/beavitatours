@@ -46,7 +46,7 @@ export function TravelAgencyForm() {
       vatNumber: "",
       phone: "",
       email: "",
-      companyAddress: "",
+      message: "",
       website: "",
     }),
     []
@@ -103,7 +103,7 @@ export function TravelAgencyForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Agency details</CardTitle>
+        <CardTitle className="text-xl">Contact details</CardTitle>
         <CardDescription>
           Fields marked with <MandatoryAsterisk /> are required.
         </CardDescription>
@@ -131,7 +131,7 @@ export function TravelAgencyForm() {
 
             <div className="grid gap-2">
               <label htmlFor="companyName" className="text-sm font-medium">
-                Company name <MandatoryAsterisk />
+                Company name
               </label>
               <input
                 id="companyName"
@@ -150,9 +150,7 @@ export function TravelAgencyForm() {
             <div className="grid gap-2 md:grid-cols-2 md:gap-4">
               <div className="grid gap-2">
                 <label htmlFor="vatNumber" className="text-sm font-medium">
-                  EU VAT number{" "}
-                  <span className="text-muted-foreground">(P. IVA)</span>{" "}
-                  <MandatoryAsterisk />
+                  EU VAT number <span className="text-muted-foreground">(P. IVA)</span>
                 </label>
                 <input
                   id="vatNumber"
@@ -206,20 +204,19 @@ export function TravelAgencyForm() {
             </div>
 
             <div className="grid gap-2">
-              <label htmlFor="companyAddress" className="text-sm font-medium">
-                Company address <MandatoryAsterisk />
+              <label htmlFor="message" className="text-sm font-medium">
+                Message <MandatoryAsterisk />
               </label>
               <textarea
-                id="companyAddress"
-                autoComplete="street-address"
+                id="message"
                 className={textareaClassName}
-                placeholder="Full mailing address (street, city, country)"
-                aria-invalid={!!form.formState.errors.companyAddress}
+                placeholder="Write your message here"
+                aria-invalid={!!form.formState.errors.message}
                 disabled={isSubmitting}
-                {...form.register("companyAddress")}
+                {...form.register("message")}
               />
               <p className="min-h-5 text-sm text-destructive">
-                {form.formState.errors.companyAddress?.message ?? "\u00A0"}
+                {form.formState.errors.message?.message ?? "\u00A0"}
               </p>
             </div>
 

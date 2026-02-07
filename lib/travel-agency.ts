@@ -65,16 +65,23 @@ function isValidEUVatNumber(vat: string): boolean {
 
 export const travelAgencyLeadSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
-  companyName: z.string().trim().min(2).max(120),
-  vatNumber: z
-    .string()
-    .transform(normalizeVatInput)
-    .refine(isValidEUVatNumber, {
-      message: "Invalid EU VAT number.",
-    }),
+  companyName: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z.string().trim().min(2).max(120).optional()
+  ),
+  vatNumber: z.preprocess(
+    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+    z
+      .string()
+      .transform(normalizeVatInput)
+      .refine(isValidEUVatNumber, {
+        message: "Invalid EU VAT number.",
+      })
+      .optional()
+  ),
   phone: z.string().trim().min(5).max(40),
   email: z.string().trim().email().max(254),
-  companyAddress: z.string().trim().min(5).max(500),
+  message: z.string().trim().min(5).max(500),
   website: z.string().trim().optional(),
 });
 

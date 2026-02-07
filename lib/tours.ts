@@ -7,7 +7,7 @@ import placeholder from "@/public/placeholder.jpg";
 import prosecco3 from "@/public/prosecco 3.jpg";
 import mtb from "@/public/imgs/adventure.jpeg";
 import gallaplacidia from "@/public/gallaplacidia.webp";
-import shared from "@/public/shared.jpg";
+import shared from "@/public/shared.png";
 
 export const tours = [
   {

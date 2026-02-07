@@ -9,37 +9,37 @@ import tours from "@/lib/tours";
 const OTAS: Array<{
   name: string;
   href: string;
-  rating: number;
+  rating: number | string;
   logoSrc: string;
 }> = [
   {
     name: "GetYourGuide",
     href: "https://www.getyourguide.com/",
-    rating: 4.9,
+    rating: 5.0,
     logoSrc: "/ota/getyourguide.svg",
   },
   {
     name: "Viator",
     href: "https://www.viator.com/",
-    rating: 4.9,
+    rating: 5.0,
     logoSrc: "/ota/viator.svg",
   },
   {
     name: "Klook",
     href: "https://www.klook.com/",
-    rating: 4.9,
+    rating: "NEW",
     logoSrc: "/ota/klook.svg",
   },
   {
     name: "Civitatis",
     href: "https://www.civitatis.com/",
-    rating: 4.9,
+    rating: "NEW",
     logoSrc: "/ota/civitatis.svg",
   },
   {
     name: "Musement",
     href: "https://www.musement.com/",
-    rating: 4.9,
+    rating: "NEW",
     logoSrc: "/ota/musement.svg",
   },
   {
@@ -201,7 +201,9 @@ export default function HomePage() {
                   />
                   <span className="text-sm font-medium text-muted-foreground flex flex-row items-center justify-center gap-1">
                     {ota.rating}
-                    <Star className="size-4 fill-amber-400 text-amber-400" />
+                    {typeof ota.rating === "number" && (
+                      <Star className="size-4 fill-amber-400 text-amber-400" />
+                    )}
                   </span>
                 </div>
               ))}

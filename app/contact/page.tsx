@@ -36,17 +36,7 @@ export default function TravelAgencyPage() {
             </div>
           </div>
 
-          {/* Travel Agency Section */}
           <div className="border-t pt-16">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Are you a Travel Agency?
-              </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                Send us your details and we'll get back to you.
-              </p>
-            </div>
-
             <div className="mt-10">
               <TravelAgencyForm />
             </div>
