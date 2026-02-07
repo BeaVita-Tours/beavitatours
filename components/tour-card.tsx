@@ -14,6 +14,7 @@ interface TourCardProps {
 export function TourCard({ title, href, image }: TourCardProps) {
   return (
     <Link
+      // @ts-ignore nextjs typed routes quirks
       href={href}
       aria-label={`View ${title} details`}
       className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
