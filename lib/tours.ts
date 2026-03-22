@@ -9,6 +9,40 @@ import mtb from "@/public/imgs/adventure.jpeg";
 import gallaplacidia from "@/public/gallaplacidia.webp";
 import shared from "@/public/shared.png";
 
+export const getTours = (t: (key: string) => string) => [
+  {
+    title: t("dolomites"),
+    href: "/tours/dolomites",
+    image: "/imgs/dolomites/dolomitesmain.jpeg",
+  },
+  {
+    title: t("prosecco"),
+    href: "/tours/prosecco",
+    image: tourProsecco,
+  },
+  {
+    title: t("wineFood"),
+    href: "/tours/wine-food",
+    image: tourWines,
+  },
+  {
+    title: t("activeAdventure"),
+    href: "/tours/active-adventure",
+    image: mtb,
+  },
+  {
+    title: t("cultural"),
+    href: "/tours/cultural",
+    image: gallaplacidia,
+  },
+  {
+    title: t("sharedTours"),
+    href: "/tours/shared-tours",
+    image: shared,
+  },
+];
+
+// Keep the old export for backwards compatibility (hardcoded English)
 export const tours = [
   {
     title: "The Dolomites",

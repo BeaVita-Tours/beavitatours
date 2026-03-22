@@ -1,14 +1,19 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { TravelAgencyForm } from "@/components/travel-agency-form";
 import { Mail } from "lucide-react";
 
 export default function TravelAgencyPage() {
+  const t = useTranslations("contact");
+
   return (
     <main className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           {/* Contact Info for Normal Clients */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{t("title")}</h1>
             <div className="flex flex-col gap-4 items-center">
               <a
                 href="mailto:info@beavitatours.com"

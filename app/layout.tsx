@@ -2,8 +2,6 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
 import "./globals.css";
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -23,14 +21,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`font-sans antialiased`}>
-        <Navigation />
-        {children}
-        <Footer />
-        <Analytics />
-      </body>
-    </html>
-  );
+  return children;
 }

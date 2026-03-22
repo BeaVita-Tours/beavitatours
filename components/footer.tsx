@@ -1,9 +1,16 @@
-import Link from "next/link"
+"use client";
+
+import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 import { Facebook, Instagram } from "lucide-react";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export function Footer() {
+  const t = useTranslations("footer");
+  const tNav = useTranslations("navigation");
+
   return (
     <footer className="border-t border-border bg-muted/30">
       <div className="container mx-auto px-4 py-12">
@@ -26,27 +33,27 @@ export function Footer() {
               </Link>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              BEA VITA TOURS
+              {t("companyName")}
               <br />
-              Agenzia di Viaggi e Turismo
+              {t("companyType")}
               <br />
-              Autorizzazione Provincia di Treviso
+              {t("authorization")}
               <br />
-              protocollo n. 6297 del 08/04/2025
+              {t("protocol")}
               <br />
-              VAT No 04897010262
+              {t("vat")}
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Quick Links</h3>
+            <h3 className="font-semibold mb-4">{t("quickLinks")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Home
+                  {tNav("home")}
                 </Link>
               </li>
               <li>
@@ -54,7 +61,7 @@ export function Footer() {
                   href="/rates"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Rates
+                  {tNav("rates")}
                 </Link>
               </li>
               <li>
@@ -62,7 +69,7 @@ export function Footer() {
                   href="/faq"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  FAQ
+                  {tNav("faq")}
                 </Link>
               </li>
               <li>
@@ -70,7 +77,7 @@ export function Footer() {
                   href="/about"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  About Us
+                  {tNav("about")}
                 </Link>
               </li>
               <li>
@@ -78,15 +85,15 @@ export function Footer() {
                   href="/contact"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Contact
+                  {tNav("contact")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Reviews & Social</h3>
-            <div className="flex gap-2 flex-row items-center justify-start text-muted-foreground">
+            <h3 className="font-semibold mb-4">{t("reviewsSocial")}</h3>
+            <div className="flex gap-4 mb-4 flex-row items-center justify-start text-muted-foreground">
               <Link href="https://www.facebook.com/profile.php?id=100054199344921">
                 <span className="sr-only">Facebook</span>
                 <Facebook />
@@ -96,12 +103,15 @@ export function Footer() {
                 <Instagram />
               </Link>
             </div>
+            <div className="mt-4">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} BeaVitaTours. All rights reserved.
+            &copy; {new Date().getFullYear()} BeaVitaTours. {t("copyright")}
           </p>
         </div>
       </div>

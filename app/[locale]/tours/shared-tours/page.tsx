@@ -3,8 +3,11 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function SharedTourPage() {
+  const t = useTranslations("tours.data.sharedTours");
+
   useEffect(() => {
     const src = "https://widgets.regiondo.net/catalog/v1/catalog-widget.min.js";
     if (!document.querySelector(`script[src="${src}"]`)) {
@@ -30,7 +33,7 @@ export default function SharedTourPage() {
           <div className="absolute inset-0 z-0">
             <Image
               src="/tourwines.jpg"
-              alt="Dolomites and Prosecco"
+              alt={t("title")}
               fill
               className="object-cover object-[50%_70%]"
               priority
@@ -39,12 +42,10 @@ export default function SharedTourPage() {
           </div>
           <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center gap-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Shared Tour
+              {t("title")}
             </h1>
             <p className="text-xl text-white/90 max-w-2xl">
-              Book immediately one of our shared tour and join a magic
-              adventure! Our experiences are top rated on Viator, Get Your
-              Guide, Tripadvisor
+              {t("description")}
             </p>
             <div className="flex flex-row items-center gap-2 mt-4">
               <div className="relative h-16 w-40">

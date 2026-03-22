@@ -4,18 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("navigation");
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/rates", label: "Rates" },
-    { href: "/faq", label: "FAQ" },
-    { href: "/about", label: "About Us" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: t("home") },
+    { href: "/rates", label: t("rates") },
+    { href: "/faq", label: t("faq") },
+    { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
   ];
 
   return (
@@ -49,8 +52,9 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
+            <LanguageSwitcher align="end" />
             <Button asChild size="sm">
-              <Link href="/tours/shared-tours">Book Now</Link>
+              <Link href="/tours/shared-tours">{t("bookNow")}</Link>
             </Button>
           </div>
 
@@ -79,9 +83,12 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
+              <div className="flex items-center justify-between">
+                <LanguageSwitcher align="start" />
+              </div>
               <Button asChild size="sm" className="w-full">
                 <Link href="/#book" onClick={() => setIsOpen(false)}>
-                  Book Now
+                  {t("bookNow")}
                 </Link>
               </Button>
             </div>

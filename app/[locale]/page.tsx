@@ -1,10 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { TourCard } from "@/components/tour-card";
 import { Badge } from "@/components/ui/badge";
 import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
-import tours from "@/lib/tours";
+import { getTours } from "@/lib/tours";
 
 const OTAS: Array<{
   name: string;
@@ -57,6 +60,10 @@ const OTAS: Array<{
 ];
 
 export default function HomePage() {
+  const t = useTranslations("home");
+  const tTours = useTranslations("toursList");
+  const tours = getTours(tTours);
+
   return (
     <main>
       {/* Hero Section */}
@@ -75,18 +82,17 @@ export default function HomePage() {
         </div>
         <div className="container mx-auto px-4 z-10 text-center">
           <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0 text-sm px-4 py-1">
-            Tours and day trips from Venice
+            {t("badge")}
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Discover the beauty around Venice
+            {t("heroTitle")}
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
-            Dolomites, Hills of Prosecco, Cities of Art, Wine & Food, and
-            more...
+            {t("heroSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8">
-              <Link href="#tours">Explore Tours</Link>
+              <Link href="#tours">{t("exploreTours")}</Link>
             </Button>
             <Button
               asChild
@@ -94,7 +100,7 @@ export default function HomePage() {
               variant="outline"
               className="text-lg px-8 bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20"
             >
-              <Link href="/tours/shared-tours">Book Now</Link>
+              <Link href="/tours/shared-tours">{t("bookNow")}</Link>
             </Button>
           </div>
         </div>
@@ -104,11 +110,9 @@ export default function HomePage() {
       <section id="tours" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tours</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("toursTitle")}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Choose from our carefully curated selection of tours and day
-              trips, each crafted to immerse you in the true essence of the
-              Veneto region.
+              {t("toursDescription")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -126,30 +130,30 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <Award className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Best Quality</h3>
+                <h3 className="font-semibold mb-2">{t("features.bestQuality")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Premium service and experiences
+                  {t("features.bestQualityDesc")}
                 </p>
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <DollarSign className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Best Value</h3>
+                <h3 className="font-semibold mb-2">{t("features.bestValue")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Direct booking, no intermediaries
+                  {t("features.bestValueDesc")}
                 </p>
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <Users className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Expert Guides</h3>
+                <h3 className="font-semibold mb-2">{t("features.expertGuides")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Extensive local knowledge
+                  {t("features.expertGuidesDesc")}
                 </p>
               </div>
               <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl">
                 <MapPin className="h-12 w-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Customization</h3>
+                <h3 className="font-semibold mb-2">{t("features.customization")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Tailored to your interests
+                  {t("features.customizationDesc")}
                 </p>
               </div>
             </div>
@@ -161,11 +165,10 @@ export default function HomePage() {
       <section id="book" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to book?
+            {t("ctaTitle")}
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Start your adventure near Venice today. Contact us to reserve your
-            private tour.
+            {t("ctaDescription")}
           </p>
           <Button
             asChild
@@ -173,7 +176,7 @@ export default function HomePage() {
             variant="secondary"
             className="text-lg px-8"
           >
-            <Link href="/rates">View Rates & Book</Link>
+            <Link href="/rates">{t("viewRatesBook")}</Link>
           </Button>
         </div>
       </section>
@@ -182,7 +185,7 @@ export default function HomePage() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            What Our Guests Say
+            {t("reviewsTitle")}
           </h2>
           <div className="mx-auto max-w-5xl">
             <div className="flex flex-wrap gap-3 justify-center items-center">

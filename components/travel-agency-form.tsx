@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import {
   type TravelAgencyLeadInput,
   travelAgencyLeadSchema,
@@ -35,6 +36,7 @@ export function MandatoryAsterisk() {
 }
 
 export function TravelAgencyForm() {
+  const t = useTranslations("contact.form");
   const [submitState, setSubmitState] = useState<SubmitState>({
     status: "idle",
   });
@@ -78,22 +80,20 @@ export function TravelAgencyForm() {
       if (!response.ok) {
         setSubmitState({
           status: "error",
-          message:
-            data?.message ??
-            "Something went wrong while sending your request. Please try again.",
+          message: data?.message ?? t("errorMessage"),
         });
         return;
       }
 
       setSubmitState({
         status: "success",
-        message: data?.message ?? "Thanks — we received your details.",
+        message: data?.message ?? t("successMessage"),
       });
       form.reset(defaultValues);
     } catch {
       setSubmitState({
         status: "error",
-        message: "Network error. Please try again.",
+        message: t("networkError"),
       });
     }
   }
@@ -103,9 +103,9 @@ export function TravelAgencyForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Contact details</CardTitle>
+        <CardTitle className="text-xl">{t("title")}</CardTitle>
         <CardDescription>
-          Fields marked with <MandatoryAsterisk /> are required.
+          {t("requiredNote")}
         </CardDescription>
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
@@ -113,13 +113,13 @@ export function TravelAgencyForm() {
           <div className="grid gap-5">
             <div className="grid gap-2">
               <label htmlFor="fullName" className="text-sm font-medium">
-                Full name <MandatoryAsterisk />
+                {t("fullName")} <MandatoryAsterisk />
               </label>
               <input
                 id="fullName"
                 autoComplete="name"
                 className={inputClassName}
-                placeholder="Your full name"
+                placeholder={t("fullNamePlaceholder")}
                 aria-invalid={!!form.formState.errors.fullName}
                 disabled={isSubmitting}
                 {...form.register("fullName")}
@@ -131,13 +131,13 @@ export function TravelAgencyForm() {
 
             <div className="grid gap-2">
               <label htmlFor="companyName" className="text-sm font-medium">
-                Company name
+                {t("companyName")}
               </label>
               <input
                 id="companyName"
                 autoComplete="organization"
                 className={inputClassName}
-                placeholder="Company / agency name"
+                placeholder={t("companyNamePlaceholder")}
                 aria-invalid={!!form.formState.errors.companyName}
                 disabled={isSubmitting}
                 {...form.register("companyName")}
@@ -150,12 +150,12 @@ export function TravelAgencyForm() {
             <div className="grid gap-2 md:grid-cols-2 md:gap-4">
               <div className="grid gap-2">
                 <label htmlFor="vatNumber" className="text-sm font-medium">
-                  EU VAT number <span className="text-muted-foreground">(P. IVA)</span>
+                  {t("vatNumber")} <span className="text-muted-foreground">{t("vatNumberNote")}</span>
                 </label>
                 <input
                   id="vatNumber"
                   className={inputClassName}
-                  placeholder="VAT number"
+                  placeholder={t("vatNumberPlaceholder")}
                   aria-invalid={!!form.formState.errors.vatNumber}
                   disabled={isSubmitting}
                   {...form.register("vatNumber")}
@@ -167,13 +167,13 @@ export function TravelAgencyForm() {
 
               <div className="grid gap-2">
                 <label htmlFor="phone" className="text-sm font-medium">
-                  Phone number <MandatoryAsterisk />
+                  {t("phone")} <MandatoryAsterisk />
                 </label>
                 <input
                   id="phone"
                   autoComplete="tel"
                   className={inputClassName}
-                  placeholder="Phone number"
+                  placeholder={t("phonePlaceholder")}
                   aria-invalid={!!form.formState.errors.phone}
                   disabled={isSubmitting}
                   {...form.register("phone")}
@@ -186,14 +186,14 @@ export function TravelAgencyForm() {
 
             <div className="grid gap-2">
               <label htmlFor="email" className="text-sm font-medium">
-                E-mail <MandatoryAsterisk />
+                {t("email")} <MandatoryAsterisk />
               </label>
               <input
                 id="email"
                 type="email"
                 autoComplete="email"
                 className={inputClassName}
-                placeholder="name@company.com"
+                placeholder={t("emailPlaceholder")}
                 aria-invalid={!!form.formState.errors.email}
                 disabled={isSubmitting}
                 {...form.register("email")}
@@ -205,12 +205,12 @@ export function TravelAgencyForm() {
 
             <div className="grid gap-2">
               <label htmlFor="message" className="text-sm font-medium">
-                Message <MandatoryAsterisk />
+                {t("message")} <MandatoryAsterisk />
               </label>
               <textarea
                 id="message"
                 className={textareaClassName}
-                placeholder="Write your message here"
+                placeholder={t("messagePlaceholder")}
                 aria-invalid={!!form.formState.errors.message}
                 disabled={isSubmitting}
                 {...form.register("message")}
@@ -242,7 +242,7 @@ export function TravelAgencyForm() {
         </CardContent>
         <CardFooter className="border-t">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending…" : "Send"}
+            {isSubmitting ? t("submitting") : t("submit")}
           </Button>
         </CardFooter>
       </form>

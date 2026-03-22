@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -12,11 +14,13 @@ interface TourCardProps {
 }
 
 export function TourCard({ title, href, image }: TourCardProps) {
+  const t = useTranslations("tours");
+
   return (
     <Link
       // @ts-ignore nextjs typed routes quirks
       href={href}
-      aria-label={`View ${title} details`}
+      aria-label={`${t("viewDetails")} ${title}`}
       className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <Card className="relative mt-0 block aspect-4/3 overflow-hidden p-0 transition-shadow duration-300 ease-out hover:shadow-md cursor-default">
@@ -45,7 +49,7 @@ export function TourCard({ title, href, image }: TourCardProps) {
                 <ArrowRight />
               </span>
             </Button>
-            <span className="sr-only">View details</span>
+            <span className="sr-only">{t("viewDetails")}</span>
           </div>
         </div>
       </Card>

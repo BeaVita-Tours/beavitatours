@@ -1,10 +1,15 @@
+"use client"
+
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Check, X, Clock, Shield } from "lucide-react"
 
 export default function RatesPage() {
+  const t = useTranslations("rates")
+  
   return (
     <main>
       {/* Hero Section */}
@@ -12,12 +17,11 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
-              Best value for money
+              {t("badge")}
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Rates</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t("title")}</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We strive to offer the best possible rates without ever
-              compromising on quality.
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -31,15 +35,14 @@ export default function RatesPage() {
               {/* Left - Shared Tour CTA */}
               <div className="md:w-1/2 px-8 py-12 text-center md:text-left bg-white/0">
                 <h3 className="text-2xl md:text-3xl font-semibold mb-4">
-                  See our <span className="uppercase">LOWEST WEB RATES</span>
+                  {t("sharedTourTitle")}
                 </h3>
                 <p className="text-lg text-muted-foreground mb-8">
-                  and book immediately a{" "}
-                  <strong className="uppercase">SHARED TOUR</strong> HERE
+                  {t("sharedTourDesc")}
                 </p>
                 <div className="mt-6">
                   <Button asChild size="lg">
-                    <Link href="/tours/shared-tours">Book a Shared Tour</Link>
+                    <Link href="/tours/shared-tours">{t("bookSharedTour")}</Link>
                   </Button>
                 </div>
               </div>
@@ -47,41 +50,37 @@ export default function RatesPage() {
               {/* Right - Private Tour Rates (emphasized) */}
               <div className="md:w-1/2 px-8 py-12 bg-primary/5">
                 <h3 className="text-2xl md:text-3xl font-semibold mb-6">
-                  PRIVATE TOUR RATES
+                  {t("privateTourTitle")}
                 </h3>
                 <ul className="space-y-6 mb-6">
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Half Day (~5h)</span>
+                    <span className="text-lg md:text-xl">{t("halfDay")}</span>
                     <span className="text-2xl md:text-4xl font-extrabold text-primary">
                       €600
                     </span>
                   </li>
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Full day (~9h)</span>
+                    <span className="text-lg md:text-xl">{t("fullDay")}</span>
                     <span className="text-2xl md:text-4xl font-extrabold text-primary">
                       €900
                     </span>
                   </li>
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Multi-day</span>
+                    <span className="text-lg md:text-xl">{t("multiDay")}</span>
                     <span className="text-lg md:text-2xl font-semibold">
-                      Price on Request
+                      {t("priceOnRequest")}
                     </span>
                   </li>
                   <li className="flex justify-between items-center">
-                    <span className="text-lg md:text-xl">Tailor-made</span>
+                    <span className="text-lg md:text-xl">{t("tailorMade")}</span>
                     <span className="text-lg md:text-2xl font-semibold">
-                      Price on Request
+                      {t("priceOnRequest")}
                     </span>
                   </li>
                 </ul>
 
                 <p className="text-sm text-muted-foreground">
-                  Notes: private tour rates include the development of the
-                  itinerary, the transport with comfort car/van, a
-                  highly-skilled and fluent-english tour guide always with you
-                  during the journey. Any extra (entrance fees, tastings, ecc.)
-                  must be paid by the Customer directly to the provider.
+                  {t("privateTourNotes")}
                 </p>
               </div>
             </div>
@@ -98,7 +97,7 @@ export default function RatesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Check className="h-5 w-5 text-primary" />
-                    What's included
+                    {t("whatsIncludedTitle")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -106,25 +105,25 @@ export default function RatesPage() {
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Professional English speaking driver-guide
+                        {t("whatsIncludedItem1")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Travel in a comfortable air conditioned van
+                        {t("whatsIncludedItem2")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Professionally planned itinerary
+                        {t("whatsIncludedItem3")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Taxes, VAT and highway tolls
+                        {t("whatsIncludedItem4")}
                       </span>
                     </li>
                   </ul>
@@ -135,7 +134,7 @@ export default function RatesPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <X className="h-5 w-5 text-muted-foreground" />
-                    Excluded
+                    {t("excludedTitle")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -143,25 +142,25 @@ export default function RatesPage() {
                     <li className="flex items-start gap-2">
                       <X className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Tips and gratuities
+                        {t("excludedItem1")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <X className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Entrance fees to museums and attractions
+                        {t("excludedItem2")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <X className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Wine tastings, meals and beverages
+                        {t("excludedItem3")}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <X className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                       <span className="text-muted-foreground">
-                        Overnight stay (2-day tours)
+                        {t("excludedItem4")}
                       </span>
                     </li>
                   </ul>
@@ -177,7 +176,7 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Shield className="h-12 w-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-4">Best Value for Money</h2>
+            <h2 className="text-2xl font-bold mb-4">{t("bestValueTitle")}</h2>
           </div>
         </div>
       </section>

@@ -173,18 +173,22 @@ export function TourDescription({ children }: { children: React.ReactNode }) {
   );
 }
 
+import { useTranslations } from "next-intl";
+
 export function TourFeatures({
-  title = "Tour Highlights",
+  title,
   children,
 }: {
   title?: string;
   children: React.ReactNode;
 }) {
+  const t = useTranslations("tours");
+  
   return (
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">{title}</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center">{title ?? t("highlights")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {children}
           </div>
@@ -196,8 +200,12 @@ export function TourFeatures({
 
 export function TourCTA() {
   const { ctaHeading, ctaName, startingFrom } = useTourTemplateContext();
+  const tHome = useTranslations("home");
+  const tCommon = useTranslations("common");
+  const tTours = useTranslations("tours");
+  
   const startingFromText = startingFrom
-    ? ` Starting from ${startingFrom} per group.`
+    ? ` ${tTours("startingFrom", { price: startingFrom })}`
     : "";
 
   return (
@@ -205,12 +213,12 @@ export function TourCTA() {
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-4">{ctaHeading}</h2>
         <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-          {`Book your ${ctaName} tour today.`}
+          {tTours("bookYourTour", { tourName: ctaName })}
           {startingFromText}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild size="lg" variant="secondary">
-            <Link href="/rates">View Rates & Book</Link>
+            <Link href="/rates">{tHome("viewRatesBook")}</Link>
           </Button>
           <Button
             asChild
@@ -218,7 +226,7 @@ export function TourCTA() {
             variant="outline"
             className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
           >
-            <Link href="/">Back</Link>
+            <Link href="/">{tCommon("back")}</Link>
           </Button>
         </div>
       </div>
