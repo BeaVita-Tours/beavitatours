@@ -94,11 +94,11 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">{t("reviewsSocial")}</h3>
             <div className="flex gap-4 mb-4 flex-row items-center justify-start text-muted-foreground">
-              <Link href="https://www.facebook.com/profile.php?id=100054199344921">
+              <Link href="https://www.facebook.com/people/Bea-Vita-Tours/61575406170256/">
                 <span className="sr-only">Facebook</span>
                 <Facebook />
               </Link>
-              <Link href="/">
+              <Link href="https://www.instagram.com/beavitatours">
                 <span className="sr-only">Instagram</span>
                 <Instagram />
               </Link>
