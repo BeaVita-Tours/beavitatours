@@ -5,6 +5,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { locales } from "@/i18n";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { MetaPixel } from "@/components/meta-pixel";
+import { GoogleTagManager, GoogleTagManagerNoscript } from "@/components/google-tag-manager";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -23,12 +25,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`font-sans antialiased`}>
+        <GoogleTagManagerNoscript />
         <NextIntlClientProvider messages={messages}>
           <Navigation />
           {children}
           <Footer />
         </NextIntlClientProvider>
         <Analytics />
+        <MetaPixel />
+        <GoogleTagManager />
       </body>
     </html>
   );
