@@ -7,6 +7,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { MetaPixel } from "@/components/meta-pixel";
 import { GoogleTagManager, GoogleTagManagerNoscript } from "@/components/google-tag-manager";
+import { Umami } from "@/components/umami";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -34,6 +35,7 @@ export default async function LocaleLayout({
         <Analytics />
         <MetaPixel />
         <GoogleTagManager />
+        <Umami />
       </body>
     </html>
   );
