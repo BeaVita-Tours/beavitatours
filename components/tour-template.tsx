@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +11,7 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { Clock, MapPin, Mountain, Users, type LucideIcon } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 type ExtraDetail = {
   label: string;

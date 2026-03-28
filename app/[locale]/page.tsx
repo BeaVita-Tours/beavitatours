@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { TourCard } from "@/components/tour-card";
 import { Badge } from "@/components/ui/badge";
 import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
 import { getTours } from "@/lib/tours";
+import { Link } from "@/i18n/navigation";
 
 const OTAS: Array<{
   name: string;

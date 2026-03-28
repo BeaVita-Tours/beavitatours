@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TourCard } from "@/components/tour-card";
 import tours from "@/lib/tours";
+import { Link } from "@/i18n/navigation";
 
 export default function ToursPage() {
   return (

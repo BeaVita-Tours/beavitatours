@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { Link } from "@/i18n/navigation";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
 export function Navigation() {
@@ -45,7 +45,6 @@ export function Navigation() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                // @ts-ignore just nextjs typed routes quirks
                 href={link.href}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
@@ -75,7 +74,6 @@ export function Navigation() {
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
-                  // @ts-ignore just nextjs typed routes quirks
                   href={link.href}
                   onClick={() => setIsOpen(false)}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

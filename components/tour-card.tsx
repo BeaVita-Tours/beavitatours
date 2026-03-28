@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
@@ -6,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 
 interface TourCardProps {
   title: string;
@@ -18,7 +18,6 @@ export function TourCard({ title, href, image }: TourCardProps) {
 
   return (
     <Link
-      // @ts-ignore nextjs typed routes quirks
       href={href}
       aria-label={`${t("viewDetails")} ${title}`}
       className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
