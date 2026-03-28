@@ -5,11 +5,14 @@ import { useTranslations } from "next-intl";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 import { Facebook, Instagram } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("navigation");
+  const { openSettings } = useCookieConsent();
 
   return (
     <footer className="border-t border-border bg-muted/30">
@@ -87,6 +90,25 @@ export function Footer() {
                 >
                   {tNav("contact")}
                 </Link>
+              </li>
+              <li>
+                <Button
+                  asChild
+                  variant="link"
+                  className="h-auto p-0 font-normal text-muted-foreground hover:text-foreground"
+                >
+                  <Link href="/privacy">{t("privacyPolicy")}</Link>
+                </Button>
+              </li>
+              <li>
+                <Button
+                  type="button"
+                  variant="link"
+                  onClick={openSettings}
+                  className="h-auto p-0 font-normal text-muted-foreground hover:text-foreground"
+                >
+                  {t("cookieSettings")}
+                </Button>
               </li>
             </ul>
           </div>

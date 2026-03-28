@@ -16,7 +16,28 @@
     "vat": "VAT No 04897010262",
     "quickLinks": "Quick Links",
     "reviewsSocial": "Reviews & Social",
-    "copyright": "All rights reserved."
+    "copyright": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "cookieSettings": "Cookie Settings"
+  },
+  "cookieConsent": {
+    "title": "Cookie settings",
+    "description": "We use strictly necessary cookies and privacy-friendly Umami analytics. Optional analytics and marketing tools stay off until you choose.",
+    "privacyPolicy": "Privacy Policy",
+    "learnMore": "You can change these choices any time from Cookie settings in the footer.",
+    "acceptAll": "Accept all",
+    "rejectAll": "Reject all",
+    "managePreferences": "Manage preferences",
+    "settingsTitle": "Cookie preferences",
+    "settingsDescription": "Choose which optional categories may run. Necessary cookies remain active because they are required for the site to function.",
+    "savePreferences": "Save preferences",
+    "necessary": "Necessary",
+    "alwaysActive": "Always active",
+    "necessaryDescription": "Required for basic site functionality, security, and your language selection.",
+    "analytics": "Analytics",
+    "analyticsDescription": "Helps us understand how visitors use the site. This category only loads after you consent.",
+    "marketing": "Marketing",
+    "marketingDescription": "Used to measure advertising performance and support remarketing. This category only loads after you consent."
   },
   "home": {
     "badge": "Tours and day trips from Venice",

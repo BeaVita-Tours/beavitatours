@@ -16,7 +16,28 @@
     "vat": "VAT番号 04897010262",
     "quickLinks": "クイックリンク",
     "reviewsSocial": "レビュー＆ソーシャル",
-    "copyright": "全著作権所有。"
+    "copyright": "全著作権所有。",
+    "privacyPolicy": "プライバシーポリシー",
+    "cookieSettings": "Cookie設定"
+  },
+  "cookieConsent": {
+    "title": "Cookie設定",
+    "description": "当サイトでは、必要不可欠なCookieと、プライバシーに配慮したUmami分析のみを使用しています。任意の分析・マーケティングツールは、お客様が選択するまで無効のままです。",
+    "privacyPolicy": "プライバシーポリシー",
+    "learnMore": "これらの設定は、フッターのCookie設定からいつでも変更できます。",
+    "acceptAll": "すべて承認",
+    "rejectAll": "すべて拒否",
+    "managePreferences": "設定を管理",
+    "settingsTitle": "Cookieの設定",
+    "settingsDescription": "利用を許可する任意カテゴリを選択してください。必要なCookieは、サイトの動作に必須のため常に有効です。",
+    "savePreferences": "設定を保存",
+    "necessary": "必要",
+    "alwaysActive": "常に有効",
+    "necessaryDescription": "基本機能、セキュリティ、言語選択に必要です。",
+    "analytics": "分析",
+    "analyticsDescription": "訪問者のサイト利用状況の把握に役立ちます。このカテゴリは同意後にのみ読み込まれます。",
+    "marketing": "マーケティング",
+    "marketingDescription": "広告効果の測定やリマーケティングに使用されます。このカテゴリは同意後にのみ読み込まれます。"
   },
   "home": {
     "badge": "ヴェネツィア発ツアーと日帰り旅行",

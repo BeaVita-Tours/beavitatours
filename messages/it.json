@@ -16,7 +16,28 @@
     "vat": "P.IVA 04897010262",
     "quickLinks": "Link Rapidi",
     "reviewsSocial": "Recensioni & Social",
-    "copyright": "Tutti i diritti riservati."
+    "copyright": "Tutti i diritti riservati.",
+    "privacyPolicy": "Informativa sulla privacy",
+    "cookieSettings": "Impostazioni cookie"
+  },
+  "cookieConsent": {
+    "title": "Impostazioni cookie",
+    "description": "Usiamo solo cookie strettamente necessari e le analisi di Umami, configurate in modo rispettoso della privacy. Gli strumenti opzionali di analisi e marketing restano spenti finché non li scegli.",
+    "privacyPolicy": "Informativa sulla privacy",
+    "learnMore": "Puoi modificare queste scelte in qualsiasi momento dalle Impostazioni cookie nel footer.",
+    "acceptAll": "Accetta tutto",
+    "rejectAll": "Rifiuta tutto",
+    "managePreferences": "Gestisci preferenze",
+    "settingsTitle": "Preferenze cookie",
+    "settingsDescription": "Scegli quali categorie opzionali possono essere attive. I cookie necessari restano sempre attivi perché servono al funzionamento del sito.",
+    "savePreferences": "Salva preferenze",
+    "necessary": "Necessari",
+    "alwaysActive": "Sempre attivi",
+    "necessaryDescription": "Richiesti per le funzioni di base del sito, la sicurezza e la selezione della lingua.",
+    "analytics": "Analisi",
+    "analyticsDescription": "Ci aiutano a capire come i visitatori usano il sito. Questa categoria si carica solo dopo il tuo consenso.",
+    "marketing": "Marketing",
+    "marketingDescription": "Usata per misurare le performance pubblicitarie e supportare il remarketing. Questa categoria si carica solo dopo il tuo consenso."
   },
   "home": {
     "badge": "Tour e gite giornaliere da Venezia",

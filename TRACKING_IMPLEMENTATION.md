@@ -1,128 +1,48 @@
-# Meta Pixel & Google Tag Manager Implementation
+# Consent-based tracking implementation
 
-## Overview
-Both Meta Pixel (ID: `1116117860659984`) and Google Tag Manager (ID: `GTM-N5H2N2VZ`) have been successfully integrated into your Next.js application using best practices.
+This project now uses a GDPR/ePrivacy-first consent flow for all non-essential tracking.
 
-## Implementation Details
+## Current behavior
 
-### Meta Pixel: `components/meta-pixel.tsx`
-- **Type**: Client-side component (`"use client"`)
-- **Uses**: Next.js `Script` component with `strategy="afterInteractive"` for optimal loading
-- **Auto-tracking**: Automatically tracks PageView events on route changes using Next.js navigation hooks
+- **Umami Analytics** loads on every page and is treated as privacy-friendly, cookieless analytics in the current configuration.
+- **Meta Pixel** only loads after explicit marketing consent.
+- **Google Tag Manager** only loads after explicit analytics or marketing consent.
+- **No tracking scripts fire before consent** other than Umami and strictly necessary site functionality.
+- **No GTM noscript iframe is rendered before consent.**
 
-### Google Tag Manager: `components/google-tag-manager.tsx`
-- **Type**: Server-safe component (no "use client" needed for GTM)
-- **Uses**: Next.js `Script` component with `strategy="afterInteractive"`
-- **Components**: 
-  - `GoogleTagManager` - Main GTM script for head
-  - `GoogleTagManagerNoscript` - Fallback iframe for body (placed immediately after `<body>` tag)
+## Key files
 
-### Key Features
-✅ Initial PageView tracked on first load (Meta Pixel)  
-✅ Automatic PageView tracking on client-side navigation (Meta Pixel)  
-✅ GTM dataLayer initialized and ready for custom events  
-✅ Uses `next/script` for optimized script loading  
-✅ Includes noscript fallbacks for users with JavaScript disabled  
-✅ TypeScript support with proper type declarations  
+- `components/cookie-consent-provider.tsx` — consent state, persistence, and cleanup.
+- `components/cookie-consent-banner.tsx` — first-visit banner.
+- `components/cookie-settings-dialog.tsx` — editable preferences dialog.
+- `components/tracking-scripts.tsx` — conditional mounting of Meta Pixel and GTM.
+- `components/meta-pixel.tsx` — marketing script loader.
+- `components/google-tag-manager.tsx` — GTM loader with consent metadata.
+- `lib/cookie-consent.ts` — consent serialization, parsing, and cleanup helpers.
+- `app/[locale]/privacy/page.tsx` — multilingual privacy policy page.
 
-### Integration Point
-Both tracking components are imported and rendered in:
-- **File**: `app/[locale]/layout.tsx`
-- **Location**: 
-  - `<GoogleTagManagerNoscript />` - First element inside `<body>` tag (as per Google requirements)
-  - `<MetaPixel />` - Before closing `</body>` tag
-  - `<GoogleTagManager />` - Before closing `</body>` tag
+## Consent storage
 
-This ensures both tracking systems load on every page across all locales (en, it, zh, ja).
+Consent is stored in a first-party cookie named `beavita_cookie_consent`. The record includes:
 
-## How It Works
+- the consent version,
+- the timestamp of the user's decision,
+- the chosen categories,
+- and the action used to save it (`accept-all`, `reject-all`, or `custom`).
 
-### Meta Pixel
-1. **Initial Load**: The Meta Pixel script loads and fires the initial `PageView` event
-2. **Route Changes**: The `useEffect` hook listens to `pathname` and `searchParams` changes
-3. **SPA Navigation**: When users navigate between pages, `fbq('track', 'PageView')` is automatically called
+If the stored version changes, the consent record is treated as invalid and the banner is shown again.
 
-### Google Tag Manager
-1. **Initial Load**: GTM script loads and initializes the `dataLayer` array
-2. **DataLayer**: All GTM tags, triggers, and variables are managed through the GTM dashboard
-3. **Custom Events**: Push events to `dataLayer` for custom tracking
+## Withdrawal and cleanup
 
-## Testing
+When the user withdraws or reduces consent, the implementation:
 
-### Meta Pixel
-1. **Development**: Run `npm run dev` and open browser DevTools
-2. **Check Network Tab**: Look for requests to `facebook.net/en_US/fbevents.js`
-3. **Meta Pixel Helper**: Install the [Meta Pixel Helper](https://chrome.google.com/webstore/detail/meta-pixel-helper/) Chrome extension
-4. **Events Manager**: Check Meta Events Manager at https://business.facebook.com/events_manager2/
+- removes the relevant tracking scripts from the DOM,
+- clears known Meta/Google tracking cookies where possible,
+- resets common tracking globals such as `fbq`, `dataLayer`, and `google_tag_manager`,
+- and keeps the consent cookie itself in sync with the latest choice.
 
-### Google Tag Manager
-1. **Development**: Run `npm run dev` and open browser DevTools Console
-2. **Check DataLayer**: Type `window.dataLayer` in console - should see array with GTM events
-3. **Preview Mode**: Use GTM Preview mode from Tag Manager dashboard
-4. **Network Tab**: Look for requests to `googletagmanager.com/gtm.js?id=GTM-N5H2N2VZ`
+## Notes
 
-## Custom Event Tracking
-
-### Meta Pixel Custom Events
-```tsx
-"use client";
-
-function BookingButton() {
-  const handleClick = () => {
-    if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('track', 'InitiateCheckout', {
-        content_name: 'Tour Booking',
-        value: 150.00,
-        currency: 'EUR'
-      });
-    }
-  };
-
-  return <button onClick={handleClick}>Book Now</button>;
-}
-```
-
-### Google Tag Manager Custom Events
-```tsx
-"use client";
-
-function ContactForm() {
-  const handleSubmit = () => {
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({
-        event: 'form_submission',
-        form_name: 'contact_form',
-        form_type: 'inquiry'
-      });
-    }
-  };
-
-  return <form onSubmit={handleSubmit}>...</form>;
-}
-```
-
-### TypeScript Declaration for DataLayer
-Add to your type declarations if needed:
-```typescript
-declare global {
-  interface Window {
-    dataLayer: Array<Record<string, unknown>>;
-  }
-}
-```
-
-## Build Status
-✅ Build completed successfully  
-✅ All 48 pages generated without errors  
-✅ TypeScript validation passed  
-✅ Meta Pixel integrated  
-✅ Google Tag Manager integrated  
-
-## Production Checklist
-- [ ] Verify Meta Pixel tracking in Meta Events Manager
-- [ ] Test GTM tags in GTM Preview mode
-- [ ] Configure GTM tags for conversions (form submissions, bookings, etc.)
-- [ ] Set up GTM triggers for important user actions
-- [ ] Configure Meta Pixel conversion events for ad optimization
-- [ ] Test tracking across all locales (en, it, zh, ja)
-
+- GTM must still be configured in the GTM dashboard to respect the consent categories the site sends.
+- Umami is assumed to remain configured without cookies.
+- The privacy policy page includes English, Italian, Japanese, and Chinese versions.
