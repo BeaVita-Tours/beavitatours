@@ -3,8 +3,8 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
+import { Cookie, Settings, Shield } from "lucide-react";
 
 export function CookieConsentBanner() {
   const t = useTranslations("cookieConsent");
@@ -15,55 +15,64 @@ export function CookieConsentBanner() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6">
-      <Card className="mx-auto max-w-5xl border-border/60 bg-background/95 shadow-2xl backdrop-blur">
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-                {t("title")}
-              </p>
-              <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-                {t("description")}
-              </p>
-              <div className="space-y-1 text-sm">
-                <Link
-                  href="/privacy"
-                  className="font-medium text-foreground underline-offset-4 hover:underline"
-                >
-                  {t("privacyPolicy")}
-                </Link>
-                <p className="text-muted-foreground">{t("learnMore")}</p>
+    <div className="fixed inset-x-0 bottom-0 z-50 p-4 md:p-6">
+      <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border/40 bg-background/80 shadow-2xl ring-1 ring-black/5 backdrop-blur-xl dark:ring-white/10">
+        <div className="grid gap-0 lg:grid-cols-[1fr_auto]">
+          {/* Content Section */}
+          <div className="flex gap-4 p-5 md:p-6">
+            <div className="hidden shrink-0 sm:block">
+              <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
+                <Cookie className="size-6 text-primary" />
               </div>
             </div>
-
-            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:justify-end">
-              <Button
-                variant="ghost"
-                onClick={openSettings}
-                className="w-full sm:w-auto"
-              >
-                {t("managePreferences")}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={rejectAll}
-                className="w-full sm:w-auto"
-              >
-                {t("rejectAll")}
-              </Button>
-
-              <Button
-                variant="default"
-                onClick={acceptAll}
-                className="w-full sm:w-auto"
-              >
-                {t("acceptAll")}
-              </Button>
+            <div className="min-w-0 space-y-2">
+              <div className="flex items-center gap-2">
+                <Cookie className="size-5 text-primary sm:hidden" />
+                <h3 className="text-base font-semibold text-foreground">
+                  {t("title")}
+                </h3>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {t("description")}
+              </p>
+              <div className="flex items-center gap-4 pt-1">
+                <Link
+                  href="/privacy"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+                >
+                  <Shield className="size-3.5" />
+                  {t("privacyPolicy")}
+                </Link>
+                <button
+                  onClick={openSettings}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Settings className="size-3.5" />
+                  {t("managePreferences")}
+                </button>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Actions Section */}
+          <div className="flex items-center gap-3 border-t border-border/40 bg-muted/30 p-4 md:p-5 lg:border-l lg:border-t-0 lg:bg-transparent">
+            <Button
+              variant="outline"
+              onClick={rejectAll}
+              className="h-11 flex-1 border-border/60 text-sm font-medium lg:flex-none lg:px-6"
+            >
+              {t("rejectAll")}
+            </Button>
+            <Button
+              variant="default"
+              onClick={acceptAll}
+              className="h-11 flex-1 text-sm font-semibold lg:flex-none lg:px-6"
+            >
+              {t("acceptAll")}
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

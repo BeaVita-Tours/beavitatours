@@ -22,7 +22,7 @@
   },
   "cookieConsent": {
     "title": "Cookie 设置",
-    "description": "我们仅使用必要 Cookie 和注重隐私的 Umami 分析。可选的分析和营销工具会在您选择之前保持关闭。",
+    "description": "我们使用 Cookie 来提升您的浏览体验、提供个性化广告或内容，并分析网站流量。点击“全部接受”即表示您同意我们使用 Cookie。您也可以点击“管理偏好”来管理您的偏好设置。",
     "privacyPolicy": "隐私政策",
     "learnMore": "您可以随时通过页脚中的 Cookie 设置更改这些选择。",
     "acceptAll": "全部接受",

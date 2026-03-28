@@ -22,7 +22,7 @@
   },
   "cookieConsent": {
     "title": "Cookie settings",
-    "description": "We use strictly necessary cookies and privacy-friendly Umami analytics. Optional analytics and marketing tools stay off until you choose.",
+    "description": "We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking \"Accept all\", you consent to our use of cookies. You can also manage your preferences by clicking \"Manage preferences\".",
     "privacyPolicy": "Privacy Policy",
     "learnMore": "You can change these choices any time from Cookie settings in the footer.",
     "acceptAll": "Accept all",

@@ -22,7 +22,7 @@
   },
   "cookieConsent": {
     "title": "Impostazioni cookie",
-    "description": "Usiamo solo cookie strettamente necessari e le analisi di Umami, configurate in modo rispettoso della privacy. Gli strumenti opzionali di analisi e marketing restano spenti finché non li scegli.",
+    "description": "Utilizziamo i cookie per migliorare la tua esperienza di navigazione, offrire annunci o contenuti personalizzati e analizzare il nostro traffico. Facendo clic su \"Accetta tutto\", acconsenti al nostro utilizzo dei cookie. Puoi anche gestire le tue preferenze facendo clic su \"Gestisci preferenze\".",
     "privacyPolicy": "Informativa sulla privacy",
     "learnMore": "Puoi modificare queste scelte in qualsiasi momento dalle Impostazioni cookie nel footer.",
     "acceptAll": "Accetta tutto",
