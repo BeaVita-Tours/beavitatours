@@ -5,11 +5,20 @@ const UMAMI_SRC = "https://cloud.umami.is/script.js";
 
 export function Umami() {
   return (
-    <Script
-      src={UMAMI_SRC}
-      data-website-id={UMAMI_WEBSITE_ID}
-      strategy="afterInteractive"
-      defer
-    />
+    <>
+      <Script
+        src={UMAMI_SRC}
+        data-website-id={UMAMI_WEBSITE_ID}
+        strategy="beforeInteractive"
+        defer
+      />
+      <noscript>
+        <img
+          src={`https://cloud.umami.is/api/send?website_id=${UMAMI_WEBSITE_ID}`}
+          alt=""
+          style={{ display: "none" }}
+        />
+      </noscript>
+    </>
   );
 }

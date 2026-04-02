@@ -4,11 +4,11 @@ This project now uses a GDPR/ePrivacy-first consent flow for all non-essential t
 
 ## Current behavior
 
-- **Umami Analytics** loads on every page and is treated as privacy-friendly, cookieless analytics in the current configuration.
-- **Meta Pixel** only loads after explicit marketing consent.
-- **Google Tag Manager** only loads after explicit analytics or marketing consent.
+- **Umami Analytics** loads on every page with `beforeInteractive` strategy and is treated as privacy-friendly, cookieless analytics in the current configuration.
+- **Meta Pixel** only loads after explicit marketing consent with `beforeInteractive` strategy and noscript fallback.
+- **Google Tag Manager** only loads after explicit analytics or marketing consent, with consent mode set in the dataLayer.
 - **No tracking scripts fire before consent** other than Umami and strictly necessary site functionality.
-- **No GTM noscript iframe is rendered before consent.**
+- **GTM and Meta Pixel** include noscript fallbacks for users with JavaScript disabled.
 
 ## Key files
 

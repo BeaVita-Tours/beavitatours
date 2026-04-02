@@ -20,11 +20,12 @@ export function GoogleTagManager({
   }
 
   return (
-    <Script
-      id={`google-tag-manager-script-${scriptId}`}
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{
-        __html: `
+    <>
+      <Script
+        id={`google-tag-manager-script-${scriptId}`}
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: 'cookie_consent_update',
@@ -37,7 +38,16 @@ export function GoogleTagManager({
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','${GTM_ID}');
         `,
-      }}
-    />
+        }}
+      />
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+    </>
   );
 }

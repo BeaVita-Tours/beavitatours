@@ -37,11 +37,12 @@ export function MetaPixel({
   }
 
   return (
-    <Script
-      id={`meta-pixel-script-${scriptId}`}
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{
-        __html: `
+    <>
+      <Script
+        id={`meta-pixel-script-${scriptId}`}
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -54,7 +55,17 @@ export function MetaPixel({
           fbq('init', '${PIXEL_ID}');
           fbq('track', 'PageView');
         `,
-      }}
-    />
+        }}
+      />
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
+          alt=""
+        />
+      </noscript>
+    </>
   );
 }
