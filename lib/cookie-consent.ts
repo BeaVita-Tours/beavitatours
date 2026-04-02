@@ -52,7 +52,7 @@ declare global {
     fbq?: ((...args: unknown[]) => void) | undefined;
     _fbq?: unknown;
     gtag?: ((...args: unknown[]) => void) | undefined;
-    dataLayer: Array<Record<string, unknown>>;
+    dataLayer?: Array<Record<string, unknown>>;
     google_tag_manager?: Record<string, unknown> | undefined;
   }
 }

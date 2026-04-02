@@ -8,12 +8,9 @@ export function TrackingScripts() {
   const { consent, hasAnalyticsConsent, hasMarketingConsent } = useCookieConsent();
   const scriptId = (consent?.timestamp ?? "no-consent").replace(/[^a-zA-Z0-9_-]/g, "-");
 
-  if (!hasAnalyticsConsent && !hasMarketingConsent) {
-    return null;
-  }
-
   return (
     <>
+      {/* GTM always loads, consent mode controls its behavior */}
       <GoogleTagManager
         key={`GTM-${scriptId}`}
         enabled={true}
@@ -21,11 +18,14 @@ export function TrackingScripts() {
         marketingConsent={hasMarketingConsent}
         scriptId={scriptId}
       />
-      <MetaPixel
-        key={`meta-${scriptId}`}
-        enabled={hasMarketingConsent}
-        scriptId={scriptId}
-      />
+      {/* Meta Pixel only loads with marketing consent */}
+      {hasMarketingConsent && (
+        <MetaPixel
+          key={`meta-${scriptId}`}
+          enabled={hasMarketingConsent}
+          scriptId={scriptId}
+        />
+      )}
     </>
   );
 }
