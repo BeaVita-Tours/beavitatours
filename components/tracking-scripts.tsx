@@ -15,8 +15,8 @@ export function TrackingScripts() {
   return (
     <>
       <GoogleTagManager
-        key={`gtm-${scriptId}`}
-        enabled={hasAnalyticsConsent || hasMarketingConsent}
+        key={`GTM-${scriptId}`}
+        enabled={true}
         analyticsConsent={hasAnalyticsConsent}
         marketingConsent={hasMarketingConsent}
         scriptId={scriptId}
