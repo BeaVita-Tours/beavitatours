@@ -21,7 +21,7 @@ export function GoogleTagManager({
   return (
     <>
       {/* Initialize consent mode before GTM loads */}
-      <Script
+      {/* <Script
         id="gtm-consent-init"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
@@ -46,7 +46,7 @@ export function GoogleTagManager({
             });
           `,
         }}
-      />
+      /> */}
       <GTM gtmId={GTM_ID} />
       {/* noscript fallback for GTM - required by Google */}
       <noscript>
