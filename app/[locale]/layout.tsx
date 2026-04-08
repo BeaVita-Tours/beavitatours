@@ -27,15 +27,15 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const cookieStore = await cookies();
   const initialConsent = parseConsentRecord(
-    cookieStore.get(CONSENT_COOKIE_NAME)?.value
+    cookieStore.get(CONSENT_COOKIE_NAME)?.value,
   );
 
   return (
     <html lang={locale}>
-      <body className={`font-sans antialiased`}>
-        <Umami />
-        <CookieConsentProvider initialConsent={initialConsent}>
-          <TrackingScripts />
+      <CookieConsentProvider initialConsent={initialConsent}>
+        <TrackingScripts />
+        <body className={`font-sans antialiased`}>
+          <Umami />
           <NextIntlClientProvider messages={messages}>
             <Navigation />
             {children}
@@ -43,8 +43,8 @@ export default async function LocaleLayout({
             <CookieConsentBanner />
             <CookieSettingsDialog />
           </NextIntlClientProvider>
-        </CookieConsentProvider>
-      </body>
+        </body>
+      </CookieConsentProvider>
     </html>
   );
 }
