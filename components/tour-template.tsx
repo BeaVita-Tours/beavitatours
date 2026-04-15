@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +10,11 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { Clock, MapPin, Mountain, Users, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 type ExtraDetail = {
   label: string;
@@ -132,19 +135,46 @@ export function TourTemplate({
 }
 
 function TourGallery({ images }: { images: CarouselImage[] }) {
+  const [api, setApi] = React.useState<CarouselApi | null>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const onSelect = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    };
+
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
   return (
-    <section className="py-12 bg-muted/30">
+    <section className="bg-muted/30 py-8 sm:py-12">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto px-14">
-          <Carousel opts={{ loop: true }}>
-            <CarouselContent>
+        <div className="mx-auto max-w-5xl">
+          <Carousel opts={{ loop: true }} setApi={setApi} className="relative">
+            <CarouselContent className="-ml-3">
               {images.map((img) => (
-                <CarouselItem key={img.src}>
-                  <div className="overflow-hidden rounded-xl">
-                    <img
+                <CarouselItem
+                  key={img.src}
+                  className="pl-3 md:basis-4/5 lg:basis-2/3"
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl sm:aspect-[16/9]">
+                    <Image
                       src={img.src}
                       alt={img.alt}
-                      className="w-full h-[500px] object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 70vw"
+                      className="object-cover"
                     />
                   </div>
                 </CarouselItem>
@@ -153,6 +183,25 @@ function TourGallery({ images }: { images: CarouselImage[] }) {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
+
+          <div className="mt-3 flex items-center justify-center gap-2">
+            {images.map((img, index) => (
+              <button
+                key={img.src}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2.5 rounded-full transition-all ${
+                  index === selectedIndex ? "w-6 bg-primary" : "w-2.5 bg-border"
+                }`}
+                onClick={() => api?.scrollTo(index)}
+              />
+            ))}
+          </div>
+          {images.length > 1 ? (
+            <p className="mt-2 text-center text-xs text-muted-foreground">
+              Swipe to browse the gallery
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
@@ -172,8 +221,6 @@ export function TourDescription({ children }: { children: React.ReactNode }) {
     </section>
   );
 }
-
-import { useTranslations } from "next-intl";
 
 export function TourFeatures({
   title,

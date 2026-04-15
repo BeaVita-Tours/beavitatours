@@ -175,9 +175,9 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
+        "absolute z-10 h-8 w-8 rounded-full border border-border/60 bg-background/90 shadow-md backdrop-blur-sm",
         orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
+          ? "bottom-3 left-3 top-auto translate-y-0 sm:-left-12 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
@@ -204,9 +204,9 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
+        "absolute z-10 h-8 w-8 rounded-full border border-border/60 bg-background/90 shadow-md backdrop-blur-sm",
         orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
+          ? "bottom-3 right-3 top-auto translate-y-0 sm:-right-12 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}

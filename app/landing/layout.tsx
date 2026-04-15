@@ -11,8 +11,11 @@ import { CONSENT_COOKIE_NAME, parseConsentRecord } from "@/lib/cookie-consent";
 import { CookieConsentBanner } from "@/components/landing/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/landing/cookie-settings-dialog";
 
-const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair-display",
+});
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
   title:
@@ -38,7 +41,7 @@ export default async function LandingLayout({
           <TrackingScripts />
         </head>
         <body
-          className={`font-sans antialiased ${playfairDisplay.className} ${dmSans.className}`}
+          className={`font-sans antialiased ${playfairDisplay.variable} ${dmSans.variable}`}
         >
           <Umami />
           {children}
