@@ -6,10 +6,10 @@ import "../globals.css";
 import { cookies } from "next/headers";
 import { Umami } from "@/components/umami";
 import { CookieConsentProvider } from "@/components/cookie-consent-provider";
-import { CookieConsentBanner } from "@/components/cookie-consent-banner";
-import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { TrackingScripts } from "@/components/tracking-scripts";
 import { CONSENT_COOKIE_NAME, parseConsentRecord } from "@/lib/cookie-consent";
+import { CookieConsentBanner } from "@/components/landing/cookie-consent-banner";
+import { CookieSettingsDialog } from "@/components/landing/cookie-settings-dialog";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
 const dmSans = DM_Sans({ subsets: ["latin"] });
