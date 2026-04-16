@@ -153,10 +153,19 @@ const reviews = [
   },
 ];
 
-const photoTiles: { src: string; alt: string }[] = [];
+const photoTiles = [
+  ...Array.from({ length: 4 }, (_, i) => ({
+    src: `/landing/prosecco${i + 1}.jpg`,
+    alt: "Prosecco hills",
+  })),
+  ...Array.from({ length: 19 }, (_, i) => ({
+    src: `/landing/broll${i + 1}.jpg`,
+    alt: "Prosecco hills footage",
+  })),
+];
 
 const heroThumbnailCount = 3;
-const reviewPreviewCount = 4;
+const reviewPreviewCount = 5;
 
 function StarRow({ className = "" }: { className?: string }) {
   return (
@@ -202,20 +211,6 @@ export default function LandingPage() {
     null,
   );
   const [reviewGalleryActiveIndex, setReviewGalleryActiveIndex] = useState(0);
-
-  for (let i = 0; i < 4; i++) {
-    photoTiles.push({
-      src: `/landing/prosecco${i + 1}.jpg`,
-      alt: "Prosecco hills",
-    });
-  }
-
-  for (let i = 0; i < 19; i++) {
-    photoTiles.push({
-      src: `/landing/broll${i + 1}.jpg`,
-      alt: "Prosecco hills footage",
-    });
-  }
 
   useEffect(() => {
     if (!heroApi) {
@@ -308,7 +303,9 @@ export default function LandingPage() {
                     alt={slide.alt}
                     fill
                     priority={index === 0}
-                    sizes="100vw"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    sizes="(max-width: 480px) 100vw, 480px"
+                    quality={index === 0 ? 80 : 72}
                     className="object-cover"
                   />
                 </div>
@@ -334,7 +331,9 @@ export default function LandingPage() {
                 src={slide.src}
                 alt={slide.alt}
                 fill
+                loading="lazy"
                 sizes="48px"
+                quality={60}
                 className="object-cover"
               />
             </button>
@@ -677,7 +676,9 @@ export default function LandingPage() {
                           src={photo.src}
                           alt={photo.alt}
                           fill
-                          sizes="33vw"
+                          loading="lazy"
+                          sizes="(max-width: 480px) 33vw, 160px"
+                          quality={66}
                           className="object-cover"
                         />
                       </button>
@@ -759,7 +760,9 @@ export default function LandingPage() {
                           src={photo.src}
                           alt={photo.alt}
                           fill
-                          sizes="100vw"
+                          loading="lazy"
+                          sizes="(max-width: 480px) 100vw, 480px"
+                          quality={78}
                           className="object-contain"
                         />
                       </div>
