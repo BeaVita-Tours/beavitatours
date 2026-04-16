@@ -17,12 +17,14 @@ const playfairDisplay = Playfair_Display({
 });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
-export const metadata: Metadata = {
+const landingMetadata = {
   title:
     "BeaVitaTours - Tours and Day Trips from Venice to Dolomites & Prosecco",
   description:
     "Experience the best Tours and Day Trips from Venice to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
 };
+
+export const metadata: Metadata = landingMetadata;
 
 export default async function LandingLayout({
   children,

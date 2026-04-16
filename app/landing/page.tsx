@@ -16,9 +16,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -42,116 +39,207 @@ import {
   X,
 } from "lucide-react";
 
-const bookingUrl =
-  "https://www.getyourguide.com/it-it/comune-di-valdobbiadene-l153536/da-venezia-escursione-di-un-giorno-nelle-regioni-del-vino-amarone-e-prosecco-t852142/";
-
-const highlights = [
-  {
-    icon: Mountain,
-    title: "UNESCO scenery",
-    text: "Follow a scenic UNESCO route through the Prosecco Hills, with time to stop rather than rush past.",
+const tourContent = {
+  platformLabels: {
+    getYourGuide: "GetYourGuide",
+    viator: "Viator",
   },
-  {
-    icon: Wine,
-    title: "Family-run winery",
-    text: "Taste local wines at a family-run winery and keep the atmosphere relaxed and personal.",
+  urls: {
+    booking:
+      "https://www.getyourguide.com/it-it/comune-di-valdobbiadene-l153536/da-venezia-escursione-di-un-giorno-nelle-regioni-del-vino-amarone-e-prosecco-t852142/",
+    viator:
+      "https://www.viator.com/tours/Venice/From-Venice-Prosecco-Hills-tour-with-Wine-Spritz-and-Asolo/d522-5510234P6",
   },
-  {
-    icon: ShieldCheck,
-    title: "Simple booking",
-    text: "Book with confidence through live availability and a simple, mobile-friendly flow.",
+  hero: {
+    badges: [
+      { icon: Clock3, label: "7 hours" },
+      { icon: Users, label: "Max 8 guests" },
+      { icon: MapPin, label: "English" },
+    ],
+    title: "From Venice: Prosecco Hills wine day with Spritz and Asolo",
+    thumbnailLabel: "View slide",
+    rating: {
+      score: "4.9",
+      reviews: "394 reviews",
+      badge: "Top 20% day trips from Venice",
+    },
   },
-  {
-    icon: Users,
-    title: "Small-group feel",
-    text: "Designed for small groups, with a pace that feels easy from Venice to Asolo.",
+  booking: {
+    label: "Popular departure",
+    originalPrice: "From 149 €",
+    currentPrice: "127 €",
+    unit: "/ person",
+    discount: "−15%",
+    button: "Check availability",
+    benefits: [
+      {
+        emphasis: "Free cancellation",
+        text: "full refund up to 24 hours before",
+      },
+      {
+        emphasis: "Book now, pay later",
+        text: "lock in your spot without paying today",
+      },
+      {
+        text: "Instant confirmation · Mobile ticket",
+      },
+    ],
+    confirmationBadge: "Timing confirmed at booking",
   },
-];
-
-const included = [
-  "Pickup and return from Piazzale Roma, Venice",
-  "Comfortable air-conditioned transport",
-  "Guide and group coordination",
-  "Scenic drive through the Prosecco Hills",
-  "Guided winery visit and tasting",
-  "Four Valdobbiadene Prosecco DOCG wines",
-  "Light lunch with local cheese and cured meats",
-  "Aperol Spritz aperitivo with snacks",
-  "Free time in Asolo",
-];
-
-const notIncluded = ["Hotel transfer", "Gratuities"];
-
-const itinerary = [
-  {
-    dot: "→",
-    title: "Meeting point: Piazzale Roma",
-    text: "Start in Venice and leave the city behind in comfort.",
-    time: "Start",
+  sections: {
+    highlights: "What the day includes",
+    included: "What’s included",
+    itinerary: "Tour itinerary",
+    description: "Full description",
+    practical: "Practical information",
+    reviews: "Verified reviews",
   },
-  {
-    dot: "1",
-    title: "Osteria Senz'Oste",
-    text: "A scenic stop for photos and a first look over the hills.",
-    time: "20 min",
+  cards: {
+    included: "Included",
+    notIncluded: "Not included",
   },
-  {
-    dot: "2",
-    title: "Valdobbiadene",
-    text: "Winery visit, tasting, and a proper taste of the region.",
-    time: "1 h 45 min",
+  highlights: [
+    {
+      icon: Mountain,
+      title: "UNESCO scenery",
+      text: "Follow a scenic UNESCO route through the Prosecco Hills, with time to stop rather than rush past.",
+    },
+    {
+      icon: Wine,
+      title: "Family-run winery",
+      text: "Taste local wines at a family-run winery and keep the atmosphere relaxed and personal.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Simple booking",
+      text: "Book with confidence through live availability and a simple, mobile-friendly flow.",
+    },
+    {
+      icon: Users,
+      title: "Small-group feel",
+      text: "Designed for small groups, with a pace that feels easy from Venice to Asolo.",
+    },
+  ],
+  included: [
+    "Pickup and return from Piazzale Roma, Venice",
+    "Comfortable air-conditioned transport",
+    "Guide and group coordination",
+    "Scenic drive through the Prosecco Hills",
+    "Guided winery visit and tasting",
+    "Four Valdobbiadene Prosecco DOCG wines",
+    "Light lunch with local cheese and cured meats",
+    "Aperol Spritz aperitivo with snacks",
+    "Free time in Asolo",
+  ],
+  notIncluded: ["Hotel transfer", "Gratuities"],
+  itinerary: [
+    {
+      dot: "→",
+      title: "Meeting point: Piazzale Roma",
+      text: "Start in Venice and leave the city behind in comfort.",
+      time: "Start",
+    },
+    {
+      dot: "1",
+      title: "Osteria Senz'Oste",
+      text: "A scenic stop for photos and a first look over the hills.",
+      time: "20 min",
+    },
+    {
+      dot: "2",
+      title: "Valdobbiadene",
+      text: "Winery visit, tasting, and a proper taste of the region.",
+      time: "1 h 45 min",
+    },
+    {
+      dot: "3",
+      title: "Prosecco Hills viewpoint",
+      text: "Aperitivo with a view: Spritz, snacks, and a slow moment.",
+      time: "20 min",
+    },
+    {
+      dot: "4",
+      title: "Asolo",
+      text: "Time to wander one of Italy’s prettiest hill towns.",
+      time: "1 h 30 min",
+    },
+    {
+      dot: "⌂",
+      title: "Return to Venice",
+      text: "Head back to Piazzale Roma after an easy full day out.",
+      time: "End",
+    },
+  ],
+  description: [
+    "Start with pickup at Piazzale Roma, the big square in the centre of Venice. Travel in a comfortable van for less than an hour to the beautiful Prosecco Hills, a UNESCO World Heritage landscape.",
+    "Explore Veneto’s best-known wine region with your guide. Visit a family-run winery where you’ll learn how Prosecco is made straight from the producers. Taste four different Valdobbiadene Prosecco DOCG wines with local cheese, cured meats, and classic snacks.",
+    "Enjoy the classic Italian aperitivo — Aperol Spritz with snacks — at a panoramic stop among the vineyards. Then spend time in Asolo, the medieval hill town known as the “city of a hundred horizons,” with room to wander, shop, and take in the view.",
+  ],
+  practicalInfo: [
+    { label: "Meeting point", value: "Piazzale Roma, Venice" },
+    { label: "Duration", value: "About 7 hours" },
+    { label: "What to bring", value: "Comfortable shoes and a camera" },
+    { label: "Minimum age", value: "14 years" },
+  ],
+  restrictions: {
+    notSuitableLabel: "Not suitable for",
+    notSuitable: "Children under 14 years · Wheelchair users",
+    goodToKnowLabel: "Good to know",
+    goodToKnow: "The tour runs in light rain · Small group (max 8 guests)",
   },
-  {
-    dot: "3",
-    title: "Prosecco Hills viewpoint",
-    text: "Aperitivo with a view: Spritz, snacks, and a slow moment.",
-    time: "20 min",
+  reviews: {
+    summary: {
+      score: "4.9",
+      reviews: "394 reviews",
+      badge: "Top-rated day trip from Venice",
+      metrics: [
+        { label: "Guide", value: "5.0" },
+        { label: "Transport", value: "5.0" },
+        { label: "Value", value: "5.0" },
+      ],
+    },
+    items: [
+      {
+        name: "Michael",
+        meta: "United States · April 2026",
+        text: "The van was comfortable, the guide was excellent, and the winery stop was the highlight.",
+      },
+      {
+        name: "Martin",
+        meta: "United Kingdom · April 2026",
+        text: "Fabulous trip, well organised, great guide and host. Highly recommended.",
+      },
+      {
+        name: "Amy M.",
+        meta: "International · March 2026",
+        text: "A brilliant day in the Prosecco hills. Great pace, great views, and great value.",
+        reply:
+          "Thank you so much — we’re glad the day felt special from the first stop to the last.",
+      },
+      {
+        name: "Keith W.",
+        meta: "International · February 2026",
+        text: "The views were stunning and the small group made it feel almost private.",
+      },
+    ],
+    replyLabel: "Reply from Bea Vita Tours",
+    gallery: {
+      title: "Review gallery",
+      description: "Swipe through the photo gallery.",
+      openImageLabel: "Open image",
+      openGalleryLabel: "Open gallery",
+      previewCount: 5,
+    },
   },
-  {
-    dot: "4",
-    title: "Asolo",
-    text: "Time to wander one of Italy’s prettiest hill towns.",
-    time: "1 h 30 min",
+  footer: {
+    label: "Ready to book",
+    title: "Jump straight to live dates",
+    button: "Book now",
   },
-  {
-    dot: "⌂",
-    title: "Return to Venice",
-    text: "Head back to Piazzale Roma after an easy full day out.",
-    time: "End",
+  counts: {
+    heroThumbnails: 3,
   },
-];
-
-const practicalInfo = [
-  { label: "Meeting point", value: "Piazzale Roma, Venice" },
-  { label: "Duration", value: "About 7 hours" },
-  { label: "What to bring", value: "Comfortable shoes and a camera" },
-  { label: "Minimum age", value: "14 years" },
-];
-
-const reviews = [
-  {
-    name: "Michael",
-    meta: "United States · April 2026",
-    text: "The van was comfortable, the guide was excellent, and the winery stop was the highlight.",
-  },
-  {
-    name: "Martin",
-    meta: "United Kingdom · April 2026",
-    text: "Fabulous trip, well organised, great guide and host. Highly recommended.",
-  },
-  {
-    name: "Amy M.",
-    meta: "International · March 2026",
-    text: "A brilliant day in the Prosecco hills. Great pace, great views, and great value.",
-    reply:
-      "Thank you so much — we’re glad the day felt special from the first stop to the last.",
-  },
-  {
-    name: "Keith W.",
-    meta: "International · February 2026",
-    text: "The views were stunning and the small group made it feel almost private.",
-  },
-];
+} as const;
 
 const heroTiles = [
   ...Array.from({ length: 4 }, (_, i) => ({
@@ -166,9 +254,6 @@ const photoTiles = heroTiles.concat([
     alt: "Prosecco hills footage",
   })),
 ]);
-
-const heroThumbnailCount = 3;
-const reviewPreviewCount = 5;
 
 function StarRow({ className = "" }: { className?: string }) {
   return (
@@ -199,6 +284,24 @@ function IconBadge({
 }
 
 export default function LandingPage() {
+  const {
+    platformLabels,
+    urls,
+    hero,
+    booking,
+    sections,
+    cards,
+    highlights,
+    included,
+    notIncluded,
+    itinerary,
+    description,
+    practicalInfo,
+    restrictions,
+    reviews,
+    footer,
+    counts,
+  } = tourContent;
   const [heroApi, setHeroApi] = useState<CarouselApi | null>(null);
   const [heroIndex, setHeroIndex] = useState(0);
   const heroAutoplay = useRef(
@@ -270,20 +373,16 @@ export default function LandingPage() {
               asChild
               className="rounded-full bg-[#ff5533] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white"
             >
-              <a href={bookingUrl} target="_blank" rel="noreferrer">
-                GetYourGuide
+              <a href={urls.booking} target="_blank" rel="noreferrer">
+                {platformLabels.getYourGuide}
               </a>
             </Badge>
             <Badge
               asChild
               className="rounded-full bg-[#1a5276] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white"
             >
-              <a
-                href="https://www.viator.com/tours/Venice/From-Venice-Prosecco-Hills-tour-with-Wine-Spritz-and-Asolo/d522-5510234P6"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Viator
+              <a href={urls.viator} target="_blank" rel="noreferrer">
+                {platformLabels.viator}
               </a>
             </Badge>
           </div>
@@ -318,7 +417,7 @@ export default function LandingPage() {
         </Carousel>
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#1a1209]/20 to-[#1a1209]/80" />
         <div className="absolute bottom-3 right-3 flex gap-1.5">
-          {heroTiles.slice(1, 1 + heroThumbnailCount).map((slide, index) => (
+          {heroTiles.slice(1, 1 + counts.heroThumbnails).map((slide, index) => (
             <button
               key={slide.src}
               type="button"
@@ -328,7 +427,7 @@ export default function LandingPage() {
                   : "border-white/60"
               }`}
               onClick={() => heroApi?.scrollTo(index + 1)}
-              aria-label={`View slide ${index + 2}`}
+              aria-label={`${hero.thumbnailLabel} ${index + 2}`}
             >
               <Image
                 src={slide.src}
@@ -341,9 +440,9 @@ export default function LandingPage() {
               />
             </button>
           ))}
-          {heroTiles.length - 1 - heroThumbnailCount > 0 ? (
+          {heroTiles.length - 1 - counts.heroThumbnails > 0 ? (
             <div className="flex h-9 w-12 items-center justify-center rounded-md border border-white/60 bg-[#1a1209] text-[11px] font-semibold text-[#c9a84c]">
-              +{heroTiles.length - 1 - heroThumbnailCount}
+              +{heroTiles.length - 1 - counts.heroThumbnails}
             </div>
           ) : null}
         </div>
@@ -351,21 +450,30 @@ export default function LandingPage() {
 
       <section className="px-4 pt-5">
         <div className="flex flex-wrap gap-2">
-          <IconBadge icon={Clock3}>7 hours</IconBadge>
-          <IconBadge icon={Users}>Max 8 guests</IconBadge>
-          <IconBadge icon={MapPin}>English</IconBadge>
+          {hero.badges.map((item) => {
+            const Icon = item.icon;
+            return (
+              <IconBadge key={item.label} icon={Icon}>
+                {item.label}
+              </IconBadge>
+            );
+          })}
         </div>
 
         <h1 className="mt-4 text-[24px] font-semibold font-playfair-display leading-tight tracking-tight text-[#1a1209]">
-          From Venice: Prosecco Hills wine day with Spritz and Asolo
+          {hero.title}
         </h1>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <StarRow />
-          <span className="text-[15px] font-semibold text-[#1a1209]">4.9</span>
-          <span className="text-[13px] text-[#7a6a52]">· 394 reviews</span>
+          <span className="text-[15px] font-semibold text-[#1a1209]">
+            {hero.rating.score}
+          </span>
+          <span className="text-[13px] text-[#7a6a52]">
+            · {hero.rating.reviews}
+          </span>
           <Badge className="rounded-full bg-[#faf4e6] px-2.5 py-1 text-[10px] font-medium normal-case text-[#7a5c00]">
-            Top 20% day trips from Venice
+            {hero.rating.badge}
           </Badge>
         </div>
       </section>
@@ -373,19 +481,19 @@ export default function LandingPage() {
       <Card className="mx-4 mt-4 overflow-hidden border-[#c9a84c]/20 bg-[#1a1209] text-[#fffdf7] shadow-sm">
         <CardContent className="p-4">
           <div className="mb-3 inline-flex items-center rounded-full border border-[#ff8c42]/30 bg-[#ff8c42]/10 px-3 py-1 text-[11px] font-medium text-[#ff8c42]">
-            Popular departure
+            {booking.label}
           </div>
 
           <div className="mb-4 flex items-end gap-3">
             <div className="text-[14px] text-white/55 line-through">
-              From 149 €
+              {booking.originalPrice}
             </div>
             <div className="font-playfair-display text-[32px] font-bold leading-none text-[#c9a84c]">
-              127 €
+              {booking.currentPrice}
             </div>
-            <div className="pb-0.5 text-[13px] text-white/70">/ person</div>
+            <div className="pb-0.5 text-[13px] text-white/70">{booking.unit}</div>
             <Badge className="ml-auto rounded-full bg-[#c9a84c] px-2.5 py-1 text-[11px] font-semibold normal-case text-[#1a1209]">
-              −15%
+              {booking.discount}
             </Badge>
           </div>
 
@@ -393,37 +501,34 @@ export default function LandingPage() {
             asChild
             className="mb-3 w-full bg-[#c9a84c] text-[#1a1209] hover:bg-[#d5b960]"
           >
-            <a href={bookingUrl} target="_blank" rel="noreferrer">
-              Check availability <ChevronRight className="size-4" />
+            <a href={urls.booking} target="_blank" rel="noreferrer">
+              {booking.button} <ChevronRight className="size-4" />
             </a>
           </Button>
 
           <div className="space-y-2 text-[12px] leading-6 text-white/80">
-            <div className="flex items-start gap-2">
-              <Check className="mt-1 size-4 text-[#c9a84c]" />
-              <span>
-                <strong className="text-white/95">Free cancellation</strong> —
-                full refund up to 24 hours before
-              </span>
-            </div>
-            <div className="flex items-start gap-2">
-              <Check className="mt-1 size-4 text-[#c9a84c]" />
-              <span>
-                <strong className="text-white/95">Book now, pay later</strong> —
-                lock in your spot without paying today
-              </span>
-            </div>
-            <div className="flex items-start gap-2">
-              <Check className="mt-1 size-4 text-[#c9a84c]" />
-              <span>Instant confirmation · Mobile ticket</span>
-            </div>
+            {booking.benefits.map((benefit) => (
+              <div key={benefit.text} className="flex items-start gap-2">
+                <Check className="mt-1 size-4 text-[#c9a84c]" />
+                <span>
+                  {"emphasis" in benefit ? (
+                    <>
+                      <strong className="text-white/95">{benefit.emphasis}</strong>{" "}
+                      — {benefit.text}
+                    </>
+                  ) : (
+                    benefit.text
+                  )}
+                </span>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          What the day includes
+          {sections.highlights}
         </h2>
         <div className="grid gap-2">
           {highlights.map((item) => {
@@ -455,12 +560,12 @@ export default function LandingPage() {
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          What’s included
+          {sections.included}
         </h2>
         <Card className="overflow-hidden border-[#c9a84c]/20 bg-white shadow-sm">
           <CardContent className="p-4">
             <div className="text-[11px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              Included
+              {cards.included}
             </div>
             <div className="mt-3 space-y-2.5">
               {included.map((item) => (
@@ -475,7 +580,7 @@ export default function LandingPage() {
             </div>
             <Separator className="my-4 bg-[#c9a84c]/20" />
             <div className="text-[11px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              Not included
+              {cards.notIncluded}
             </div>
             <div className="mt-3 space-y-2.5">
               {notIncluded.map((item) => (
@@ -494,7 +599,7 @@ export default function LandingPage() {
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          Tour itinerary
+          {sections.itinerary}
         </h2>
         <Card className="overflow-hidden border-[#c9a84c]/20 bg-white shadow-sm">
           <CardContent className="p-4">
@@ -537,7 +642,7 @@ export default function LandingPage() {
                       </Badge>
                     ) : step.time === "Start" ? (
                       <Badge className="mt-2 rounded-full bg-[#faf4e6] px-2 py-0.5 text-[10px] font-medium normal-case text-[#7a5c00]">
-                        Timing confirmed at booking
+                        {booking.confirmationBadge}
                       </Badge>
                     ) : null}
                   </div>
@@ -550,34 +655,22 @@ export default function LandingPage() {
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          Full description
+          {sections.description}
         </h2>
         <Card className="border-[#c9a84c]/20 bg-white shadow-sm">
           <CardContent className="p-4 text-[14px] leading-7 text-[#3d3020]">
-            <p>
-              Start with pickup at Piazzale Roma, the big square in the centre
-              of Venice. Travel in a comfortable van for less than an hour to
-              the beautiful Prosecco Hills, a UNESCO World Heritage landscape.
-            </p>
-            <p className="mt-3">
-              Explore Veneto’s best-known wine region with your guide. Visit a
-              family-run winery where you’ll learn how Prosecco is made straight
-              from the producers. Taste four different Valdobbiadene Prosecco
-              DOCG wines with local cheese, cured meats, and classic snacks.
-            </p>
-            <p className="mt-3">
-              Enjoy the classic Italian aperitivo — Aperol Spritz with snacks —
-              at a panoramic stop among the vineyards. Then spend time in Asolo,
-              the medieval hill town known as the “city of a hundred horizons,”
-              with room to wander, shop, and take in the view.
-            </p>
+            {description.map((paragraph, index) => (
+              <p key={paragraph} className={index > 0 ? "mt-3" : undefined}>
+                {paragraph}
+              </p>
+            ))}
           </CardContent>
         </Card>
       </section>
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          Practical information
+          {sections.practical}
         </h2>
         <div className="grid grid-cols-2 gap-2">
           {practicalInfo.map((item) => (
@@ -600,47 +693,43 @@ export default function LandingPage() {
         <Card className="mt-2 border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm">
           <CardContent className="p-3 text-[13px] leading-6 text-[#3d3020]">
             <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              Not suitable for
+              {restrictions.notSuitableLabel}
             </div>
-            Children under 14 years · Wheelchair users
+            {restrictions.notSuitable}
           </CardContent>
         </Card>
 
         <Card className="mt-2 border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm">
           <CardContent className="p-3 text-[13px] leading-6 text-[#3d3020]">
             <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              Good to know
+              {restrictions.goodToKnowLabel}
             </div>
-            The tour runs in light rain · Small group (max 8 guests)
+            {restrictions.goodToKnow}
           </CardContent>
         </Card>
       </section>
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          Verified reviews
+          {sections.reviews}
         </h2>
         <Card className="border-[#c9a84c]/20 bg-white shadow-sm">
           <CardContent className="p-4">
             <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
               <div className="rounded-2xl bg-[#faf4e6] p-4 text-center">
                 <div className="font-playfair-display text-[42px] leading-none text-[#1a1209]">
-                  4.9
+                  {reviews.summary.score}
                 </div>
                 <StarRow className="mt-1 justify-center" />
                 <div className="mt-2 text-[12px] text-[#7a6a52]">
-                  394 reviews
+                  {reviews.summary.reviews}
                 </div>
                 <Badge className="mt-3 rounded-xl bg-white px-3 py-1 text-[11px] font-medium normal-case text-[#7a5c00]">
-                  Top-rated day trip from Venice
+                  {reviews.summary.badge}
                 </Badge>
 
                 <div className="mt-4 space-y-2 text-[11px] text-[#7a6a52]">
-                  {[
-                    { label: "Guide", value: "5.0" },
-                    { label: "Transport", value: "5.0" },
-                    { label: "Value", value: "5.0" },
-                  ].map((row) => (
+                  {reviews.summary.metrics.map((row) => (
                     <div key={row.label} className="flex items-center gap-2">
                       <span className="w-16 text-left">{row.label}</span>
                       <div className="h-1.5 flex-1 rounded-full bg-[#c9a84c]/20">
@@ -662,7 +751,7 @@ export default function LandingPage() {
               <div className="overflow-hidden rounded-3xl bg-[#c9a84c]/15 p-1">
                 <div className="grid grid-cols-3 gap-1">
                   {photoTiles
-                    .slice(0, reviewPreviewCount)
+                    .slice(0, reviews.gallery.previewCount)
                     .map((photo, index) => (
                       <button
                         key={photo.src}
@@ -673,7 +762,7 @@ export default function LandingPage() {
                           setReviewGalleryActiveIndex(index);
                           setReviewGalleryOpen(true);
                         }}
-                        aria-label={`Open image ${index + 1}`}
+                        aria-label={`${reviews.gallery.openImageLabel} ${index + 1}`}
                       >
                         <Image
                           src={photo.src}
@@ -686,20 +775,20 @@ export default function LandingPage() {
                         />
                       </button>
                     ))}
-                  {photoTiles.length - reviewPreviewCount > 0 ? (
-                    <button
-                      type="button"
-                      className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
-                      onClick={() => {
-                        setReviewGalleryIndex(reviewPreviewCount);
-                        setReviewGalleryActiveIndex(reviewPreviewCount);
-                        setReviewGalleryOpen(true);
-                      }}
-                      aria-label="Open gallery"
-                    >
-                      +{photoTiles.length - reviewPreviewCount}
-                    </button>
-                  ) : null}
+                    {photoTiles.length - reviews.gallery.previewCount > 0 ? (
+                      <button
+                        type="button"
+                        className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
+                        onClick={() => {
+                          setReviewGalleryIndex(reviews.gallery.previewCount);
+                          setReviewGalleryActiveIndex(reviews.gallery.previewCount);
+                          setReviewGalleryOpen(true);
+                        }}
+                        aria-label={reviews.gallery.openGalleryLabel}
+                      >
+                        +{photoTiles.length - reviews.gallery.previewCount}
+                      </button>
+                    ) : null}
                 </div>
               </div>
             </div>
@@ -707,7 +796,7 @@ export default function LandingPage() {
         </Card>
 
         <div className="mt-3 space-y-3">
-          {reviews.map((review) => (
+          {reviews.items.map((review) => (
             <Card
               key={review.name}
               className="border-[#c9a84c]/20 bg-white shadow-sm"
@@ -727,10 +816,10 @@ export default function LandingPage() {
                 <div className="mt-2 text-[13px] leading-6 text-[#3d3020]">
                   {review.text}
                 </div>
-                {review.reply ? (
+                {"reply" in review ? (
                   <div className="mt-3 rounded-xl border-l-2 border-[#c9a84c] bg-[#faf4e6] px-3 py-2 text-[12px] text-[#7a6a52]">
                     <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-                      Reply from Bea Vita Tours
+                      {reviews.replyLabel}
                     </div>
                     {review.reply}
                   </div>
@@ -743,9 +832,9 @@ export default function LandingPage() {
 
       <Dialog open={reviewGalleryOpen} onOpenChange={setReviewGalleryOpen}>
         <DialogContent className="h-dvh w-screen max-w-none overflow-hidden rounded-none border-0 bg-[#1a1209] p-0 text-white sm:h-[min(90vh,56rem)] sm:w-[min(92vw,80rem)] sm:rounded-2xl">
-          <DialogTitle className="sr-only">Review gallery</DialogTitle>
+          <DialogTitle className="sr-only">{reviews.gallery.title}</DialogTitle>
           <DialogDescription className="sr-only">
-            Swipe through the photo gallery.
+            {reviews.gallery.description}
           </DialogDescription>
           <div className="relative h-full w-full">
             <Carousel
@@ -791,18 +880,18 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-[480px] items-center justify-between gap-3 px-4 py-3 text-[#fffdf7]">
           <div>
             <div className="text-[10px] uppercase tracking-[0.08em] text-[#e8d4a0]">
-              Ready to book
+              {footer.label}
             </div>
             <div className="text-[14px] font-semibold">
-              Jump straight to live dates
+              {footer.title}
             </div>
           </div>
           <Button
             asChild
             className="bg-[#c9a84c] text-[#1a1209] hover:bg-[#d5b960]"
           >
-            <a href={bookingUrl} target="_blank" rel="noreferrer">
-              Book now <ChevronRight className="size-4" />
+            <a href={urls.booking} target="_blank" rel="noreferrer">
+              {footer.button} <ChevronRight className="size-4" />
             </a>
           </Button>
         </div>
