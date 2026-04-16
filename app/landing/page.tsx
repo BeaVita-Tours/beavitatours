@@ -153,16 +153,19 @@ const reviews = [
   },
 ];
 
-const photoTiles = [
+const heroTiles = [
   ...Array.from({ length: 4 }, (_, i) => ({
     src: `/landing/prosecco${i + 1}.jpg`,
     alt: "Prosecco hills",
   })),
+];
+
+const photoTiles = heroTiles.concat([
   ...Array.from({ length: 19 }, (_, i) => ({
     src: `/landing/broll${i + 1}.jpg`,
     alt: "Prosecco hills footage",
   })),
-];
+]);
 
 const heroThumbnailCount = 3;
 const reviewPreviewCount = 5;
@@ -295,7 +298,7 @@ export default function LandingPage() {
           className="h-full"
         >
           <CarouselContent className="ml-0 h-full">
-            {photoTiles.map((slide, index) => (
+            {heroTiles.map((slide, index) => (
               <CarouselItem key={slide.src} className="pl-0">
                 <div className="relative h-[280px]">
                   <Image
@@ -315,7 +318,7 @@ export default function LandingPage() {
         </Carousel>
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#1a1209]/20 to-[#1a1209]/80" />
         <div className="absolute bottom-3 right-3 flex gap-1.5">
-          {photoTiles.slice(1, 1 + heroThumbnailCount).map((slide, index) => (
+          {heroTiles.slice(1, 1 + heroThumbnailCount).map((slide, index) => (
             <button
               key={slide.src}
               type="button"
@@ -338,9 +341,9 @@ export default function LandingPage() {
               />
             </button>
           ))}
-          {photoTiles.length - 1 - heroThumbnailCount > 0 ? (
+          {heroTiles.length - 1 - heroThumbnailCount > 0 ? (
             <div className="flex h-9 w-12 items-center justify-center rounded-md border border-white/60 bg-[#1a1209] text-[11px] font-semibold text-[#c9a84c]">
-              +{photoTiles.length - 1 - heroThumbnailCount}
+              +{heroTiles.length - 1 - heroThumbnailCount}
             </div>
           ) : null}
         </div>
