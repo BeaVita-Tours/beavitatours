@@ -31,166 +31,158 @@ import {
   Clock3,
   Home,
   MapPin,
-  Mountain,
-  ShieldCheck,
   Star,
   Users,
-  Wine,
   X,
 } from "lucide-react";
 
 const tourContent = {
   platformLabels: {
     getYourGuide: "GetYourGuide",
-    viator: "Viator",
+    viator: null,
   },
   urls: {
     booking:
       "https://www.getyourguide.com/it-it/comune-di-valdobbiadene-l153536/da-venezia-escursione-di-un-giorno-nelle-regioni-del-vino-amarone-e-prosecco-t852142/",
     viator:
-      "https://www.viator.com/tours/Venice/From-Venice-Prosecco-Hills-tour-with-Wine-Spritz-and-Asolo/d522-5510234P6",
+     null,
   },
   hero: {
     badges: [
-      { icon: Clock3, label: "7 hours" },
+      { icon: Clock3, label: "5 hours" },
       { icon: Users, label: "Max 8 guests" },
       { icon: MapPin, label: "English" },
     ],
-    title: "From Venice: Prosecco Hills wine day with Spritz and Asolo",
+    title: "From Venice: 1-day trip to the Prosecco Hills and wine tasting",
+    provider: "Activity provider: Bea Vita Tours",
     thumbnailLabel: "View slide",
     rating: {
-      score: "4.9",
-      reviews: "394 reviews",
-      badge: "Top 20% day trips from Venice",
+      score: "5",
+      reviews: "8 reviews",
     },
   },
   booking: {
-    label: "Popular departure",
-    originalPrice: "From 149 €",
-    currentPrice: "127 €",
-    unit: "/ person",
-    discount: "−15%",
+    label: "Sells out often",
+    originalPrice: "From 99 €",
+    currentPrice: "79 €",
+    unit: "per person",
     button: "Check availability",
     benefits: [
       {
         emphasis: "Free cancellation",
-        text: "full refund up to 24 hours before",
+        text: "Cancel up to 24 hours before and receive a full refund",
       },
       {
         emphasis: "Book now, pay later",
-        text: "lock in your spot without paying today",
-      },
-      {
-        text: "Instant confirmation · Mobile ticket",
+        text: "Plan flexibly: reserve a spot without paying today",
       },
     ],
-    confirmationBadge: "Timing confirmed at booking",
   },
   sections: {
-    highlights: "What the day includes",
+    brief: "Activity in brief",
     included: "What’s included",
-    itinerary: "Tour itinerary",
+    itinerary: "Itinerary",
     description: "Full description",
-    practical: "Practical information",
+    practical: "Quick facts",
+    meetingPoint: "Meeting point",
+    important: "Important",
     reviews: "Verified reviews",
   },
   cards: {
     included: "Included",
     notIncluded: "Not included",
   },
-  highlights: [
-    {
-      icon: Mountain,
-      title: "UNESCO scenery",
-      text: "Follow a scenic UNESCO route through the Prosecco Hills, with time to stop rather than rush past.",
-    },
-    {
-      icon: Wine,
-      title: "Family-run winery",
-      text: "Taste local wines at a family-run winery and keep the atmosphere relaxed and personal.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Simple booking",
-      text: "Book with confidence through live availability and a simple, mobile-friendly flow.",
-    },
-    {
-      icon: Users,
-      title: "Small-group feel",
-      text: "Designed for small groups, with a pace that feels easy from Venice to Asolo.",
-    },
+  briefItems: [
+    "Explore the Prosecco Hills, a UNESCO World Heritage site",
+    "For your convenience, the tour starts and ends in Venice",
+    "Visit a family-run winery and learn how the wine is made",
+    "Taste several varieties of the famous Prosecco sparkling wine",
+    "Enjoy local delicacies: cheese, cured meats, and other tasty snacks",
   ],
   included: [
-    "Pickup and return from Piazzale Roma, Venice",
-    "Comfortable air-conditioned transport",
-    "Guide and group coordination",
+    "Pickup and return in central Venice",
+    "Air-conditioned vehicle transfer",
+    "Group coordinator",
     "Scenic drive through the Prosecco Hills",
-    "Guided winery visit and tasting",
-    "Four Valdobbiadene Prosecco DOCG wines",
-    "Light lunch with local cheese and cured meats",
-    "Aperol Spritz aperitivo with snacks",
-    "Free time in Asolo",
+    "Guided visit to a family-run winery",
+    "Tasting of several wines, including Prosecco",
+    "Food pairings with local cheese and cured meats",
   ],
-  notIncluded: ["Hotel transfer", "Gratuities"],
+  notIncluded: ["Hotel pickup and drop-off", "Tips"],
   itinerary: [
     {
       dot: "→",
-      title: "Meeting point: Piazzale Roma",
-      text: "Start in Venice and leave the city behind in comfort.",
-      time: "Start",
+      title: "Meeting point: Tronchetto",
+      text: "Tronchetto, bus parking",
+      time: "Meeting point",
     },
     {
       dot: "1",
-      title: "Osteria Senz'Oste",
-      text: "A scenic stop for photos and a first look over the hills.",
-      time: "20 min",
+      title: "Bus/coach transfer",
+      text: "50 minutes",
+      time: "50 min",
     },
     {
       dot: "2",
-      title: "Valdobbiadene",
-      text: "Winery visit, tasting, and a proper taste of the region.",
-      time: "1 h 45 min",
+      title: "The Prosecco Hills",
+      text: "Scenic drive, panoramic views along the route",
+      time: "30 min",
     },
     {
       dot: "3",
-      title: "Prosecco Hills viewpoint",
-      text: "Aperitivo with a view: Spritz, snacks, and a slow moment.",
-      time: "20 min",
+      title: "The Prosecco Hills",
+      text: "Wine tasting, guided visit, local snacks, culinary tasting, regional food",
+      time: "2 hours",
     },
     {
       dot: "4",
-      title: "Asolo",
-      text: "Time to wander one of Italy’s prettiest hill towns.",
-      time: "1 h 30 min",
+      title: "The Prosecco Hills",
+      text: "Free time, walk",
+      time: "20 min",
+    },
+    {
+      dot: "5",
+      title: "Bus/coach transfer",
+      text: "70 minutes",
+      time: "70 min",
     },
     {
       dot: "⌂",
-      title: "Return to Venice",
-      text: "Head back to Piazzale Roma after an easy full day out.",
-      time: "End",
+      title: "Return to:",
+      text: "Tronchetto, bus parking",
+      time: "Return",
     },
   ],
   description: [
-    "Start with pickup at Piazzale Roma, the big square in the centre of Venice. Travel in a comfortable van for less than an hour to the beautiful Prosecco Hills, a UNESCO World Heritage landscape.",
-    "Explore Veneto’s best-known wine region with your guide. Visit a family-run winery where you’ll learn how Prosecco is made straight from the producers. Taste four different Valdobbiadene Prosecco DOCG wines with local cheese, cured meats, and classic snacks.",
-    "Enjoy the classic Italian aperitivo — Aperol Spritz with snacks — at a panoramic stop among the vineyards. Then spend time in Asolo, the medieval hill town known as the “city of a hundred horizons,” with room to wander, shop, and take in the view.",
+    "Meet your guide in Venice, then reach the beautiful Prosecco Hills in less than an hour, a UNESCO World Heritage site.",
+    "Away from the crowds of Venice, we travel along the Prosecco Road, among vineyards and charming villages.",
+    "Skipping the most touristy wineries, you'll discover the secrets of a family-run vineyard known for its high-quality production. Learn how Italy's most famous sparkling wine is made and taste several types of Valdobbiadene Prosecco DOCG, among the best in quality. The tasting is accompanied by local delicacies such as cheese, cured meats, and other tasty snacks.",
+    "You'll have the opportunity to stroll among the vineyards, admiring the hills with the most breathtaking views imaginable. The tour ends back at the meeting point in Venice in the early afternoon.",
+    "If you'd like to enjoy excellent wines during your holiday but don't have enough room in your luggage, we're happy to ship the wines you purchase anywhere in the world. We ship the wine safely with protective packaging and a special box to help prevent bottle damage.",
   ],
   practicalInfo: [
-    { label: "Meeting point", value: "Piazzale Roma, Venice" },
-    { label: "Duration", value: "About 7 hours" },
-    { label: "What to bring", value: "Comfortable shoes and a camera" },
-    { label: "Minimum age", value: "14 years" },
+    { label: "Duration", value: "5 hours" },
+    { label: "Guide", value: "English" },
+    { label: "Start and end", value: "Venice" },
   ],
   restrictions: {
     notSuitableLabel: "Not suitable for",
-    notSuitable: "Children under 14 years · Wheelchair users",
-    goodToKnowLabel: "Good to know",
-    goodToKnow: "The tour runs in light rain · Small group (max 8 guests)",
+    notSuitable: ["Children under 10 years", "Wheelchair users"],
+  },
+  meetingPoint: {
+    text: "The guide will meet you at Tronchetto, opposite the People Mover stop 'TRONCHETTO' and the water bus stop 'TRONCHETTO MERCATO' (line 2).",
+    linkLabel: "Open in Google Maps",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Tronchetto%2C+Venice",
+  },
+  important: {
+    notAllowedLabel: "Not allowed",
+    notAllowed: ["Pets", "Food and drinks inside the vehicle"],
   },
   reviews: {
     summary: {
-      score: "4.9",
-      reviews: "394 reviews",
+      score: "5",
+      reviews: "8 reviews",
       badge: "Top-rated day trip from Venice",
       metrics: [
         { label: "Guide", value: "5.0" },
@@ -200,26 +192,44 @@ const tourContent = {
     },
     items: [
       {
-        name: "Michael",
+        name: "BeaVita Tours Client",
         meta: "United States · April 2026",
-        text: "The van was comfortable, the guide was excellent, and the winery stop was the highlight.",
+        text: "Lovely tour! Super cute vineyard and the drive up was wonderful as well!",
       },
       {
-        name: "Martin",
+        name: "Charlotte",
         meta: "United Kingdom · April 2026",
-        text: "Fabulous trip, well organised, great guide and host. Highly recommended.",
+        text: "We really enjoyed it",
       },
       {
-        name: "Amy M.",
-        meta: "International · March 2026",
-        text: "A brilliant day in the Prosecco hills. Great pace, great views, and great value.",
-        reply:
-          "Thank you so much — we’re glad the day felt special from the first stop to the last.",
+        name: "Huma",
+        meta: "United Kingdom · April 2026",
+        text: "Absolutely amazing, Chiara was a very welcoming guide, informed us well and we visited the top prosecco cantina in the DOCG, the top quality region in Valdobbiodene! Our driver Enzo drove very smoothly and we felt so safe. Strongly recommending the trip to solo travellers like me!",
       },
       {
-        name: "Keith W.",
-        meta: "International · February 2026",
-        text: "The views were stunning and the small group made it feel almost private.",
+        name: "Kerle",
+        meta: "Estona · April 2026",
+        text: "The guide was very kind, attentive and easy to communicate with. Visiting a small family-run Prosecco winery made the experience feel authentic and special – it was so interesting to hear their story. The driver was also very friendly. Overall a lovely and memorable day",
+      },
+      {
+        name: "BeaVita Tours Client",
+        meta: "United States · April 2026",
+        text: "Beautiful day we loved it!",
+      },
+      {
+        name: "BeaVita Tours Client",
+        meta: "Brazil · April 2026",
+        text: "amazing!!!!!!!!",
+      },
+      {
+        name: "Trinidad",
+        meta: "Brazil · April 2026",
+        text: "Wonderful!!! Only half a day, and you are completely in another world. Amazing hills, very funny tour guide. Best tour!",
+      },
+      {
+        name: "Debbie",
+        meta: "United States · April 2026",
+        text: "🤩 Amazing!!! The bus is super comfortable, the guide inside super kind and funny, but the winery is OMG absolutely incredible! Wonderful experience in just half of a day.",
       },
     ],
     replyLabel: "Reply from Bea Vita Tours",
@@ -242,15 +252,15 @@ const tourContent = {
 } as const;
 
 const heroTiles = [
-  ...Array.from({ length: 4 }, (_, i) => ({
-    src: `/landing/prosecco${i + 1}.jpg`,
+  ...Array.from({ length: 5 }, (_, i) => ({
+    src: `/landing/tourpics/gyg${i + 1}.webp`,
     alt: "Prosecco hills",
   })),
 ];
 
 const photoTiles = heroTiles.concat([
-  ...Array.from({ length: 19 }, (_, i) => ({
-    src: `/landing/broll${i + 1}.jpg`,
+  ...Array.from({ length: 3 }, (_, i) => ({
+    src: `/landing/tourpics/review${i + 1}.webp`,
     alt: "Prosecco hills footage",
   })),
 ]);
@@ -291,13 +301,15 @@ export default function LandingPage() {
     booking,
     sections,
     cards,
-    highlights,
+    briefItems,
     included,
     notIncluded,
     itinerary,
     description,
     practicalInfo,
     restrictions,
+    meetingPoint,
+    important,
     reviews,
     footer,
     counts,
@@ -377,14 +389,16 @@ export default function LandingPage() {
                 {platformLabels.getYourGuide}
               </a>
             </Badge>
-            <Badge
-              asChild
-              className="rounded-full bg-[#1a5276] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white"
-            >
-              <a href={urls.viator} target="_blank" rel="noreferrer">
-                {platformLabels.viator}
-              </a>
-            </Badge>
+            {urls.viator ? (
+              <Badge
+                asChild
+                className="rounded-full bg-[#1a5276] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.06em] text-white"
+              >
+                <a href={urls.viator} target="_blank" rel="noreferrer">
+                  {platformLabels.viator}
+                </a>
+              </Badge>
+            ) : null}
           </div>
         </div>
       </header>
@@ -472,9 +486,7 @@ export default function LandingPage() {
           <span className="text-[13px] text-[#7a6a52]">
             · {hero.rating.reviews}
           </span>
-          <Badge className="rounded-full bg-[#faf4e6] px-2.5 py-1 text-[10px] font-medium normal-case text-[#7a5c00]">
-            {hero.rating.badge}
-          </Badge>
+          <span className="text-[13px] text-[#7a6a52]">{hero.provider}</span>
         </div>
       </section>
 
@@ -491,10 +503,9 @@ export default function LandingPage() {
             <div className="font-playfair-display text-[32px] font-bold leading-none text-[#c9a84c]">
               {booking.currentPrice}
             </div>
-            <div className="pb-0.5 text-[13px] text-white/70">{booking.unit}</div>
-            <Badge className="ml-auto rounded-full bg-[#c9a84c] px-2.5 py-1 text-[11px] font-semibold normal-case text-[#1a1209]">
-              {booking.discount}
-            </Badge>
+            <div className="pb-0.5 text-[13px] text-white/70">
+              {booking.unit}
+            </div>
           </div>
 
           <Button
@@ -511,14 +522,8 @@ export default function LandingPage() {
               <div key={benefit.text} className="flex items-start gap-2">
                 <Check className="mt-1 size-4 text-[#c9a84c]" />
                 <span>
-                  {"emphasis" in benefit ? (
-                    <>
-                      <strong className="text-white/95">{benefit.emphasis}</strong>{" "}
-                      — {benefit.text}
-                    </>
-                  ) : (
-                    benefit.text
-                  )}
+                  <strong className="text-white/95">{benefit.emphasis}</strong>{" "}
+                  — {benefit.text}
                 </span>
               </div>
             ))}
@@ -528,34 +533,20 @@ export default function LandingPage() {
 
       <section className="px-4 py-5">
         <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
-          {sections.highlights}
+          {sections.brief}
         </h2>
-        <div className="grid gap-2">
-          {highlights.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Card
-                key={item.title}
-                className="border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm"
-              >
-                <CardContent className="flex items-start gap-3 px-3.5 py-2">
-                  <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-white text-[#1a1209] shadow-sm">
-                    <Icon className="size-4" />
-                  </div>
-
-                  <div>
-                    <div className="text-[13px] font-semibold text-[#1a1209]">
-                      {item.title}
-                    </div>
-                    <div className="mt-0.5 text-[13px] leading-5 text-[#3d3020]">
-                      {item.text}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <Card className="overflow-hidden border-[#c9a84c]/20 bg-white shadow-sm">
+          <CardContent className="p-4">
+            <ul className="space-y-2 text-[13px] leading-6 text-[#3d3020]">
+              {briefItems.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-[#c9a84c]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       </section>
 
       <section className="px-4 py-5">
@@ -610,16 +601,16 @@ export default function LandingPage() {
                     <div
                       className={[
                         "flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-semibold",
-                        step.time === "Start"
+                        step.time === "Meeting point"
                           ? "border-[#1a1209] bg-[#1a1209] text-[#c9a84c]"
-                          : step.time === "End"
+                          : step.time === "Return"
                             ? "border-[#c9a84c] bg-[#c9a84c] text-[#1a1209]"
                             : "border-[#c9a84c] bg-[#faf4e6] text-[#1a1209]",
                       ].join(" ")}
                     >
-                      {step.time === "Start" ? (
+                      {step.time === "Meeting point" ? (
                         <ArrowRight className="size-3" />
-                      ) : step.time === "End" ? (
+                      ) : step.time === "Return" ? (
                         <Home className="size-3" />
                       ) : (
                         step.dot
@@ -636,13 +627,17 @@ export default function LandingPage() {
                     <div className="mt-0.5 text-[12px] leading-5 text-[#7a6a52]">
                       {step.text}
                     </div>
-                    {step.time !== "Start" && step.time !== "End" ? (
+                    {step.time !== "Meeting point" && step.time !== "Return" ? (
                       <Badge className="mt-2 rounded-full bg-[#faf4e6] px-2 py-0.5 text-[10px] font-medium normal-case text-[#7a5c00]">
                         {step.time}
                       </Badge>
-                    ) : step.time === "Start" ? (
+                    ) : step.time === "Meeting point" ? (
                       <Badge className="mt-2 rounded-full bg-[#faf4e6] px-2 py-0.5 text-[10px] font-medium normal-case text-[#7a5c00]">
-                        {booking.confirmationBadge}
+                        Meeting point
+                      </Badge>
+                    ) : step.time === "Return" ? (
+                      <Badge className="mt-2 rounded-full bg-[#faf4e6] px-2 py-0.5 text-[10px] font-medium normal-case text-[#7a5c00]">
+                        Return
                       </Badge>
                     ) : null}
                   </div>
@@ -688,23 +683,56 @@ export default function LandingPage() {
               </CardContent>
             </Card>
           ))}
+          <Card
+            className="border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm"
+          >
+            <CardContent className="p-3 text-[13px] leading-6 text-[#3d3020]">
+              <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
+                {restrictions.notSuitableLabel}
+              </div>
+              {restrictions.notSuitable.join(" · ")}
+            </CardContent>
+          </Card>
         </div>
+      </section>
 
-        <Card className="mt-2 border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm">
-          <CardContent className="p-3 text-[13px] leading-6 text-[#3d3020]">
-            <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              {restrictions.notSuitableLabel}
-            </div>
-            {restrictions.notSuitable}
+      <section className="px-4 py-5">
+        <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
+          {sections.meetingPoint}
+        </h2>
+        <Card className="border-[#c9a84c]/20 bg-white shadow-sm">
+          <CardContent className="p-4 text-[14px] leading-7 text-[#3d3020]">
+            <p>{meetingPoint.text}</p>
+            <a
+              href={meetingPoint.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-1 font-medium text-[#1a1209] underline underline-offset-4"
+            >
+              {meetingPoint.linkLabel}
+              <ChevronRight className="size-4" />
+            </a>
           </CardContent>
         </Card>
+      </section>
 
-        <Card className="mt-2 border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm">
-          <CardContent className="p-3 text-[13px] leading-6 text-[#3d3020]">
-            <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-              {restrictions.goodToKnowLabel}
+      <section className="px-4 py-5">
+        <h2 className="mb-3 font-playfair-display text-[17px] font-semibold text-[#1a1209]">
+          {sections.important}
+        </h2>
+        <Card className="border-[#c9a84c]/20 bg-[#faf4e6] shadow-sm">
+          <CardContent className="p-4">
+            <div className="mb-2 text-[11px] uppercase tracking-[0.08em] text-[#7a6a52]">
+              {important.notAllowedLabel}
             </div>
-            {restrictions.goodToKnow}
+            <div className="space-y-2 text-[13px] leading-6 text-[#3d3020]">
+              {important.notAllowed.map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-[#c0392b]" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -775,20 +803,22 @@ export default function LandingPage() {
                         />
                       </button>
                     ))}
-                    {photoTiles.length - reviews.gallery.previewCount > 0 ? (
-                      <button
-                        type="button"
-                        className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
-                        onClick={() => {
-                          setReviewGalleryIndex(reviews.gallery.previewCount);
-                          setReviewGalleryActiveIndex(reviews.gallery.previewCount);
-                          setReviewGalleryOpen(true);
-                        }}
-                        aria-label={reviews.gallery.openGalleryLabel}
-                      >
-                        +{photoTiles.length - reviews.gallery.previewCount}
-                      </button>
-                    ) : null}
+                  {photoTiles.length - reviews.gallery.previewCount > 0 ? (
+                    <button
+                      type="button"
+                      className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
+                      onClick={() => {
+                        setReviewGalleryIndex(reviews.gallery.previewCount);
+                        setReviewGalleryActiveIndex(
+                          reviews.gallery.previewCount,
+                        );
+                        setReviewGalleryOpen(true);
+                      }}
+                      aria-label={reviews.gallery.openGalleryLabel}
+                    >
+                      +{photoTiles.length - reviews.gallery.previewCount}
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -798,7 +828,7 @@ export default function LandingPage() {
         <div className="mt-3 space-y-3">
           {reviews.items.map((review) => (
             <Card
-              key={review.name}
+              key={review.name + Math.random().toString()}
               className="border-[#c9a84c]/20 bg-white shadow-sm"
             >
               <CardContent className="p-4">
@@ -816,14 +846,6 @@ export default function LandingPage() {
                 <div className="mt-2 text-[13px] leading-6 text-[#3d3020]">
                   {review.text}
                 </div>
-                {"reply" in review ? (
-                  <div className="mt-3 rounded-xl border-l-2 border-[#c9a84c] bg-[#faf4e6] px-3 py-2 text-[12px] text-[#7a6a52]">
-                    <div className="mb-1 text-[10px] uppercase tracking-[0.08em] text-[#7a6a52]">
-                      {reviews.replyLabel}
-                    </div>
-                    {review.reply}
-                  </div>
-                ) : null}
               </CardContent>
             </Card>
           ))}
@@ -882,9 +904,7 @@ export default function LandingPage() {
             <div className="text-[10px] uppercase tracking-[0.08em] text-[#e8d4a0]">
               {footer.label}
             </div>
-            <div className="text-[14px] font-semibold">
-              {footer.title}
-            </div>
+            <div className="text-[14px] font-semibold">{footer.title}</div>
           </div>
           <Button
             asChild
