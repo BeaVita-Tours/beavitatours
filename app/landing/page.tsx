@@ -153,12 +153,7 @@ const reviews = [
   },
 ];
 
-const photoTiles = [
-  { src: "/landing/prosecco1.jpg", alt: "Prosecco hills" },
-  { src: "/landing/prosecco2.jpg", alt: "Prosecco hills" },
-  { src: "/landing/prosecco3.jpg", alt: "Prosecco hills" },
-  { src: "/landing/prosecco4.jpg", alt: "Prosecco hills" },
-];
+const photoTiles: { src: string; alt: string }[] = [];
 
 const heroThumbnailCount = 3;
 const reviewPreviewCount = 4;
@@ -207,6 +202,20 @@ export default function LandingPage() {
     null,
   );
   const [reviewGalleryActiveIndex, setReviewGalleryActiveIndex] = useState(0);
+
+  for (let i = 0; i < 4; i++) {
+    photoTiles.push({
+      src: `/landing/prosecco${i + 1}.jpg`,
+      alt: "Prosecco hills",
+    });
+  }
+
+  for (let i = 0; i < 19; i++) {
+    photoTiles.push({
+      src: `/landing/broll${i + 1}.jpg`,
+      alt: "Prosecco hills footage",
+    });
+  }
 
   useEffect(() => {
     if (!heroApi) {
@@ -648,9 +657,11 @@ export default function LandingPage() {
                 </div>
               </div>
 
-                <div className="overflow-hidden rounded-3xl bg-[#c9a84c]/15 p-1">
-                  <div className="grid grid-cols-3 gap-1">
-                    {photoTiles.slice(0, reviewPreviewCount).map((photo, index) => (
+              <div className="overflow-hidden rounded-3xl bg-[#c9a84c]/15 p-1">
+                <div className="grid grid-cols-3 gap-1">
+                  {photoTiles
+                    .slice(0, reviewPreviewCount)
+                    .map((photo, index) => (
                       <button
                         key={photo.src}
                         type="button"
@@ -671,25 +682,25 @@ export default function LandingPage() {
                         />
                       </button>
                     ))}
-                    {photoTiles.length - reviewPreviewCount > 0 ? (
-                      <button
-                        type="button"
-                        className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
-                        onClick={() => {
-                          setReviewGalleryIndex(reviewPreviewCount);
-                          setReviewGalleryActiveIndex(reviewPreviewCount);
-                          setReviewGalleryOpen(true);
-                        }}
-                        aria-label="Open gallery"
-                      >
-                        +{photoTiles.length - reviewPreviewCount}
-                      </button>
-                    ) : null}
-                  </div>
+                  {photoTiles.length - reviewPreviewCount > 0 ? (
+                    <button
+                      type="button"
+                      className="flex aspect-square items-center justify-center bg-[#1a1209] text-xl font-semibold text-[#c9a84c] transition-transform active:scale-[0.98]"
+                      onClick={() => {
+                        setReviewGalleryIndex(reviewPreviewCount);
+                        setReviewGalleryActiveIndex(reviewPreviewCount);
+                        setReviewGalleryOpen(true);
+                      }}
+                      aria-label="Open gallery"
+                    >
+                      +{photoTiles.length - reviewPreviewCount}
+                    </button>
+                  ) : null}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="mt-3 space-y-3">
           {reviews.map((review) => (
