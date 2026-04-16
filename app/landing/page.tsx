@@ -252,18 +252,18 @@ const tourContent = {
 } as const;
 
 const heroTiles = [
-  ...Array.from({ length: 5 }, (_, i) => ({
-    src: `/landing/tourpics/gyg${i + 1}.webp`,
-    alt: "Prosecco hills",
-  })),
+  { src: "/landing/tourpics/gyg1.webp", alt: "Prosecco hills aerial view" },
+  { src: "/landing/prosecco1.jpg", alt: "Prosecco hills vineyard" },
+  { src: "/landing/prosecco2.jpg", alt: "Prosecco hills tasting" },
+  { src: "/landing/prosecco4.jpg", alt: "Prosecco hills tasting" },
 ];
 
-const photoTiles = heroTiles.concat([
+const photoTiles = [
   ...Array.from({ length: 3 }, (_, i) => ({
     src: `/landing/tourpics/review${i + 1}.webp`,
     alt: "Prosecco hills footage",
   })),
-]);
+];
 
 function StarRow({ className = "" }: { className?: string }) {
   return (
