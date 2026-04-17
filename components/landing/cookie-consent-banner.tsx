@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Cookie, Settings, Shield } from "lucide-react";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
