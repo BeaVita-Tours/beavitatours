@@ -19,9 +19,9 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 const landingMetadata = {
   title:
-    "BeaVitaTours - Tours and Day Trips from Venice to Dolomites & Prosecco",
+    "BeaVitaTours - Tours and Day Trips to Dolomites & Prosecco",
   description:
-    "Experience the best Tours and Day Trips from Venice to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
+    "Experience the best Tours and Day Trips to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
 };
 
 export const metadata: Metadata = landingMetadata;
