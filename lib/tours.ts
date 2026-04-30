@@ -1,7 +1,8 @@
 import tourHiking from "@/public/tourhiking.jpg";
 import hiking2 from "@/public/hiking2.jpg";
 import tourCustom from "@/public/tourcustom.jpg";
-import tourProsecco from "@/public/tourprosecco.jpg";
+import tourProseccoold from "@/public/tourprosecco.jpg";
+import tourProsecco from "@/public/foto paesaggio edited.png";
 import tourWines from "@/public/tourwines.jpg";
 import placeholder from "@/public/placeholder.jpg";
 import prosecco3 from "@/public/prosecco 3.jpg";
