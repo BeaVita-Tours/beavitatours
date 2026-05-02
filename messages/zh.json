@@ -40,25 +40,25 @@
     "marketingDescription": "用于衡量广告效果并支持再营销。此类别仅在您同意后加载。"
   },
   "home": {
-    "badge": "从威尼斯出发的旅游和一日游",
-    "heroTitle": "探索威尼斯周边的美景",
+    "badge": "威尼斯出发",
+    "heroTitle": "精品短途旅行与一日体验",
     "heroSubtitle": "多洛米蒂山脉、普罗塞克山丘、艺术城市、美酒美食等...",
     "exploreTours": "探索旅游",
     "bookNow": "立即预订",
-    "toursTitle": "我们的旅游",
-    "toursDescription": "从我们精心策划的旅游和一日游中选择，每一个都旨在让您沉浸在威尼托地区的真正精髓中。",
+    "toursTitle": "精选旅程",
+    "toursDescription": "甄选多条精心设计的行程与一日游，带您深入感受威尼托地区的独特风光、人文魅力与生活气息。",
     "features": {
       "bestQuality": "最佳品质",
       "bestQualityDesc": "优质服务和体验",
-      "bestValue": "最佳价值",
+      "bestValue": "最佳价格",
       "bestValueDesc": "直接预订，无中介",
       "expertGuides": "专业导游",
       "expertGuidesDesc": "丰富的当地知识",
       "customization": "个性化定制",
       "customizationDesc": "根据您的兴趣量身定制"
     },
-    "ctaTitle": "准备好预订了吗？",
-    "ctaDescription": "今天就开始您在威尼斯附近的冒险之旅。联系我们预订您的私人旅游。",
+    "ctaTitle": "开启您的专属旅程",
+    "ctaDescription": "从威尼斯出发，邂逅周边最动人的风景与体验。联系我们，预订您的私享之旅。",
     "viewRatesBook": "查看价格并预订",
     "reviewsTitle": "客户评价"
   },
@@ -184,10 +184,10 @@
     "categories": {
       "dolomites": "多洛米蒂之旅",
       "prosecco": "普罗塞克之旅",
-      "cultural": "文化之旅",
+      "cultural": "意式人文漫游",
       "activeAdventure": "活跃冒险",
       "wineFood": "美酒与美食",
-      "sharedTours": "共享旅游"
+      "sharedTours": "精品拼团"
     },
     "data": {
       "dolomites": {
