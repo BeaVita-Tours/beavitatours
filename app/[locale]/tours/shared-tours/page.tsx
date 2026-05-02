@@ -1,23 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { SharedToursRegiondoWidget } from "@/components/shared-tours-regiondo-widget";
 
 export default function SharedTourPage() {
   const t = useTranslations("tours.data.sharedTours");
-
-  useEffect(() => {
-    const src = "https://widgets.regiondo.net/catalog/v1/catalog-widget.min.js";
-    if (!document.querySelector(`script[src="${src}"]`)) {
-      const s = document.createElement("script");
-      s.src = src;
-      s.type = "text/javascript";
-      s.async = true;
-      document.body.appendChild(s);
-    }
-  }, []);
 
   return (
     <div
@@ -70,14 +60,7 @@ export default function SharedTourPage() {
           </div>
         </section>
         <section className="min-h-[60vh]">
-          <div
-            id="regiondo-widget"
-            className="w-full h-full"
-            dangerouslySetInnerHTML={{
-              __html:
-                '<product-catalog-widget widget-id="7365a711-ca3c-4834-8686-e19642235ae2"></product-catalog-widget>',
-            }}
-          />
+          <SharedToursRegiondoWidget />
         </section>
       </main>
     </div>
