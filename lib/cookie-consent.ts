@@ -231,6 +231,8 @@ export function clearTrackingArtifacts() {
     'script[id^="meta-pixel-script"]',
     'script[id^="google-tag-manager-script"]',
     'iframe[title="Google Tag Manager"]',
+    'script[id^="google-ads-src"]',
+    'script[id^="google-ads-config"]',
   ];
 
   for (const selector of selectors) {
