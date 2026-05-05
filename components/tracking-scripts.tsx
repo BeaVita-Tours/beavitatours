@@ -2,6 +2,7 @@
 
 import { MetaPixel } from "@/components/meta-pixel";
 import { GoogleTagManager } from "@/components/google-tag-manager";
+import { GoogleAds } from "@/components/google-ads";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 export function TrackingScripts() {
@@ -22,6 +23,14 @@ export function TrackingScripts() {
       {hasMarketingConsent && (
         <MetaPixel
           key={`meta-${scriptId}`}
+          enabled={hasMarketingConsent}
+          scriptId={scriptId}
+        />
+      )}
+      {/* Google Ads only loads with marketing consent */}
+      {hasMarketingConsent && (
+        <GoogleAds
+          key={`google-ads-${scriptId}`}
           enabled={hasMarketingConsent}
           scriptId={scriptId}
         />
