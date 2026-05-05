@@ -62,7 +62,8 @@ const OTAS: Array<{
 export default function HomePage() {
   const t = useTranslations("home");
   const tTours = useTranslations("toursList");
-  const tours = getTours(tTours);
+  const tData = useTranslations("tours.data");
+  const tours = getTours(tTours, tData);
 
   return (
     <main>

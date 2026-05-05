@@ -10,36 +10,45 @@ import mtb from "@/public/imgs/adventure.jpeg";
 import gallaplacidia from "@/public/gallaplacidia.webp";
 import shared from "@/public/shared.png";
 
-export const getTours = (t: (key: string) => string) => [
+export const getTours = (
+  tList: (key: string) => string,
+  tData: (key: string) => string,
+) => [
   {
-    title: t("dolomites"),
+    title: tList("dolomites"),
     href: "/tours/dolomites",
     image: "/imgs/dolomites/dolomitesmain.jpeg",
+    badge: tData("dolomites.badge") || undefined,
   },
   {
-    title: t("prosecco"),
+    title: tList("prosecco"),
     href: "/tours/prosecco",
     image: tourProsecco,
+    badge: tData("prosecco.badge") || undefined,
   },
   {
-    title: t("wineFood"),
+    title: tList("wineFood"),
     href: "/tours/wine-food",
     image: tourWines,
+    badge: tData("wineFood.badge") || undefined,
   },
   {
-    title: t("activeAdventure"),
+    title: tList("activeAdventure"),
     href: "/tours/active-adventure",
     image: mtb,
+    badge: tData("activeAdventure.badge") || undefined,
   },
   {
-    title: t("cultural"),
+    title: tList("cultural"),
     href: "/tours/cultural",
     image: gallaplacidia,
+    badge: tData("cultural.badge") || undefined,
   },
   {
-    title: t("sharedTours"),
+    title: tList("sharedTours"),
     href: "/tours/shared-tours",
     image: shared,
+    badge: undefined,
   },
 ];
 
@@ -49,31 +58,37 @@ export const tours = [
     title: "The Dolomites",
     href: "/tours/dolomites",
     image: "/imgs/dolomites/dolomitesmain.jpeg",
+    badge: "UNESCO World Heritage Site",
   },
   {
     title: "The Prosecco Hills",
     href: "/tours/prosecco",
     image: tourProsecco,
+    badge: "UNESCO World Heritage Site",
   },
   {
     title: "Wine and Food",
     href: "/tours/wine-food",
     image: tourWines,
+    badge: "UNESCO World Heritage Site",
   },
   {
     title: "Active & Adventure",
     href: "/tours/active-adventure",
     image: mtb,
+    badge: undefined,
   },
   {
     title: "Cultural",
     href: "/tours/cultural",
     image: gallaplacidia,
+    badge: "UNESCO World Heritage Site",
   },
   {
     title: "Shared Tours",
     href: "/tours/shared-tours",
     image: shared,
+    badge: undefined,
   },
 ];
 

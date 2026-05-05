@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { useTranslations } from "next-intl";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
@@ -11,9 +12,10 @@ interface TourCardProps {
   title: string;
   href: string;
   image: any;
+  badge?: string;
 }
 
-export function TourCard({ title, href, image }: TourCardProps) {
+export function TourCard({ title, href, image, badge }: TourCardProps) {
   const t = useTranslations("tours");
 
   return (
@@ -30,6 +32,14 @@ export function TourCard({ title, href, image }: TourCardProps) {
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
+
+        {badge ? (
+          <div className="absolute top-3 left-3 z-10">
+            <Badge className="bg-accent text-accent-foreground border-0">
+              {badge}
+            </Badge>
+          </div>
+        ) : null}
 
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/25 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
 
