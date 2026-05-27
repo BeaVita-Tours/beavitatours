@@ -105,3 +105,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Keep Regiondo calendar widget overlays below site chrome. */
+.rcw-modal-backdrop {
+  z-index: 40 !important;
+}
+
+.rcw-modal {
+  z-index: 41 !important;
+}
+
+.rcw-loader {
+  z-index: 39 !important;
+}
