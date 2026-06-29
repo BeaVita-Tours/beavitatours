@@ -47,8 +47,8 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
     languageVersionsLabel: "Language versions",
     versionLabel: "Version",
     lastUpdatedLabel: "Last updated",
-    version: "1.0",
-    lastUpdated: "28 March 2026",
+    version: "1.1",
+    lastUpdated: "29 June 2026",
     sections: [
       {
         heading: "1. Controller",
@@ -87,13 +87,12 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
       },
       {
         heading: "5. Third-party services and transfers",
-        paragraphs: [
-          "The website currently uses the following services:",
-        ],
+        paragraphs: ["The website currently uses the following services:"],
         bullets: [
           "Umami Analytics for privacy-friendly usage statistics.",
           "Meta Pixel for marketing and conversion measurement, only after marketing consent.",
           "Google Tag Manager as a container for consent-based tags, only after the relevant consent is granted.",
+          "Regiondo GmbH for booking and analytics services through embedded booking widgets on the website. Some user data (such as cookies and usage information) may be shared with Regiondo, a European company based in Germany, for their analytics purposes.",
         ],
       },
       {
@@ -119,8 +118,8 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
     languageVersionsLabel: "Versioni linguistiche",
     versionLabel: "Versione",
     lastUpdatedLabel: "Ultimo aggiornamento",
-    version: "1.0",
-    lastUpdated: "28 marzo 2026",
+    version: "1.1",
+    lastUpdated: "29 giugno 2026",
     sections: [
       {
         heading: "1. Titolare del trattamento",
@@ -159,13 +158,12 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
       },
       {
         heading: "5. Servizi terzi e trasferimenti",
-        paragraphs: [
-          "Il sito utilizza attualmente i seguenti servizi:",
-        ],
+        paragraphs: ["Il sito utilizza attualmente i seguenti servizi:"],
         bullets: [
           "Umami Analytics per statistiche di utilizzo rispettose della privacy.",
           "Meta Pixel per marketing e misurazione delle conversioni, solo dopo il consenso marketing.",
           "Google Tag Manager come contenitore per tag basati sul consenso, solo dopo il consenso pertinente.",
+          "Regiondo GmbH per servizi di prenotazione e analisi tramite i widget di prenotazione integrati nel sito. Alcuni dati dell'utente (come cookie e informazioni di utilizzo) potrebbero essere condivisi con Regiondo, una società europea con sede in Germania, per le loro finalità analitiche.",
         ],
       },
       {
@@ -191,8 +189,8 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
     languageVersionsLabel: "言語版",
     versionLabel: "版",
     lastUpdatedLabel: "最終更新",
-    version: "1.0",
-    lastUpdated: "2026年3月28日",
+    version: "1.1",
+    lastUpdated: "2026年6月29日",
     sections: [
       {
         heading: "1. 管理者",
@@ -231,13 +229,12 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
       },
       {
         heading: "5. 第三者サービスと移転",
-        paragraphs: [
-          "現在、本サイトでは以下のサービスを利用しています。",
-        ],
+        paragraphs: ["現在、本サイトでは以下のサービスを利用しています。"],
         bullets: [
           "Umami Analytics: プライバシーに配慮した利用統計。",
           "Meta Pixel: マーケティングおよびコンバージョン測定（マーケティング同意後のみ）。",
           "Google Tag Manager: 同意に基づくタグのコンテナ（該当する同意後のみ）。",
+          "Regiondo GmbH: ウェブサイトに埋め込まれた予約ウィジェットを通じた予約および分析サービス。一部のユーザーデータ（Cookieや利用情報など）は、ドイツに拠点を置く欧州企業である Regiondo とその分析目的のために共有される場合があります。",
         ],
       },
       {
@@ -263,8 +260,8 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
     languageVersionsLabel: "语言版本",
     versionLabel: "版本",
     lastUpdatedLabel: "最后更新",
-    version: "1.0",
-    lastUpdated: "2026年3月28日",
+    version: "1.1",
+    lastUpdated: "2026年6月29日",
     sections: [
       {
         heading: "1. 数据控制方",
@@ -275,9 +272,7 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
       },
       {
         heading: "2. 我们处理的数据",
-        paragraphs: [
-          "我们仅处理运行网站和回应您的请求所必需的数据。",
-        ],
+        paragraphs: ["我们仅处理运行网站和回应您的请求所必需的数据。"],
         bullets: [
           "您通过表单或电子邮件提交的联系方式和消息内容。",
           "IP 地址、浏览器类型、设备信息、访问页面和时间戳等技术信息。",
@@ -303,13 +298,12 @@ export const privacyPolicies: Record<PrivacyPolicyLanguage, PrivacyPolicyContent
       },
       {
         heading: "5. 第三方服务与数据传输",
-        paragraphs: [
-          "本网站当前使用以下服务：",
-        ],
+        paragraphs: ["本网站当前使用以下服务："],
         bullets: [
           "Umami Analytics：用于尊重隐私的访问统计。",
           "Meta Pixel：用于营销和转化衡量，仅在营销同意后启用。",
           "Google Tag Manager：用于基于同意的标签容器，仅在获得相应同意后启用。",
+          "Regiondo GmbH：用于通过网站嵌入式预订小部件提供预订和分析服务。某些用户数据（如 Cookie 和使用信息）可能会与 Regiondo（一家总部位于德国的欧洲公司）共享，用于其分析目的。",
         ],
       },
       {
