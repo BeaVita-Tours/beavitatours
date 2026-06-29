@@ -260,5 +260,65 @@
     "learnMore": "Learn More",
     "readMore": "Read More",
     "seeMore": "See More"
+  },
+  "landingPages": {
+    "shared": {
+      "trustBadges": {
+        "rating": "⭐ 4.9 Tripadvisor (71 reviews)",
+        "ranking": "🏅 #22 of 293 in Venice",
+        "licensed": "✅ Licensed operator · Auth. 6297 TV",
+        "familyRun": "🏠 Family-run",
+        "freeCancellation": "🔄 Free cancellation"
+      },
+      "howItWorks": {
+        "title": "How it works",
+        "step1Title": "Choose your tour",
+        "step1Desc": "Dolomites, Prosecco hills, or a combo — departing from where you're staying",
+        "step2Title": "Book direct",
+        "step2Desc": "No booking fees, no middlemen. You book straight with the local operator.",
+        "step3Title": "Meet your guide",
+        "step3Desc": "Easy meeting point. Just look for the guide in the green jacket.",
+        "step1Icon": "📍",
+        "step2Icon": "📞",
+        "step3Icon": "👋"
+      },
+      "whyBookDirect": {
+        "title": "Why book direct",
+        "subtitle": "No platforms, no markups — just a local family welcoming you to their backyard.",
+        "prop1Title": "Talk directly to the operator",
+        "prop1Desc": "Got questions about the meeting point, special requests, or the itinerary? You'll get answers straight from the person running the tour — before and during your trip.",
+        "prop2Title": "No booking fees, best price",
+        "prop2Desc": "No platform commissions added. What you see is exactly what you pay.",
+        "prop3Title": "Free cancellation up to 48h before",
+        "prop3Desc": "Plans change. Cancel free of charge up to 48 hours before your tour — full refund, no questions asked.",
+        "prop4Title": "Licensed, family-run local operator",
+        "prop4Desc": "Auth. 6297 prov. TV. We're a fully licensed tour operator based in the Veneto region — not a third-party reseller.",
+        "ctaLabel": "Book your day trip now"
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "q1": "Where do I meet my guide for pickup?",
+        "a1": "Our shared day trips depart from a designated meeting point in Venice. For private tours, we can pick you up at your accommodation on the mainland or arrange a convenient meeting spot. You'll receive full details in your booking confirmation.",
+        "q2": "How will I recognise my guide at the meeting point?",
+        "a2": "Your guide will be at the meeting point 15 minutes before departure, wearing a bright green jacket and holding a Bea Vita Tours sign — easy to spot even in a busy square.",
+        "q3": "Do you offer hotel pickup?",
+        "a3": "For private tours we offer complimentary pickup from any hotel or address on the mainland. For shared tours, guests make their own way to the designated meeting point. If you're staying on the Venice island, a private water taxi can be arranged at an additional cost.",
+        "q4": "What is your cancellation policy?",
+        "a4": "You can cancel free of charge up to 48 hours before the tour starts. Cancellations must be sent by email or WhatsApp. After that window, the full rate applies.",
+        "q5": "Are the tours suitable for children?",
+        "a5": "Private tours are child-friendly. Children under 36 kg (79 lb) or 150 cm (4'9\") must use a proper car seat — we can provide baby seats and booster seats free of charge if you let us know a few days in advance. Shared tours have age restrictions, so please check when booking."
+      },
+      "backLabel": "Back to all tours"
+    },
+    "fromVenice": {
+      "heroTitle": "Escape Venice for a day: Dolomites & Prosecco await",
+      "heroSubtitle": "Trade the crowds and canals for mountain peaks and vineyard hills — just a short drive from the city.",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-venice-for-a-day"
+    },
+    "fromJesolo": {
+      "heroTitle": "Escape the beach for a day: Dolomites & Prosecco await",
+      "heroSubtitle": "Swap the sun lounger for mountain peaks and vineyard hills — your day trip starts from Jesolo or Cavallino.",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
+    }
   }
 }

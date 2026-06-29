@@ -260,5 +260,65 @@
     "learnMore": "了解更多",
     "readMore": "阅读更多",
     "seeMore": "查看更多"
+  },
+  "landingPages": {
+    "shared": {
+      "trustBadges": {
+        "rating": "⭐ 携程评分 4.9（71 条评价）",
+        "ranking": "🏅 威尼斯 293 个景点中排名第 22",
+        "licensed": "✅ 持证旅行社 · 注册号 6297 TV",
+        "familyRun": "🏠 家族经营",
+        "freeCancellation": "🔄 免费取消"
+      },
+      "howItWorks": {
+        "title": "行程三步走",
+        "step1Title": "选择您的旅程",
+        "step1Desc": "多洛米蒂山、普罗塞克丘陵或组合行程——从您的住处出发",
+        "step2Title": "直接预订",
+        "step2Desc": "无预订费，无中间商。直接与当地运营商对接。",
+        "step3Title": "与向导会合",
+        "step3Desc": "集合地点明确便捷。请认准身穿绿色夹克的向导。",
+        "step1Icon": "📍",
+        "step2Icon": "📞",
+        "step3Icon": "👋"
+      },
+      "whyBookDirect": {
+        "title": "为何选择直接预订",
+        "subtitle": "没有平台加价，只有本地家族真诚欢迎您的到来。",
+        "prop1Title": "直接与经营者沟通",
+        "prop1Desc": "关于集合地点、特殊要求或行程安排有任何疑问？直接向负责带团的经营者提问——出发前和旅途中都能随时沟通。",
+        "prop2Title": "无预订费，最优价格",
+        "prop2Desc": "不添加任何平台佣金。所见即所付。",
+        "prop3Title": "出发前 48 小时免费取消",
+        "prop3Desc": "计划有变？出发前 48 小时可免费取消——全额退款，无需任何理由。",
+        "prop4Title": "持证经营的本地家族企业",
+        "prop4Desc": "注册号 6297 prov. TV。我们是威尼托大区持证旅游运营商，绝非第三方转售商。",
+        "ctaLabel": "立即预订一日游"
+      },
+      "faq": {
+        "title": "常见问题",
+        "q1": "我在哪里与导游会合？",
+        "a1": "我们的拼团一日游从威尼斯指定的集合点出发。私人定制团可安排在陆地上门接送或协商方便的会合地点。具体信息将在预订确认中详细告知。",
+        "q2": "如何在集合点认出导游？",
+        "a2": "导游会在出发前 15 分钟到达集合点，身穿醒目的绿色夹克并手持 Bea Vita Tours 标牌——即使在繁忙的广场也能轻松找到。",
+        "q3": "提供酒店接送服务吗？",
+        "a3": "私人定制团可免费从大陆地区的酒店或地址接送。拼团游需要客人自行前往指定集合点。如果您住在威尼斯岛上，可以额外安排私人水上出租车。",
+        "q4": "取消政策是怎样的？",
+        "a4": "出发前 48 小时可免费取消。取消需通过电子邮件或 WhatsApp 通知。超过该时限将按全款收取。",
+        "q5": "儿童适合参加这些行程吗？",
+        "a5": "私人定制团适合儿童参加。体重低于 36 公斤或身高低于 150 厘米的儿童必须使用儿童安全座椅——我们可免费提供婴儿座椅和增高垫，请提前几天告知。拼团游有年龄限制，预订时请确认。"
+      },
+      "backLabel": "返回所有旅游"
+    },
+    "fromVenice": {
+      "heroTitle": "逃离威尼斯一日：多洛米蒂与普罗塞克的山水之约",
+      "heroSubtitle": "暂别运河与人潮——驱车片刻，便可置身于群山之巅与葡萄园丘陵之间。",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-venice-for-a-day"
+    },
+    "fromJesolo": {
+      "heroTitle": "暂别海滩一日：多洛米蒂与普罗塞克的山水之约",
+      "heroSubtitle": "把沙滩躺椅换成山峰与葡萄园——您的精彩一日从耶索洛或卡瓦利诺出发。",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
+    }
   }
 }

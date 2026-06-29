@@ -212,7 +212,7 @@
         "title": "Vino e Cibo",
         "subtitle": "Un viaggio attraverso i migliori vini e i sapori autentici della regione Veneto.",
         "badge": "Patrimonio Mondiale UNESCO",
-        "ctaHeading": "Pronto per la gita giornaliera definitiva?",
+        "ctaHeading": "Pronto per il tour giornaliero definitivo?",
         "description1": "La cucina italiana, inclusa la sua essenziale cultura del vino, è un patrimonio UNESCO: un riconoscimento dell'arte della cucina italiana come rituale sociale di convivialità, pratiche condivise e profonda connessione con la terra e le stagioni, che comprende l'intera catena alimentare dalla coltivazione alla tavola, con il vino che funge da ponte cruciale tra tradizioni e generazioni.",
         "description2": "Ogni regione ha le sue specialità e offre tour enogastronomici per scoprire la variegata e sempre gustosa cucina locale. La Regione Veneto, grazie alla sua particolare morfologia che include aree pianeggianti, montuose e costiere, può vantare un'industria enogastronomica ricca di una grande varietà di specialità.",
         "description3": "Per stuzzicare l'appetito ti assistiamo nell'apparecchiare la tavola dandoti alcuni consigli per un perfetto tour e degustazioni fuori dai sentieri battuti: oasi indisturbate di tranquillità in grado di soddisfare tutti i tuoi gusti e bisogni."
@@ -260,5 +260,65 @@
     "learnMore": "Scopri di più",
     "readMore": "Leggi di più",
     "seeMore": "Vedi altro"
+  },
+  "landingPages": {
+    "shared": {
+      "trustBadges": {
+        "rating": "⭐ 4.9 Tripadvisor (71 recensioni)",
+        "ranking": "🏅 #22 su 293 a Venezia",
+        "licensed": "✅ Operatore autorizzato · Aut. 6297 TV",
+        "familyRun": "🏠 Gestione familiare",
+        "freeCancellation": "🔄 Cancellazione gratuita"
+      },
+      "howItWorks": {
+        "title": "Come funziona",
+        "step1Title": "Scegli il tuo tour",
+        "step1Desc": "Dolomiti, Colline del Prosecco o un tour combinato — partenza da dove alloggi",
+        "step2Title": "Prenota diretto",
+        "step2Desc": "Niente commissioni, niente intermediari. Prenoti direttamente dal gestore locale.",
+        "step3Title": "Incontra la guida",
+        "step3Desc": "Punto di ritrovo facile da raggiungere. Cerca la nostra guida con la giacca verde.",
+        "step1Icon": "📍",
+        "step2Icon": "📞",
+        "step3Icon": "👋"
+      },
+      "whyBookDirect": {
+        "title": "Perché prenotare direttamente con l'operatore",
+        "subtitle": "Niente piattaforme né commissioni — solo una famiglia locale che ti accoglie nel suo territorio.",
+        "prop1Title": "Parli direttamente con l'operatore",
+        "prop1Desc": "Hai domande sul punto di ritrovo, richieste speciali o sull'itinerario? Ricevi risposta direttamente da chi gestisce il tour — prima e durante.",
+        "prop2Title": "Niente commissioni, miglior prezzo",
+        "prop2Desc": "Nessuna commissione di piattaforma aggiunta. Quello che vedi è esattamente quello che paghi.",
+        "prop3Title": "Cancellazione gratuita fino a 48h prima",
+        "prop3Desc": "I piani cambiano. Annulla gratis fino a 48 ore prima del tour — rimborso completo, senza storie.",
+        "prop4Title": "Operatore locale autorizzato a gestione familiare",
+        "prop4Desc": "Aut. 6297 prov. TV. Siamo un tour operator regolarmente autorizzato, con sede in Veneto — non un rivenditore terzo.",
+        "ctaLabel": "Prenota il tuo tour ora"
+      },
+      "faq": {
+        "title": "Domande frequenti",
+        "q1": "Dove incontro la guida per la partenza?",
+        "a1": "I nostri tour condivisi partono da un punto di ritrovo stabilito a Venezia. Per i tour privati, possiamo venirti a prendere direttamente al tuo alloggio in terraferma o concordare un punto comodo. Riceverai tutti i dettagli nella conferma di prenotazione.",
+        "q2": "Come riconosco la guida al punto di ritrovo?",
+        "a2": "La guida ti aspetterà al punto di ritrovo 15 minuti prima della partenza, con una giacca verde ben visibile e un cartello Bea Vita Tours — facile da individuare anche in una piazza affollata.",
+        "q3": "Fate il servizio di ritiro in hotel?",
+        "a3": "Per i tour privati offriamo il ritiro gratuito da qualsiasi hotel o indirizzo in terraferma. Per i tour condivisi, gli ospiti raggiungono il punto di ritrovo stabilito. Se alloggi sull'isola di Venezia, possiamo organizzare un taxi acqueo privato con un costo aggiuntivo.",
+        "q4": "Qual è la vostra politica di cancellazione?",
+        "a4": "Puoi cancellare gratuitamente fino a 48 ore prima dell'inizio del tour. Le cancellazioni vanno comunicate via email o WhatsApp. Dopo questo termine, l'intero importo è dovuto.",
+        "q5": "I tour sono adatti ai bambini?",
+        "a5": "I tour privati sono adatti ai bambini. I bambini sotto i 36 kg o 150 cm devono viaggiare con un seggiolino omologato — possiamo fornire seggiolini e rialzi gratuitamente se ci avvisate qualche giorno prima. I tour condivisi hanno limiti di età, quindi verifica al momento della prenotazione."
+      },
+      "backLabel": "Torna ai tour"
+    },
+    "fromVenice": {
+      "heroTitle": "Scappa da Venezia per un giorno: Dolomiti e Prosecco ti aspettano",
+      "heroSubtitle": "Lascia per un giorno canali e folla: vette mozzafiato e colline di vigneti ti aspettano a pochi minuti dalla città.",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-venice-for-a-day"
+    },
+    "fromJesolo": {
+      "heroTitle": "Lascia la spiaggia per un giorno: Dolomiti e Prosecco ti aspettano",
+      "heroSubtitle": "Cambia il lettino con le vette delle Dolomiti e le colline del Prosecco — il tuo tour parte da Jesolo o Cavallino.",
+      "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
+    }
   }
 }
