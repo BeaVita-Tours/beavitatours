@@ -320,5 +320,38 @@
       "heroSubtitle": "把沙滩躺椅换成山峰与葡萄园——您的精彩一日从耶索洛或卡瓦利诺出发。",
       "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
     }
+  },
+  "directBookingPromo": {
+    "code": "BEAVITA10",
+    "firstPopup": {
+      "eyebrow": "感谢您选择直接预订",
+      "discount": "10% OFF",
+      "title": "您的直接预订专属礼遇",
+      "subtitle": "您正直接向我们的本地团队预订——无平台、无额外费用。享受10%折扣，是我们对您的感谢。",
+      "codeLabel": "您的折扣码",
+      "checkoutNote": "结账时输入此折扣码",
+      "cta": "领取我的10%优惠",
+      "closeLabel": "关闭"
+    },
+    "secondPopup": {
+      "eyebrow": "限时优惠",
+      "discount": "10% OFF",
+      "title": "还在吗？您的10%优惠等您领取",
+      "subtitle": "感谢您选择直接向我们的本地团队预订，威尼斯一日游立享10%折扣。",
+      "codeLabel": "折扣码",
+      "copy": "复制",
+      "copied": "已复制！",
+      "checkoutNote": "结账时使用此折扣码",
+      "cta": "使用我的折扣预订",
+      "closeLabel": "关闭"
+    },
+    "banner": {
+      "label": "限时优惠",
+      "segments": [
+        "BEAVITA10 — 直接预订立享10%优惠",
+        "限时特惠",
+        "结账时输入折扣码"
+      ]
+    }
   }
 }

@@ -320,5 +320,38 @@
       "heroSubtitle": "Cambia il lettino con le vette delle Dolomiti e le colline del Prosecco — il tuo tour parte da Jesolo o Cavallino.",
       "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
     }
+  },
+  "directBookingPromo": {
+    "code": "BEAVITA10",
+    "firstPopup": {
+      "eyebrow": "Grazie per prenotare direttamente",
+      "discount": "10% DI SCONTO",
+      "title": "Il tuo regalo di benvenuto",
+      "subtitle": "Stai prenotando direttamente con il nostro team locale: niente piattaforme, niente commissioni. Il 10% di sconto è il nostro ringraziamento.",
+      "codeLabel": "Il tuo codice sconto",
+      "checkoutNote": "Inserisci questo codice al checkout",
+      "cta": "Approfitta del 10%",
+      "closeLabel": "Chiudi"
+    },
+    "secondPopup": {
+      "eyebrow": "Offerta a tempo limitato",
+      "discount": "10% DI SCONTO",
+      "title": "Ancora qui? Il tuo 10% ti aspetta",
+      "subtitle": "Per ringraziarti di prenotare direttamente con il nostro team locale, risparmi il 10% sulla tua gita di un giorno da Venezia.",
+      "codeLabel": "Codice sconto",
+      "copy": "Copia",
+      "copied": "Copiato!",
+      "checkoutNote": "Usa questo codice al checkout",
+      "cta": "Prenota con il mio sconto",
+      "closeLabel": "Chiudi"
+    },
+    "banner": {
+      "label": "Offerta a tempo limitato",
+      "segments": [
+        "BEAVITA10 — 10% di sconto sulla prenotazione diretta",
+        "Offerta a tempo limitato",
+        "Inserisci il codice al checkout"
+      ]
+    }
   }
 }

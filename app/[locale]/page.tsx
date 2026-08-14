@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
 import { getTours } from "@/lib/tours";
 import { Link } from "@/i18n/navigation";
+import { DiscountBanner } from "@/components/discount-banner";
 
 const OTAS: Array<{
   name: string;
@@ -66,6 +67,9 @@ export default function HomePage() {
 
   return (
     <main>
+      {/* Promo banner */}
+      <DiscountBanner />
+
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0 bg-black">

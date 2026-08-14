@@ -320,5 +320,38 @@
       "heroSubtitle": "Swap the sun lounger for mountain peaks and vineyard hills — your day trip starts from Jesolo or Cavallino.",
       "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
     }
+  },
+  "directBookingPromo": {
+    "code": "BEAVITA10",
+    "firstPopup": {
+      "eyebrow": "Thank you for booking direct",
+      "discount": "10% OFF",
+      "title": "Your direct-booking reward",
+      "subtitle": "You're booking straight with our local team — no platforms, no fees. Enjoy 10% off as our thank-you.",
+      "codeLabel": "Your discount code",
+      "checkoutNote": "Enter this code at checkout",
+      "cta": "Claim my 10%",
+      "closeLabel": "Close"
+    },
+    "secondPopup": {
+      "eyebrow": "Limited-time offer",
+      "discount": "10% OFF",
+      "title": "Still with us? Your 10% is waiting",
+      "subtitle": "As a thank-you for booking directly with our local team, save 10% on your day trip from Venice.",
+      "codeLabel": "Discount code",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "checkoutNote": "Use this code at checkout",
+      "cta": "Book with my discount",
+      "closeLabel": "Close"
+    },
+    "banner": {
+      "label": "Limited-time offer",
+      "segments": [
+        "BEAVITA10 — 10% off direct bookings",
+        "Limited-time offer",
+        "Enter the code at checkout"
+      ]
+    }
   }
 }

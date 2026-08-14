@@ -320,5 +320,38 @@
       "heroSubtitle": "ビーチチェアを山頂とブドウ畑に — ジェソロ、カヴァッリーノから出発する日帰り旅。",
       "widgetUrl": "https://prosecco-experience.regiondo.com/categories?tag=escape-from-jesolo-cavallino"
     }
+  },
+  "directBookingPromo": {
+    "code": "BEAVITA10",
+    "firstPopup": {
+      "eyebrow": "直接予約ありがとうございます",
+      "discount": "10% OFF",
+      "title": "あなたへの直接予約特典",
+      "subtitle": "プラットフォームや手数料なしで、現地チームへ直接ご予約いただくお礼に、10%割引をご提供します。",
+      "codeLabel": "割引コード",
+      "checkoutNote": "チェックアウト時にこのコードをご入力ください",
+      "cta": "10%割引を使う",
+      "closeLabel": "閉じる"
+    },
+    "secondPopup": {
+      "eyebrow": "期間限定オファー",
+      "discount": "10% OFF",
+      "title": "まだ迷っていますか？10%割引が待っています",
+      "subtitle": "現地チームへ直接ご予約いただくお礼として、ヴェネツィア発の日帰りツアーが10%割引になります。",
+      "codeLabel": "割引コード",
+      "copy": "コピー",
+      "copied": "コピーしました！",
+      "checkoutNote": "チェックアウト時にこのコードをご使用ください",
+      "cta": "割引を使って予約する",
+      "closeLabel": "閉じる"
+    },
+    "banner": {
+      "label": "期間限定オファー",
+      "segments": [
+        "BEAVITA10 — 直接予約で10%割引",
+        "期間限定オファー",
+        "チェックアウト時にコードをご入力ください"
+      ]
+    }
   }
 }

@@ -15,6 +15,7 @@ import { Check, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { DirectBookingPopups } from "@/components/landing/direct-booking-popups";
 
 export type DepartureKey = "fromVenice" | "fromJesolo";
 
@@ -89,7 +90,8 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
   };
 
   return (
-    <main className="min-h-screen">
+    <>
+      <main className="min-h-screen">
       {/* ═══════════════════════════════════════════════
           SECTION 1: Hero
          ═══════════════════════════════════════════════ */}
@@ -294,6 +296,8 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+      <DirectBookingPopups />
+    </>
   );
 }
