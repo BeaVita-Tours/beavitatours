@@ -144,6 +144,52 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
       </section>
 
       {/* ═══════════════════════════════════════════════
+          SECTION 2: Booking Widget (Regiondo iframe)
+         ═══════════════════════════════════════════════ */}
+      <section id="booking-widget" className="bg-muted/20 py-16 md:py-20">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl">
+              {whyBookDirect.ctaLabel}
+            </h2>
+            <Separator className="mx-auto mt-4 mb-8 w-16" />
+            <div className="relative overflow-hidden">
+              {showBackButton && (
+                <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1.5 text-muted-foreground"
+                    onClick={goBackToMain}
+                  >
+                    <ArrowLeft className="size-4" />
+                    {(shared.backLabel as string) ?? "Back to all tours"}
+                  </Button>
+                </div>
+              )}
+              {!iframeLoaded && (
+                <div className="flex h-[800px] w-full flex-col items-center gap-4">
+                  <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <iframe
+                key={iframeKey}
+                src={"/api/regiondo-proxy?url=" + widgetUrl}
+                title="Booking widget"
+                width="100%"
+                height="800"
+                style={{ border: 0 }}
+                allow="payment"
+                loading="lazy"
+                className={cn("w-full", !iframeLoaded && "h-0")}
+                onLoad={handleIframeLoad}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════
           SECTION 3: How It Works — 3-step visual
          ═══════════════════════════════════════════════ */}
       <section className="py-16 md:py-20">
@@ -251,51 +297,6 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════
-          SECTION 6: Booking Widget (Regiondo iframe)
-         ═══════════════════════════════════════════════ */}
-      <section id="booking-widget" className="bg-muted/20 py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-5xl">
-            <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl">
-              {whyBookDirect.ctaLabel}
-            </h2>
-            <Separator className="mx-auto mt-4 mb-8 w-16" />
-            <div className="relative overflow-hidden">
-              {showBackButton && (
-                <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-1.5 text-muted-foreground"
-                    onClick={goBackToMain}
-                  >
-                    <ArrowLeft className="size-4" />
-                    {(shared.backLabel as string) ?? "Back to all tours"}
-                  </Button>
-                </div>
-              )}
-              {!iframeLoaded && (
-                <div className="flex h-[800px] w-full flex-col items-center gap-4">
-                  <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
-                </div>
-              )}
-              <iframe
-                key={iframeKey}
-                src={"/api/regiondo-proxy?url=" + widgetUrl}
-                title="Booking widget"
-                width="100%"
-                height="800"
-                style={{ border: 0 }}
-                allow="payment"
-                loading="lazy"
-                className={cn("w-full", !iframeLoaded && "h-0")}
-                onLoad={handleIframeLoad}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
       </main>
       <DirectBookingPopups />
     </>
