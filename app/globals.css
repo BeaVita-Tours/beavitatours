@@ -110,6 +110,33 @@
   }
 }
 
+/* Staggered reveal for the navbar link cluster. Defined as plain CSS (not a
+   `--animate-*` theme token) because Tailwind was tree-shaking the generated
+   utility; this is guaranteed to ship. Reduced motion is handled by
+   `motion-reduce:animate-none` on the element itself. */
+@keyframes nav-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .animate-nav-reveal {
+    animation: nav-reveal 0.5s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-nav-reveal {
+      animation: none;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
