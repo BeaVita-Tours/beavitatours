@@ -6,7 +6,7 @@ import { manualReviews } from "@/lib/reviews/manual-reviews";
 import { alsoRatedOnStats, headlineStats } from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
 import { ReviewStatsBadge } from "./review-stats-badge";
-import { ReviewsCarousel } from "./reviews-carousel";
+import { ReviewsMarquee } from "./reviews-marquee";
 
 /** Newest first. ISO timestamps compare lexicographically, so `<`/`>` is safe. */
 function byDateDesc(a: Review, b: Review): number {
@@ -25,8 +25,8 @@ function byDateDesc(a: Review, b: Review): number {
  *     plus a compact "also rated on" cluster;
  *   - a scrollable row of the merged reviews (newest first).
  *
- * All the interactivity (scrolling, read-more) is pushed into the client
- * `ReviewsCarousel` / `ReviewCard`.
+ * All the interactivity (auto-scroll, read-more) is pushed into the client
+ * `ReviewsMarquee` / `ReviewCard`.
  *
  * Failure modes (never a broken section):
  *   - Google unconfigured or failing → `getGoogleReviews()` returns `null` →
@@ -99,10 +99,10 @@ export async function ReviewsSection() {
           </div>
         </div>
 
-        {/* Scrollable reviews row */}
+        {/* Auto-scrolling reviews rows */}
         {allReviews.length > 0 && (
           <div className="mt-12">
-            <ReviewsCarousel reviews={allReviews} />
+            <ReviewsMarquee reviews={allReviews} />
           </div>
         )}
       </div>

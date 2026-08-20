@@ -127,6 +127,55 @@
   }
 }
 
+/* Marquee (components/ui/marquee.tsx). Defined as plain CSS — NOT a
+   `--animate-*` theme token — for the same reason as nav-reveal below: the
+   theme-token route was being tree-shaken in this setup. Also, the value must
+   not depend on `var(--duration)`/`var(--gap)` resolving, or the whole
+   `animation` declaration becomes invalid (element sits at translateX(0)).
+   Fallbacks keep it valid even when an ancestor omits those custom props. */
+@layer utilities {
+  .animate-marquee {
+    /* Longhands (not the `animation` shorthand) so `animation-direction: reverse`
+       from the `reverse` prop isn't reset back to `normal`. */
+    animation-name: marquee-scroll;
+    animation-duration: var(--duration, 40s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .animate-marquee-vertical {
+    animation-name: marquee-scroll-vertical;
+    animation-duration: var(--duration, 40s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  /* `marquee-scroll` (not `marquee`) so any stale `@keyframes marquee` left in
+     Turbopack's dev cache becomes dead code instead of overriding these. */
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+  @keyframes marquee-scroll-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-marquee-vertical {
+      animation: none;
+    }
+  }
+}
+
 /* Blog article body (used with `prose prose-blog`). Maps the Tailwind
    typography plugin's CSS variables to the site tokens so articles match the
    brand and adapt to dark mode automatically — the tokens are redefined in

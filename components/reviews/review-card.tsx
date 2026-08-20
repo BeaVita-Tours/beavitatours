@@ -56,7 +56,7 @@ export function ReviewCard({ review }: { review: Review }) {
   const color = seededColor(review.authorName);
 
   return (
-    <article className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 text-left">
+    <article className="flex h-full flex-col gap-3 rounded-2xl border bg-card p-5 text-left min-h-64">
       {/* Author + platform */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
