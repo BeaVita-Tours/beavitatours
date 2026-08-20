@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -108,6 +109,38 @@
       transform: translateX(-50%);
     }
   }
+}
+
+/* Blog article body (used with `prose prose-blog`). Maps the Tailwind
+   typography plugin's CSS variables to the site tokens so articles match the
+   brand and adapt to dark mode automatically — the tokens are redefined in
+   `.dark`, so no `dark:prose-invert` is needed. */
+@utility prose-blog {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+/* Inline `code` inside article text: a small chip instead of the default
+   backtick styling. Code blocks (pre > code) are styled by the code component. */
+.prose-blog :where(code):not(:where(pre code)) {
+  border-radius: var(--radius-sm);
+  background-color: var(--muted);
+  padding: 0.125rem 0.375rem;
+  font-weight: 500;
 }
 
 /* Staggered reveal for the navbar link cluster. Defined as plain CSS (not a

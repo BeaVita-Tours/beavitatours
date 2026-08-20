@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   BriefcaseBusiness,
   CarFront,
@@ -35,12 +35,103 @@ const NAV_LINKS = [
   { href: "/blog", label: "Blog", icon: Newspaper },
 ] as const;
 
+const isActiveForPath = (pathname: string, href: string) =>
+  pathname === href || pathname.startsWith(`${href}/`);
+
+/**
+ * Presentational nav rows. They take an `isActive` function instead of calling
+ * `usePathname` themselves, so they can also be rendered as Suspense fallbacks
+ * in the static prerender shell (which must not call request-time hooks).
+ */
+function DesktopNavLinks({ isActive }: { isActive: (href: string) => boolean }) {
+  return (
+    <ul className="flex items-center justify-between gap-1 py-2">
+      {NAV_LINKS.map((link, index) => {
+        const active = isActive(link.href);
+        return (
+          <li
+            key={link.href}
+            className="animate-nav-reveal"
+            style={{ animationDelay: `${index * 30}ms` }}
+          >
+            <Link
+              href={link.href}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:bg-background",
+                active
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <link.icon className="size-[18px]" strokeWidth={2} />
+              <span>{link.label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function MobileNavLinks({
+  isActive,
+  onNavigate,
+}: {
+  isActive: (href: string) => boolean;
+  onNavigate: () => void;
+}) {
+  return (
+    <ul className="flex flex-col gap-1">
+      {NAV_LINKS.map((link) => {
+        const active = isActive(link.href);
+        return (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              onClick={onNavigate}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+                active
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-muted",
+              )}
+            >
+              <link.icon className="size-5" strokeWidth={2} />
+              <span>{link.label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/**
+ * Client leaves that read the pathname. Each is wrapped in <Suspense> at the
+ * call site so the static prerender shell never calls usePathname (avoids
+ * blocking-prerender-client-hook on statically-adopted routes like the blog).
+ * The Suspense fallbacks render the same rows with inactive styling, so the
+ * header layout is identical and only a link's color changes after hydration.
+ */
+function DesktopNavActive() {
+  const pathname = usePathname();
+  return <DesktopNavLinks isActive={(href) => isActiveForPath(pathname, href)} />;
+}
+
+function MobileNavActive({ onNavigate }: { onNavigate: () => void }) {
+  const pathname = usePathname();
+  return (
+    <MobileNavLinks
+      isActive={(href) => isActiveForPath(pathname, href)}
+      onNavigate={onNavigate}
+    />
+  );
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-
-  const isActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
 
   // Close the mobile menu with Escape.
   useEffect(() => {
@@ -51,6 +142,8 @@ export function Navigation() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen]);
+
+  const closeMobile = () => setIsOpen(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur">
@@ -95,32 +188,9 @@ export function Navigation() {
         {/* Layer 2 — the route map: every link horizontal, icon + label */}
         <div className="hidden border-t border-border/60 bg-muted/40 xl:block">
           <div className="container mx-auto px-4">
-            <ul className="flex items-center justify-between gap-1 py-2">
-              {NAV_LINKS.map((link, index) => {
-                const active = isActive(link.href);
-                return (
-                  <li
-                    key={link.href}
-                    className="animate-nav-reveal"
-                    style={{ animationDelay: `${index * 30}ms` }}
-                  >
-                    <Link
-                      href={link.href}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:bg-background",
-                        active
-                          ? "text-primary"
-                          : "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      <link.icon className="size-[18px]" strokeWidth={2} />
-                      <span>{link.label}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <Suspense fallback={<DesktopNavLinks isActive={() => false} />}>
+              <DesktopNavActive />
+            </Suspense>
           </div>
         </div>
 
@@ -140,35 +210,16 @@ export function Navigation() {
           <div className="min-h-0 overflow-hidden">
             <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-border py-3">
               <div className="container mx-auto px-4">
-                <ul className="flex flex-col gap-1">
-                  {NAV_LINKS.map((link) => {
-                    const active = isActive(link.href);
-                    return (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          onClick={() => setIsOpen(false)}
-                          aria-current={active ? "page" : undefined}
-                          className={cn(
-                            "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-                            active
-                              ? "bg-primary text-primary-foreground"
-                              : "text-foreground hover:bg-muted",
-                          )}
-                        >
-                          <link.icon className="size-5" strokeWidth={2} />
-                          <span>{link.label}</span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <Suspense
+                  fallback={
+                    <MobileNavLinks isActive={() => false} onNavigate={closeMobile} />
+                  }
+                >
+                  <MobileNavActive onNavigate={closeMobile} />
+                </Suspense>
                 <div className="mt-3 border-t border-border pt-3">
                   <Button asChild size="lg" className="w-full">
-                    <Link
-                      href="/tours/shared-tours"
-                      onClick={() => setIsOpen(false)}
-                    >
+                    <Link href="/tours/shared-tours" onClick={closeMobile}>
                       Book Now
                     </Link>
                   </Button>
