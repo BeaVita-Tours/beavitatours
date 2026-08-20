@@ -124,12 +124,20 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* Mobile menu — same icon + label rows */}
-        {isOpen && (
-          <div
-            id="mobile-nav"
-            className="animate-in slide-in-from-top-2 fade-in duration-200 motion-reduce:animate-none xl:hidden"
-          >
+        {/* Mobile menu — same icon + label rows. Always mounted so the
+            expand/collapse can be animated in both directions; the grid-rows
+            trick collapses the height smoothly without measuring it. */}
+        <div
+          id="mobile-nav"
+          inert={!isOpen}
+          className={cn(
+            "grid transition-[grid-template-rows,opacity] duration-300 ease-in-out motion-reduce:transition-none xl:hidden",
+            isOpen
+              ? "grid-rows-[1fr] opacity-100"
+              : "grid-rows-[0fr] opacity-0",
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
             <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-border py-3">
               <div className="container mx-auto px-4">
                 <ul className="flex flex-col gap-1">
@@ -168,7 +176,7 @@ export function Navigation() {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

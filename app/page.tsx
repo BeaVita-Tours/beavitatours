@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { HomeHero } from "@/components/home-hero";
 import { TourCard } from "@/components/tour-card";
-import { Badge } from "@/components/ui/badge";
 import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
 import { tours } from "@/lib/tours";
 import { DiscountBanner } from "@/components/discount-banner";
@@ -62,49 +62,11 @@ const OTAS: Array<{
 export default function HomePage() {
   return (
     <main>
-      {/* Promo banner */}
-      <DiscountBanner />
+      {/* Promo banner 
+      <DiscountBanner /> */}
 
-      {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-black">
-          <video
-            className="w-full h-full object-cover opacity-50"
-            src="/bg.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-linear-to-brom-black/50 via-black/30 to-black/60" />
-        </div>
-        <div className="container mx-auto px-4 z-10 text-center">
-          <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0 text-sm px-4 py-1">
-            Tours and day trips from Venice
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-balance">
-            Discover the beauty around Venice
-          </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto text-pretty">
-            Dolomites, Hills of Prosecco, Cities of Art, Wine &amp; Food, and
-            more...
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8">
-              <Link href="#tours">Explore Tours</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20"
-            >
-              <Link href="/tours/shared-tours">Book Now</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Hero */}
+      <HomeHero />
 
       {/* Tours Section */}
       <section id="tours" className="py-20 bg-background">
