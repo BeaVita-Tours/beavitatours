@@ -1,5 +1,6 @@
 import type React from "react";
 import { cookies } from "next/headers";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { locales } from "@/i18n";
@@ -11,6 +12,8 @@ import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { TrackingScripts } from "@/components/tracking-scripts";
 import { CONSENT_COOKIE_NAME, parseConsentRecord } from "@/lib/cookie-consent";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -31,7 +34,7 @@ export default async function LocaleLayout({
   );
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={inter.variable}>
       <CookieConsentProvider initialConsent={initialConsent}>
         <head>
           <TrackingScripts />
