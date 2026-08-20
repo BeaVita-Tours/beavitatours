@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
+import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { PostSummary } from "@/lib/sanity/types";
-import { cn } from "@/lib/utils";
+import { PostMedia } from "./post-media";
 
 function AuthorBadge({ post }: { post: PostSummary }) {
   if (!post.author) return null;
@@ -22,12 +23,12 @@ function AuthorBadge({ post }: { post: PostSummary }) {
         <Image
           src={imageUrl}
           alt={post.author.image?.alt ?? post.author.name}
-          width={32}
-          height={32}
-          className="size-8 rounded-full object-cover"
+          width={28}
+          height={28}
+          className="size-7 rounded-full object-cover"
         />
       ) : (
-        <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+        <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
           {initials}
         </span>
       )}
@@ -36,23 +37,23 @@ function AuthorBadge({ post }: { post: PostSummary }) {
   );
 }
 
+/**
+ * Blog card in the site's card language: rounded bordered card, image plate,
+ * category pills, bold title, excerpt, and a hairline byline footer with the
+ * date and reading time.
+ */
 export function PostCard({ post }: { post: PostSummary }) {
+  const minutes = readingTimeInMinutes(post.bodyText);
+
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        {post.mainImage?.asset?.url ? (
-          <Image
-            src={urlFor(post.mainImage).width(1200).url()}
-            alt={post.mainImage.alt ?? post.title}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : null}
-      </div>
+      <PostMedia
+        post={post}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      />
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         {post.categories && post.categories.length > 0 ? (
@@ -68,21 +69,22 @@ export function PostCard({ post }: { post: PostSummary }) {
           </div>
         ) : null}
 
-        <h2 className="text-lg font-bold leading-snug text-foreground group-hover:text-primary">
+        <h2 className="text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
           {post.title}
         </h2>
 
         {post.excerpt ? (
-          <p className={cn("text-sm leading-relaxed text-muted-foreground", "line-clamp-3")}>
+          <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
             {post.excerpt}
           </p>
         ) : null}
 
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
           <AuthorBadge post={post} />
-          <time dateTime={post.publishedAt} className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             {formatDate(post.publishedAt)}
-          </time>
+            {minutes > 0 ? ` · ${minutes} min read` : ""}
+          </span>
         </div>
       </div>
     </Link>

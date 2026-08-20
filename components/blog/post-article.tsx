@@ -1,15 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
 import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
+import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { Post } from "@/lib/sanity/types";
 import { PortableTextBody } from "./portable-text";
+import { ReadingProgress } from "./reading-progress";
+import { AuthorCard } from "./author-card";
+import { ShareRow } from "./share-row";
+import { RelatedPosts } from "./related-posts";
+import { BlogCta } from "./blog-cta";
 
+/**
+ * The article page — centered header (category pills, bold title, byline with
+ * date + reading time), rounded cover, `prose` body, then author card, share
+ * row, related stories, and the closing CTA. Same layout and typography
+ * language as the rest of the site.
+ */
 export function PostArticle({ post }: { post: Post }) {
+  const minutes = readingTimeInMinutes(post.bodyText);
+
   return (
-    <article className="container mx-auto px-4">
-      <div className="mx-auto max-w-3xl">
+    <article className="container mx-auto px-4 py-16">
+      <ReadingProgress />
+
+      <Link
+        href="/blog"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <ArrowLeft className="size-4" />
+        Back to blog
+      </Link>
+
+      <div className="mx-auto mt-8 max-w-3xl">
         {post.categories && post.categories.length > 0 ? (
           <div className="mb-4 flex flex-wrap justify-center gap-2">
             {post.categories.map((category) => (
@@ -28,7 +52,7 @@ export function PostArticle({ post }: { post: Post }) {
           {post.title}
         </h1>
 
-        <div className="mt-6 flex items-center justify-center gap-4 text-sm text-muted-foreground">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
           {post.author ? (
             <span className="flex items-center gap-2">
               {post.author.image?.asset?.url ? (
@@ -47,6 +71,12 @@ export function PostArticle({ post }: { post: Post }) {
             <CalendarDays className="size-4" />
             <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
           </span>
+          {minutes > 0 ? (
+            <span className="flex items-center gap-1.5">
+              <Clock className="size-4" />
+              {minutes} min read
+            </span>
+          ) : null}
         </div>
 
         {post.mainImage?.asset?.url ? (
@@ -65,7 +95,18 @@ export function PostArticle({ post }: { post: Post }) {
         <div className="prose prose-blog prose-lg mx-auto mt-10 max-w-none">
           <PortableTextBody value={post.body} />
         </div>
+
+        <AuthorCard author={post.author} />
+
+        <ShareRow title={post.title} path={`/blog/${post.slug}`} />
       </div>
+
+      <RelatedPosts
+        currentSlug={post.slug}
+        categorySlugs={post.categories?.map((c) => c.slug) ?? []}
+      />
+
+      <BlogCta />
     </article>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
+import { BlogCta } from "@/components/blog/blog-cta";
+import { BlogHeader } from "@/components/blog/blog-header";
 import { CategoryFilter } from "@/components/blog/category-filter";
 import { Pagination } from "@/components/blog/pagination";
 import { PostList } from "@/components/blog/post-list";
@@ -48,23 +49,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
   return (
     <main>
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge className="mb-4 border-0 bg-accent uppercase text-accent-foreground">
-              Blog
-            </Badge>
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-              {category.title}
-            </h1>
-            {category.description ? (
-              <p className="mx-auto max-w-2xl text-xl leading-relaxed text-muted-foreground">
-                {category.description}
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </section>
+      <BlogHeader title={category.title} subtitle={category.description} />
 
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -85,6 +70,8 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           </div>
         </div>
       </section>
+
+      <BlogCta />
     </main>
   );
 }

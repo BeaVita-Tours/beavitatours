@@ -9,9 +9,9 @@ interface CategoryFilterProps {
 }
 
 /**
- * Server-rendered category filter chips. Filtering happens server-side via the
- * `category` query param, so these are plain links — no client state needed,
- * they deep-link cleanly, and the page stays a Server Component.
+ * Category filter chips. Filtering happens server-side via the `category`
+ * query param, so these are plain links — no client state needed, they
+ * deep-link cleanly, and the page stays a Server Component.
  */
 export function CategoryFilter({ categories, activeCategory }: CategoryFilterProps) {
   if (categories.length === 0) return null;

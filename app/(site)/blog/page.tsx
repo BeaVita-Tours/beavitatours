@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Badge } from "@/components/ui/badge";
+import { BlogCta } from "@/components/blog/blog-cta";
+import { BlogHeader } from "@/components/blog/blog-header";
 import { CategoryFilter } from "@/components/blog/category-filter";
+import { FeaturedPost } from "@/components/blog/featured-post";
 import { Pagination } from "@/components/blog/pagination";
 import { PostList } from "@/components/blog/post-list";
 import {
@@ -10,7 +12,7 @@ import {
 } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
-  title: "Blog — BeaVitaTours",
+  title: "The Bea Vita Blog — BeaVitaTours",
   description: "Stories from the road between Venice and the Dolomites.",
 };
 
@@ -39,23 +41,20 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const activeCategory = categories.some((c) => c.slug === category) ? category : undefined;
 
+  // The featured "latest story" is the newest post, only on the unfiltered
+  // first page; page 1 then shows 8 grid cards + 1 featured = POSTS_PER_PAGE.
+  const showFeatured = currentPage === 1 && !activeCategory;
+  const featured = showFeatured ? result.posts[0] : undefined;
+  const gridPosts = featured ? result.posts.slice(1) : result.posts;
+
   return (
     <main>
-      <section className="bg-muted/30 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge className="mb-4 border-0 bg-accent uppercase text-accent-foreground">
-              Blog
-            </Badge>
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-              The Bea Vita Blog
-            </h1>
-            <p className="mx-auto max-w-2xl text-xl leading-relaxed text-muted-foreground">
-              Stories from the road between Venice and the Dolomites.
-            </p>
-          </div>
-        </div>
-      </section>
+      <BlogHeader
+        title="The Bea Vita Blog"
+        subtitle="Stories from the road between Venice and the Dolomites."
+      />
+
+      {featured ? <FeaturedPost post={featured} /> : null}
 
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -68,7 +67,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             </div>
           ) : null}
 
-          <PostList posts={result.posts} />
+          {/* A single post on page 1 is the featured lead itself — don't show
+              the empty grid state beneath it. */}
+          {gridPosts.length > 0 || result.total === 0 ? (
+            <PostList posts={gridPosts} />
+          ) : null}
 
           <div className="mt-12">
             <Pagination
@@ -80,6 +83,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </div>
         </div>
       </section>
+
+      <BlogCta />
     </main>
   );
 }

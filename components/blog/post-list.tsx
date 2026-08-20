@@ -1,6 +1,7 @@
 import type { PostSummary } from "@/lib/sanity/types";
 import { PostCard } from "./post-card";
 
+/** The archive grid of post cards, with the site's empty state. */
 export function PostList({ posts }: { posts: PostSummary[] }) {
   if (posts.length === 0) {
     return (

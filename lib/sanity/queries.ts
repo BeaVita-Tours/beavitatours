@@ -44,6 +44,7 @@ const POSTS_QUERY = /* groq */ `
       image { asset->{ _id, url }, alt },
     },
     categories[]->{ _id, title, "slug": slug.current },
+    "bodyText": pt::text(coalesce(body, [])),
   }
 `;
 
@@ -93,6 +94,7 @@ const POST_BY_SLUG_QUERY = /* groq */ `
       seoDescription,
       seoImage { asset->{ _id, url } },
     },
+    "bodyText": pt::text(coalesce(body, [])),
     body[] {
       ...,
       _type == "image" => {
@@ -115,6 +117,41 @@ const POST_BY_SLUG_QUERY = /* groq */ `
 /** All published post slugs, for generateStaticParams. */
 const POST_SLUGS_QUERY = /* groq */ `
   *[_type == "post" && defined(slug.current) && publishedAt <= now()].slug.current
+`;
+
+/**
+ * Related posts for the article footer: posts sharing any of the current
+ * post's categories sort first ("matched"), then most-recent fill the rest.
+ * The `coalesce(..., [])` around the category slug array is required — a post
+ * with no categories would otherwise yield `matched: null` and break the sort.
+ */
+const RELATED_POSTS_QUERY = /* groq */ `
+  *[_type == "post"
+    && defined(slug.current)
+    && publishedAt <= now()
+    && slug.current != $currentSlug
+  ] | {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    publishedAt,
+    mainImage {
+      asset->{ _id, url, metadata { lqip, dimensions } },
+      hotspot,
+      crop,
+      alt,
+    },
+    author->{
+      _id,
+      name,
+      "slug": slug.current,
+      image { asset->{ _id, url }, alt },
+    },
+    categories[]->{ _id, title, "slug": slug.current },
+    "bodyText": pt::text(coalesce(body, [])),
+    "matched": count(coalesce(categories[]->slug.current, [])[@ in $categorySlugs]) > 0,
+  } | order(matched desc, publishedAt desc)[0...3]
 `;
 
 /** A single category by slug (for category archive pages). */
@@ -189,4 +226,19 @@ export async function getCategory(slug: string): Promise<Category | null> {
 
   if (!client) return null;
   return (await client.fetch<Category | null>(CATEGORY_BY_SLUG_QUERY, { slug })) ?? null;
+}
+
+export async function getRelatedPosts(opts: {
+  currentSlug: string;
+  categorySlugs: string[];
+}): Promise<PostSummary[]> {
+  "use cache";
+  cacheLife("blog");
+  cacheTag(BLOG_TAG);
+
+  if (!client) return [];
+  return await client.fetch<PostSummary[]>(RELATED_POSTS_QUERY, {
+    currentSlug: opts.currentSlug,
+    categorySlugs: opts.categorySlugs,
+  });
 }

@@ -7,6 +7,8 @@
  * to spot and fix.
  */
 
+import type { PortableTextBlock } from "@portabletext/react";
+
 export interface SanityImageDimensions {
   width: number;
   height: number;
@@ -57,7 +59,7 @@ export interface Author {
   name: string;
   slug: string;
   image?: SanityImage;
-  bio?: unknown[];
+  bio?: PortableTextBlock[];
 }
 
 export interface PostSeo {
@@ -73,6 +75,8 @@ export interface Post {
   excerpt?: string;
   mainImage?: SanityImage;
   body?: unknown[];
+  /** Plain text of the body (via GROQ `pt::text`), used for reading time. */
+  bodyText?: string | null;
   categories?: Category[];
   author?: Author;
   publishedAt: string;
@@ -82,7 +86,7 @@ export interface Post {
 /** The fields rendered on cards and list pages. */
 export type PostSummary = Pick<
   Post,
-  "_id" | "title" | "slug" | "excerpt" | "mainImage" | "publishedAt" | "author" | "categories"
+  "_id" | "title" | "slug" | "excerpt" | "mainImage" | "publishedAt" | "author" | "categories" | "bodyText"
 >;
 
 export interface PostListResult {

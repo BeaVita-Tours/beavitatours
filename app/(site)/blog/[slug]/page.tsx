@@ -44,7 +44,7 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) notFound();
 
   return (
-    <main className="py-16">
+    <main>
       <PostArticle post={post} />
     </main>
   );

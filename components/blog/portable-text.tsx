@@ -71,9 +71,10 @@ const components: PortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => <h2>{children}</h2>,
-    h3: ({ children }) => <h3>{children}</h3>,
-    h4: ({ children }) => <h4>{children}</h4>,
+    // scroll-mt keeps deep-linked headings clear of the sticky site nav.
+    h2: ({ children }) => <h2 className="scroll-mt-28">{children}</h2>,
+    h3: ({ children }) => <h3 className="scroll-mt-28">{children}</h3>,
+    h4: ({ children }) => <h4 className="scroll-mt-28">{children}</h4>,
     blockquote: ({ children }) => <blockquote>{children}</blockquote>,
   },
   list: {

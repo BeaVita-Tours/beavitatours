@@ -104,7 +104,34 @@ Set these in your hosting provider (Vercel → Project → Environment Variables
 Full instructions with screenshots-equivalents are in the
 [client guide](./blog-client-guide.md).
 
-## 6. Verification checklist
+## 6. Adding new users (clients / content authors)
+
+Give each client their own login so they can write posts. Each person needs
+their **own Sanity account** — don't share a single login.
+
+1. Go to **manage.sanity.com** and sign in with your admin account.
+2. Open the **project** (the one you created in step 1, e.g. "beavitatours").
+3. Go to **Members** in the project settings.
+4. Click **Invite member** and enter the client's **email address**.
+5. Pick a **role**: for a content author choose **Editor** (can create, edit
+   and publish posts but can't change settings or manage members). Avoid
+   giving clients **Administrator**.
+6. Send the invite. The client gets an email; they click the link and sign in
+   with **Google** using the same email.
+
+That's all. From then on the client opens `/studio`, chooses **"Continue with
+Google"**, and is recognized automatically — Sanity matches members by email,
+so there's nothing else to configure.
+
+Notes:
+- **Invite each client to each project individually** — members aren't shared
+  between projects. If you have several client sites, repeat this per project.
+- You must have an **Administrator** role in the project to invite members.
+- Use the **same email** for the invite and the Google login. A different email
+  is treated as a different person.
+- (CLI alternative: `npx sanity users invite <email> --role editor`.)
+
+## 7. Verification checklist
 
 - [ ] `pnpm dev` → `/blog` shows posts, `/blog/<slug>` shows a full article.
 - [ ] `/studio` loads the full Studio (no navbar/footer).
