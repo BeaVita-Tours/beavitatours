@@ -9,10 +9,20 @@ const nextConfig: NextConfig = {
   // the background, fall back to a full revalidation every day, hard-expire
   // after 30 days. A Sanity webhook (app/api/revalidate) busts the cache
   // immediately when content changes.
+  //
+  // Reviews cache-life profile: used by the homepage's live Google Reviews
+  // (`lib/reviews/google-reviews.ts`). Revalidates in the background at most
+  // every 6 hours — reviews change slowly, so 6–12h keeps the rating and
+  // count fresh. To change the refresh interval, edit `revalidate` here.
   cacheLife: {
     blog: {
       stale: 60 * 60,
       revalidate: 60 * 60 * 24,
+      expire: 60 * 60 * 24 * 30,
+    },
+    reviews: {
+      stale: 60 * 60,
+      revalidate: 6 * 60 * 60,
       expire: 60 * 60 * 24 * 30,
     },
   },

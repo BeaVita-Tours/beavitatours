@@ -1,63 +1,10 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HomeHero } from "@/components/home-hero";
 import { TourCard } from "@/components/tour-card";
-import { Award, Users, DollarSign, MapPin, Star } from "lucide-react";
+import { Award, Users, DollarSign, MapPin } from "lucide-react";
 import { tours } from "@/lib/tours";
-import { DiscountBanner } from "@/components/discount-banner";
-
-const OTAS: Array<{
-  name: string;
-  href: string;
-  rating: number | string;
-  logoSrc: string;
-}> = [
-  {
-    name: "GetYourGuide",
-    href: "https://www.getyourguide.com/",
-    rating: 5.0,
-    logoSrc: "/ota/getyourguide.svg",
-  },
-  {
-    name: "Viator",
-    href: "https://www.viator.com/",
-    rating: 5.0,
-    logoSrc: "/ota/viator.svg",
-  },
-  {
-    name: "Klook",
-    href: "https://www.klook.com/",
-    rating: "NEW",
-    logoSrc: "/ota/klook.svg",
-  },
-  {
-    name: "Civitatis",
-    href: "https://www.civitatis.com/",
-    rating: "NEW",
-    logoSrc: "/ota/civitatis.svg",
-  },
-  {
-    name: "Musement",
-    href: "https://www.musement.com/",
-    rating: "NEW",
-    logoSrc: "/ota/musement.svg",
-  },
-  {
-    name: "Tripadvisor",
-    href: "https://www.tripadvisor.com/",
-    rating: 4.9,
-    logoSrc: "/ota/tripadvisor.svg",
-  },
-  {
-    name: "Booking",
-    href: "https://www.booking.com/",
-    rating: 4.9,
-    logoSrc: "/ota/booking.svg",
-  },
-];
+import { ReviewsSection } from "@/components/reviews/reviews-section";
 
 export default function HomePage() {
   return (
@@ -146,39 +93,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Reviews Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            What Our Guests Say
-          </h2>
-          <div className="mx-auto max-w-5xl">
-            <div className="flex flex-wrap gap-3 justify-center items-center">
-              {OTAS.map((ota) => (
-                <div
-                  key={ota.name}
-                  className="flex items-center gap-3 px-4 py-3 bg-card rounded-xl"
-                  aria-label={`${ota.name} reviews`}
-                >
-                  <Image
-                    src={ota.logoSrc}
-                    alt={ota.name}
-                    width={120}
-                    height={24}
-                    className="h-6 w-auto"
-                  />
-                  <span className="text-sm font-medium text-muted-foreground flex flex-row items-center justify-center gap-1">
-                    {ota.rating}
-                    {typeof ota.rating === "number" && (
-                      <Star className="size-4 fill-amber-400 text-amber-400" />
-                    )}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Reviews */}
+      <ReviewsSection />
     </main>
   );
 }

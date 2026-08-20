@@ -28,7 +28,7 @@ export default function RootLayout({
         </head>
         {/* Site chrome (Navigation, Footer, consent banner/dialog) lives in
             app/(site)/layout.tsx so routes like /studio render standalone. */}
-        <body className="font-sans antialiased">
+        <body className="font-sans antialiased" suppressHydrationWarning>
           <Umami />
           {children}
         </body>
