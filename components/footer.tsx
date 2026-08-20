@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 import { Facebook, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,11 @@ import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 export function Footer() {
   const { openSettings } = useCookieConsent();
+  const [year, setYear] = useState("");
+
+  useEffect(() => {
+    setYear(String(new Date().getFullYear()));
+  }, []);
 
   return (
     <footer className="border-t border-border bg-muted/30">
@@ -126,7 +132,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} BeaVitaTours. All rights
+            &copy; {year} BeaVitaTours. All rights
             reserved.
           </p>
         </div>

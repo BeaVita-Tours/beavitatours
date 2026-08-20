@@ -6,7 +6,13 @@ import { GoogleAds } from "@/components/google-ads";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 export function TrackingScripts() {
-  const { consent, hasAnalyticsConsent, hasMarketingConsent } = useCookieConsent();
+  const { consent, hasAnalyticsConsent, hasMarketingConsent, hydrated } =
+    useCookieConsent();
+
+  if (!hydrated) {
+    return null;
+  }
+
   const scriptId = (consent?.timestamp ?? "no-consent").replace(/[^a-zA-Z0-9_-]/g, "-");
 
   return (

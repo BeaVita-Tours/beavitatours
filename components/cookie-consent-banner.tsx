@@ -6,9 +6,10 @@ import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { Cookie, Settings, Shield } from "lucide-react";
 
 export function CookieConsentBanner() {
-  const { consent, acceptAll, rejectAll, openSettings } = useCookieConsent();
+  const { consent, hydrated, acceptAll, rejectAll, openSettings } =
+    useCookieConsent();
 
-  if (consent) {
+  if (!hydrated || consent) {
     return null;
   }
 
