@@ -1,27 +1,21 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-
 /**
  * Scrolling promotional banner shown at the top of the homepage.
  * Pure CSS marquee (see `--animate-promo-marquee` in globals.css) — no
  * animation library needed. The animation is disabled when the user prefers
  * reduced motion, in which case the first message stays readable.
  */
+const segments = [
+  "BEAVITA10 — 10% off direct bookings",
+  "Limited-time offer",
+  "Enter the code at checkout",
+];
+
 export function DiscountBanner() {
-  const t = useTranslations("directBookingPromo.banner");
-  const rawSegments = t.raw("segments") as unknown;
-  const segments = Array.isArray(rawSegments)
-    ? (rawSegments as string[]).filter((segment) => typeof segment === "string")
-    : [];
-
-  if (segments.length === 0) {
-    return null;
-  }
-
   return (
     <section
-      aria-label={t("label")}
+      aria-label="Limited-time offer"
       className="relative z-40 overflow-hidden bg-accent text-accent-foreground"
     >
       <div className="flex w-max motion-safe:animate-promo-marquee hover:[animation-play-state:paused]">

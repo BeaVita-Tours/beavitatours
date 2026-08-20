@@ -1,13 +1,11 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { Cookie, Settings, Shield } from "lucide-react";
 
 export function CookieConsentBanner() {
-  const t = useTranslations("cookieConsent");
   const { consent, acceptAll, rejectAll, openSettings } = useCookieConsent();
 
   if (consent) {
@@ -29,11 +27,15 @@ export function CookieConsentBanner() {
               <div className="flex items-center gap-2">
                 <Cookie className="size-5 text-primary sm:hidden" />
                 <h3 className="text-base font-semibold text-foreground">
-                  {t("title")}
+                  Cookie settings
                 </h3>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                {t("description")}
+                We use cookies to enhance your browsing experience, serve
+                personalized ads or content, and analyze our traffic. By
+                clicking &quot;Accept all&quot;, you consent to our use of
+                cookies. You can also manage your preferences by clicking
+                &quot;Manage preferences&quot;.
               </p>
               <div className="flex items-center gap-4 pt-1">
                 <Link
@@ -41,14 +43,14 @@ export function CookieConsentBanner() {
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                 >
                   <Shield className="size-3.5" />
-                  {t("privacyPolicy")}
+                  Privacy Policy
                 </Link>
                 <button
                   onClick={openSettings}
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <Settings className="size-3.5" />
-                  {t("managePreferences")}
+                  Manage preferences
                 </button>
               </div>
             </div>
@@ -61,14 +63,14 @@ export function CookieConsentBanner() {
               onClick={rejectAll}
               className="h-11 flex-1 border-border/60 text-sm font-medium lg:flex-none lg:px-6"
             >
-              {t("rejectAll")}
+              Reject all
             </Button>
             <Button
               variant="default"
               onClick={acceptAll}
               className="h-11 flex-1 text-sm font-semibold lg:flex-none lg:px-6"
             >
-              {t("acceptAll")}
+              Accept all
             </Button>
           </div>
         </div>

@@ -1,17 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 import { Facebook, Instagram } from "lucide-react";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 
 export function Footer() {
-  const t = useTranslations("footer");
-  const tNav = useTranslations("navigation");
   const { openSettings } = useCookieConsent();
 
   return (
@@ -36,27 +32,27 @@ export function Footer() {
               </Link>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {t("companyName")}
+              BEA VITA TOURS
               <br />
-              {t("companyType")}
+              Tour Operator
               <br />
-              {t("authorization")}
+              Auth 6297 prov. TV
               <br />
-              {t("protocol")}
+              protocol n. 6297 of 08/04/2025
               <br />
-              {t("vat")}
+              VAT IT05602720269
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">{t("quickLinks")}</h3>
+            <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {tNav("home")}
+                  Home
                 </Link>
               </li>
               <li>
@@ -64,7 +60,7 @@ export function Footer() {
                   href="/rates"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {tNav("rates")}
+                  Rates
                 </Link>
               </li>
               <li>
@@ -72,7 +68,7 @@ export function Footer() {
                   href="/faq"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {tNav("faq")}
+                  FAQ
                 </Link>
               </li>
               <li>
@@ -80,7 +76,7 @@ export function Footer() {
                   href="/about"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {tNav("about")}
+                  About Us
                 </Link>
               </li>
               <li>
@@ -88,7 +84,7 @@ export function Footer() {
                   href="/contact"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {tNav("contact")}
+                  Contact
                 </Link>
               </li>
               <li>
@@ -97,7 +93,7 @@ export function Footer() {
                   variant="link"
                   className="h-auto p-0 font-normal text-muted-foreground hover:text-foreground"
                 >
-                  <Link href="/privacy">{t("privacyPolicy")}</Link>
+                  <Link href="/privacy">Privacy Policy</Link>
                 </Button>
               </li>
               <li>
@@ -107,14 +103,14 @@ export function Footer() {
                   onClick={openSettings}
                   className="h-auto p-0 font-normal text-muted-foreground hover:text-foreground"
                 >
-                  {t("cookieSettings")}
+                  Cookie Settings
                 </Button>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">{t("reviewsSocial")}</h3>
+            <h3 className="font-semibold mb-4">Reviews &amp; Social</h3>
             <div className="flex gap-4 mb-4 flex-row items-center justify-start text-muted-foreground">
               <Link href="https://www.facebook.com/people/Bea-Vita-Tours/61575406170256/">
                 <span className="sr-only">Facebook</span>
@@ -125,15 +121,13 @@ export function Footer() {
                 <Instagram />
               </Link>
             </div>
-            <div className="mt-4">
-              <LanguageSwitcher />
-            </div>
           </div>
         </div>
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} BeaVitaTours. {t("copyright")}
+            &copy; {new Date().getFullYear()} BeaVitaTours. All rights
+            reserved.
           </p>
         </div>
       </div>

@@ -19,7 +19,7 @@ This project now uses a GDPR/ePrivacy-first consent flow for all non-essential t
 - `components/meta-pixel.tsx` — marketing script loader.
 - `components/google-tag-manager.tsx` — GTM loader with consent metadata.
 - `lib/cookie-consent.ts` — consent serialization, parsing, and cleanup helpers.
-- `app/[locale]/privacy/page.tsx` — multilingual privacy policy page.
+- `app/privacy/page.tsx` — privacy policy page.
 
 ## Consent storage
 
@@ -45,4 +45,4 @@ When the user withdraws or reduces consent, the implementation:
 
 - GTM must still be configured in the GTM dashboard to respect the consent categories the site sends.
 - Umami is assumed to remain configured without cookies.
-- The privacy policy page includes English, Italian, Japanese, and Chinese versions.
+- The privacy policy page is English-only.

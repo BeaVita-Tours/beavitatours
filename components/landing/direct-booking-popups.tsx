@@ -3,7 +3,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,8 +91,6 @@ function writePromoState(state: PromoState): void {
  * dialogs or re-triggers popups the user has already seen.
  */
 export function DirectBookingPopups() {
-  const t = useTranslations("directBookingPromo");
-
   const [firstOpen, setFirstOpen] = useState(false);
   const [secondOpen, setSecondOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -261,36 +258,37 @@ export function DirectBookingPopups() {
               <div className="relative z-10 mt-auto flex w-full flex-col items-center p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-center sm:p-8 sm:pb-8">
                 <Badge className="normal-case border-0 bg-accent px-3 py-1 text-xs font-bold tracking-wide text-accent-foreground">
                   <BadgePercent className="size-3.5" aria-hidden="true" />
-                  {t("firstPopup.eyebrow")}
+                  Thank you for booking direct
                 </Badge>
 
                 <p
                   aria-hidden="true"
                   className="mt-4 text-5xl font-extrabold leading-none tracking-tight text-white drop-shadow-md sm:text-6xl"
                 >
-                  {t("firstPopup.discount")}
+                  10% OFF
                 </p>
 
                 <DialogTitle className="mt-3 text-2xl font-bold text-white sm:text-3xl">
-                  {t("firstPopup.title")}
+                  Your direct-booking reward
                 </DialogTitle>
 
                 <DialogDescription className="mt-2 max-w-md text-sm leading-relaxed text-white/85 sm:text-base">
-                  {t("firstPopup.subtitle")}
+                  You&apos;re booking straight with our local team — no
+                  platforms, no fees. Enjoy 10% off as our thank-you.
                 </DialogDescription>
 
                 <div className="mt-5 flex flex-col items-center rounded-2xl border-2 border-dashed border-white/50 bg-white/10 px-6 py-3 backdrop-blur-sm">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/75">
-                    {t("firstPopup.codeLabel")}
+                    Your discount code
                   </span>
                   <span className="mt-1 font-mono text-2xl font-bold tracking-[0.18em] text-white sm:text-3xl">
-                    {t("code")}
+                    {DIRECT_BOOKING_CODE}
                   </span>
                 </div>
 
                 <p className="mt-3 flex items-center justify-center gap-2 text-sm font-medium text-white/90">
                   <Ticket className="size-4 shrink-0" aria-hidden="true" />
-                  {t("firstPopup.checkoutNote")}
+                  Enter this code at checkout
                 </p>
 
                 <Button
@@ -298,7 +296,7 @@ export function DirectBookingPopups() {
                   className="mt-5 h-11 w-full bg-accent text-base font-semibold text-accent-foreground shadow-lg hover:bg-accent/90 sm:w-auto sm:px-10"
                   onClick={handleBookNow}
                 >
-                  {t("firstPopup.cta")}
+                  Claim my 10%
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
               </div>
@@ -306,7 +304,7 @@ export function DirectBookingPopups() {
 
             <DialogPrimitive.Close className="absolute right-3 top-3 z-20 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
               <X className="size-5" />
-              <span className="sr-only">{t("firstPopup.closeLabel")}</span>
+              <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
           </DialogPrimitive.Content>
         </DialogPortal>
@@ -335,29 +333,30 @@ export function DirectBookingPopups() {
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/25 to-black/35" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
                   <span className="text-3xl font-extrabold leading-none tracking-tight text-white drop-shadow-md sm:text-4xl">
-                    {t("secondPopup.discount")}
+                    10% OFF
                   </span>
                   <span className="rounded-full bg-accent px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-foreground shadow-sm">
-                    {t("secondPopup.eyebrow")}
+                    Limited-time offer
                   </span>
                 </div>
               </div>
 
               <div className="p-5 sm:p-6">
                 <DialogTitle className="text-xl font-bold tracking-tight sm:text-2xl">
-                  {t("secondPopup.title")}
+                  Still with us? Your 10% is waiting
                 </DialogTitle>
                 <DialogDescription className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {t("secondPopup.subtitle")}
+                  As a thank-you for booking directly with our local team, save
+                  10% on your day trip from Venice.
                 </DialogDescription>
 
                 <div className="mt-5 flex items-center justify-between gap-3 rounded-xl border border-dashed border-primary/40 bg-primary/5 px-4 py-3">
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      {t("secondPopup.codeLabel")}
+                      Discount code
                     </p>
                     <p className="truncate font-mono text-lg font-bold tracking-[0.15em] text-foreground sm:text-xl">
-                      {t("code")}
+                      {DIRECT_BOOKING_CODE}
                     </p>
                   </div>
                   <Button
@@ -371,20 +370,20 @@ export function DirectBookingPopups() {
                     ) : (
                       <Copy className="size-4" aria-hidden="true" />
                     )}
-                    {copied ? t("secondPopup.copied") : t("secondPopup.copy")}
+                    {copied ? "Copied!" : "Copy"}
                   </Button>
                 </div>
 
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs font-medium text-muted-foreground">
                   <Ticket className="size-3.5 shrink-0" aria-hidden="true" />
-                  {t("secondPopup.checkoutNote")}
+                  Use this code at checkout
                 </p>
 
                 <Button
                   className="mt-4 h-11 w-full text-base font-semibold"
                   onClick={handleBookNow}
                 >
-                  {t("secondPopup.cta")}
+                  Book with my discount
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
               </div>
@@ -392,7 +391,7 @@ export function DirectBookingPopups() {
 
             <DialogPrimitive.Close className="absolute right-3 top-3 z-20 rounded-full bg-black/40 p-2.5 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
               <X className="size-5" />
-              <span className="sr-only">{t("secondPopup.closeLabel")}</span>
+              <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
           </DialogPrimitive.Content>
         </DialogPortal>
