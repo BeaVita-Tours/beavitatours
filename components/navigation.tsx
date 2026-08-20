@@ -150,12 +150,6 @@ export function Navigation() {
                         >
                           <link.icon className="size-5" strokeWidth={2} />
                           <span>{link.label}</span>
-                          {active && (
-                            <span
-                              aria-hidden="true"
-                              className="ml-auto size-1.5 rounded-full bg-accent"
-                            />
-                          )}
                         </Link>
                       </li>
                     );
