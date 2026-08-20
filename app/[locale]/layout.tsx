@@ -13,6 +13,10 @@ import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { TrackingScripts } from "@/components/tracking-scripts";
 import { CONSENT_COOKIE_NAME, parseConsentRecord } from "@/lib/cookie-consent";
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export function generateStaticParams() {
