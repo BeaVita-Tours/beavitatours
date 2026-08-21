@@ -5,8 +5,9 @@ import { TourCard } from "@/components/tour-card";
 import { Award, Users, DollarSign, MapPin } from "lucide-react";
 import { tours } from "@/lib/tours";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { BlogSection } from "@/components/blog/blog-section";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <main>
       {/* Promo banner 
@@ -95,6 +96,9 @@ export default function HomePage() {
 
       {/* Reviews */}
       <ReviewsSection />
+
+      {/* Blog — the 3 latest posts */}
+      <BlogSection />
     </main>
   );
 }

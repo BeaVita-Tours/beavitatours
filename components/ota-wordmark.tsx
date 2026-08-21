@@ -5,6 +5,7 @@ import {
 } from "@/lib/ota-wordmarks";
 import { cn } from "@/lib/utils";
 
+// TODO: Find a better way to do this, maybe automatically
 function calculateOtaSize(ota: string) {
   if (ota === "getyourguide") {
     return 0.65;
@@ -14,6 +15,8 @@ function calculateOtaSize(ota: string) {
     return 0.775;
   } else if (ota === "klook") {
     return 1.15;
+  } else if (ota === "tripadvisor") {
+    return 0.875;
   }
   return 1;
 }

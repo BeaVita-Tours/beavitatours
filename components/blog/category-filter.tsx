@@ -20,36 +20,42 @@ export function CategoryFilter({ categories, activeCategory }: CategoryFilterPro
     "rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
   return (
-    <nav aria-label="Filter posts by category" className="flex flex-wrap justify-center gap-2">
-      <Link
-        href="/blog"
-        className={cn(
-          chipClasses,
-          !activeCategory
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted text-muted-foreground hover:bg-secondary",
-        )}
-      >
-        All
-      </Link>
-      {categories.map((category) => {
-        const active = category.slug === activeCategory;
-        return (
-          <Link
-            key={category._id}
-            href={`/blog?category=${encodeURIComponent(category.slug)}`}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              chipClasses,
-              active
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-secondary",
-            )}
-          >
-            {category.title}
-          </Link>
-        );
-      })}
+    <nav aria-label="Filter posts by category">
+      <p className="mb-3 text-center text-sm font-medium text-muted-foreground">
+        Browse by category
+      </p>
+      <div className="flex flex-wrap justify-center gap-2">
+        <Link
+          href="/blog"
+          aria-current={!activeCategory ? "page" : undefined}
+          className={cn(
+            chipClasses,
+            !activeCategory
+              ? "bg-accent text-accent-foreground"
+              : "bg-muted text-muted-foreground hover:bg-accent/50",
+          )}
+        >
+          All stories
+        </Link>
+        {categories.map((category) => {
+          const active = category.slug === activeCategory;
+          return (
+            <Link
+              key={category._id}
+              href={`/blog?category=${encodeURIComponent(category.slug)}`}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                chipClasses,
+                active
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-primary/50",
+              )}
+            >
+              {category.title}
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }

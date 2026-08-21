@@ -50,23 +50,30 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <main>
       <BlogHeader
-        title="The Bea Vita Blog"
+        title={
+          <>
+            Bea Vita <span className="text-primary">Blog</span>
+          </>
+        }
         subtitle="Stories from the road between Venice and the Dolomites."
+        meta={["Guides", "Tips", "Stories"]}
       />
+
+      {/* Category filter sits above the featured lead so readers orient before
+          scrolling into the content. */}
+      {categories.length > 0 ? (
+        <div className="container mx-auto px-4 pt-8 md:pt-10">
+          <CategoryFilter
+            categories={categories}
+            activeCategory={activeCategory}
+          />
+        </div>
+      ) : null}
 
       {featured ? <FeaturedPost post={featured} /> : null}
 
-      <section className="py-16">
+      <section className="pt-6">
         <div className="container mx-auto px-4">
-          {categories.length > 0 ? (
-            <div className="mb-10">
-              <CategoryFilter
-                categories={categories}
-                activeCategory={activeCategory}
-              />
-            </div>
-          ) : null}
-
           {/* A single post on page 1 is the featured lead itself — don't show
               the empty grid state beneath it. */}
           {gridPosts.length > 0 || result.total === 0 ? (

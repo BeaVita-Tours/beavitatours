@@ -20,7 +20,6 @@ export function FeaturedPost({ post }: { post: PostSummary }) {
   const category = post.categories?.[0];
 
   const meta = [
-    category?.title,
     formatDate(post.publishedAt),
     minutes > 0 ? `${minutes} min read` : null,
   ]
@@ -36,7 +35,12 @@ export function FeaturedPost({ post }: { post: PostSummary }) {
           !imageUrl && "border border-border bg-muted/30",
         )}
       >
-        <div className={cn("relative aspect-[16/10] md:aspect-[21/9]", !imageUrl && "md:aspect-[16/6]")}>
+        <div
+          className={cn(
+            "relative aspect-16/10 md:aspect-21/9",
+            !imageUrl && "md:aspect-16/6",
+          )}
+        >
           {mainImage?.asset?.url ? (
             <>
               <Image
@@ -50,19 +54,32 @@ export function FeaturedPost({ post }: { post: PostSummary }) {
             </>
           ) : null}
 
-          <div className={cn("absolute inset-x-0 bottom-0 p-6 md:p-10", !imageUrl && "relative p-0")}>
-            {category ? (
-              <span
-                className={cn(
-                  "inline-block rounded-full px-3 py-1 text-xs font-medium",
-                  imageUrl
-                    ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                    : "bg-secondary text-secondary-foreground",
-                )}
-              >
-                {category.title}
+          <div
+            className={cn(
+              "absolute inset-x-0 bottom-0 p-6 md:p-10",
+              !imageUrl && "relative p-0",
+            )}
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Teal "Latest story" chip makes it explicit this is the newest
+                  post without shouting — the featured lead is the one the
+                  category pills don't filter. */}
+              <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
+                New
               </span>
-            ) : null}
+              {category ? (
+                <span
+                  className={cn(
+                    "inline-block rounded-full px-3 py-1 text-xs font-medium",
+                    imageUrl
+                      ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
+                      : "bg-secondary text-secondary-foreground",
+                  )}
+                >
+                  {category.title}
+                </span>
+              ) : null}
+            </div>
 
             <h2
               className={cn(

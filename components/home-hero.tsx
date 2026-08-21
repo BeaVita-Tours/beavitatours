@@ -60,7 +60,7 @@ export function HomeHero() {
           width={480}
           height={96}
           priority
-          className="h-24 w-auto md:h-26 drop-shadow-2xl drop-shadow-black/70"
+          className="h-28 w-auto md:h-30 drop-shadow-2xl drop-shadow-black/80 mt-8"
         />
       </Link>
 
