@@ -39,8 +39,8 @@ export async function BlogSection() {
 
         {latest.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {latest.map((post) => (
-              <PostCard key={post._id} post={post} />
+            {latest.map((post, index) => (
+              <PostCard key={post._id} post={post} latest={index === 0} />
             ))}
           </div>
         ) : null}

@@ -5,6 +5,7 @@ import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { Post } from "@/lib/sanity/types";
+import { BlogBadge } from "./blog-badge";
 import { PortableTextBody } from "./portable-text";
 import { ReadingProgress } from "./reading-progress";
 import { AuthorCard } from "./author-card";
@@ -40,9 +41,14 @@ export function PostArticle({ post }: { post: Post }) {
               <Link
                 key={category._id}
                 href={`/blog/category/${category.slug}`}
-                className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="group rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                {category.title}
+                <BlogBadge
+                  variant="secondary"
+                  className="text-sm transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+                >
+                  {category.title}
+                </BlogBadge>
               </Link>
             ))}
           </div>

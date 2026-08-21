@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { PostSummary } from "@/lib/sanity/types";
 import { cn } from "@/lib/utils";
+import { BlogBadge } from "./blog-badge";
 
 /**
  * The featured "latest story" — a large photo card in the site's language:
@@ -61,23 +62,22 @@ export function FeaturedPost({ post }: { post: PostSummary }) {
             )}
           >
             <div className="flex flex-wrap items-center gap-2">
-              {/* Teal "Latest story" chip makes it explicit this is the newest
-                  post without shouting — the featured lead is the one the
-                  category pills don't filter. */}
-              <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
+              {/* "New" chip marks the newest post — the featured lead is the
+                  one the category pills don't filter. */}
+              <BlogBadge variant="accent" className="font-bold">
                 New
-              </span>
+              </BlogBadge>
               {category ? (
-                <span
-                  className={cn(
-                    "inline-block rounded-full px-3 py-1 text-xs font-medium",
+                <BlogBadge
+                  variant="secondary"
+                  className={
                     imageUrl
                       ? "border border-white/30 bg-white/15 text-white backdrop-blur-sm"
-                      : "bg-secondary text-secondary-foreground",
-                  )}
+                      : undefined
+                  }
                 >
                   {category.title}
-                </span>
+                </BlogBadge>
               ) : null}
             </div>
 

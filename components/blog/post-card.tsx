@@ -4,6 +4,7 @@ import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { PostSummary } from "@/lib/sanity/types";
+import { BlogBadge } from "./blog-badge";
 import { PostMedia } from "./post-media";
 
 function AuthorBadge({ post }: { post: PostSummary }) {
@@ -32,7 +33,9 @@ function AuthorBadge({ post }: { post: PostSummary }) {
           {initials}
         </span>
       )}
-      <span className="text-sm font-medium text-foreground">{post.author.name}</span>
+      <span className="text-sm font-medium text-foreground">
+        {post.author.name}
+      </span>
     </span>
   );
 }
@@ -42,7 +45,13 @@ function AuthorBadge({ post }: { post: PostSummary }) {
  * category pills, bold title, excerpt, and a hairline byline footer with the
  * date and reading time.
  */
-export function PostCard({ post }: { post: PostSummary }) {
+export function PostCard({
+  post,
+  latest = false,
+}: {
+  post: PostSummary;
+  latest?: boolean;
+}) {
   const minutes = readingTimeInMinutes(post.bodyText);
 
   return (
@@ -56,16 +65,21 @@ export function PostCard({ post }: { post: PostSummary }) {
       />
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        {post.categories && post.categories.length > 0 ? (
+        {/* This thing seems overcomplicated but basically it creates the badge row
+        only if there are categories or if it's the latest post */}
+        {(post.categories && post.categories.length > 0) || latest ? (
           <div className="flex flex-wrap gap-2">
-            {post.categories.map((category) => (
-              <span
-                key={category._id}
-                className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
-              >
-                {category.title}
-              </span>
-            ))}
+            {latest && (
+              <BlogBadge variant="accent" className="font-bold">
+                New
+              </BlogBadge>
+            )}
+            {post.categories &&
+              post.categories.map((category) => (
+                <BlogBadge key={category._id} variant="secondary">
+                  {category.title}
+                </BlogBadge>
+              ))}
           </div>
         ) : null}
 
