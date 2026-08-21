@@ -210,6 +210,28 @@ export async function getPostSlugs(): Promise<string[]> {
   return await client.fetch<string[]>(POST_SLUGS_QUERY);
 }
 
+/** Slug + publish date per published post, for the sitemap's lastModified. */
+const POST_SITEMAP_QUERY = /* groq */ `
+  *[_type == "post" && defined(slug.current) && publishedAt <= now()]
+    | order(publishedAt desc) {
+      "slug": slug.current,
+      publishedAt,
+    }
+`;
+
+export async function getPostSitemapEntries(): Promise<
+  Array<{ slug: string; publishedAt: string }>
+> {
+  "use cache";
+  cacheLife("blog");
+  cacheTag(BLOG_TAG);
+
+  if (!client) return [];
+  return await client.fetch<Array<{ slug: string; publishedAt: string }>>(
+    POST_SITEMAP_QUERY,
+  );
+}
+
 export async function getCategories(): Promise<Category[]> {
   "use cache";
   cacheLife("blog");
