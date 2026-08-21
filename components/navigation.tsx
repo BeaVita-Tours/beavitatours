@@ -43,7 +43,11 @@ const isActiveForPath = (pathname: string, href: string) =>
  * `usePathname` themselves, so they can also be rendered as Suspense fallbacks
  * in the static prerender shell (which must not call request-time hooks).
  */
-function DesktopNavLinks({ isActive }: { isActive: (href: string) => boolean }) {
+function DesktopNavLinks({
+  isActive,
+}: {
+  isActive: (href: string) => boolean;
+}) {
   return (
     <ul className="flex items-center justify-between gap-1 py-2">
       {NAV_LINKS.map((link, index) => {
@@ -117,7 +121,9 @@ function MobileNavLinks({
  */
 function DesktopNavActive() {
   const pathname = usePathname();
-  return <DesktopNavLinks isActive={(href) => isActiveForPath(pathname, href)} />;
+  return (
+    <DesktopNavLinks isActive={(href) => isActiveForPath(pathname, href)} />
+  );
 }
 
 function MobileNavActive({ onNavigate }: { onNavigate: () => void }) {
@@ -146,46 +152,52 @@ export function Navigation() {
   const closeMobile = () => setIsOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur">
-      {/* Layer 1 — brand + primary action */}
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between gap-4">
-          <Link
-            href="/"
-            aria-label="BeaVitaTours home"
-            className="flex items-center"
-          >
-            <Image
-              src={navbarLogo}
-              alt="BeaVitaTours"
-              width={480}
-              height={96}
-              priority
-              className="h-11 w-auto"
-            />
-            <span className="sr-only">BeaVitaTours</span>
-          </Link>
-
-          <div className="flex items-center gap-3">
-            <Button asChild className="hidden xl:inline-flex">
-              <Link href="/tours/shared-tours">Book Now</Link>
-            </Button>
-            <button
-              type="button"
-              onClick={() => setIsOpen((open) => !open)}
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              aria-controls="mobile-nav"
-              className="inline-flex size-10 items-center justify-center rounded-lg text-foreground outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring xl:hidden"
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur-sm">
+      {/* Layer 1 — brand + primary action (solid) */}
+      <div className="bg-background">
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between gap-4">
+            <Link
+              href="/"
+              aria-label="BeaVitaTours home"
+              className="flex items-center"
             >
-              {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
+              <Image
+                src={navbarLogo}
+                alt="BeaVitaTours"
+                width={480}
+                height={96}
+                priority
+                className="h-11 w-auto"
+              />
+              <span className="sr-only">BeaVitaTours</span>
+            </Link>
+
+            <div className="flex items-center gap-3">
+              <Button asChild className="hidden xl:inline-flex">
+                <Link href="/tours/shared-tours">Book Now</Link>
+              </Button>
+              <button
+                type="button"
+                onClick={() => setIsOpen((open) => !open)}
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-nav"
+                className="inline-flex size-10 items-center justify-center rounded-lg text-foreground outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring xl:hidden"
+              >
+                {isOpen ? (
+                  <X className="size-5" />
+                ) : (
+                  <Menu className="size-5" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <nav aria-label="Main">
-        {/* Layer 2 — the route map: every link horizontal, icon + label */}
+        {/* Layer 2 — the route map: every link horizontal, icon + label (translucent + blur) */}
         <div className="hidden border-t border-border/60 bg-muted/40 xl:block">
           <div className="container mx-auto px-4">
             <Suspense fallback={<DesktopNavLinks isActive={() => false} />}>
@@ -208,11 +220,14 @@ export function Navigation() {
           )}
         >
           <div className="min-h-0 overflow-hidden">
-            <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-border py-3">
+            <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-border bg-background py-3">
               <div className="container mx-auto px-4">
                 <Suspense
                   fallback={
-                    <MobileNavLinks isActive={() => false} onNavigate={closeMobile} />
+                    <MobileNavLinks
+                      isActive={() => false}
+                      onNavigate={closeMobile}
+                    />
                   }
                 >
                   <MobileNavActive onNavigate={closeMobile} />
