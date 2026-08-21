@@ -35,7 +35,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section 
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -72,6 +72,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      */}
+
+      {/* Reviews */}
+      <ReviewsSection />
+
+      {/* Blog — the 3 latest posts */}
+      <BlogSection />
 
       {/* CTA Section */}
       <section id="book" className="py-20 bg-primary text-primary-foreground">
@@ -93,12 +100,6 @@ export default async function HomePage() {
           </Button>
         </div>
       </section>
-
-      {/* Reviews */}
-      <ReviewsSection />
-
-      {/* Blog — the 3 latest posts */}
-      <BlogSection />
     </main>
   );
 }

@@ -51,7 +51,7 @@ export async function ReviewsSection() {
             What Our Guests Say
           </h2>
           <p className="mx-auto max-w-2xl text-pretty text-muted-foreground">
-            Real reviews from travelers who&apos;ve explored the Veneto with us.
+            Real reviews from travelers who&apos;ve explored Veneto with us.
           </p>
         </div>
 
