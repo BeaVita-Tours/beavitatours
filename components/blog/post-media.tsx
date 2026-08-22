@@ -29,7 +29,13 @@ export function PostMedia({
   const mainImage = post.mainImage;
 
   return (
-    <div className={cn("relative overflow-hidden bg-muted", aspectClassName, className)}>
+    <div
+      className={cn(
+        "relative overflow-hidden bg-muted",
+        aspectClassName,
+        className,
+      )}
+    >
       {mainImage?.asset?.url ? (
         <Image
           src={urlFor(mainImage).width(1200).url()}

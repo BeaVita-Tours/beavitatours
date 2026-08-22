@@ -9,6 +9,11 @@ import { BlogSection } from "@/components/blog/blog-section";
 export default async function HomePage() {
   return (
     <main>
+      {/* One-line intro — light, not a heading-level treatment */}
+      <p className="px-6 py-6 text-center text-md font-medium text-muted-foreground text-balance md:text-xl">
+        Boutique day tours from Venice — choose how you travel
+      </p>
+
       {/* Hero */}
       <HomeHero />
 

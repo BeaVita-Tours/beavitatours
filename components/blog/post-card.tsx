@@ -57,14 +57,14 @@ export function PostCard({
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <PostMedia
         post={post}
         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
       />
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      <div className="flex flex-1 flex-col gap-3 p-5 hover:bg-muted/30 bg-card transition-colors duration-150">
         {/* This thing seems overcomplicated but basically it creates the badge row
         only if there are categories or if it's the latest post */}
         {(post.categories && post.categories.length > 0) || latest ? (
@@ -83,7 +83,7 @@ export function PostCard({
           </div>
         ) : null}
 
-        <h2 className="text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+        <h2 className="text-lg font-bold leading-snug text-foreground transition-colors">
           {post.title}
         </h2>
 
