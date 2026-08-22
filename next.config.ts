@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ["192.168.1.99"],
   async redirects() {
     return [
       // Bare locale prefix (e.g. /en, /it) redirects to the homepage.

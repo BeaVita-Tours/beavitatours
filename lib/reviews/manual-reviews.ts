@@ -52,8 +52,8 @@ import type { Review } from "./types";
 
 // ─── PLACEHOLDERS ─────────────────────────────────────────────────────────────
 // Replace these with the client's real reviews before publishing. Everything in
-// brackets is template text. Once Google's listing is a physical place (see
-// google-reviews.ts / next.config.ts), live reviews merge into this same row.
+// brackets is template text. Once Google reviews are fetched (see
+// google-reviews.ts), live reviews merge into this same row.
 // Delete a placeholder by removing its object; add real ones by copying the
 // header example and filling it in. `id` must be unique.
 export const manualReviews: Review[] = [

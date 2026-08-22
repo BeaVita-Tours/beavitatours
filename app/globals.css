@@ -114,19 +114,6 @@
   }
 }
 
-@theme {
-  --animate-promo-marquee: promo-marquee 28s linear infinite;
-
-  @keyframes promo-marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-}
-
 /* Marquee (components/ui/marquee.tsx). Defined as plain CSS — NOT a
    `--animate-*` theme token — for the same reason as nav-reveal below: the
    theme-token route was being tree-shaken in this setup. Also, the value must

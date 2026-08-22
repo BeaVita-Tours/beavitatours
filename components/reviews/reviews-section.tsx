@@ -1,7 +1,4 @@
-import {
-  getGoogleReviews,
-  GOOGLE_REVIEWS_URL,
-} from "@/lib/reviews/google-reviews";
+import { getGoogleReviews } from "@/lib/reviews/google-reviews";
 import { manualReviews } from "@/lib/reviews/manual-reviews";
 import { alsoRatedOnStats, headlineStats } from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
@@ -42,6 +39,7 @@ export async function ReviewsSection() {
   const allReviews = [...manualReviews, ...(google?.reviews ?? [])].sort(
     byDateDesc,
   );
+  // .sort(() => Math.random() - 0.5); // randomize order so the marquee doesn't feel static
 
   return (
     <section id="reviews" className="py-20 bg-background">
@@ -58,11 +56,11 @@ export async function ReviewsSection() {
         {/* Aggregate stats */}
         <div className="mx-auto max-w-3xl">
           <div className="flex flex-wrap items-stretch justify-center gap-3">
-            {google !== null && GOOGLE_REVIEWS_URL && (
+            {google !== null && google.url && (
               <ReviewStatsBadge
                 name="Google"
                 ota="google"
-                href={GOOGLE_REVIEWS_URL}
+                href={google.url}
                 rating={google.rating}
                 count={google.totalCount}
               />
