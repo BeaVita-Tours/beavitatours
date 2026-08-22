@@ -12,6 +12,9 @@ export default async function HomePage() {
       {/* Hero */}
       <HomeHero />
 
+      {/* Reviews */}
+      <ReviewsSection />
+
       {/* Tours Section */}
       <section id="tours" className="py-20 bg-background">
         <div className="container mx-auto px-4">
@@ -69,9 +72,6 @@ export default async function HomePage() {
         </div>
       </section>
       */}
-
-      {/* Reviews */}
-      <ReviewsSection />
 
       {/* Blog — the 3 latest posts */}
       <BlogSection />
