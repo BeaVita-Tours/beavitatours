@@ -79,7 +79,7 @@ export function ReviewStatsBadge({
             {rating}
           </span>
           {typeof rating === "number" && (
-            <Star className="size-3 fill-amber-400 text-amber-400 pb-0.5" />
+            <Star className="size-4 fill-amber-400 text-amber-400 pb-[0.25]" />
           )}
         </div>
 
