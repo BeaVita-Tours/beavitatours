@@ -151,7 +151,7 @@ export function Navigation() {
   const closeMobile = () => setIsOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-muted/85 backdrop-blur-sm">
       {/* Layer 1 — brand + primary action (solid) */}
       <div className="bg-background">
         <div className="container mx-auto px-4">
@@ -197,7 +197,7 @@ export function Navigation() {
 
       <nav aria-label="Main">
         {/* Layer 2 — the route map: every link horizontal, icon + label (translucent + blur) */}
-        <div className="hidden border-t border-border/60 bg-muted/40 xl:block">
+        <div className="hidden border-t border-border/60 bg-muted/35 xl:block">
           <div className="container mx-auto px-4">
             <Suspense fallback={<DesktopNavLinks isActive={() => false} />}>
               <DesktopNavActive />

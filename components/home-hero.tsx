@@ -48,7 +48,7 @@ export function HomeHero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-36 bg-linear-to-b from-black/65 to-transparent"
       />
-      {/* Logo — centred on the seam, straddling both panels */}
+      {/* Logo — centred on the seam, straddling both panels 
       <Link
         href="/"
         aria-label="BeaVitaTours home"
@@ -63,6 +63,7 @@ export function HomeHero() {
           className="h-28 w-auto md:h-30 drop-shadow-2xl drop-shadow-black/80 mt-8"
         />
       </Link>
+      */}
 
       <HeroPanel
         image="/images/private-tours.jpg"
