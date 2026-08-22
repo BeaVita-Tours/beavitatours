@@ -36,11 +36,11 @@ export default function RatesPage() {
                   See our LOWEST WEB RATES
                 </h3>
                 <p className="text-lg text-muted-foreground mb-8">
-                  and book immediately a SHARED TOUR HERE
+                  and book immediately a GROUP TOUR HERE
                 </p>
                 <div className="mt-6">
                   <Button asChild size="lg">
-                    <Link href="/tours/shared-tours">Book a Shared Tour</Link>
+                    <Link href="/tours/group-tours">Book a Group Tour</Link>
                   </Button>
                 </div>
               </div>
@@ -178,9 +178,7 @@ export default function RatesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Shield className="h-12 w-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-4">
-              Best Value for Money
-            </h2>
+            <h2 className="text-2xl font-bold mb-4">Best Value for Money</h2>
           </div>
         </div>
       </section>

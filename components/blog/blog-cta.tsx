@@ -12,7 +12,7 @@ interface BlogCtaProps {
  * nudge from reading toward booking a real day out.
  */
 export function BlogCta({
-  href = "/tours/shared-tours",
+  href = "/tours/group-tours",
   label = "Explore day trips",
 }: BlogCtaProps) {
   return (

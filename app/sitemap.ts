@@ -18,7 +18,7 @@ const STATIC_ROUTES: Array<{
   { path: "/tours/wine-food", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/active-adventure", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/cultural", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/tours/shared-tours", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/tours/group-tours", priority: 0.9, changeFrequency: "weekly" },
   { path: "/about", priority: 0.6, changeFrequency: "yearly" },
   { path: "/b2b", priority: 0.5, changeFrequency: "yearly" },
   { path: "/contact", priority: 0.6, changeFrequency: "yearly" },

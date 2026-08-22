@@ -71,10 +71,10 @@ export function HomeHero() {
         label="Private Tours"
       />
       <HeroPanel
-        image="/images/shared-tours.jpg"
+        image="/images/group-tours.jpg"
         alt="Vineyard hills of the Prosecco wine region"
-        href="/tours/shared-tours"
-        label="Shared Tours"
+        href="/tours/group-tours"
+        label="Group Tours"
       />
     </section>
   );

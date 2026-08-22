@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SharedToursRegiondoWidget } from "@/components/shared-tours-regiondo-widget";
+import { SharedToursRegiondoWidget } from "@/components/group-tours-regiondo-widget";
 
 export default function SharedTourPage() {
   return (
@@ -20,7 +20,7 @@ export default function SharedTourPage() {
           <div className="absolute inset-0 z-0">
             <Image
               src="/tourwines.jpg"
-              alt="Shared Tour"
+              alt="Group Tour"
               fill
               className="object-cover object-[50%_70%]"
               priority
@@ -29,10 +29,10 @@ export default function SharedTourPage() {
           </div>
           <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center gap-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Shared Tour
+              Group Tour
             </h1>
             <p className="text-xl text-white/90 max-w-2xl">
-              Book immediately one of our shared tour and join a magic
+              Book one of our group tours immediately and join a magic
               adventure! Our experiences are top rated on Viator, Get Your
               Guide, Tripadvisor
             </p>

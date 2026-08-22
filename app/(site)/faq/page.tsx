@@ -11,7 +11,7 @@ const faqItems: Array<{ q: string; a: string }> = [
   },
   {
     q: "Where do I meet my guide for pick up in Venice?",
-    a: "Our private tours depart from Venice Piazzale Roma or from any address in the mainland. Shared tours depart at designated meeting points. Please arrive at the meeting point 10 minutes before the scheduled tour time.",
+    a: "Our private tours depart from Venice Piazzale Roma or from any address in the mainland. Group tours depart at designated meeting points. Please arrive at the meeting point 10 minutes before the scheduled tour time.",
   },
   {
     q: "How can I get to Venice Piazzale Roma?",
@@ -27,15 +27,15 @@ const faqItems: Array<{ q: string; a: string }> = [
   },
   {
     q: "Do you offer hotel pick up service?",
-    a: "For private tours we offer pick up service from your hotel. The service is free if your hotel is in the mainland; if your hotel is in Venice island there is a charge for the private water taxi. For shared tours we don't offer hotel pick up service.",
+    a: "For private tours we offer pick up service from your hotel. The service is free if your hotel is in the mainland; if your hotel is in Venice island there is a charge for the private water taxi. For group tours we don't offer hotel pick up service.",
   },
   {
     q: "We are travelling with our children. How does this work?",
-    a: "Our private tours are accessible for children. Children who are under 36 kg / 97 pounds or 150 cm / 4ft 9 must use proper child restraints (we can provide baby seats and/or booster seats free of charge, but we need to know a few days in advance). Please specify the age of children when booking. Shared tours have children age restrictions.",
+    a: "Our private tours are accessible for children. Children who are under 36 kg / 97 pounds or 150 cm / 4ft 9 must use proper child restraints (we can provide baby seats and/or booster seats free of charge, but we need to know a few days in advance). Please specify the age of children when booking. Group tours have children age restrictions.",
   },
   {
     q: "Are pets allowed on the tours?",
-    a: "Generally no as we need to consider that by the Italian law a dog can travel in a vehicle in the passenger compartment only if secured (e.g., with a leash to a seatbelt attachment) or in a suitable container. However, if you are planning to travel with your pet and would still like to book a private tour please contact us first and we will advise if there is any solution available. Pets are not allowed on our shared tours.",
+    a: "Generally no as we need to consider that by the Italian law a dog can travel in a vehicle in the passenger compartment only if secured (e.g., with a leash to a seatbelt attachment) or in a suitable container. However, if you are planning to travel with your pet and would still like to book a private tour please contact us first and we will advise if there is any solution available. Pets are not allowed on our group tours.",
   },
   {
     q: "What is your cancellation policy?",

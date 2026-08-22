@@ -31,8 +31,8 @@ export const tours = [
     image: gallaplacidia,
   },
   {
-    title: "Shared Tours",
-    href: "/tours/shared-tours",
+    title: "Group Tours",
+    href: "/tours/group-tours",
     image: shared,
   },
 ];

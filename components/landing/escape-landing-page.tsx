@@ -72,7 +72,7 @@ const whyBookProps = [
 const faqItems = [
   {
     q: "Where do I meet my guide for pickup?",
-    a: "Our shared day trips depart from a designated meeting point in Venice. For private tours, we can pick you up at your accommodation on the mainland or arrange a convenient meeting spot. You'll receive full details in your booking confirmation.",
+    a: "Our group day trips depart from a designated meeting point in Venice. For private tours, we can pick you up at your accommodation on the mainland or arrange a convenient meeting spot. You'll receive full details in your booking confirmation.",
   },
   {
     q: "How will I recognise my guide at the meeting point?",
@@ -80,7 +80,7 @@ const faqItems = [
   },
   {
     q: "Do you offer hotel pickup?",
-    a: "For private tours we offer complimentary pickup from any hotel or address on the mainland. For shared tours, guests make their own way to the designated meeting point. If you're staying on the Venice island, a private water taxi can be arranged at an additional cost.",
+    a: "For private tours we offer complimentary pickup from any hotel or address on the mainland. For group tours, guests make their own way to the designated meeting point. If you're staying on the Venice island, a private water taxi can be arranged at an additional cost.",
   },
   {
     q: "What is your cancellation policy?",
@@ -88,7 +88,7 @@ const faqItems = [
   },
   {
     q: "Are the tours suitable for children?",
-    a: "Private tours are child-friendly. Children under 36 kg (79 lb) or 150 cm (4'9\") must use a proper car seat — we can provide baby seats and booster seats free of charge if you let us know a few days in advance. Shared tours have age restrictions, so please check when booking.",
+    a: "Private tours are child-friendly. Children under 36 kg (79 lb) or 150 cm (4'9\") must use a proper car seat — we can provide baby seats and booster seats free of charge if you let us know a few days in advance. Group tours have age restrictions, so please check when booking.",
   },
 ];
 

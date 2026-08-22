@@ -23,16 +23,15 @@ import { cn } from "@/lib/utils";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
 const NAV_LINKS = [
-  { href: "/tours/shared-tours", label: "Shared Tours", icon: Users },
+  { href: "/tours/group-tours", label: "Group Tours", icon: Users },
+  { href: "/rates", label: "Private Tours", icon: CarFront },
   { href: "/tours/dolomites", label: "Dolomites", icon: Mountain },
   { href: "/tours/wine-food", label: "Food & Wine", icon: Grape },
-  { href: "/best-seller", label: "Best Seller", icon: Trophy },
-  { href: "/rates", label: "Private Tours", icon: CarFront },
   { href: "/b2b", label: "B2B", icon: BriefcaseBusiness },
   { href: "/about", label: "About", icon: UserRound },
   { href: "/faq", label: "FAQ", icon: CircleHelp },
-  { href: "/contact", label: "Contact", icon: Mail },
   { href: "/blog", label: "Blog", icon: Newspaper },
+  { href: "/contact", label: "Contact", icon: Mail },
 ] as const;
 
 const isActiveForPath = (pathname: string, href: string) =>
@@ -175,7 +174,7 @@ export function Navigation() {
 
             <div className="flex items-center gap-3">
               <Button asChild className="hidden xl:inline-flex">
-                <Link href="/tours/shared-tours">Book Now</Link>
+                <Link href="/tours/group-tours">Book Now</Link>
               </Button>
               <button
                 type="button"
@@ -234,7 +233,7 @@ export function Navigation() {
                 </Suspense>
                 <div className="mt-3 border-t border-border pt-3">
                   <Button asChild size="lg" className="w-full">
-                    <Link href="/tours/shared-tours" onClick={closeMobile}>
+                    <Link href="/tours/group-tours" onClick={closeMobile}>
                       Book Now
                     </Link>
                   </Button>
