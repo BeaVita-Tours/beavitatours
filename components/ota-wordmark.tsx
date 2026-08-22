@@ -17,6 +17,8 @@ function calculateOtaSize(ota: string) {
     return 1.15;
   } else if (ota === "tripadvisor") {
     return 0.875;
+  } else if (ota === "musement") {
+    return 0.9;
   }
   return 1;
 }

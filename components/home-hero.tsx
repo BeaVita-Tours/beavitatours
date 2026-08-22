@@ -86,8 +86,6 @@ const heroPanels: HeroPanelContent[] = [
 export function HomeHero() {
   return (
     <section className="relative grid grid-cols-1 overflow-hidden md:grid-cols-2">
-      {/* Masthead scrim: darkens just the top edge so a logo — if one is added
-          back here — reads over either photo. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-36 bg-linear-to-b from-black/65 to-transparent"
