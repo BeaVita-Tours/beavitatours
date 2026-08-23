@@ -16,18 +16,18 @@ import type { PlatformStat, Review } from "./types";
 /** Headline stat cards shown next to the live Google stat. */
 export const headlineStats: PlatformStat[] = [
   {
-    platform: "tripadvisor",
-    name: "TripAdvisor",
-    href: "https://www.tripadvisor.it/Attraction_Review-g187870-d28238909-Reviews-Bea_Vita_Tours-Venice_Veneto.html",
-    rating: 4.9,
-    count: 99,
-  },
-  {
     platform: "getyourguide",
     name: "GetYourGuide",
     href: "https://www.getyourguide.com/bea-vita-tours-s340119/",
     rating: 4.86,
     count: 2256,
+  },
+  {
+    platform: "tripadvisor",
+    name: "TripAdvisor",
+    href: "https://www.tripadvisor.it/Attraction_Review-g187870-d28238909-Reviews-Bea_Vita_Tours-Venice_Veneto.html",
+    rating: 4.9,
+    count: 99,
   },
 ];
 
