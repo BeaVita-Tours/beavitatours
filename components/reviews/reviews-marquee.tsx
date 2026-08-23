@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Marquee } from "@/components/ui/marquee";
@@ -65,6 +65,21 @@ export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
   // mouse/trackpad users keep auto-scroll + hover-to-pause instead.
   const isTouch = useMediaQuery("(hover: none) and (pointer: coarse)");
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Last known pointer position, tracked passively so the inspector's
+  // `onOpenChange` can tell — without a real mouseleave/mouseenter firing —
+  // whether the pointer is still over the strip when the dialog closes.
+  const lastPointerPos = useRef({ x: -1, y: -1 });
+
+  useEffect(() => {
+    if (isTouch) return;
+    const handleMove = (event: MouseEvent) => {
+      lastPointerPos.current = { x: event.clientX, y: event.clientY };
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [isTouch]);
+
   if (reviews.length === 0) return null;
 
   // Reviews arrive pre-shuffled (see `shuffleReviews`); split in half so both
@@ -77,6 +92,7 @@ export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
 
   return (
     <div
+      ref={containerRef}
       className="space-y-4"
       // On touch, `:hover`/`pointerenter` can linger after a tap; touchScroll
       // already pauses on interaction instead, so skip hover-pause there.
@@ -108,10 +124,22 @@ export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
           if (!open) {
             setSelectedReview(null);
             // The dialog/drawer overlay sits over the strip, so the browser
-            // doesn't fire a real mouseleave when it closes without the
-            // pointer moving — reset hover explicitly or the rows would
-            // stay stuck paused until the next mouse movement.
-            setIsHovering(false);
+            // doesn't fire a real mouseleave/mouseenter when it closes
+            // without the pointer moving — `isHovering` would otherwise be
+            // left stale from before the inspector opened. Instead, check
+            // the last tracked pointer position against the strip's bounds:
+            // still over a card → stay paused, like the pointer never left;
+            // elsewhere → resume, like a normal mouseleave would.
+            const rect = containerRef.current?.getBoundingClientRect();
+            const { x, y } = lastPointerPos.current;
+            setIsHovering(
+              !isTouch &&
+                !!rect &&
+                x >= rect.left &&
+                x <= rect.right &&
+                y >= rect.top &&
+                y <= rect.bottom,
+            );
           }
         }}
       />
