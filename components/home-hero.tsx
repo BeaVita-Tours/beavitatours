@@ -88,16 +88,16 @@ export function HomeHero() {
     <section className="relative grid grid-cols-1 overflow-hidden md:grid-cols-2">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-36 bg-linear-to-b from-black/65 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-36 bg-linear-to-b from-black/55 to-transparent"
       />
 
       <HeroPanel
-        image="/images/private-tours.jpg"
+        image="/images/private-tours.webp"
         alt="The Dolomites rising behind the Veneto plain"
         content={heroPanels[0]}
       />
       <HeroPanel
-        image="/images/group-tours.jpg"
+        image="/images/group-tours.webp"
         alt="Vineyard hills of the Prosecco wine region"
         content={heroPanels[1]}
       />

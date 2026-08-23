@@ -9,10 +9,14 @@ import { BlogSection } from "@/components/blog/blog-section";
 export default async function HomePage() {
   return (
     <main>
-      {/* One-line intro — light, not a heading-level treatment */}
-      <p className="px-6 py-6 text-center text-md font-medium text-muted-foreground text-balance md:text-xl">
-        Boutique day tours from Venice — choose how you travel
-      </p>
+      {/* One-line intro — a slim band bridging the navbar and the hero,
+          echoing the muted/hairline layering used in the nav rather than
+          floating as bare text on the page background. */}
+      <div className="border-b border-border/40 bg-muted/60">
+        <p className="mx-auto max-w-xl text-balance px-6 py-3 text-center text-sm font-medium tracking-wide text-muted-foreground md:text-base">
+          Boutique day tours from Venice — choose how you travel
+        </p>
+      </div>
 
       {/* Hero */}
       <HomeHero />
