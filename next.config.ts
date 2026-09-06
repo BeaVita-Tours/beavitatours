@@ -25,6 +25,18 @@ const nextConfig: NextConfig = {
       revalidate: 6 * 60 * 60,
       expire: 60 * 60 * 24 * 30,
     },
+    // Regiondo catalog profile: tour copy, prices and images (lib/regiondo/*).
+    // Short stale window because a price edit is usually a correction of
+    // something wrong, hourly background refresh, and a one-day hard ceiling so
+    // a Regiondo outage cannot serve week-old prices. Availability, seat counts
+    // and totals are NOT covered by this — they are fetched fresh on every
+    // request. A product webhook can bust a single tour via
+    // POST /api/regiondo/revalidate.
+    catalog: {
+      stale: 5 * 60,
+      revalidate: 60 * 60,
+      expire: 60 * 60 * 24,
+    },
   },
   images: {
     qualities: [60, 66, 72, 75, 80],
@@ -33,6 +45,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.sanity.io",
         pathname: "/images/**",
+      },
+      // Regiondo product imagery. Their CDN only renders two crops
+      // (-cropped600-400 and -thumbnail-360x240); larger renditions 404, so
+      // 600x400 really is the largest source available for a tour hero.
+      {
+        protocol: "https",
+        hostname: "cdn.regiondo.net",
+        pathname: "/media/**",
       },
     ],
   },

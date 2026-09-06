@@ -300,3 +300,114 @@ product detail response is discarded rather than cached, for the same reason.
 
 - `.gitignore` already carries `.env*` with `!.env.example` — verified, no change needed.
 - No key material appears in this log, in fixtures, in commit messages or in code.
+
+---
+
+## Phase 2 — API wrapper layer
+
+Shipped `lib/regiondo/`: `config`, `signing`, `client`, `errors`, `schemas`, `sanitize`,
+`map`, `types`, `slugs`, `cache`, `products`, `checkout`, plus `__tests__/` with scrubbed
+live fixtures. 114 unit tests, 5 live tests (opt-in), typecheck and lint clean.
+
+### The spec is wrong in four places, and the live round trip is how we found out
+
+Schemas written from `api.json` alone failed on first contact with the real API. All four
+divergences are now covered by fixtures in `lib/regiondo/__tests__/fixtures/` and asserted
+in `checkout-shapes.test.ts`, so a future edit cannot silently reintroduce them.
+
+| # | Spec says | Live returns | Consequence |
+|---|---|---|---|
+| 1 | `reservation_data` is `array<reservationCode>` | a single **object** on POST and PUT `/checkout/hold` (GET does return an array) | the hold call threw a schema error and left a dangling reservation |
+| 2 | `TaxTotals` has `{amount, percent}` | `{title, value}` | tax silently read as `null` |
+| 3 | `/checkout/checkoutlink` returns an array | a single **object** | the payment handoff would have thrown |
+| 4 | `fieldData` always has `view_type` | absent from `buyer_data_required` on `/checkout/hold` and `/checkout/totals` (present on `/checkout/orderoptionfields`) | no semantic hint, so no `type="email"` and no `autocomplete` |
+
+Two more behaviours worth knowing:
+
+- **`reservation_end` is local wall-clock time in `timezone`**, not an instant:
+  `"2026-09-06 23:03"` with `"Europe/Berlin"`. Reading it as UTC puts a 20-minute hold
+  one or two hours out and makes the countdown nonsense. `holdExpiryToIso()` converts it
+  via `Intl.DateTimeFormat`, in two passes so it stays exact across a DST boundary.
+- **`subtotal` is net and `grand_total` is gross** (144.5455 + 14.4545 = 159.00). The
+  customer-facing price is `grand_total`.
+
+### D-007 — env validation is strict, but only when the flag is on
+
+`REGIONDO_NATIVE_BOOKING` off (the default) yields an inert config instead of throwing.
+The brief asked for a schema that fails at build rather than at runtime, and it does —
+but only once the feature is switched on. Failing every build that lacks Regiondo
+credentials would break `next build` for anyone who has not been given the keys, a
+regression against how `lib/sanity/client.ts` already behaves. With the flag on, a missing
+key is a build failure, which is where the requirement actually bites.
+
+*Reverse:* delete the `if (!enabled)` branch in `lib/regiondo/config.ts`.
+
+### D-008 — the confirmation page cannot be reached automatically
+
+Now settled by observation rather than inference. A real checkout link looks like:
+
+```
+https://prosecco-experience.regiondo.com/checkout/apireservation/index/keys/<code>/currency/eur
+```
+
+Path-based, **no query string at all** — so there is no return-URL parameter to set and
+nowhere to smuggle one. The customer completes payment on Regiondo's whitelabel shop (the
+same host the current `/lp/*` iframes point at) and lands on Regiondo's own confirmation
+page.
+
+`/book/confirmation` is still built in full and still verifies the order server-side before
+rendering or firing anything. What it cannot do is guarantee it is *reached*. That depends
+on a return-URL setting in the Regiondo ticketshop dashboard, which is now a cutover
+checklist item rather than something code can fix.
+
+*Reverse:* n/a — an upstream limitation, recorded so nobody re-litigates it.
+
+### D-009 — a fixed test product for the write path
+
+The live round trip holds one seat on product 298190 (shared Dolomites day trip, capacity
+40, ~25 free) and releases it in a `finally`. High capacity means a briefly-held seat
+cannot plausibly cost a real sale.
+
+*Reverse:* two constants at the top of `live-roundtrip.test.ts`.
+
+### Surprises
+
+- **A schema failure left a dangling hold.** `createHold` threw *after* Regiondo had
+  already reserved the seat, so the test's `finally` never ran — `reservationCode` was
+  still null. Found it with `GET /checkout/hold`, released it, confirmed the account was
+  clean. Worth remembering: a hold exists from the moment Regiondo answers, not from the
+  moment our code accepts the answer. The account-wide hold list is the safety net and is
+  the first thing to check if one ever leaks.
+- **`head -N` on a probe script kills it via SIGPIPE**, which is how the *second* dangling
+  hold happened — the release never ran. Probes that create state now write to a file and
+  are read afterwards.
+- **`cacheLife()` throws outside a Next build** ("only available with the `cacheComponents`
+  config"), so every `"use cache"` wrapper was untestable under Vitest. Aliased
+  `next/cache` to a stub; `"use cache"` is just a string literal to Vitest, so the cached
+  functions run as ordinary async functions and the request/parse/map path is still what
+  gets tested.
+- **`fromHttpStatus` conflated two different numbers.** It overwrote the transport status
+  with the code it was classifying on, so a `suppress_response_code=true` response logged
+  as HTTP 404 when the wire status was 200. Caught by a test written against the real
+  fixture. Now `status` is the wire status and `code` is Regiondo's.
+- **`payments_available` settles D-001 beyond doubt**: `reservation`, `cashregister`,
+  `invoice`, `api_external`. The one card-shaped entry is `paid_cc` — a bookkeeping label
+  *under* `cashregister`, for recording a card taken in person on a terminal. Nothing in
+  the API accepts a card number.
+- **`/products/availoptions` wants `time` as `HH:MM`.** Passing the `HH:MM:SS` that
+  `/products/availabilities` returns gives
+  `400 "Parameter(s) has wrong format. Please check time."` The wrapper trims it centrally.
+
+### Self-check results
+
+| Check | Result |
+|---|---|
+| Signing unit tests against PHP `http_build_query` vectors | **pass** — 22 tests; the live API accepted the first signed request |
+| Live round trip: collections → products → product + variations + options + availability → hold → totals → prolong → checkout link → release | **pass** — `REGIONDO_LIVE_TESTS=1 pnpm test`, 5 tests, ~4.4s |
+| Every consumed endpoint has a zod schema and a fixture test | **pass** — 22 fixtures, all scrubbed |
+| Error mapping: stock unavailable, expired reservation, invalid signature, 429 | **pass** — 38 tests, including the real 401 and both suppressed-status bodies |
+| No private key in the build output | **pass** — `pnpm check:secrets`: 8 secrets checked against 611 build files, none present |
+| `tsc --noEmit`, `biome check`, `next build` | **clean** |
+| Holds left open on the account afterwards | **none** — `GET /checkout/hold` returns `{"data": []}` |
+
+No booking was created. `POST /checkout/purchase` was never called, and it is not wrapped.

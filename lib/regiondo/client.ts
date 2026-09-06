@@ -30,7 +30,12 @@ export interface RequestOptions<T> {
   readonly method?: "GET" | "POST" | "PUT" | "DELETE";
   readonly params?: QueryObject;
   readonly body?: unknown;
-  readonly schema: z.ZodType<T>;
+  /**
+   * Output type may differ from input type — most of these schemas coerce
+   * (strings to numbers, keyed objects to arrays), so the third type parameter
+   * has to stay open or every transforming schema is rejected here.
+   */
+  readonly schema: z.ZodType<T, z.ZodTypeDef, unknown>;
   readonly locale?: string;
   readonly timeoutMs?: number;
   /**

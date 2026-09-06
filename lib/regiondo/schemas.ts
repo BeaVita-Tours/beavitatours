@@ -263,14 +263,20 @@ export const reviewListSchema = z.array(reviewSchema);
 /* checkout                                                                   */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Live shape, which differs from the OpenAPI `TaxTotals` schema: tax comes back
+ * as `{title, value}`, and `subtotal` is net while `grand_total` is gross
+ * (144.5455 + 14.4545 = 159.00). `grand_total` is the customer-facing price.
+ */
 export const totalsSchema = z.object({
   subtotal: numeric.default(0),
   grand_total: numeric.default(0),
   currency: z.string().default("EUR"),
   tax: z
-    .object({ amount: numericNullable.default(null), percent: numericNullable.default(null) })
+    .object({ title: stringOrEmpty, value: numericNullable.default(null) })
     .partial()
-    .nullish(),
+    .nullish()
+    .transform((tax) => (tax ? { title: tax.title ?? "", amount: tax.value ?? null } : null)),
 });
 export type RegiondoTotals = z.infer<typeof totalsSchema>;
 
@@ -308,22 +314,48 @@ export const orderOptionFieldsSchema = z.object({
 });
 export type OrderOptionFields = z.infer<typeof orderOptionFieldsSchema>;
 
-const reservationCodeSchema = z.union([
-  z.string(),
-  z.object({ reservation_code: z.string(), reservation_end: nullableString }),
-]);
+/**
+ * One held reservation.
+ *
+ * `reservation_end` is LOCAL wall-clock time in `timezone` ("2026-09-06 23:03",
+ * Europe/Berlin), not an ISO instant — see `holdExpiryToIso` in checkout.ts.
+ */
+const reservationEntrySchema = z.object({
+  reservation_code: z.string(),
+  reservation_end: nullableString,
+  timezone: nullableString,
+  product_id: id.nullish(),
+  option_id: id.nullish(),
+  qty: numericNullable.default(null),
+});
+
+/**
+ * The spec types `reservation_data` as an array. Live, both POST and PUT
+ * /checkout/hold return a single object, while GET returns an array. Accept
+ * all three and normalise to an array — a schema written from the spec alone
+ * fails here, which is why the live round trip exists.
+ */
+const reservationDataSchema = z
+  .union([
+    reservationEntrySchema,
+    z.array(z.union([reservationEntrySchema, z.string()])),
+    z.string(),
+  ])
+  .transform((value) => {
+    const entries = Array.isArray(value) ? value : [value];
+    return entries.map((entry) =>
+      typeof entry === "string"
+        ? { code: entry, endsAtLocal: null, timezone: null }
+        : {
+            code: entry.reservation_code,
+            endsAtLocal: entry.reservation_end,
+            timezone: entry.timezone,
+          }
+    );
+  });
 
 export const reservationSchema = z.object({
-  reservation_data: z
-    .array(reservationCodeSchema)
-    .default([])
-    .transform((codes) =>
-      codes.map((entry) =>
-        typeof entry === "string"
-          ? { code: entry, endsAt: null }
-          : { code: entry.reservation_code, endsAt: entry.reservation_end }
-      )
-    ),
+  reservation_data: reservationDataSchema,
   date_time: nullableString,
   totals: totalsSchema.nullish(),
   contact_data_required: z.array(z.string()).default([]),
@@ -332,9 +364,10 @@ export const reservationSchema = z.object({
 });
 export type RegiondoReservation = z.infer<typeof reservationSchema>;
 
+/** PUT /checkout/hold returns the same envelope as POST, minus the totals. */
 export const reservationUpdateSchema = z.object({
-  reservation_code: z.string().nullish(),
-  reservation_end: nullableString,
+  reservation_data: reservationDataSchema,
+  date_time: nullableString,
 });
 
 export const checkoutTotalsSchema = z.object({
@@ -342,8 +375,22 @@ export const checkoutTotalsSchema = z.object({
   contact_data_required: z.array(z.string()).default([]),
   buyer_data_required: z.array(fieldDefinitionSchema).default([]),
   attendee_data_required: z.array(attendeeRequirementSchema).default([]),
+  /**
+   * Live values are `reservation`, `cashregister`, `invoice`, `api_external`.
+   * There is no consumer card option here — card payment exists only on the
+   * hosted ticketshop, which is the whole basis of D-001.
+   */
   payments_available: z
-    .array(z.object({ code: z.string(), title: stringOrEmpty }))
+    .array(
+      z.object({
+        code: z.string(),
+        title: stringOrEmpty,
+        payment_options: z
+          .array(z.object({ name: z.string(), title: stringOrEmpty, required: flag }))
+          .nullish()
+          .transform((v) => v ?? []),
+      })
+    )
     .default([]),
   discount_info: z
     .array(z.object({ title: stringOrEmpty, amount: numericNullable.default(null) }).passthrough())
@@ -355,14 +402,17 @@ export type CheckoutTotals = z.infer<typeof checkoutTotalsSchema>;
  * The payment handoff. `checkout_link` points into Regiondo's hosted
  * ticketshop, which is the only place card data is ever entered.
  */
-export const checkoutLinkSchema = z.array(
-  z.object({
-    checkout_link: z.string().url(),
-    locale: stringOrEmpty,
-    currency: stringOrEmpty,
-    reservation_code: stringOrEmpty,
-  })
-);
+const checkoutLinkEntrySchema = z.object({
+  checkout_link: z.string().url(),
+  locale: stringOrEmpty,
+  currency: stringOrEmpty,
+  reservation_code: stringOrEmpty,
+});
+
+/** Spec says array; live returns a single object. Accept both. */
+export const checkoutLinkSchema = z
+  .union([checkoutLinkEntrySchema, z.array(checkoutLinkEntrySchema)])
+  .transform((value) => (Array.isArray(value) ? value : [value]));
 
 /**
  * A booking as returned by /supplier/bookings. This response carries full

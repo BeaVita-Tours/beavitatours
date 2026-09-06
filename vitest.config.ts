@@ -16,11 +16,18 @@ export default defineConfig({
       "server-only": fileURLToPath(
         new URL("./node_modules/server-only/empty.js", import.meta.url)
       ),
+      // cacheLife/cacheTag throw outside a Next build. The stub makes the
+      // cached wrappers behave as plain async functions under test.
+      "next/cache": fileURLToPath(
+        new URL("./lib/regiondo/__tests__/next-cache-stub.ts", import.meta.url)
+      ),
     },
   },
   test: {
     environment: "node",
     include: ["lib/**/__tests__/**/*.test.ts", "lib/**/*.test.ts"],
+    // Live round trips hit the real API; give them room.
+    testTimeout: 30_000,
     // The wrapper reads env at module load; give every test the same baseline
     // so a developer's real .env.local can never change a test outcome.
     env: {

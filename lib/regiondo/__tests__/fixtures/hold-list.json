@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "reservation_code": "74600000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "product_id": "298190",
+      "option_id": "2028639",
+      "qty": "1",
+      "reservation_end": "2026-09-06 23:03",
+      "date_time": "2026-09-19 08:00",
+      "opened_till": null,
+      "timezone": "Europe/Berlin",
+      "ticket_codes_reference": [{ "reference_id": "87100000" }]
+    }
+  ]
+}
