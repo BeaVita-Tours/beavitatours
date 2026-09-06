@@ -62,6 +62,43 @@ Both `/lp/*` pages also changed from client-rendered to **fully static**
 
 ---
 
+## Bundle size per route
+
+Next 16 with Turbopack no longer prints "First Load JS", so this is measured
+directly: every `/_next/static/**.js` chunk each route's HTML references, summed
+on disk and gzipped (`node scripts/measure-bundles.mjs before|after`). Raw output
+in [`perf/bundles-before.json`](./perf/bundles-before.json) and
+[`perf/bundles-after.json`](./perf/bundles-after.json).
+
+| Route | Chunks | First-party JS (gzip) | Δ | HTML |
+|---|---|---|---|---|
+| `/` (control) | 14 → 14 | 240 → 240 KB | **0** | 362 → 363 KB |
+| `/tours/group-tours` | 13 → 13 | 217 → 217 KB | **0** | 55 → **152 KB** |
+| `/lp/from-venice` | 13 → 13 | 225 → 225 KB | **0** | 73 → **177 KB** |
+| `/tours` *(new)* | 12 | 216 KB | — | 205 KB |
+| `/tours/[slug]` *(new)* | 13 | 221 KB | — | 232 KB |
+
+**First-party JavaScript did not move at all**, and that is the interesting
+result rather than a disappointing one. It says two things precisely:
+
+1. *The savings were entirely third-party.* The widget script came from
+   `widgets.regiondo.net` and the iframe was a whole second document; neither was
+   ever in our bundle. Removing them took 1.3 MB off the wire without touching a
+   byte of ours.
+2. *The new catalog ships no client JavaScript of its own.* Filters are links,
+   cards are static, the grid is a Server Component — `/tours` references one
+   chunk fewer than the pages it sits beside. The tour page's extra
+   ~5 KB over the catalog is the booking panel; the calendar is lazy-loaded and
+   does not appear in the initial HTML at all.
+
+HTML grew — +97 KB on the collection page, +104 KB on the landing page. That is
+the tour content itself, which previously existed only inside a widget or an
+iframe and was invisible to a crawler. Trading ~100 KB of gzipped HTML for
+1.3 MB of third-party JavaScript, and getting indexable content out of it, is
+the whole shape of this change in one line.
+
+---
+
 ## What the numbers actually say
 
 **The win is weight and main-thread time, not LCP.** Roughly 1.3 MB of
