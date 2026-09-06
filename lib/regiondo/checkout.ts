@@ -5,11 +5,11 @@ import { getConfig, HOLD_MINUTES, requireConfig } from "./config";
 import { RegiondoError } from "./errors";
 import { toConfirmedBooking } from "./map";
 import {
-  bookingListSchema,
   checkoutLinkSchema,
   checkoutTotalsSchema,
   type FieldDefinition,
   orderOptionFieldsSchema,
+  purchaseSchema,
   type RegiondoTotals,
   reservationSchema,
   reservationUpdateSchema,
@@ -194,6 +194,39 @@ function toTotalsView(totals: RegiondoTotals | null | undefined): CheckoutTotals
   };
 }
 
+/**
+ * Merge the two field lists the API returns for the same form.
+ *
+ * `/checkout/hold` and `/checkout/totals` both return `contact_data_required`
+ * (bare names: firstname, lastname, email, telephone) *and*
+ * `buyer_data_required` (titled entries: "First name", "Last name", "Email",
+ * "Telephone"). For this account they describe the same four fields, so
+ * rendering both produced a checkout asking for the customer's name twice.
+ *
+ * Dedupe on the semantic type rather than on the label, since one list is
+ * labelled and the other is not. Fields whose type could not be inferred
+ * ("text") are always kept — two unlabelled custom fields are genuinely two
+ * fields, and dropping one would silently fail the purchase.
+ *
+ * The contact entry wins, because its id is the name the server action
+ * validates against.
+ */
+function mergeFields(
+  contact: readonly CheckoutField[],
+  buyer: readonly CheckoutField[]
+): CheckoutField[] {
+  const merged = [...contact];
+  const claimed = new Set(contact.map((field) => field.viewType).filter((t) => t !== "text"));
+
+  for (const field of buyer) {
+    if (field.viewType !== "text" && claimed.has(field.viewType)) continue;
+    if (field.viewType !== "text") claimed.add(field.viewType);
+    merged.push(field);
+  }
+
+  return merged;
+}
+
 export interface CreateHoldInput {
   readonly item: BookingLineItem;
   readonly minutes?: number;
@@ -248,8 +281,10 @@ export async function createHold({ item, minutes }: CreateHoldInput): Promise<He
       holdExpiryToIso(reservation.endsAtLocal, reservation.timezone) ??
       new Date(Date.now() + (minutes ?? HOLD_MINUTES) * 60_000).toISOString(),
     totals: toTotalsView(raw.totals ?? null),
-    contactFields: toContactFields(raw.contact_data_required),
-    buyerFields: raw.buyer_data_required.map(toCheckoutField),
+    fields: mergeFields(
+      toContactFields(raw.contact_data_required),
+      raw.buyer_data_required.map(toCheckoutField)
+    ),
   };
 }
 
@@ -350,10 +385,10 @@ export async function getTotals(
     grandTotal: view?.grandTotal ?? 0,
     currency: view?.currency ?? config.currency,
     taxAmount: view?.taxAmount ?? null,
-    fields: [
-      ...toContactFields(raw.contact_data_required),
-      ...raw.buyer_data_required.map(toCheckoutField),
-    ],
+    fields: mergeFields(
+      toContactFields(raw.contact_data_required),
+      raw.buyer_data_required.map(toCheckoutField)
+    ),
   };
 }
 
@@ -430,39 +465,49 @@ export async function getCheckoutLink(reservationCode: string): Promise<string> 
 }
 
 /**
- * Verify an order actually exists, by order number.
+ * Verify an order exists, by its public order number.
  *
- * This is what makes the confirmation page safe to render: order details come
- * from Regiondo, never from a URL parameter, and the analytics purchase event
- * fires on these values rather than on anything the browser supplied.
+ * `GET /checkout/purchase?order_number=` is the right endpoint for this, and it
+ * took a live probe to establish that:
  *
- * `/supplier/bookings` returns every booking on the account with full customer
- * PII, so the lookup is always filtered to one order and the result is narrowed
- * by `toConfirmedBooking` before it can reach a component.
+ *  - the OpenAPI description says it is for orders "placed via API previously",
+ *    which is wrong. It resolves any order on the account — verified against
+ *    both a Viator-channel order and a ticketshop one. Since we deliberately
+ *    never call `POST /checkout/purchase`, a stricter reading would have left
+ *    the confirmation page with nothing to verify against.
+ *  - `/supplier/bookings?order_ids=` filters on the *internal* order id, not the
+ *    public order number, so looking an order up there silently returns nothing.
+ *    It also returns every booking on the account, PII included; this returns
+ *    exactly one order.
+ *
+ * The result is narrowed by `toConfirmedBooking` before it can reach a
+ * component.
  */
 export async function findBookingByOrderNumber(
   orderNumber: string
 ): Promise<ConfirmedBooking | null> {
-  const config = requireConfig();
+  requireConfig();
 
-  if (!/^[A-Za-z0-9-]{6,32}$/.test(orderNumber)) return null;
+  // Order numbers are numeric and around 13 digits. Bound it before spending a
+  // request, and before putting anything unbounded into a query string.
+  if (!/^[0-9]{6,24}$/.test(orderNumber)) return null;
 
   try {
-    const bookings = await request("/supplier/bookings", {
+    const purchase = await request("/checkout/purchase", {
       retry: false,
       cache: "no-store",
-      schema: bookingListSchema,
-      params: { order_ids: orderNumber, limit: 10 },
+      schema: purchaseSchema,
+      params: { order_number: orderNumber },
     });
 
-    // `order_ids` filters on the internal order id; confirm the public order
-    // number matches before trusting the row.
-    const match = bookings.find((booking) => booking.order_number === orderNumber) ?? bookings[0];
-    if (!match || match.order_number !== orderNumber) return null;
+    // Belt and braces: the response must be the order that was asked for.
+    if (purchase.order_number !== orderNumber) return null;
 
-    return toConfirmedBooking(match, config.currency);
+    return toConfirmedBooking(purchase);
   } catch (error) {
-    if (error instanceof RegiondoError && error.kind === "not_found") return null;
+    if (error instanceof RegiondoError && (error.kind === "not_found" || error.kind === "validation")) {
+      return null;
+    }
     throw error;
   }
 }

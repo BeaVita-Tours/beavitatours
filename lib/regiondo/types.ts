@@ -162,24 +162,42 @@ export interface HeldReservation {
   /** ISO instant the hold lapses, or null when the API did not say. */
   readonly expiresAt: string | null;
   readonly totals: CheckoutTotalsView | null;
-  readonly contactFields: readonly CheckoutField[];
-  readonly buyerFields: readonly CheckoutField[];
+  /**
+   * The checkout form, deduplicated. The API describes the same four fields
+   * twice (`contact_data_required` and `buyer_data_required`); `mergeFields` in
+   * checkout.ts collapses them, so this is what should actually be rendered.
+   */
+  readonly fields: readonly CheckoutField[];
 }
 
-/** Verified order, as rendered on the confirmation page. */
-export interface ConfirmedBooking {
-  readonly orderNumber: string;
-  readonly bookingKey: string;
+export interface ConfirmedBookingItem {
   readonly productId: string;
   readonly productName: string;
   readonly optionName: string;
+  readonly variationName: string;
   readonly eventDateTime: string | null;
-  readonly timezone: string | null;
   readonly quantity: number;
-  readonly total: number;
-  readonly currency: string;
+  readonly unitPrice: number;
+  readonly lineTotal: number;
   readonly statusLabel: string;
+}
+
+/**
+ * A verified order, narrowed to what the confirmation page renders.
+ *
+ * Deliberately does not carry ticket PDF links or full contact details. The
+ * page is reachable with an order number alone, so it must not expose anything
+ * that an order number should not unlock — the tickets go by email.
+ */
+export interface ConfirmedBooking {
+  readonly orderNumber: string;
+  readonly purchasedAt: string | null;
+  readonly items: readonly ConfirmedBookingItem[];
+  readonly total: number;
+  readonly taxAmount: number;
+  readonly currency: string;
   readonly paymentStatusLabel: string;
+  readonly salesChannel: string;
   /** Masked for display — never the full address. */
   readonly maskedEmail: string;
 }

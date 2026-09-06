@@ -2,10 +2,10 @@ import "server-only";
 
 import { sanitizeHtml, sanitizeHtmlOrNull, stripTags, truncate } from "./sanitize";
 import type {
-  RegiondoBooking,
   RegiondoOption,
   RegiondoProductDetail,
   RegiondoProductListItem,
+  RegiondoPurchase,
   RegiondoReview,
 } from "./schemas";
 import { slugForProductId, tourHref } from "./slugs";
@@ -189,34 +189,48 @@ export function toTourReview(raw: RegiondoReview): TourReview {
   };
 }
 
-/** j***@example.com — enough for a customer to recognise, not enough to harvest. */
+/**
+ * j***@example.com — enough for a customer to recognise their own address, not
+ * enough to harvest. The mask is a fixed width rather than one asterisk per
+ * character, both because the length is itself a small leak and because some
+ * real addresses (OTA relay addresses in particular) are long enough to wrap
+ * the line.
+ */
 function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
   if (!local || !domain) return "";
-  return `${local.slice(0, 1)}${"*".repeat(Math.max(2, local.length - 1))}@${domain}`;
+  return `${local.slice(0, 1)}${"*".repeat(4)}@${domain}`;
 }
 
 /**
- * Narrow a booking down to what the confirmation page shows.
+ * Narrow a verified purchase down to what the confirmation page shows.
  *
- * /supplier/bookings returns every booking on the account with full customer
- * PII. This function is the choke point: whatever it does not return cannot
- * reach a component, and the email it does return is masked.
+ * This is the choke point for order data: whatever it does not return cannot
+ * reach a component. Ticket PDF links are dropped deliberately — the page can
+ * be reached with an order number alone, and a signed link to someone's ticket
+ * is not something an order number should unlock. Tickets go by email.
  */
-export function toConfirmedBooking(raw: RegiondoBooking, currency: string): ConfirmedBooking {
+export function toConfirmedBooking(raw: RegiondoPurchase): ConfirmedBooking {
   return {
-    orderNumber: raw.order_number ?? "",
-    bookingKey: raw.booking_key,
-    productId: raw.product_id,
-    productName: raw.product_name || raw.ticket_name,
-    optionName: raw.option_name,
-    eventDateTime: raw.event_date_time,
-    timezone: raw.timezone,
-    quantity: Math.max(0, raw.qty - raw.qty_cancelled),
-    total: raw.total_amount,
-    currency,
-    statusLabel: raw.booking_status?.label ?? "",
+    orderNumber: raw.order_number,
+    purchasedAt: raw.purchased_at,
+    items: raw.items.map((item) => ({
+      productId: item.product_id,
+      productName: item.ticket_name,
+      optionName: item.ticket_option,
+      variationName: item.ticket_variation,
+      eventDateTime: item.event_date_time,
+      // Cancelled tickets stay on the order; show what the customer still has.
+      quantity: Math.max(0, item.ticket_qty - item.ticket_qty_canceled),
+      unitPrice: item.price_per_one_incl_tax,
+      lineTotal: item.row_total_incl_tax,
+      statusLabel: item.status,
+    })),
+    total: raw.grand_total,
+    taxAmount: raw.tax_amount,
+    currency: raw.currency,
     paymentStatusLabel: raw.payment_status?.label ?? "",
-    maskedEmail: maskEmail(raw.email),
+    salesChannel: raw.sales_channel,
+    maskedEmail: maskEmail(raw.contact_data?.email ?? ""),
   };
 }

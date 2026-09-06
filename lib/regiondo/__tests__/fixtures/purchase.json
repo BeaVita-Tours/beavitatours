@@ -1,0 +1,64 @@
+{
+  "info_generated_at": "2026-09-06T21:18:18+00:00",
+  "order_number": "2000000000000",
+  "order_id": "20000000",
+  "purchased_at": "2026-09-06 20:55:01",
+  "timezone": "UTC",
+  "items": [
+    {
+      "unique_item_id": "30000000",
+      "booking_key": "2-0-326845-0-1790067600-TESTKEY",
+      "product_id": "326845",
+      "ticket_name": "From Venice: Day Trip to the Prosecco Hills and Wine Tasting",
+      "ticket_variation": "Ticket",
+      "ticket_option": "Participant",
+      "ticket_option_id": 2236904,
+      "ticket_qty": 2,
+      "ticket_qty_canceled": 0,
+      "ticket_codes": [
+        {
+          "reference_id": "30000000",
+          "validity_status": "valid",
+          "code": "TESTCODE1",
+          "barcode_type": "code39",
+          "type": "ticket",
+          "expiry_date": "2026-09-22",
+          "expiry_time": "14:00",
+          "generated_at": "2026-09-06 20:55:01",
+          "ticket_pdf": "https://www.regiondo.de/getPdf.php?f=tk_TEST",
+          "gift_redeem_item": []
+        }
+      ],
+      "resources": [],
+      "status": "approved",
+      "external_id": "1444722865",
+      "event_date_time": "2026-09-22 09:00",
+      "opened_till": null,
+      "row_total_incl_tax": 258,
+      "row_total_excl_tax": 234.5455,
+      "row_total_tax_amount": 23.4545,
+      "price_per_one_incl_tax": 129,
+      "price_per_one_excl_tax": 117.2728,
+      "currency": "EUR",
+      "payment_status": "paid",
+      "item_type_code": "ticket",
+      "sales_channel": "Viator"
+    }
+  ],
+  "sales_channel": "Viator",
+  "payment_method": "API external payment",
+  "discount_info": [],
+  "total_tickets_ordered": 2,
+  "total_tickets_created": 2,
+  "contact_data": {
+    "firstname": "Test",
+    "lastname": "Customer",
+    "email": "testcustomer@example.com",
+    "telephone": "+39 000 000 0000"
+  },
+  "subtotal": 234.5455,
+  "tax_amount": 23.4545,
+  "grand_total": 258,
+  "currency": "EUR",
+  "payment_status": { "code": "paid", "label": "Paid (Sales channel)", "offline_amounts": [] }
+}

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import type { ActionState } from "@/lib/regiondo/action-state";
 import {
   createHold,
   getCheckoutLink,
@@ -39,17 +40,6 @@ import { consumeRateLimit } from "@/lib/rate-limit";
  *    recomputed from Regiondo;
  *  - hold creation is rate limited, because it consumes real inventory.
  */
-
-export interface ActionState {
-  readonly status: "idle" | "error";
-  readonly message?: string;
-  /** Field-level messages keyed by field id, for inline form errors. */
-  readonly fieldErrors?: Readonly<Record<string, string>>;
-  /** Set when the failure means availability must be re-checked. */
-  readonly recheckAvailability?: boolean;
-}
-
-export const IDLE: ActionState = { status: "idle" };
 
 function fail(message: string, extra: Partial<ActionState> = {}): ActionState {
   return { status: "error", message, ...extra };

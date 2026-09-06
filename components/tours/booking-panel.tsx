@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
 import { AlertCircle, CalendarDays, Loader2, Minus, Plus, ShieldCheck } from "lucide-react";
 
-import { startBooking, IDLE } from "@/app/(site)/book/actions";
+import { startBooking } from "@/app/(site)/book/actions";
+import { IDLE } from "@/lib/regiondo/action-state";
 import { loadSlotOptions } from "@/app/(site)/tours/[slug]/actions";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";

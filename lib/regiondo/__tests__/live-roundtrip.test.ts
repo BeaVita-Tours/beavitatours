@@ -139,8 +139,12 @@ describeLive("live Regiondo round trip", () => {
       expect(hold.totals?.grandTotal).toBeGreaterThan(0);
       // The checkout form is generated from these, so an empty list would mean
       // rendering a form that collects nothing.
-      const viewTypes = [...hold.contactFields, ...hold.buyerFields].map((f) => f.viewType);
+      const viewTypes = hold.fields.map((f) => f.viewType);
       expect(viewTypes).toContain("email");
+      expect(viewTypes).toContain("first_name");
+      // The API describes the same fields twice; the wrapper must not hand the
+      // form two "Email" inputs.
+      expect(new Set(viewTypes).size).toBe(viewTypes.length);
 
       // The hold's expiry must land in the near future once the local wall
       // clock has been converted through its time zone. Reading it as UTC

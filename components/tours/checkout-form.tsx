@@ -4,7 +4,8 @@ import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertCircle, ArrowRight, Loader2, ShieldCheck } from "lucide-react";
 
-import { IDLE, proceedToPayment } from "@/app/(site)/book/actions";
+import { proceedToPayment } from "@/app/(site)/book/actions";
+import { IDLE } from "@/lib/regiondo/action-state";
 import { HoldCountdown } from "@/components/tours/hold-countdown";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";

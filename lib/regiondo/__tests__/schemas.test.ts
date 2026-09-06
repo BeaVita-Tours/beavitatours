@@ -4,9 +4,9 @@ import accountCurrency from "./fixtures/account-currency.json";
 import availabilities from "./fixtures/availabilities.json";
 import availoptionsGroup from "./fixtures/availoptions-group.json";
 import availoptions from "./fixtures/availoptions.json";
-import bookingScrubbed from "./fixtures/booking-scrubbed.json";
 import orderOptionFields from "./fixtures/order-option-fields.json";
 import productDetailThousands from "./fixtures/product-detail-thousands.json";
+import purchase from "./fixtures/purchase.json";
 import productDetail from "./fixtures/product-detail.json";
 import productsList from "./fixtures/products-list.json";
 import reviews from "./fixtures/reviews.json";
@@ -16,12 +16,12 @@ import variations from "./fixtures/variations.json";
 import {
   accountCurrencySchema,
   availabilitySchema,
-  bookingListSchema,
   numeric,
   optionListSchema,
   orderOptionFieldsSchema,
   productDetailSchema,
   productListSchema,
+  purchaseSchema,
   reviewListSchema,
   tagListSchema,
   variationListSchema,
@@ -192,11 +192,25 @@ describe("checkout schemas", () => {
     expect(typeof parsed.buyer_data_required[0]?.field_id).toBe("string");
   });
 
-  it("parses a booking, coercing its string money and counts", () => {
-    const parsed = bookingListSchema.parse(bookingScrubbed.data);
-    const booking = parsed[0];
-    expect(typeof booking?.qty).toBe("number");
-    expect(typeof booking?.total_amount).toBe("number");
-    expect(booking?.booking_status?.code).toBeTruthy();
+  it("parses a verified purchase", () => {
+    // GET /checkout/purchase?order_number= is what the confirmation page
+    // verifies against. Its OpenAPI description claims it only covers orders
+    // placed via the API; live it resolves any order on the account, which is
+    // what makes the page possible given we never call POST /checkout/purchase.
+    const parsed = purchaseSchema.parse(purchase);
+    expect(parsed.order_number).toBe("2000000000000");
+    expect(parsed.grand_total).toBe(258);
+    expect(parsed.items).toHaveLength(1);
+    expect(parsed.items[0]?.ticket_qty).toBe(2);
+    expect(parsed.items[0]?.event_date_time).toBe("2026-09-22 09:00");
+    expect(parsed.payment_status?.label).toBe("Paid (Sales channel)");
+  });
+
+  it("drops ticket PDF links at the boundary", () => {
+    // The confirmation page is reachable with an order number alone, so a
+    // signed link to someone's ticket must not survive parsing.
+    const parsed = purchaseSchema.parse(purchase);
+    expect(JSON.stringify(parsed)).not.toContain("ticket_pdf");
+    expect(JSON.stringify(parsed)).not.toContain("getPdf");
   });
 });

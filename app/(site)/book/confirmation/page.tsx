@@ -11,22 +11,23 @@ import { findBookingByOrderNumber } from "@/lib/regiondo/checkout";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { getTour } from "@/lib/regiondo/products";
 import { tourHref } from "@/lib/regiondo/slugs";
+import type { ConfirmedBookingItem } from "@/lib/regiondo/types";
 
 /**
  * Booking confirmation.
  *
  * The order is verified against Regiondo before anything is rendered or fired.
- * Order details never come from the URL — the only thing the query string
- * supplies is an order number to look up, and an unknown one produces the
- * lookup form rather than a fabricated confirmation.
+ * Order details never come from the URL — the query string supplies an order
+ * number to look up, and an unknown one produces the lookup form rather than a
+ * fabricated confirmation.
  *
  * **On being reached at all:** `GET /checkout/checkoutlink` accepts no return
- * URL (the link is path-based with no query string), so Regiondo does not send
- * the customer back here automatically unless a return URL is configured in the
- * ticketshop settings. Until that is done, this page is reachable by the "find
- * my booking" form below and by the link in the confirmation email. That is a
- * documented gap, not an oversight — see D-008 in docs/regiondo-build-log.md
- * and the cutover checklist.
+ * URL (the link is path-based with no query string at all), so Regiondo does
+ * not send the customer back here automatically unless a return URL is
+ * configured in the ticketshop settings. Until that is done, this page is
+ * reached through the "find my booking" form below and from the confirmation
+ * email. A documented gap, not an oversight — see D-008 in
+ * docs/regiondo-build-log.md and the cutover checklist.
  */
 
 export const metadata: Metadata = {
@@ -40,7 +41,6 @@ export const metadata: Metadata = {
  * showing a confirmation layout to someone who has not booked anything.
  */
 export const instant = false;
-
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -60,8 +60,10 @@ export default async function ConfirmationPage({ searchParams }: PageProps) {
   const booking = await findBookingByOrderNumber(orderNumber);
   if (!booking) return <LookupForm notFoundNumber={orderNumber} />;
 
-  const tour = await getTour(booking.productId);
-  const href = tourHref(booking.productId);
+  const lead = booking.items[0];
+  // The meeting point and "what to bring" come from the catalog, which the
+  // order itself does not carry.
+  const tour = lead ? await getTour(lead.productId) : null;
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-12 md:py-16">
@@ -70,15 +72,13 @@ export default async function ConfirmationPage({ searchParams }: PageProps) {
           transaction_id: booking.orderNumber,
           currency: booking.currency,
           value: booking.total,
-          items: [
-            {
-              item_id: booking.productId,
-              item_name: booking.productName,
-              item_category: booking.optionName || undefined,
-              price: booking.total / Math.max(1, booking.quantity),
-              quantity: booking.quantity,
-            },
-          ],
+          items: booking.items.map((item) => ({
+            item_id: item.productId,
+            item_name: item.productName,
+            item_category: item.optionName || undefined,
+            price: item.unitPrice,
+            quantity: item.quantity,
+          })),
         }}
       />
 
@@ -87,59 +87,49 @@ export default async function ConfirmationPage({ searchParams }: PageProps) {
         <h1 className="mt-4 text-3xl font-bold md:text-4xl">You are booked</h1>
         <p className="mt-2 text-muted-foreground">
           Order <span className="font-semibold text-foreground">{booking.orderNumber}</span>
-          {booking.statusLabel ? ` · ${booking.statusLabel}` : ""}
+          {booking.paymentStatusLabel ? ` · ${booking.paymentStatusLabel}` : ""}
         </p>
       </div>
 
-      <section aria-labelledby="details-heading" className="mt-10 rounded-2xl border bg-card p-6">
-        <h2 id="details-heading" className="text-xl font-bold">
-          {booking.productName}
+      <section aria-labelledby="details-heading" className="mt-10 space-y-4">
+        <h2 id="details-heading" className="sr-only">
+          Booking details
         </h2>
 
-        <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-          <Fact icon={CalendarDays} label="Date and time">
-            {formatEventDateTime(booking.eventDateTime)}
-            {booking.timezone ? (
-              <span className="block text-xs text-muted-foreground">
-                Local time ({booking.timezone})
-              </span>
-            ) : null}
-          </Fact>
+        {booking.items.map((item) => (
+          <BookingItemCard key={`${item.productId}-${item.eventDateTime}`} item={item} />
+        ))}
 
-          <Fact icon={Users} label="Guests">
-            {booking.quantity} × {booking.optionName || "place"}
-          </Fact>
-
-          <Fact icon={Ticket} label="Total paid">
-            {new Intl.NumberFormat("en-GB", {
-              style: "currency",
-              currency: booking.currency,
-            }).format(booking.total)}
-            {booking.paymentStatusLabel ? (
-              <span className="block text-xs text-muted-foreground">
-                {booking.paymentStatusLabel}
-              </span>
-            ) : null}
-          </Fact>
-
-          <Fact icon={Mail} label="Tickets sent to">
-            {booking.maskedEmail || "the email address you gave at checkout"}
-          </Fact>
-
-          {tour?.meetingPoint.name ? (
-            <Fact icon={MapPin} label="Meeting point" wide>
-              {tour.meetingPoint.name}
-              {tour.meetingPoint.address ? (
+        <div className="rounded-2xl border bg-card p-6">
+          <dl className="grid gap-4 sm:grid-cols-2">
+            <Fact icon={Ticket} label="Total paid">
+              {formatMoney(booking.total, booking.currency)}
+              {booking.taxAmount > 0 ? (
                 <span className="block text-xs text-muted-foreground">
-                  {tour.meetingPoint.address}
+                  Includes {formatMoney(booking.taxAmount, booking.currency)} tax
                 </span>
               ) : null}
-              {tour.meetingPoint.info ? (
-                <span className="mt-1 block text-sm">{tour.meetingPoint.info}</span>
-              ) : null}
             </Fact>
-          ) : null}
-        </dl>
+
+            <Fact icon={Mail} label="Tickets sent to">
+              {booking.maskedEmail || "the email address you gave at checkout"}
+            </Fact>
+
+            {tour?.meetingPoint.name ? (
+              <Fact icon={MapPin} label="Meeting point" wide>
+                {tour.meetingPoint.name}
+                {tour.meetingPoint.address ? (
+                  <span className="block text-xs text-muted-foreground">
+                    {tour.meetingPoint.address}
+                  </span>
+                ) : null}
+                {tour.meetingPoint.info ? (
+                  <span className="mt-1 block text-sm font-normal">{tour.meetingPoint.info}</span>
+                ) : null}
+              </Fact>
+            ) : null}
+          </dl>
+        </div>
       </section>
 
       {tour?.bringHtml ? (
@@ -167,21 +157,41 @@ export default async function ConfirmationPage({ searchParams }: PageProps) {
             Please be at the meeting point 15 minutes before departure. Tours leave punctually.
           </li>
           <li>
-            Cancellation terms are set out in your confirmation email. If anything changes, tell
-            us as early as you can and we will do what we can.
+            Cancellation terms are set out in your confirmation email. If anything changes, tell us
+            as early as you can and we will do what we can.
           </li>
         </ul>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button asChild variant="outline">
-            <Link href={href}>View the tour</Link>
-          </Button>
+          {lead ? (
+            <Button asChild variant="outline">
+              <Link href={tourHref(lead.productId)}>View the tour</Link>
+            </Button>
+          ) : null}
           <Button asChild variant="outline">
             <Link href="/contact">Contact us</Link>
           </Button>
         </div>
       </section>
     </main>
+  );
+}
+
+function BookingItemCard({ item }: { item: ConfirmedBookingItem }) {
+  return (
+    <div className="rounded-2xl border bg-card p-6">
+      <h3 className="text-xl font-bold">{item.productName}</h3>
+
+      <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+        <Fact icon={CalendarDays} label="Date and time">
+          {formatEventDateTime(item.eventDateTime)}
+        </Fact>
+
+        <Fact icon={Users} label="Guests">
+          {item.quantity} × {item.optionName || item.variationName || "place"}
+        </Fact>
+      </dl>
+    </div>
   );
 }
 
@@ -237,7 +247,7 @@ function LookupForm({ notFoundNumber }: { notFoundNumber?: string }) {
           required
           inputMode="numeric"
           autoComplete="off"
-          placeholder="2001794606494"
+          placeholder="2001794609406"
           defaultValue={notFoundNumber ?? ""}
         />
         <Button type="submit" className="w-full">
@@ -247,7 +257,10 @@ function LookupForm({ notFoundNumber }: { notFoundNumber?: string }) {
 
       <p className="mt-6 text-sm text-muted-foreground">
         Still stuck?{" "}
-        <Link href="/contact" className="font-medium text-primary underline-offset-4 hover:underline">
+        <Link
+          href="/contact"
+          className="font-medium text-primary underline-offset-4 hover:underline"
+        >
           Contact us
         </Link>{" "}
         and we will sort it out.
@@ -256,7 +269,11 @@ function LookupForm({ notFoundNumber }: { notFoundNumber?: string }) {
   );
 }
 
-/** Regiondo returns "2026-09-08 08:00:00" in the booking's own time zone. */
+function formatMoney(amount: number, currency: string): string {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount);
+}
+
+/** Regiondo returns "2026-09-22 09:00" in the booking's own time zone. */
 function formatEventDateTime(raw: string | null): string {
   if (!raw) return "To be confirmed";
   const [date, time] = raw.split(" ");

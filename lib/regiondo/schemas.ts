@@ -415,39 +415,62 @@ export const checkoutLinkSchema = z
   .transform((value) => (Array.isArray(value) ? value : [value]));
 
 /**
- * A booking as returned by /supplier/bookings. This response carries full
- * customer PII for every booking on the account, so nothing here is passed to
- * a client component wholesale — `toConfirmation()` in checkout.ts picks the
- * handful of fields the confirmation page renders.
+ * `GET /checkout/purchase?order_number=` — the order verification endpoint.
+ *
+ * The OpenAPI description says this is for orders "placed via API previously".
+ * Live, it resolves any order on the account regardless of sales channel
+ * (verified against a Viator-channel order and a ticketshop one), which is what
+ * makes a server-verified confirmation page possible at all.
+ *
+ * Note this is the *right* endpoint for the job: `/supplier/bookings` filters
+ * `order_ids` on the internal order id, not the public order number, and
+ * returns every booking on the account. This returns exactly one order.
  */
-export const bookingSchema = z.object({
-  booking_key: z.string(),
-  order_number: nullableString,
-  order_id: nullableString,
+const purchaseItemSchema = z.object({
   product_id: id,
-  product_name: stringOrEmpty,
   ticket_name: stringOrEmpty,
-  option_name: stringOrEmpty,
-  variation_name: stringOrEmpty,
+  ticket_variation: stringOrEmpty,
+  ticket_option: stringOrEmpty,
+  ticket_qty: numeric.default(0),
+  ticket_qty_canceled: numeric.default(0),
   event_date_time: nullableString,
-  created_at: nullableString,
-  qty: numeric.default(0),
-  qty_cancelled: numeric.default(0),
-  total_amount: numeric.default(0),
-  timezone: nullableString,
-  first_name: stringOrEmpty,
-  last_name: stringOrEmpty,
-  email: stringOrEmpty,
-  phone_number: stringOrEmpty,
+  status: stringOrEmpty,
+  row_total_incl_tax: numeric.default(0),
+  price_per_one_incl_tax: numeric.default(0),
+  currency: z.string().default("EUR"),
+  payment_status: stringOrEmpty,
   sales_channel: stringOrEmpty,
-  distribution_channel_partner: stringOrEmpty,
-  booking_status: z.object({ code: stringOrEmpty, label: stringOrEmpty }).nullish(),
-  payment_status: z.object({ code: stringOrEmpty, label: stringOrEmpty }).nullish(),
-  duration_type: nullableString,
-  duration_value: numericNullable.default(null),
+  // Ticket codes carry signed PDF links. Never rendered — the tickets are
+  // emailed by Regiondo, and putting a link to someone's ticket on a page
+  // reachable by order number alone would be a leak.
 });
-export type RegiondoBooking = z.infer<typeof bookingSchema>;
-export const bookingListSchema = z.array(bookingSchema);
+
+export const purchaseSchema = z.object({
+  order_number: z.string(),
+  order_id: nullableString,
+  purchased_at: nullableString,
+  timezone: nullableString,
+  items: z.array(purchaseItemSchema).default([]),
+  sales_channel: stringOrEmpty,
+  payment_method: stringOrEmpty,
+  subtotal: numeric.default(0),
+  tax_amount: numeric.default(0),
+  grand_total: numeric.default(0),
+  currency: z.string().default("EUR"),
+  total_tickets_ordered: numericNullable.default(null),
+  contact_data: z
+    .object({
+      firstname: stringOrEmpty,
+      lastname: stringOrEmpty,
+      email: stringOrEmpty,
+      telephone: stringOrEmpty,
+    })
+    .nullish(),
+  payment_status: z
+    .object({ code: stringOrEmpty, label: stringOrEmpty })
+    .nullish(),
+});
+export type RegiondoPurchase = z.infer<typeof purchaseSchema>;
 
 export const accountCurrencySchema = z.array(
   z.object({

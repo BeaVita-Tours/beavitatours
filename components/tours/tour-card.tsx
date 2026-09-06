@@ -36,7 +36,7 @@ export function TourCard({ tour, priority = false, className }: TourCardProps) {
         className
       )}
     >
-      <div className="relative aspect-4/3 overflow-hidden bg-muted">
+      <div className="relative w-full shrink-0 aspect-4/3 overflow-hidden bg-muted">
         {tour.image ? (
           <Image
             src={tour.image.url}

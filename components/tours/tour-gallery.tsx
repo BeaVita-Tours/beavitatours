@@ -84,7 +84,7 @@ export function TourGallery({ images, title }: TourGalleryProps) {
                 alt={image.alt || title}
                 fill
                 sizes="220px"
-                quality={70}
+                quality={72}
                 loading="lazy"
                 className="object-cover"
               />
