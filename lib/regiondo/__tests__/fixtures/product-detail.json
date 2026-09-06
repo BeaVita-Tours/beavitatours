@@ -1,0 +1,274 @@
+{
+  "data": {
+    "product_id": "298190",
+    "name": "From Venice: Dolomites Day Trip with Cortina and 2 Lakes",
+    "sku": "T-BE116-321530",
+    "short_description": "<p>Explore the Dolomites on a day trip from Venice. Visit Cortina d'Ampezzo, take a pleasant walk around Lake Misurina, and admire the scenery from panoramic viewpoints.</p>",
+    "geo_lat": "45.4373",
+    "geo_lon": "12.3192",
+    "distance": null,
+    "location_address": "C8P9+WM Venezia （复制至谷歌地图可查询具体地址）",
+    "city": "Venezia",
+    "zipcode": "30135",
+    "city_id": "30546",
+    "region_id": "41006",
+    "poi_ids": null,
+    "country_id": "57",
+    "continent_id": "6",
+    "thumbnail": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+    "appointment_types": "automatically",
+    "image": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+    "image_label": null,
+    "url_key": "dolomites-day-trip",
+    "url_path": "dolomites-day-trip",
+    "provider": "Bea Vita Tours",
+    "rating_summary": "100",
+    "reviews_count": "2",
+    "is_appointment_needed": "1",
+    "ticket_suitable_for": null,
+    "top_things_to_do": ",182",
+    "ticket_weather": null,
+    "ticket_languages": "145",
+    "product_supplier_id": "46886",
+    "original_price": "159.00",
+    "type_id": "ticket",
+    "as_gift": "0",
+    "covid_19": "0",
+    "in_stock": "1",
+    "is_expired": "0",
+    "created_at": "2024-11-12 20:20:27",
+    "updated_at": "2026-07-30 16:23:20",
+    "small_image": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+    "small_image_label": null,
+    "description": "<p>Begin your Dolomites day tour by getting picked up at Venice's Piazzale Roma, the large square in the city center. Drive for about 90 minutes to your first stop at Pieve di Cadore, a charming historic town with a beautiful viewpoint overlooking the lake of Centro Cadore. Then, go to Auronzo and enjoy a photo stop at the lake dam where you can sometimes see the water rushing through gates. Afterward, enjoy a long stop at Lake Misurina, also known as the “Pearl of the Dolomites”. Walk around the gorgeous lake and have lunch at a restaurant serving local food. In the summer you can rent a small boat to get around the lake or ride the panoramic chairlift to the Col de Varda Viewpoint (not included). Next, head to Cortina d'Ampezzo, the village that hosted the Olympic Winter Games in 2026. Have a walk through the most prestigious and well-known street of the Dolomites, the Corso Italia pedestrian area. Get dropped off back in Venice at the end of your tour.</p>",
+    "category_ids": {
+      "2": {
+        "name": "default-category",
+        "level": "1"
+      },
+      "3255": {
+        "name": "Categories",
+        "level": "2"
+      },
+      "4697": {
+        "name": "Leisure Activities",
+        "level": "3"
+      },
+      "5171": {
+        "name": "Hiking",
+        "level": "4"
+      },
+      "5173": {
+        "name": "Hiking Getaway",
+        "level": "5"
+      }
+    },
+    "language_ids": "145",
+    "meta_title": "Bea Vita Tours | From Venice: Dolomites Day Trip with Cortina and 2 Lakes",
+    "meta_keyword": null,
+    "meta_description": "<p>Explore the Dolomites on a day trip from Venice. Visit Cortina d'Ampezzo, take a pleasant walk around Lake Misurina, and admire the scenery from panoramic viewpoints.</p>",
+    "faq_included": "<ul>\n<li>Pickup and dropoff at Venice Piazzale Roma</li>\n<li>Transfer with comfortable minivan</li>\n<li>Fluent english driver with deep knowledge of the locations</li>\n</ul>",
+    "faq_not_included": "<ul>\n<li>Lunch</li>\n<li>Tips</li>\n</ul>",
+    "faq_participants": null,
+    "faq_customer_requirements": "<ul>\n<li>Windcoat</li>\n<li>Umbrella</li>\n<li>Smile</li>\n</ul>",
+    "faq_other_info": "<p>Meeting point is \"PIAZZALE ROMA NCC\", VENEZIA.</p>\n<p>Plus code C8P9+WM VeneziaGPS 45°26'14.5\"N 12°19'09.4\"E</p>",
+    "faq_spectators": null,
+    "important_info": null,
+    "ticket_highlights": "Visit Cortina, the village that hosted the Olimpic Winter Games in 2026\nWalk around Lake Misurina with exceptional views of the surroundings\nMarvel at scenic locations, stunning lakes, and dramatic mountain peaks\nTake memorable photos of the most beautiful peaks of the Dolomites\nTravel in a comfortable Minivan with the best safety standards in the maximum comfort",
+    "ticket_opening_times": [],
+    "timezone": "Europe/Rome",
+    "info_pdf": [],
+    "location_name": "Piazzale Roma Ncc",
+    "location_specific_info": "Please be at the pickup place at least 15min ahead of tour departure. Tour starts punctual at the indicated time.\r\nFor any emergency call/text +393931362948",
+    "parking_options_comment": null,
+    "public_transport_comment": null,
+    "base_price": "159.00",
+    "booking_notice_period": 1,
+    "commission_rate": 0,
+    "ticket_view_params": "{\"datetime_representation\":null,\"gift_sold_always\":0}",
+    "duration_type": "hour",
+    "duration_values": "9",
+    "opening_hours": "",
+    "category_titles": "Shared Tours from Venice",
+    "language_titles": "English",
+    "info_pdf_with_names": [],
+    "variations": [
+      {
+        "variation_id": "723805",
+        "name": "Ticket",
+        "from": "2025-04-01",
+        "to": "2028-02-29",
+        "appointment_type": "automatically",
+        "available_dates": {
+          "2026-09-07": [
+            [
+              "08:00:00"
+            ]
+          ],
+          "2026-09-08": [
+            [
+              "08:00:00"
+            ]
+          ],
+          "2026-09-09": [
+            [
+              "08:00:00"
+            ]
+          ]
+        },
+        "available_dates_times": {
+          "2026-09-07": [
+            "2026-09-07 08:00:00"
+          ],
+          "2026-09-08": [
+            "2026-09-08 08:00:00"
+          ],
+          "2026-09-09": [
+            "2026-09-09 08:00:00"
+          ]
+        }
+      },
+      {
+        "variation_id": "818816",
+        "name": "Group",
+        "from": "2026-07-30",
+        "to": "2027-12-31",
+        "appointment_type": "automatically",
+        "available_dates": {
+          "2026-09-09": [
+            [
+              "08:00:00"
+            ]
+          ],
+          "2026-09-10": [
+            [
+              "08:00:00"
+            ]
+          ],
+          "2026-09-11": [
+            [
+              "08:00:00"
+            ]
+          ]
+        },
+        "available_dates_times": {
+          "2026-09-09": [
+            "2026-09-09 08:00:00"
+          ],
+          "2026-09-10": [
+            "2026-09-10 08:00:00"
+          ],
+          "2026-09-11": [
+            "2026-09-11 08:00:00"
+          ]
+        }
+      }
+    ],
+    "video_url": [],
+    "image_url": [
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b0dbb9e9776032147-cropped600-400.jpeg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6733bac83cbc5179236708-cropped600-400-dpl-6733c5b02b3cb.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b1918797290056288-cropped600-400.jpeg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035a9d8df03923000410-cropped600-400.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b2c265d0786043672-cropped600-400.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3625555498756621-cropped600-400.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3f8eda8063855392-cropped600-400.jpg",
+      "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b5c5dfc7321238460-cropped600-400.jpg"
+    ],
+    "image_sort_order": [
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-thumbnail-360x240.jpg",
+        "position": 0,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b0dbb9e9776032147-cropped600-400.jpeg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b0dbb9e9776032147-thumbnail-360x240.jpeg",
+        "position": 1,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6733bac83cbc5179236708-cropped600-400-dpl-6733c5b02b3cb.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6733bac83cbc5179236708-thumbnail-360x240.jpg",
+        "position": 2,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b1918797290056288-cropped600-400.jpeg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b1918797290056288-thumbnail-360x240.jpeg",
+        "position": 3,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035a9d8df03923000410-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035a9d8df03923000410-thumbnail-360x240.jpg",
+        "position": 4,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b2c265d0786043672-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b2c265d0786043672-thumbnail-360x240.jpg",
+        "position": 5,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3625555498756621-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3625555498756621-thumbnail-360x240.jpg",
+        "position": 6,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3f8eda8063855392-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b3f8eda8063855392-thumbnail-360x240.jpg",
+        "position": 7,
+        "label": ""
+      },
+      {
+        "url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b5c5dfc7321238460-cropped600-400.jpg",
+        "thumbnail_url": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035b5c5dfc7321238460-thumbnail-360x240.jpg",
+        "position": 8,
+        "label": ""
+      }
+    ],
+    "curency_code": "EUR",
+    "currency_code": "EUR",
+    "operator_information": {
+      "name": "Bea Vita Tours",
+      "code": "BE116",
+      "address": {
+        "zipcode": "31100",
+        "city": "Treviso",
+        "location_address": "Via Santa Bona Vecchia 49"
+      },
+      "phone": "+393475112011",
+      "url": "https://prosecco-experience.regiondo.com/",
+      "reseller_avg_rating": {
+        "avg": 96,
+        "count": 10
+      },
+      "tripadvisor": {
+        "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/5.0-47559-5.svg",
+        "reviews_count": "102",
+        "web_url": "https://www.tripadvisor.com/Attraction_Review-g187870-d28238909-Reviews-Bea_Vita_Tours-Venice_Veneto.html?m=47559"
+      }
+    },
+    "total_vote_details": [
+      {
+        "percent": 100,
+        "rating_code": "Overall rating"
+      },
+      {
+        "percent": 100,
+        "rating_code": "Value"
+      },
+      {
+        "percent": 100,
+        "rating_code": "Fun factor"
+      }
+    ],
+    "map_image_url": "https://cdn.regiondo.net/media//catalog/google/maps/59/5945796cbcdb9da4241660e1afef8672.png",
+    "tips": null
+  }
+}

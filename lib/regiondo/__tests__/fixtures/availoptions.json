@@ -1,0 +1,23 @@
+{
+  "data": {
+    "2028639": {
+      "option_id": "2028639",
+      "variation_id": "723805",
+      "name": "Participant",
+      "sort_order": "0",
+      "min_qty_to_sell": "0",
+      "max_qty_to_sell": "0",
+      "original_price": "159.00",
+      "regiondo_price": "159.00",
+      "vat_percentage_val": "10.00",
+      "duration_value": "9.00",
+      "duration_type": "hour",
+      "description": "",
+      "sales_start_dt": null,
+      "sales_end_dt": null,
+      "capacity": 40,
+      "booking_notice_period": 1,
+      "qty_left": 25
+    }
+  }
+}

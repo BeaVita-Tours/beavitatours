@@ -1,0 +1,203 @@
+{
+  "data": [
+    {
+      "product_id": "298188",
+      "name": "From Venice: Dolomites and Prosecco Hills tour with Wine (PRIVATE)",
+      "sku": "T-BE116-321529",
+      "short_description": "<p>Experience 2 UNESCO World Heritage Sites in 1 day – the Dolomites and the Prosecco Hills. Depart from Venice on a guided tour, enjoy the breathtaking natural scenery and a Prosecco DOCG wine tasting.</p>",
+      "geo_lat": "45.4373",
+      "geo_lon": "12.3192",
+      "distance": null,
+      "location_address": "C8P9+WM Venezia （复制至谷歌地图可查询具体地址） GPS 坐标：45°26'14.5\"N 12°19'09.4\"E",
+      "city": "Venezia",
+      "zipcode": "30135",
+      "city_id": "30546",
+      "region_id": "41006",
+      "poi_ids": null,
+      "country_id": "57",
+      "continent_id": "6",
+      "thumbnail": "https://cdn.regiondo.net/media/catalog/product/cache/0/thumbnail/360x240/8a02aedcaf38ad3a98187ab0a1dede95/b/i/big-ticket-image-6733babc194dd219313402-cropped600-400/from-venice-dolomites-and-prosecco-hills-tour-with-wine-private-190b9.jpg",
+      "appointment_types": "automatically",
+      "image": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6733babc194dd219313402-cropped600-400.jpg",
+      "image_label": null,
+      "url_key": "dolomites-and-prosecco-hills-day-trip-with-wine",
+      "url_path": "dolomites-and-prosecco-hills-day-trip-with-wine",
+      "provider": "Bea Vita Tours",
+      "rating_summary": "100",
+      "reviews_count": "1",
+      "is_appointment_needed": "1",
+      "ticket_suitable_for": null,
+      "top_things_to_do": ",182",
+      "ticket_weather": null,
+      "ticket_languages": "145",
+      "product_supplier_id": "46886",
+      "original_price": "1,119.00",
+      "type_id": "ticket",
+      "as_gift": "0",
+      "covid_19": "0",
+      "in_stock": "1",
+      "is_expired": "0",
+      "regiondo_url": "https://www.regiondo.de/dolomites-and-prosecco-hills-day-trip-with-wine",
+      "wl_regiondo_url": "https://prosecco-experience.regiondo.com/dolomites-and-prosecco-hills-day-trip-with-wine?vendor=46886",
+      "base_price": "999.00",
+      "ticket_view_params": "{\"datetime_representation\":null,\"gift_sold_always\":0}",
+      "default_name": "From Venice: Dolomites and Prosecco Hills tour with Wine (PRIVATE)",
+      "disable_print_at_home": null,
+      "duration_type": "hour",
+      "duration_values": "10",
+      "variations": [
+        {
+          "variation_id": "723802",
+          "options": [
+            {
+              "option_id": "2028635"
+            }
+          ]
+        }
+      ],
+      "curency_code": "EUR",
+      "currency_code": "EUR",
+      "tips": null
+    },
+    {
+      "product_id": "298190",
+      "name": "From Venice: Dolomites Day Trip with Cortina and 2 Lakes",
+      "sku": "T-BE116-321530",
+      "short_description": "<p>Explore the Dolomites on a day trip from Venice. Visit Cortina d'Ampezzo, take a pleasant walk around Lake Misurina, and admire the scenery from panoramic viewpoints.</p>",
+      "geo_lat": "45.4373",
+      "geo_lon": "12.3192",
+      "distance": null,
+      "location_address": "C8P9+WM Venezia （复制至谷歌地图可查询具体地址）",
+      "city": "Venezia",
+      "zipcode": "30135",
+      "city_id": "30546",
+      "region_id": "41006",
+      "poi_ids": null,
+      "country_id": "57",
+      "continent_id": "6",
+      "thumbnail": "https://cdn.regiondo.net/media/catalog/product/cache/0/thumbnail/360x240/8a02aedcaf38ad3a98187ab0a1dede95/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400/from-venice-dolomites-day-trip-with-cortina-and-2-lakes-17b36.jpg",
+      "appointment_types": "automatically",
+      "image": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035af010af9501278284-cropped600-400.jpg",
+      "image_label": null,
+      "url_key": "dolomites-day-trip",
+      "url_path": "dolomites-day-trip",
+      "provider": "Bea Vita Tours",
+      "rating_summary": "100",
+      "reviews_count": "2",
+      "is_appointment_needed": "1",
+      "ticket_suitable_for": null,
+      "top_things_to_do": ",182",
+      "ticket_weather": null,
+      "ticket_languages": "145",
+      "product_supplier_id": "46886",
+      "original_price": "159.00",
+      "type_id": "ticket",
+      "as_gift": "0",
+      "covid_19": "0",
+      "in_stock": "1",
+      "is_expired": "0",
+      "regiondo_url": "https://www.regiondo.de/dolomites-day-trip",
+      "wl_regiondo_url": "https://prosecco-experience.regiondo.com/dolomites-day-trip?vendor=46886",
+      "base_price": "159.00",
+      "ticket_view_params": "{\"datetime_representation\":null,\"gift_sold_always\":0}",
+      "default_name": "From Venice: Dolomites Day Trip with Cortina and 2 Lakes",
+      "disable_print_at_home": null,
+      "duration_type": "hour",
+      "duration_values": "9",
+      "variations": [
+        {
+          "variation_id": "723805",
+          "options": [
+            {
+              "option_id": "2028639"
+            }
+          ]
+        },
+        {
+          "variation_id": "818816",
+          "options": [
+            {
+              "option_id": "2305148"
+            }
+          ]
+        }
+      ],
+      "curency_code": "EUR",
+      "currency_code": "EUR",
+      "tips": null
+    },
+    {
+      "product_id": "300877",
+      "name": "From Venice: The Best of the Dolomites Mountains Day Trip",
+      "sku": "T-BE116-324396",
+      "short_description": "<p>Spend a great day exploring the best of the Dolomites Moutains. Visit the enchanting Cortina d'Ampezzo and take a pleasant walk around Lake Misurina with its incredible stunning views.</p>",
+      "geo_lat": "45.4421",
+      "geo_lon": "12.309",
+      "distance": null,
+      "location_address": "Tronchetto Coach Drop off & Pick Up, Isola Nova del Tronchetto, 311, 30135 Venezia, VE, Italy",
+      "city": "Venezia",
+      "zipcode": "30135",
+      "city_id": "30546",
+      "region_id": "41006",
+      "poi_ids": null,
+      "country_id": "57",
+      "continent_id": "6",
+      "thumbnail": "https://cdn.regiondo.net/media/catalog/product/cache/0/thumbnail/360x240/8a02aedcaf38ad3a98187ab0a1dede95/b/i/big-ticket-image-6a035a237c749153715934-cropped600-400/from-venice-the-best-of-the-dolomites-mountains-day-trip-13996.jpg",
+      "appointment_types": "automatically",
+      "image": "https://cdn.regiondo.net/media/catalog/product/b/i/big-ticket-image-6a035a237c749153715934-cropped600-400.jpg",
+      "image_label": null,
+      "url_key": "the-best-of-the-dolomites-mountains-day-trip",
+      "url_path": "the-best-of-the-dolomites-mountains-day-trip",
+      "provider": "Bea Vita Tours",
+      "rating_summary": "90",
+      "reviews_count": "7",
+      "is_appointment_needed": "1",
+      "ticket_suitable_for": null,
+      "top_things_to_do": ",182",
+      "ticket_weather": null,
+      "ticket_languages": "145",
+      "product_supplier_id": "46886",
+      "original_price": "115.00",
+      "type_id": "ticket",
+      "as_gift": "0",
+      "covid_19": "0",
+      "in_stock": "1",
+      "is_expired": "0",
+      "regiondo_url": "https://www.regiondo.de/the-best-of-the-dolomites-mountains-day-trip",
+      "wl_regiondo_url": "https://prosecco-experience.regiondo.com/the-best-of-the-dolomites-mountains-day-trip?vendor=46886",
+      "base_price": "115.00",
+      "ticket_view_params": "{\"datetime_representation\":null,\"gift_sold_always\":0}",
+      "default_name": "From Venice: The Best of the Dolomites Mountains Day Trip",
+      "disable_print_at_home": null,
+      "duration_type": "hour",
+      "duration_values": "10",
+      "variations": [
+        {
+          "variation_id": "731837",
+          "options": [
+            {
+              "option_id": "2052614"
+            },
+            {
+              "option_id": "2052711"
+            }
+          ]
+        }
+      ],
+      "curency_code": "EUR",
+      "currency_code": "EUR",
+      "tips": null
+    }
+  ],
+  "page": {
+    "first": 1,
+    "before": 1,
+    "previous": 1,
+    "current": 1,
+    "last": 1,
+    "next": 1,
+    "total_pages": 1,
+    "total_items": 11,
+    "limit": 250
+  }
+}
