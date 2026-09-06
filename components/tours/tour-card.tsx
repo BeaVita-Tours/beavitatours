@@ -32,7 +32,11 @@ export function TourCard({ tour, priority = false, className }: TourCardProps) {
   return (
     <Card
       className={cn(
-        "group gap-0 overflow-hidden rounded-2xl p-0 transition-shadow duration-300 hover:shadow-md",
+        // `relative` is load-bearing: the title link below uses
+        // `after:absolute inset-0` to make the whole card clickable, and
+        // without a positioned ancestor here that overlay resolves against the
+        // page and covers the filter chips, making them unclickable.
+        "group relative gap-0 overflow-hidden rounded-2xl p-0 transition-shadow duration-300 hover:shadow-md",
         className
       )}
     >

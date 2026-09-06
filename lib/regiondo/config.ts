@@ -34,6 +34,16 @@ const envSchema = z.object({
   // integration refuses to do. See D-001 in docs/regiondo-build-log.md.
   REGIONDO_PAYMENT_MODE: z.enum(["hosted"]).default("hosted"),
   REGIONDO_NATIVE_BOOKING: booleanish,
+  /**
+   * Test-only override for the API host. The end-to-end suite points this at a
+   * local mock so that sold-out and expired-hold can be exercised
+   * deterministically — those states cannot be produced on demand against the
+   * real API without actually selling out a departure.
+   *
+   * Refused unless NODE_ENV is "test" or the value is a localhost URL, so a
+   * misconfigured deployment cannot silently route live bookings elsewhere.
+   */
+  REGIONDO_API_BASE_URL: z.string().url().optional(),
 });
 
 export type RegiondoEnv = z.infer<typeof envSchema>;
@@ -149,9 +159,21 @@ function build(): RegiondoConfig {
     ? (env.REGIONDO_DEFAULT_LOCALE as StoreLocale)
     : "en-US";
 
+  const override = env.REGIONDO_API_BASE_URL;
+  if (override) {
+    const host = new URL(override).hostname;
+    const local = host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+    if (!local && process.env.NODE_ENV !== "test") {
+      throw new Error(
+        "REGIONDO_API_BASE_URL may only point at localhost outside NODE_ENV=test. " +
+          "It exists for the e2e mock, not for redirecting production traffic."
+      );
+    }
+  }
+
   return {
     enabled: true,
-    baseUrl: BASE_URLS[apiEnv],
+    baseUrl: override ?? BASE_URLS[apiEnv],
     apiEnv,
     publicKey,
     privateKey,

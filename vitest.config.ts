@@ -25,7 +25,9 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    // Only unit/integration specs. Playwright owns e2e/*.spec.ts.
     include: ["lib/**/__tests__/**/*.test.ts", "lib/**/*.test.ts"],
+    exclude: ["e2e/**", "node_modules/**"],
     // Live round trips hit the real API; give them room.
     testTimeout: 30_000,
     // The wrapper reads env at module load; give every test the same baseline
