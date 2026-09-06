@@ -62,7 +62,9 @@ describe("numeric coercion", () => {
 describe("catalog schemas against live fixtures", () => {
   it("parses the product list", () => {
     const parsed = productListSchema.parse(productsList.data);
-    expect(parsed.length).toBeGreaterThan(0);
+    // The whole live catalog, so a shape that only some products have cannot
+    // slip through on a three-item sample.
+    expect(parsed).toHaveLength(11);
     for (const product of parsed) {
       expect(typeof product.product_id).toBe("string");
       expect(typeof product.base_price).toBe("number");

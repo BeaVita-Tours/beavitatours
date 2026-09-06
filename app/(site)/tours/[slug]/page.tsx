@@ -188,7 +188,7 @@ export default async function TourPage({ params, searchParams }: PageProps) {
           <h2 id="related-heading" className="text-2xl font-bold">
             You might also like
           </h2>
-          <TourGrid tours={related} priorityCount={0} regionLabel="Related tours" />
+          <TourGrid tours={related} priorityCount={0} headingId="related-heading" />
         </section>
       ) : null}
     </main>

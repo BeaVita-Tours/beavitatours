@@ -19,9 +19,16 @@ interface TourGridProps {
   /**
    * Heading for the results region. Cards are `h3`, so without an `h2` above
    * them a catalog page jumps h1 -> h3 and fails axe's heading-order rule.
-   * Visually hidden by default because the page heading already says it.
+   * Visually hidden, because the page heading already says it.
    */
   regionLabel?: string;
+  /**
+   * Id of a heading the caller already renders. Pass this instead of
+   * `regionLabel` when there is a visible `h2` above the grid — otherwise a
+   * screen reader announces the same heading twice, once visible and once
+   * hidden.
+   */
+  headingId?: string;
 }
 
 export function TourGrid({
@@ -31,6 +38,7 @@ export function TourGrid({
   emptyTitle = "No tours match those filters",
   emptyBody = "Try widening the date range or clearing a filter.",
   regionLabel = "Tours",
+  headingId,
 }: TourGridProps) {
   if (tours.length === 0) {
     return degraded ? (
@@ -60,11 +68,17 @@ export function TourGrid({
     );
   }
 
+  // Derived from the label rather than a constant: two grids on one page (a
+  // theme upsell above a related-tours row, say) would otherwise share an id.
+  const ownHeadingId = `tour-results-${regionLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
   return (
-    <section aria-labelledby="tour-results-heading">
-      <h2 id="tour-results-heading" className="sr-only">
-        {regionLabel}
-      </h2>
+    <section aria-labelledby={headingId ?? ownHeadingId}>
+      {headingId ? null : (
+        <h2 id={ownHeadingId} className="sr-only">
+          {regionLabel}
+        </h2>
+      )}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {tours.map((tour, index) => (
           <TourCard key={tour.id} tour={tour} priority={index < priorityCount} />

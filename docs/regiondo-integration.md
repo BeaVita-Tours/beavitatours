@@ -94,7 +94,7 @@ lib/regiondo/
   checkout.ts       hold, totals, prolong, release, checkout link, order lookup
   cache.ts          cache tags and the revalidation vocabulary
   slugs.ts          the tour URL registry
-  collections.ts    the two account tags, and the landing-page product sets
+  collections.ts    account tags, landing-page sets, theme-page upsell sets
   session.ts        the signed httpOnly booking cookie
   catalog-params.ts the catalog's URL contract
   action-state.ts   shared state shape for the Server Actions
@@ -330,6 +330,9 @@ UNCHANGED   /tours/group-tours          widget  -> native "Shared Tours from Ven
             /lp/from-venice             iframe  -> native tour grid
             /lp/from-jesolo-cavallino   iframe  -> native tour grid
             /tours/{dolomites,prosecco,wine-food,active-adventure,cultural}
+                                        editorial copy unchanged; each gains a
+                                        bookable upsell between the copy and the
+                                        existing CTA, plus real page metadata
             /rates                      (gains a link to /tours/private-tours)
 
 NEW         /tours                      catalog index, filters in ?searchParams

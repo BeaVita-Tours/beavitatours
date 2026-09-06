@@ -1,10 +1,32 @@
-"use client";
+import type { Metadata } from "next";
 
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { SITE_URL } from "@/lib/constants";
 import {
   TourCTA,
   TourDescription,
   TourTemplate,
 } from "@/components/tour-template";
+
+/**
+ * A Server Component since the booking upsell below is server-rendered. It was
+ * `"use client"` only to host `TourTemplate`, which keeps its own directive —
+ * so this page could not export metadata and inherited the site-wide title.
+ */
+export const metadata: Metadata = {
+  title: "Guided hiking and via ferrata in the Dolomites | Bea Vita Tours",
+  description:
+    "Lake Sorapis and via ferrata in the Dolomites with a qualified alpine guide. Private departures from Venice, transport and guiding included.",
+  alternates: { canonical: "/tours/active-adventure" },
+  openGraph: {
+    type: "website",
+    title: "Guided hiking and via ferrata in the Dolomites | Bea Vita Tours",
+    description:
+      "Lake Sorapis and via ferrata in the Dolomites with a qualified alpine guide. Private departures from Venice, transport and guiding included.",
+    url: `${SITE_URL}/tours/active-adventure`,
+    siteName: "Bea Vita Tours",
+  },
+};
 
 export default function HikingTourPage() {
   return (
@@ -39,6 +61,10 @@ export default function HikingTourPage() {
           both kids and adults.
         </p>
       </TourDescription>
+      {/* Bookable departures for this theme, between the copy and the
+          existing CTA. Renders nothing while the flag is off. */}
+      <ThemeUpsell theme="active-adventure" />
+
       <TourCTA />
     </TourTemplate>
   );

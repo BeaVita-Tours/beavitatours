@@ -96,6 +96,55 @@ test.describe("catalog", () => {
   });
 });
 
+test.describe("theme page upsells", () => {
+  test("puts bookable departures on an editorial page", async ({ page }) => {
+    // /tours/dolomites used to describe the mountains and then send the reader
+    // to /rates, which is a price list rather than something you can book.
+    await page.goto("/tours/dolomites");
+
+    const upsell = page.getByRole("heading", { name: /day trips to the dolomites/i });
+    await expect(upsell).toBeVisible();
+
+    // Three cards, and each one goes to a real tour page.
+    const links = page.locator('a[href^="/tours/venice-"], a[href^="/tours/jesolo-"]');
+    expect(await links.count()).toBeGreaterThan(0);
+
+    await expect(page.getByText(/€\d/).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /see all dolomites day trips/i })).toBeVisible();
+  });
+
+  test("the see-all link lands on a pre-filtered catalog", async ({ page }) => {
+    await page.goto("/tours/dolomites");
+    await page.getByRole("link", { name: /see all dolomites day trips/i }).click();
+
+    await expect(page).toHaveURL(/\/tours\?q=dolomites/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Day trips from Venice");
+  });
+
+  test("a card leads into the booking flow", async ({ page }) => {
+    await page.goto("/tours/dolomites");
+
+    const first = page.locator('a[href^="/tours/venice-"]').first();
+    const href = await first.getAttribute("href");
+    await first.click();
+
+    await page.waitForURL(`**${href}`);
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
+  });
+
+  test("the upsell content is in the HTML, not injected by script", async ({ page }) => {
+    const response = await page.goto("/tours/cultural");
+    const html = (await response?.text()) ?? "";
+
+    expect(html).toContain("Tours through the hill towns");
+    expect(html).toContain("ItemList");
+    // And the page finally has a title of its own.
+    expect(html).toMatch(/<title>Medieval hill towns/);
+  });
+});
+
 test.describe("happy path", () => {
   test("holds places and hands off to Regiondo's hosted checkout", async ({ page }) => {
     await page.goto(TOUR);

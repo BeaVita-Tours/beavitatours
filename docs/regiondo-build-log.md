@@ -600,3 +600,80 @@ elsewhere.
 | `pnpm check:secrets` | **no key material in the build output** |
 | Rich Results Test | **not run** — needs a public URL. First item on the cutover checklist. |
 | Structured data, verified locally | `TravelAgency` site-wide; `Product`+`TouristTrip` with `Offer` on tour pages; `BreadcrumbList` on nested routes; `ItemList` on catalog and landing pages; `AggregateRating` **only** on the three tours with real reviews |
+
+---
+
+## Follow-up — booking upsells on the theme pages
+
+The five hand-written pages under `/tours/*` describe a subject and then hand
+the reader to `/rates`, which is a price list rather than something you can
+book. Each now carries the departures that actually deliver its subject, between
+the editorial copy and the existing CTA.
+
+### D-016 — Curated product ids, not a keyword query
+
+The API's `kwd` search does work — verified live, `dolomites` returns 8 products,
+`prosecco` 5, `wine` 6, `medieval` exactly the two hill-town tours. (An earlier
+probe reported zero for everything; that probe was malformed, not the API.)
+
+But it matches on descriptions, so it is approximate in both directions: a search
+for "dolomites" pulls in the Medieval Hill Towns tour because its copy mentions
+them, and misses the Jesolo Prosecco departure. On a conversion surface the
+membership and the ordering are editorial judgements, so `THEME_UPSELLS` writes
+them down — shared and lower-priced departures first, because they are the easier
+yes.
+
+The **"see all" link** does use the keyword filter (`/tours?q=dolomites`), so it
+keeps working as the catalog grows. Two themes whose curated set is already the
+complete set link to `/tours` instead, rather than to a filter that could quietly
+return nothing later.
+
+*Reverse:* one exported constant.
+
+### D-017 — The theme pages became Server Components
+
+Required, not incidental: the upsell is server-rendered. They were `"use client"`
+only to host `TourTemplate`, which keeps its own directive. The side effect is
+that they can finally export metadata — all five had been inheriting the
+site-wide title. That metadata applies **with the flag off too**, deliberately;
+gating a page title behind a booking flag would be strange.
+
+*Reverse:* the pages are thin wrappers; re-adding `"use client"` and dropping the
+`<ThemeUpsell />` line restores them exactly.
+
+### D-018 — Two accessibility fixes in `TourTemplate`, unconditional
+
+`TourCTA`'s teal band gave its near-white text 2.5:1 and its paragraph 2.3:1;
+the hero badge measured 3.16:1. All below AA, all pre-existing, all on pages
+being edited anyway. Switched to the `--primary-strong` stop introduced in D-014.
+The carousel dots were 10×10 px tap targets; the dot still looks the same and the
+button around it is now 24 px.
+
+`TourTemplate` and `TourCTA` are used **only** by these five pages, so neither
+change touches anything else on the site. Result: 92 → 96 on all five, with only
+the known site-wide nav button left failing.
+
+*Reverse:* three class names.
+
+### Surprises
+
+- **The mock's product fixture had only three tours**, so two themes would have
+  rendered an empty section under test and nobody would have noticed. Expanded to
+  the full catalog of 11, with the live-only fields the wrapper never reads
+  stripped out — 6 KB to 16 KB, and several other assertions got stronger for it.
+- **`TourGrid` rendered a duplicate heading.** Its screen-reader `h2` repeated a
+  visible `h2` wherever a caller already had one — the upsell and the
+  related-tours row both did. It now accepts a `headingId` and reuses the
+  caller's heading instead.
+
+### Self-check results
+
+| Check | Result |
+|---|---|
+| `pnpm test` | **125 passed** (was 115) — new invariants: every curated product id exists, no duplicates, no empty theme, every theme resolves to a curated slug, no overlap between the two landing sets |
+| `pnpm test:e2e` | **17 passed** (was 13) — upsell renders, "see all" lands on a filtered catalog, a card leads into the booking flow, the content is in the HTML |
+| Accessibility, all five theme pages | **96** (was 92–96); only the site-wide nav button remains |
+| `next build`, flag on | all five pages **fully static** with the `catalog` profile |
+| `next build`, flag off | upsell absent, no tour links, editorial copy unchanged |
+| typecheck, lint, `check:secrets` | clean |
+

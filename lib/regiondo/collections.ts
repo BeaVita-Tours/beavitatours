@@ -59,3 +59,92 @@ export const LANDING_PRODUCT_SETS = {
 } as const satisfies Record<string, readonly string[]>;
 
 export type LandingKey = keyof typeof LANDING_PRODUCT_SETS;
+
+/* -------------------------------------------------------------------------- */
+/* theme pages                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Bookable tours for each hand-written theme page under `/tours/*`.
+ *
+ * Those five pages have always been editorial: they describe the Dolomites or
+ * the Prosecco hills and then send the reader to `/rates`, with nothing
+ * bookable in between. This maps each one to the departures that actually
+ * deliver its subject, so the page can close.
+ *
+ * **Curated ids, not a keyword query.** The API's `kwd` search does work
+ * (verified live: "dolomites" returns 8, "prosecco" 5, "wine" 6), but it
+ * matches on descriptions, so it is approximate in both directions — a
+ * keyword search for "dolomites" pulls in the Medieval Hill Towns tour because
+ * its copy mentions them. On a conversion surface the ordering and the
+ * membership are editorial judgements, so they are written down.
+ *
+ * Order is deliberate: shared, lower-priced departures first. They are the
+ * easier yes, and someone who wants the private version will scroll.
+ *
+ * `browseHref` is where "see everything" goes. Themes whose curated set is
+ * already the complete set link to the whole catalog rather than to a keyword
+ * filter that could quietly return nothing later.
+ */
+export interface ThemeUpsell {
+  /** Matches the directory under app/(site)/tours/. */
+  readonly slug: string;
+  readonly heading: string;
+  readonly intro: string;
+  readonly productIds: readonly string[];
+  readonly browseHref: string;
+  readonly browseLabel: string;
+}
+
+export const THEME_UPSELLS = {
+  dolomites: {
+    slug: "dolomites",
+    heading: "Day trips to the Dolomites",
+    intro:
+      "Everything above is a two-hour drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
+    productIds: ["300877", "298190", "341597", "298188", "339660", "341596", "326843"],
+    browseHref: "/tours?q=dolomites",
+    browseLabel: "See all Dolomites day trips",
+  },
+  prosecco: {
+    slug: "prosecco",
+    heading: "Day trips to the Prosecco hills",
+    intro:
+      "Forty-five minutes from Venice, and a different world. These departures take in the vineyards, a family-run winery and the hill towns between them.",
+    productIds: ["326845", "307882", "298188", "326844"],
+    browseHref: "/tours?q=prosecco",
+    browseLabel: "See all Prosecco hills day trips",
+  },
+  "wine-food": {
+    slug: "wine-food",
+    heading: "Tours built around the table",
+    intro:
+      "Prosecco at the winery that made it, cicchetti, local cheese and salami, and a long lunch somewhere worth the drive.",
+    productIds: ["326845", "307882", "341599", "298188", "326844"],
+    browseHref: "/tours?q=wine",
+    browseLabel: "See all wine and food tours",
+  },
+  "active-adventure": {
+    slug: "active-adventure",
+    heading: "Guided days in the mountains",
+    intro:
+      "Both of these go out with a qualified alpine guide, and both are private — the group is you and whoever you bring.",
+    productIds: ["339660", "341596"],
+    // The curated set is already every guided mountain departure we run, so
+    // "see all" means the whole catalog rather than a narrower filter.
+    browseHref: "/tours",
+    browseLabel: "Browse every day trip",
+  },
+  cultural: {
+    slug: "cultural",
+    heading: "Tours through the hill towns",
+    intro:
+      "Asolo, Cison di Valmarino and the walled villages between them — medieval streets, a castle or two, and wine at the end of it.",
+    productIds: ["307882", "341599"],
+    browseHref: "/tours",
+    browseLabel: "Browse every day trip",
+  },
+} as const satisfies Record<string, ThemeUpsell>;
+
+export type ThemeKey = keyof typeof THEME_UPSELLS;
+

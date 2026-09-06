@@ -1,5 +1,7 @@
-"use client";
+import type { Metadata } from "next";
 
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { SITE_URL } from "@/lib/constants";
 import {
   TourCTA,
   TourDescription,
@@ -12,6 +14,26 @@ const carouselImages: CarouselImage[] = [
   { src: "/imgs/cultural/verona1.jpeg", alt: "Verona" },
   { src: "/imgs/cultural/verona2.jpeg", alt: "Verona scenery" },
 ];
+
+/**
+ * A Server Component since the booking upsell below is server-rendered. It was
+ * `"use client"` only to host `TourTemplate`, which keeps its own directive —
+ * so this page could not export metadata and inherited the site-wide title.
+ */
+export const metadata: Metadata = {
+  title: "Medieval hill towns of the Veneto | Bea Vita Tours",
+  description:
+    "Asolo, Cison di Valmarino and the walled villages of the Veneto. Castles, medieval streets and wine on a day trip from Venice.",
+  alternates: { canonical: "/tours/cultural" },
+  openGraph: {
+    type: "website",
+    title: "Medieval hill towns of the Veneto | Bea Vita Tours",
+    description:
+      "Asolo, Cison di Valmarino and the walled villages of the Veneto. Castles, medieval streets and wine on a day trip from Venice.",
+    url: `${SITE_URL}/tours/cultural`,
+    siteName: "Bea Vita Tours",
+  },
+};
 
 export default function CulturalTourPage() {
   return (
@@ -47,6 +69,10 @@ export default function CulturalTourPage() {
           priceless treasures displaying different eras and traditions.
         </p>
       </TourDescription>
+
+      {/* Bookable departures for this theme, between the copy and the
+          existing CTA. Renders nothing while the flag is off. */}
+      <ThemeUpsell theme="cultural" />
 
       <TourCTA />
     </TourTemplate>

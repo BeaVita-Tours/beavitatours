@@ -74,7 +74,30 @@ const server = createServer((req, res) => {
 
   // --- catalog -----------------------------------------------------------
   if (path === "/v1/tags") return json(res, 200, TAGS);
-  if (path === "/v1/products") return json(res, 200, PRODUCTS);
+  if (path === "/v1/products") {
+    let data = PRODUCTS.data;
+
+    // Curated sets (theme upsells, landing pages) filter by id.
+    const ids = url.searchParams.get("product_ids");
+    if (ids) {
+      const wanted = new Set(ids.split(","));
+      data = data.filter((p) => wanted.has(String(p.product_id)));
+    }
+
+    // Keyword search, so the "pre-filtered catalog" assertion means something.
+    // The real API matches name and description, case-insensitively.
+    const kwd = url.searchParams.get("kwd");
+    if (kwd) {
+      const needle = kwd.toLowerCase();
+      data = data.filter((p) =>
+        `${p.name} ${p.short_description ?? ""} ${p.description ?? ""}`
+          .toLowerCase()
+          .includes(needle)
+      );
+    }
+
+    return json(res, 200, { ...PRODUCTS, data });
+  }
   if (path.startsWith("/v1/products/availabilities/")) {
     // Sold out means an empty calendar as well as no options, so the panel has
     // nothing to offer rather than offering something it cannot hold.

@@ -1,10 +1,32 @@
-"use client";
+import type { Metadata } from "next";
 
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { SITE_URL } from "@/lib/constants";
 import {
   TourCTA,
   TourDescription,
   TourTemplate,
 } from "@/components/tour-template";
+
+/**
+ * A Server Component since the booking upsell below is server-rendered. It was
+ * `"use client"` only to host `TourTemplate`, which keeps its own directive —
+ * so this page could not export metadata and inherited the site-wide title.
+ */
+export const metadata: Metadata = {
+  title: "Prosecco Hills tours from Venice | Bea Vita Tours",
+  description:
+    "A UNESCO World Heritage landscape 45 minutes from Venice. Family-run wineries, hill towns and Prosecco tasting on a small-group or private day trip.",
+  alternates: { canonical: "/tours/prosecco" },
+  openGraph: {
+    type: "website",
+    title: "Prosecco Hills tours from Venice | Bea Vita Tours",
+    description:
+      "A UNESCO World Heritage landscape 45 minutes from Venice. Family-run wineries, hill towns and Prosecco tasting on a small-group or private day trip.",
+    url: `${SITE_URL}/tours/prosecco`,
+    siteName: "Bea Vita Tours",
+  },
+};
 
 export default function ProseccoTourPage() {
   return (
@@ -39,6 +61,10 @@ export default function ProseccoTourPage() {
           is truly something to see for everyone.
         </p>
       </TourDescription>
+
+      {/* Bookable departures for this theme, between the copy and the
+          existing CTA. Renders nothing while the flag is off. */}
+      <ThemeUpsell theme="prosecco" />
 
       <TourCTA />
     </TourTemplate>

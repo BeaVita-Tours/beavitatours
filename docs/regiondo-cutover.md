@@ -31,6 +31,9 @@ is safe.
 - [ ] `/tours/group-tours` shows the 6 shared departures, `/tours/private-tours` the 3 private ones
 - [ ] every tour page loads and its booking panel shows a real date and price
 - [ ] `/lp/from-venice` shows 7 tours, `/lp/from-jesolo-cavallino` shows 2
+- [ ] each theme page (`/tours/dolomites`, `/prosecco`, `/wine-food`,
+      `/active-adventure`, `/cultural`) shows a bookable section between the copy
+      and the CTA, and its "see all" link lands on a filtered catalog
 - [ ] filters change the URL and the results, and survive a page refresh
 - [ ] `/book/confirmation` shows the "find your booking" form
 
@@ -146,6 +149,12 @@ Honest list. Nothing here is a surprise waiting to be found.
 8. **Two products carry no tag** (326843, 326844 — the Jesolo/Cavallino pair), so
    they appear on `/tours` and on their landing page but on neither collection
    page. Tagging them in the dashboard is a one-minute fix.
+8b. **Theme upsell sets are curated by product id** in
+   `lib/regiondo/collections.ts` (`THEME_UPSELLS`). A tour added in Regiondo will
+   not appear on a theme page until it is listed there. A unit test asserts every
+   listed id exists, so a typo fails the build, but nothing can tell you about a
+   tour you forgot to add. The "see all" links use the API's keyword search, so
+   they *do* pick up new tours — which is the safety net.
 
 ### Performance
 
@@ -165,6 +174,13 @@ Honest list. Nothing here is a surprise waiting to be found.
     consent banner still do not.
 12. **`ReviewsSection` on the homepage** fails contrast (`text-muted-foreground/70`,
     3.13:1) and label-in-name on its OTA badge links. Pre-existing, untouched.
+12b. **Metadata and two accessibility fixes on the theme pages apply with the
+    flag off.** Everything else is gated, but titles, descriptions and canonicals
+    for `/tours/dolomites` and its four siblings, the AA contrast fix in
+    `TourCTA`, and the carousel dot tap-target fix are unconditional — they are
+    improvements independent of booking, and gating a page title behind a
+    booking flag would be strange. The flag-off state is therefore *better* than
+    before rather than byte-identical to it.
 13. **The consent banner covers the booking CTA on a phone.** It is
     `fixed bottom-0 z-50`, and on a 393 px viewport it sits over the button —
     every click-based e2e test failed on it before they pre-accepted consent. It

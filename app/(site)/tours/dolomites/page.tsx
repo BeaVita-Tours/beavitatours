@@ -1,5 +1,7 @@
-"use client";
+import type { Metadata } from "next";
 
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { SITE_URL } from "@/lib/constants";
 import {
   TourCTA,
   TourDescription,
@@ -11,6 +13,26 @@ const carouselImages: CarouselImage[] = [
   { src: "/imgs/dolomites/dolomites1.jpeg", alt: "Dolomites landscape" },
   { src: "/imgs/dolomites/dolomites2.jpeg", alt: "Dolomites panorama" },
 ];
+
+/**
+ * A Server Component since the booking upsell below is server-rendered. It was
+ * `"use client"` only to host `TourTemplate`, which keeps its own directive —
+ * so this page could not export metadata and inherited the site-wide title.
+ */
+export const metadata: Metadata = {
+  title: "Dolomites day trips from Venice | Bea Vita Tours",
+  description:
+    "The Dolomites are two hours from Venice. Cortina, Lake Misurina, Lake Braies and Tre Cime — small-group and private day trips, back the same evening.",
+  alternates: { canonical: "/tours/dolomites" },
+  openGraph: {
+    type: "website",
+    title: "Dolomites day trips from Venice | Bea Vita Tours",
+    description:
+      "The Dolomites are two hours from Venice. Cortina, Lake Misurina, Lake Braies and Tre Cime — small-group and private day trips, back the same evening.",
+    url: `${SITE_URL}/tours/dolomites`,
+    siteName: "Bea Vita Tours",
+  },
+};
 
 export default function DolomitesTourPage() {
   return (
@@ -47,6 +69,10 @@ export default function DolomitesTourPage() {
           meadows and landscapes.
         </p>
       </TourDescription>
+
+      {/* Bookable departures for this theme, between the copy and the
+          existing CTA. Renders nothing while the flag is off. */}
+      <ThemeUpsell theme="dolomites" />
 
       <TourCTA />
     </TourTemplate>
