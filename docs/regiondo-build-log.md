@@ -411,3 +411,192 @@ cannot plausibly cost a real sale.
 | Holds left open on the account afterwards | **none** — `GET /checkout/hold` returns `{"data": []}` |
 
 No booking was created. `POST /checkout/purchase` was never called, and it is not wrapped.
+
+---
+
+## Phase 3 — Server boundary
+
+### D-010 — Catalog reads in Server Components, mutations in Server Actions
+
+Catalog data is read directly in Server Components with no action layer: there
+is no round trip for something the server can already render. Every mutation —
+create hold, prolong, release, proceed to payment — is a Server Action.
+
+The repo's one existing form posts to a Route Handler
+(`app/api/travel-agency/route.ts`), so this is a deliberate departure. Reasons:
+Next checks the request origin and the action id, so CSRF is handled without
+hand-rolling a token; there is no public JSON endpoint for someone to hammer
+hold creation against; and the forms degrade without JavaScript. The one Route
+Handler added is `/api/regiondo/revalidate`, which is machine-called with a
+shared secret — an origin check is not the control that applies there.
+
+*Reverse:* each action is a thin wrapper over `lib/regiondo/checkout.ts`.
+
+### D-011 — Booking state in a signed httpOnly cookie
+
+Reservations are account-global on this API (`GET /checkout/hold` lists every
+hold on the key), so the cookie is the only thing binding a reservation to a
+browser. It is `httpOnly`, `sameSite=lax`, and HMAC-signed, and `/book/[code]`
+refuses any code that does not match it. A pasted reservation code opens nothing.
+
+It carries a reservation code, a line item and captured UTM tags — opaque
+references only, no customer data. Contact details are validated server-side and
+then posted nowhere: Regiondo's hosted checkout collects them again as part of
+taking payment, so keeping them here would be data we do not need and must not
+store.
+
+The signing key is derived from the Regiondo private key with a distinct info
+string rather than adding another secret to manage. Rotating the API key
+invalidates in-flight sessions, which last twenty minutes.
+
+*Reverse:* swap `signingKey()` for a dedicated `BOOKING_SESSION_SECRET`.
+
+---
+
+## Phase 4 — Pages and components
+
+Built: `/tours`, `/tours/[slug]`, `/tours/private-tours`, the native
+`/tours/group-tours`, `/book/[code]`, `/book/confirmation`, and the `/lp/*` swap.
+Components under `components/tours/`. Full route and component inventory is in
+`docs/regiondo-integration.md`.
+
+### Cache Components shaped this more than any design preference
+
+Three rules had to be respected explicitly, and each one changed the code:
+
+1. **`generateStaticParams` must return at least one entry.** A live call cannot
+   promise that, so the params come from the slug registry instead — which also
+   means the build no longer depends on Regiondo being reachable.
+2. **Awaiting `searchParams` outside `<Suspense>` makes a whole route
+   unprerenderable.** `CatalogView` therefore takes the *promise* and awaits it
+   inside the boundary. Awaiting it in the page component cost the entire static
+   shell.
+3. **`new Date()` in a prerendered path is rejected.** `LiveBookingPanel` calls
+   `connection()` first, which is what puts it behind Suspense rather than
+   blocking the build.
+
+Result: every tour page and both collection pages build as PPR — static HTML plus
+a streamed availability panel. Both `/lp/*` pages became fully static.
+
+### D-012 — `/book/*` is blocking, not streamed
+
+`export const instant = false` on both. Every part of those pages depends on who
+is asking — the session cookie, the reservation code, a live totals call — so
+there is no meaningful static shell, and streaming a skeleton of a checkout is
+worse than waiting a beat for the real thing.
+
+### D-013 — The `/lp/*` pages became Server Components
+
+They were `"use client"` only so they could render the landing shell, which meant
+they could not export metadata and inherited the site-wide title verbatim — on
+the pages paid traffic lands on. The shell keeps its own `"use client"`; the page
+wrappers are now Server Components that pass a server-rendered catalog in as a
+`bookingSlot` prop. Hero copy is unchanged, deliberately: A/B and attribution
+should not shift underneath a performance change.
+
+### Surprises
+
+- **A `"use server"` file may only export async functions.** `export const IDLE`
+  failed at module evaluation, which surfaced as a 500 on the first form
+  submission rather than as a build error. Moved to `lib/regiondo/action-state.ts`.
+- **The checkout form asked for every field twice.** `/checkout/hold` and
+  `/checkout/totals` both return `contact_data_required` (bare names) *and*
+  `buyer_data_required` (titled), and for this account they describe the same
+  four fields. `mergeFields()` dedupes on the inferred semantic type, keeping any
+  field whose type could not be inferred — two unlabelled custom fields are
+  genuinely two fields.
+- **Order verification was looking up the wrong key.** `/supplier/bookings`
+  filters `order_ids` on the *internal* order id, not the public order number, so
+  the confirmation page could never find a real order. The right endpoint is
+  `GET /checkout/purchase?order_number=` — which, despite an OpenAPI description
+  saying it only covers orders placed via the API, resolves any order on the
+  account (verified against a live Viator-channel order). It also returns one
+  order instead of every booking on the account with full PII attached, and the
+  boundary drops the signed ticket-PDF links: the page is reachable with an order
+  number alone, and that should not unlock someone's ticket.
+- **A pre-existing crash on both `/lp/*` pages.** Commit `bbc3bc4` switched
+  `components/ui/dialog.tsx` to the `radix-ui` meta-package and left
+  `direct-booking-popups.tsx` importing `@radix-ui/react-dialog` directly. Two
+  module instances, two contexts, so `DialogContent` could not see its `Dialog`
+  and the page died client-side. Unrelated to this work but blocking it; fixed.
+- **`TourCard`'s click overlay escaped its card.** `after:absolute inset-0` with
+  no positioned ancestor resolved against the page and covered the filter chips,
+  making them unclickable. Found by Playwright, not by reading the JSX.
+- **The consent banner covers the booking CTA on a phone.** `fixed bottom-0
+  z-50`, directly over the button. Site-wide, pre-existing; the e2e tests
+  pre-accept consent and it is on the known-gaps list rather than being quietly
+  restyled here.
+
+### Self-check results
+
+| Check | Result |
+|---|---|
+| `next build` with the flag off | **clean** — every route as before, `/tours*` 404 |
+| `next build` with the flag on | **clean** — 11 tour pages + 2 collections as PPR |
+| Live flow in a browser | **pass** — hold → checkout → redirect to `prosecco-experience.regiondo.com`, which opens on its Contact step |
+| Holds left open afterwards | **none** — released, `GET /checkout/hold` returns `{"data": []}` |
+| Real booking created | **none.** `POST /checkout/purchase` never called |
+| Confirmation verified against a real order | **pass** — server-side lookup, email masked, PDF links dropped |
+
+---
+
+## Phase 5 — SEO, accessibility, measurement
+
+Numbers and the full analysis live in `docs/regiondo-performance.md`; the honest
+gaps are in `docs/regiondo-cutover.md`. Short version:
+
+- Third-party payload down **66%** on the collection page and **62%** on the
+  landing page; total transfer down 48% / 42%; requests down 37 / 65. TBT down
+  358 ms / 186 ms. The unchanged homepage control moved **0 on every byte
+  metric**, which is what makes the rest trustworthy.
+- **LCP targets are not met**, and the reason is worth stating rather than
+  hiding: the widget and the iframe both loaded below the fold, so they were
+  never the LCP element. They cost weight and main-thread time, which is exactly
+  what improved. LCP is dominated by ~1 MB of shared script and 872 KB of
+  third-party tracking that this project does not touch.
+- Accessibility 96 on every new page (the tour page started at 88). Four real
+  defects fixed — contrast, an invalid `<dl>`, a label-in-name mismatch, and a
+  heading-order jump — plus a site-wide logo `alt` that duplicated its link name.
+
+### D-014 — A second brand teal rather than changing the first
+
+`--primary` (`#5dafa9`) measures 2.57:1 on white and gives white text 2.50:1;
+both fail AA. Rather than darken `--primary` — which would restyle every page on
+the site — a `--primary-strong` stop (`#2b817b`, 4.66:1 and 4.53:1) was added and
+used for small text and the booking CTAs. Recognisably the same brand colour,
+just deeper, and nothing already on the site moved.
+
+The shared `Button` default still fails, on every page including ones this
+project did not touch. Fixing that is a site-wide restyle and is listed as a gap
+rather than smuggled in here.
+
+*Reverse:* delete the token and the handful of class names using it.
+
+### D-015 — E2E runs against a mock, not against live
+
+The two failure modes that cost the most when wrong — sold out mid-checkout and
+an expired hold — cannot be produced on demand against the real API without
+genuinely selling out a departure, and there is no sandbox. `e2e/mock-regiondo.mjs`
+replays captured responses, including all four places the OpenAPI document is
+wrong, so the suite fails if the wrapper stops handling them. Thirteen specs,
+phone viewport.
+
+`REGIONDO_API_BASE_URL` exists for this and refuses any non-localhost value
+outside `NODE_ENV=test`, so it cannot become a way to point production traffic
+elsewhere.
+
+*Reverse:* delete `e2e/` and the env var.
+
+### Final self-check
+
+| Check | Result |
+|---|---|
+| `pnpm test` | **115 passed**, 5 live tests skipped by default |
+| `REGIONDO_LIVE_TESTS=1 pnpm test` | **120 passed** — full live round trip, hold released |
+| `pnpm test:e2e` | **13 passed** |
+| `pnpm typecheck` | clean |
+| `pnpm lint` | clean |
+| `pnpm build`, flag off and on | clean both ways |
+| `pnpm check:secrets` | **no key material in the build output** |
+| Rich Results Test | **not run** — needs a public URL. First item on the cutover checklist. |
+| Structured data, verified locally | `TravelAgency` site-wide; `Product`+`TouristTrip` with `Offer` on tour pages; `BreadcrumbList` on nested routes; `ItemList` on catalog and landing pages; `AggregateRating` **only** on the three tours with real reviews |
