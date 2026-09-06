@@ -134,7 +134,12 @@ export function CheckoutForm({
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" className="w-full" disabled={submitting || expired}>
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full bg-primary-strong hover:bg-primary-strong/90"
+        disabled={submitting || expired}
+      >
         {submitting ? <Loader2 className="animate-spin" aria-hidden="true" /> : null}
         Continue to secure payment
         <ArrowRight aria-hidden="true" />

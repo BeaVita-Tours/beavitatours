@@ -14,6 +14,14 @@
   --popover-foreground: oklch(0.25 0.015 60);
   --primary: oklch(70.1% 0.081 189);
   --primary-foreground: oklch(0.99 0.005 85);
+  /* Same brand teal, deep enough to pass WCAG AA.
+     --primary is oklch(70.1% 0.081 189) = #5dafa9, which measures 2.57:1
+     against white — it reads as a brand colour but fails AA (4.5:1) for text,
+     and white text on it fails too (2.50:1). This deeper stop is #2b817b:
+     4.66:1 against white and 4.53:1 for white text on it, so it passes in both
+     directions. Used for small text and for the booking CTAs; --primary keeps
+     its existing role everywhere else so nothing already on the site moves. */
+  --primary-strong: oklch(55% 0.081 189);
   --secondary: oklch(0.88 0.081 189);
   --secondary-foreground: oklch(0.25 0.015 60);
   --muted: oklch(0.95 0.01 85);
@@ -34,6 +42,10 @@
 }
 
 .dark {
+  /* Dark mode is defined but never activated (nothing sets .dark). Kept in
+     step so it is correct if a toggle is ever added: on a dark ground the
+     accessible stop is lighter, not darker. */
+  --primary-strong: oklch(78% 0.081 189);
   --background: oklch(0.18 0.015 60);
   --foreground: oklch(0.95 0.01 85);
   --card: oklch(0.22 0.015 60);
@@ -66,6 +78,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -231,6 +244,11 @@
   }
 }
 
+/* DEPRECATED: Regiondo calendar-widget overlay z-index shims.
+   The `.rcw-*` classes belong to Regiondo's *old* calendar widget, which this
+   site no longer embeds — the catalog widget on /tours/group-tours does not use
+   them. Kept only so nothing changes while REGIONDO_NATIVE_BOOKING is off;
+   delete alongside components/group-tours-regiondo-widget.tsx. */
 /* Keep Regiondo calendar widget overlays below site chrome. */
 .rcw-modal-backdrop {
   z-index: 40 !important;

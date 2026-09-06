@@ -70,7 +70,7 @@ export function CollectionPage({
         <p className="text-sm">
           <Link
             href={sibling.href}
-            className="font-medium text-primary underline-offset-4 hover:underline"
+            className="font-medium text-primary-strong underline-offset-4 hover:underline"
           >
             {sibling.label}
           </Link>

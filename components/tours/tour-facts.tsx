@@ -34,12 +34,15 @@ export function TourFacts({ tour }: { tour: TourDetail }) {
   return (
     <dl className="grid grid-cols-2 gap-4 rounded-2xl border bg-card p-5 sm:grid-cols-4">
       {facts.map((fact) => (
-        <div key={fact.label} className="flex items-start gap-2.5">
-          <fact.icon className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-          <div className="min-w-0">
-            <dt className="text-xs uppercase tracking-wide text-muted-foreground">{fact.label}</dt>
-            <dd className="text-sm font-medium">{fact.value}</dd>
-          </div>
+        // Each dt/dd pair sits in exactly one wrapping div, which is the only
+        // nesting the HTML spec (and axe's definition-list rule) allows inside
+        // a <dl>. The icon therefore goes inside the <dt> rather than beside it.
+        <div key={fact.label} className="min-w-0">
+          <dt className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
+            <fact.icon className="size-3.5 shrink-0 text-primary-strong" aria-hidden="true" />
+            {fact.label}
+          </dt>
+          <dd className="mt-1 text-sm font-medium">{fact.value}</dd>
         </div>
       ))}
     </dl>
@@ -109,7 +112,7 @@ export function TourInclusions({ tour }: { tour: TourDetail }) {
       <div className="grid gap-4 sm:grid-cols-2">
         {tour.includedHtml ? (
           <div className="rounded-2xl border bg-card p-5">
-            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+            <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary-strong">
               Included
             </h3>
             <div
@@ -159,7 +162,7 @@ export function TourMeetingPoint({ tour }: { tour: TourDetail }) {
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <MapPin className="size-3.5" aria-hidden="true" />
           Open in Maps

@@ -71,7 +71,7 @@ export const privacyPolicy: PrivacyPolicyContent = {
         "Umami Analytics for privacy-friendly usage statistics.",
         "Meta Pixel for marketing and conversion measurement, only after marketing consent.",
         "Google Tag Manager as a container for consent-based tags, only after the relevant consent is granted.",
-        "Regiondo GmbH for booking and analytics services through embedded booking widgets on the website. Some user data (such as cookies and usage information) may be shared with Regiondo, a European company based in Germany, for their analytics purposes.",
+        "Regiondo GmbH, a European company based in Germany, as our booking provider. Tour availability and prices are requested from Regiondo by our servers, so no data leaves your browser for that. When you complete a booking you are taken to Regiondo's own secure checkout to enter your contact and payment details, which are processed by them under their privacy policy — we never receive or store your card details. Some pages may still embed a Regiondo booking widget, which can set its own cookies.",
       ],
     },
     {

@@ -23,8 +23,9 @@ interface FilterPanelProps {
 
 const CHIP =
   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
-const CHIP_ON = "bg-primary text-primary-foreground";
-const CHIP_OFF = "bg-muted text-muted-foreground hover:bg-primary/15 hover:text-foreground";
+// White on the lighter --primary is 2.50:1; the deeper stop clears AA.
+const CHIP_ON = "bg-primary-strong text-primary-foreground";
+const CHIP_OFF = "bg-muted text-muted-foreground hover:bg-primary/20 hover:text-foreground";
 
 /**
  * Catalog filters, as links.
@@ -127,7 +128,7 @@ export function FilterPanel({
       {active ? (
         <Link
           href={basePath}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <X className="size-3.5" aria-hidden="true" />
           Clear all filters

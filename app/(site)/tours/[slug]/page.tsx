@@ -188,7 +188,7 @@ export default async function TourPage({ params, searchParams }: PageProps) {
           <h2 id="related-heading" className="text-2xl font-bold">
             You might also like
           </h2>
-          <TourGrid tours={related} priorityCount={0} />
+          <TourGrid tours={related} priorityCount={0} regionLabel="Related tours" />
         </section>
       ) : null}
     </main>
@@ -241,7 +241,7 @@ async function LiveBookingPanel({
         </p>
         <Link
           href="/contact"
-          className="inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline"
+          className="inline-flex text-sm font-medium text-primary-strong underline-offset-4 hover:underline"
         >
           Ask us about a private departure
         </Link>

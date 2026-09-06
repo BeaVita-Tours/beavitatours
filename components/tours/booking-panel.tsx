@@ -153,7 +153,7 @@ export function BookingPanel({
                   "rounded-xl border px-3 py-1.5 text-sm font-medium transition-colors",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   variationId === variation.id
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-primary-strong bg-primary-strong text-primary-foreground"
                     : "border-input hover:bg-muted"
                 )}
               >
@@ -168,12 +168,19 @@ export function BookingPanel({
         <span className="block text-sm font-medium" id="booking-date-label">
           Date
         </span>
+        {/*
+          `aria-labelledby` here would replace the button's accessible name with
+          "Date" while it visibly reads "Mon, 7 September 2026" — a
+          label-in-name mismatch, which breaks voice control ("click Monday the
+          seventh" would not match). The visible text is the name; "Date" is
+          supporting context, so it is `aria-describedby`.
+        */}
         <Button
           type="button"
           variant="outline"
           onClick={() => setShowCalendar((open) => !open)}
           aria-expanded={showCalendar}
-          aria-labelledby="booking-date-label"
+          aria-describedby="booking-date-label"
           className="w-full justify-start font-normal"
         >
           <CalendarDays aria-hidden="true" />
@@ -206,7 +213,7 @@ export function BookingPanel({
                   "rounded-xl border px-3 py-1.5 text-sm transition-colors",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   time === slot
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-primary-strong bg-primary-strong text-primary-foreground"
                     : "border-input hover:bg-muted"
                 )}
               >
@@ -230,7 +237,9 @@ export function BookingPanel({
                 key={candidate.id}
                 className={cn(
                   "flex cursor-pointer items-start justify-between gap-3 rounded-xl border p-3 text-sm transition-colors",
-                  optionId === candidate.id ? "border-primary bg-primary/5" : "border-input hover:bg-muted"
+                  optionId === candidate.id
+                    ? "border-primary-strong bg-primary-strong/5"
+                    : "border-input hover:bg-muted"
                 )}
               >
                 <span className="flex items-start gap-2">
@@ -308,7 +317,18 @@ export function BookingPanel({
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" className="w-full" disabled={!canBook || submitting}>
+      {/*
+        The shared Button's default teal (#5dafa9) gives white text only 2.50:1.
+        The booking CTAs use the deeper --primary-strong stop (4.53:1) so the
+        most important control in the funnel meets AA. Changing the shared token
+        would restyle every page on the site, which is not this change's job.
+      */}
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full bg-primary-strong hover:bg-primary-strong/90"
+        disabled={!canBook || submitting}
+      >
         {submitting || loadingSlot ? (
           <Loader2 className="animate-spin" aria-hidden="true" />
         ) : null}

@@ -16,6 +16,12 @@ interface TourGridProps {
   priorityCount?: number;
   emptyTitle?: string;
   emptyBody?: string;
+  /**
+   * Heading for the results region. Cards are `h3`, so without an `h2` above
+   * them a catalog page jumps h1 -> h3 and fails axe's heading-order rule.
+   * Visually hidden by default because the page heading already says it.
+   */
+  regionLabel?: string;
 }
 
 export function TourGrid({
@@ -24,6 +30,7 @@ export function TourGrid({
   priorityCount = 1,
   emptyTitle = "No tours match those filters",
   emptyBody = "Try widening the date range or clearing a filter.",
+  regionLabel = "Tours",
 }: TourGridProps) {
   if (tours.length === 0) {
     return degraded ? (
@@ -54,11 +61,16 @@ export function TourGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {tours.map((tour, index) => (
-        <TourCard key={tour.id} tour={tour} priority={index < priorityCount} />
-      ))}
-    </div>
+    <section aria-labelledby="tour-results-heading">
+      <h2 id="tour-results-heading" className="sr-only">
+        {regionLabel}
+      </h2>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {tours.map((tour, index) => (
+          <TourCard key={tour.id} tour={tour} priority={index < priorityCount} />
+        ))}
+      </div>
+    </section>
   );
 }
 

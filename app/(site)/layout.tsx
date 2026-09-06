@@ -3,6 +3,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
+import { OrganizationJsonLd } from "@/components/organization-json-ld";
 
 export default function SiteLayout({
   children,
@@ -11,6 +12,9 @@ export default function SiteLayout({
 }>) {
   return (
     <>
+      {/* Site-wide TravelAgency markup. Lives here rather than in the root
+          layout so /studio stays free of it. */}
+      <OrganizationJsonLd />
       <Navigation />
       {children}
       <Footer />

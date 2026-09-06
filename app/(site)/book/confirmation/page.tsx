@@ -83,7 +83,7 @@ export default async function ConfirmationPage({ searchParams }: PageProps) {
       />
 
       <div className="text-center">
-        <CheckCircle2 className="mx-auto size-12 text-primary" aria-hidden="true" />
+        <CheckCircle2 className="mx-auto size-12 text-primary-strong" aria-hidden="true" />
         <h1 className="mt-4 text-3xl font-bold md:text-4xl">You are booked</h1>
         <p className="mt-2 text-muted-foreground">
           Order <span className="font-semibold text-foreground">{booking.orderNumber}</span>
@@ -259,7 +259,7 @@ function LookupForm({ notFoundNumber }: { notFoundNumber?: string }) {
         Still stuck?{" "}
         <Link
           href="/contact"
-          className="font-medium text-primary underline-offset-4 hover:underline"
+          className="font-medium text-primary-strong underline-offset-4 hover:underline"
         >
           Contact us
         </Link>{" "}
