@@ -5,7 +5,10 @@ const robots = (): MetadataRoute.Robots => ({
   rules: {
     userAgent: "*",
     allow: "/",
-    disallow: ["/studio", "/api/"],
+    // /book/* is the checkout and confirmation flow. Both also send
+    // `noindex` in their metadata; this stops the crawl budget being spent on
+    // them in the first place.
+    disallow: ["/studio", "/api/", "/book/"],
   },
   sitemap: `${SITE_URL}/sitemap.xml`,
 });
