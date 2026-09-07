@@ -60,6 +60,29 @@ test.afterAll(async ({ playwright }) => {
 });
 
 test.describe("catalog", () => {
+  test("the navbar links the catalog pages to each other", async ({ page }) => {
+    await page.goto("/tours");
+    const nav = page.getByRole("navigation", { name: /main/i });
+    await expect(nav.getByRole("link", { name: /all tours/i })).toHaveCount(0);
+
+    await nav.getByRole("link", { name: /private tours/i }).first().click();
+    await expect(page).toHaveURL(/\/tours\/private-tours$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Private day tours");
+  });
+
+  test("the private tours page carries the tailor-made rates", async ({ page }) => {
+    // What /rates used to say, now under the bookable private departures.
+    await page.goto("/tours/private-tours");
+    await expect(page.getByRole("heading", { name: /design your own day/i })).toBeVisible();
+    await expect(page.getByText("€600")).toBeVisible();
+    await expect(page.getByRole("link", { name: /ask for a quote/i })).toBeVisible();
+  });
+
+  test("/rates redirects to the private tours page", async ({ page }) => {
+    await page.goto("/rates");
+    await expect(page).toHaveURL(/\/tours\/private-tours$/);
+  });
+
   test("lists tours with prices and links to a detail page", async ({ page }) => {
     await page.goto("/tours");
 
@@ -110,14 +133,16 @@ test.describe("theme page upsells", () => {
     expect(await links.count()).toBeGreaterThan(0);
 
     await expect(page.getByText(/€\d/).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /see all dolomites day trips/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /see every day trip we run/i })).toBeVisible();
   });
 
-  test("the see-all link lands on a pre-filtered catalog", async ({ page }) => {
+  test("the see-all link lands on the full catalog, not a hidden filter", async ({ page }) => {
+    // An earlier version linked to /tours?q=dolomites — a page the reader could
+    // not reach any other way, narrowed by a filter the page did not show.
     await page.goto("/tours/dolomites");
-    await page.getByRole("link", { name: /see all dolomites day trips/i }).click();
+    await page.getByRole("link", { name: /see every day trip we run/i }).click();
 
-    await expect(page).toHaveURL(/\/tours\?q=dolomites/);
+    await expect(page).toHaveURL(/\/tours$/);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Day trips from Venice");
   });
 

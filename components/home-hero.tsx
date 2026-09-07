@@ -70,7 +70,7 @@ const heroPanels: HeroPanelContent[] = [
     description:
       "Just you and your guide: the route, the pace, everything tailored to your needs.",
     action: "Explore Private Tours",
-    href: "/rates",
+    href: "/tours/private-tours",
   },
   {
     title: "Group Tours",

@@ -16,7 +16,7 @@ export default function SiteLayout({
       {/* Site-wide TravelAgency markup. Lives here rather than in the root
           layout so /studio stays free of it. */}
       <OrganizationJsonLd />
-      <Navigation />
+      <Navigation nativeBooking={isNativeBookingEnabled()} />
       {children}
       <Footer nativeBooking={isNativeBookingEnabled()} />
       <CookieConsentBanner />

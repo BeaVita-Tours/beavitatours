@@ -9,15 +9,11 @@ import {
   PRICE_BANDS,
   SORT_OPTIONS,
 } from "@/lib/regiondo/catalog-params";
-import type { TourCollection } from "@/lib/regiondo/types";
 import { cn } from "@/lib/utils";
 
 interface FilterPanelProps {
   basePath: string;
   params: CatalogSearchParams;
-  collections: readonly TourCollection[];
-  /** Hide the collection row on a page that already *is* one collection. */
-  hideCollections?: boolean;
   resultCount: number;
 }
 
@@ -36,75 +32,78 @@ const CHIP_OFF = "bg-muted text-muted-foreground hover:bg-primary/20 hover:text-
  * `components/blog/category-filter.tsx`, which already does this for the blog.
  *
  * Clicking an active chip clears it, so each row behaves as a toggle group.
+ *
+ * Group-versus-private is not a filter here: those views are pages of their
+ * own, reached from the navbar.
  */
-export function FilterPanel({
-  basePath,
-  params,
-  collections,
-  hideCollections = false,
-  resultCount,
-}: FilterPanelProps) {
+export function FilterPanel({ basePath, params, resultCount }: FilterPanelProps) {
   const active = hasActiveFilters(params);
 
   return (
-    <section aria-label="Filter and sort tours" className="space-y-5">
-      {!hideCollections && collections.length > 0 ? (
-        <FilterRow label="Type">
-          <Chip href={catalogHref(basePath, params, { collection: undefined })} on={!params.collection}>
-            All tours
-          </Chip>
-          {collections.map((collection) => {
-            const on = params.collection === collection.id;
+    <section aria-label="Filter and sort tours" className="space-y-4">
+      <div className="flex flex-wrap items-start gap-x-8 gap-y-3">
+        <FilterRow label="Price">
+          {PRICE_BANDS.map((band) => {
+            const on = params.price === band.value;
             return (
               <Chip
-                key={collection.id}
-                href={catalogHref(basePath, params, {
-                  collection: on ? undefined : collection.id,
-                })}
+                key={band.value}
+                href={catalogHref(basePath, params, { price: on ? undefined : band.value })}
                 on={on}
               >
-                {collection.title}
+                {band.label}
               </Chip>
             );
           })}
         </FilterRow>
-      ) : null}
 
-      <FilterRow label="Price">
-        {PRICE_BANDS.map((band) => {
-          const on = params.price === band.value;
-          return (
-            <Chip
-              key={band.value}
-              href={catalogHref(basePath, params, { price: on ? undefined : band.value })}
-              on={on}
-            >
-              {band.label}
+        <FilterRow label="Length">
+          {DURATION_BANDS.map((band) => {
+            const on = params.duration === band.value;
+            return (
+              <Chip
+                key={band.value}
+                href={catalogHref(basePath, params, { duration: on ? undefined : band.value })}
+                on={on}
+              >
+                {band.label}
+              </Chip>
+            );
+          })}
+        </FilterRow>
+
+        {/*
+          Nothing on the site links to `?q=` any more, but an old bookmark or a
+          shared link might. When it is present it is shown as a removable chip,
+          so a narrowed list is never a mystery.
+        */}
+        {params.q ? (
+          <FilterRow label="Search">
+            <Chip href={catalogHref(basePath, params, { q: undefined })} on>
+              “{params.q}”
+              <X className="ml-1.5 inline size-3.5" aria-hidden="true" />
+              <span className="sr-only">, remove</span>
             </Chip>
-          );
-        })}
-      </FilterRow>
+          </FilterRow>
+        ) : null}
+      </div>
 
-      <FilterRow label="Length">
-        {DURATION_BANDS.map((band) => {
-          const on = params.duration === band.value;
-          return (
-            <Chip
-              key={band.value}
-              href={catalogHref(basePath, params, { duration: on ? undefined : band.value })}
-              on={on}
-            >
-              {band.label}
-            </Chip>
-          );
-        })}
-      </FilterRow>
-
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-4">
         <p className="text-sm text-muted-foreground" aria-live="polite">
           <span className="font-semibold text-foreground">{resultCount}</span>{" "}
           {resultCount === 1 ? "tour" : "tours"}
           {active ? " match your filters" : " available"}
+          {active ? (
+            <>
+              {" · "}
+              <Link
+                href={basePath}
+                className="font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                Clear all filters
+              </Link>
+            </>
+          ) : null}
         </p>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -116,7 +115,7 @@ export function FilterPanel({
                 key={option.value}
                 href={catalogHref(basePath, params, { sort: option.value })}
                 on={on}
-                className="text-xs"
+                className="px-3 py-1 text-xs"
               >
                 {option.label}
               </Chip>
@@ -124,16 +123,6 @@ export function FilterPanel({
           })}
         </div>
       </div>
-
-      {active ? (
-        <Link
-          href={basePath}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <X className="size-3.5" aria-hidden="true" />
-          Clear all filters
-        </Link>
-      ) : null}
     </section>
   );
 }
@@ -141,7 +130,7 @@ export function FilterPanel({
 function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-      <span className="w-14 shrink-0 text-sm font-medium text-muted-foreground">{label}</span>
+      <span className="shrink-0 text-sm font-medium text-muted-foreground">{label}</span>
       <div className="flex flex-wrap gap-2">{children}</div>
     </div>
   );

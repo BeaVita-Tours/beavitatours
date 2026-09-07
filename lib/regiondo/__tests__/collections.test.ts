@@ -57,13 +57,6 @@ describe("theme upsells", () => {
     }
   });
 
-  it("browses to a real catalog URL", () => {
-    for (const [theme, config] of Object.entries(THEME_UPSELLS)) {
-      expect(config.browseHref, theme).toMatch(/^\/tours(\?q=[a-z]+)?$/);
-      expect(config.browseLabel.length, theme).toBeGreaterThan(0);
-    }
-  });
-
   it("resolves every referenced product to a curated tour URL", () => {
     // A product with no curated slug would still work via /tours/p-<id>, but on
     // an upsell it would look like a mistake next to its neighbours.

@@ -16,7 +16,9 @@ Confirm nothing moved. Every page should render exactly as it does today.
 
 - [ ] `/tours/group-tours` shows the Regiondo catalog widget
 - [ ] `/lp/from-venice` and `/lp/from-jesolo-cavallino` show the iframe
-- [ ] `/tours`, `/tours/private-tours` and `/tours/<slug>` return **404**
+- [ ] `/tours` and `/tours/<slug>` return **404**; `/tours/private-tours` shows the
+      tailor-made offer (rates, included, not included) with no catalog above it
+- [ ] `/rates` redirects to `/tours/private-tours`
 - [ ] the sitemap contains no tour URLs
 
 If any of that is wrong, stop — the flag is not doing its job.
@@ -32,8 +34,11 @@ is safe.
 - [ ] every tour page loads and its booking panel shows a real date and price
 - [ ] `/lp/from-venice` shows 7 tours, `/lp/from-jesolo-cavallino` shows 2
 - [ ] each theme page (`/tours/dolomites`, `/prosecco`, `/wine-food`,
-      `/active-adventure`, `/cultural`) shows a bookable section between the copy
-      and the CTA, and its "see all" link lands on a filtered catalog
+      `/active-adventure`, `/cultural`) shows every departure for its subject
+      between the copy and the CTA, and "See every day trip we run" lands on `/tours`
+- [ ] the switcher at the top of `/tours`, `/tours/group-tours` and
+      `/tours/private-tours` moves between the three, and the nav's "All Tours"
+      and "Private Tours" land on the right pages
 - [ ] filters change the URL and the results, and survive a page refresh
 - [ ] `/book/confirmation` shows the "find your booking" form
 

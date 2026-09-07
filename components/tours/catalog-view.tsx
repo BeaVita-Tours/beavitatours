@@ -6,7 +6,7 @@ import {
   parseCatalogParams,
   toCatalogFilters,
 } from "@/lib/regiondo/catalog-params";
-import { getCollections, listTours } from "@/lib/regiondo/products";
+import { listTours } from "@/lib/regiondo/products";
 import { itemListJsonLd, jsonLdScriptProps } from "@/lib/regiondo/structured-data";
 
 interface CatalogViewProps {
@@ -48,10 +48,7 @@ export async function CatalogView({
     ? { ...params, collection: forceCollectionId }
     : params;
 
-  const [collections, result] = await Promise.all([
-    getCollections(),
-    listTours(toCatalogFilters(effective)),
-  ]);
+  const result = await listTours(toCatalogFilters(effective));
 
   const tours = applyDurationBand(result.tours, effective.duration);
 
@@ -59,13 +56,7 @@ export async function CatalogView({
     <div className="space-y-8">
       {tours.length > 0 ? <script {...jsonLdScriptProps(itemListJsonLd(tours, listName))} /> : null}
 
-      <FilterPanel
-        basePath={basePath}
-        params={params}
-        collections={collections}
-        hideCollections={Boolean(forceCollectionId)}
-        resultCount={tours.length}
-      />
+      <FilterPanel basePath={basePath} params={params} resultCount={tours.length} />
 
       <TourGrid
         tours={tours}

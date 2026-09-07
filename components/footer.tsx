@@ -80,16 +80,24 @@ export function Footer({ nativeBooking = false }: { nativeBooking?: boolean }) {
                     href="/tours"
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    All Day Trips
+                    All Tours
                   </Link>
                 </li>
               ) : null}
               <li>
                 <Link
-                  href="/rates"
+                  href="/tours/group-tours"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Rates
+                  Group Tours
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tours/private-tours"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Private Tours
                 </Link>
               </li>
               <li>

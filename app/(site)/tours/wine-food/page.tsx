@@ -3,21 +3,16 @@ import type { Metadata } from "next";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
+  type GalleryImage,
   TourCTA,
   TourDescription,
   TourTemplate,
-  type CarouselImage,
 } from "@/components/tour-template";
 
-const carouselImages: CarouselImage[] = [
+const gallery: GalleryImage[] = [
   { src: "/imgs/winefood.jpg", alt: "Wine and food experience in Veneto" },
 ];
 
-/**
- * A Server Component since the booking upsell below is server-rendered. It was
- * `"use client"` only to host `TourTemplate`, which keeps its own directive —
- * so this page could not export metadata and inherited the site-wide title.
- */
 export const metadata: Metadata = {
   title: "Wine and food day trips from Venice | Bea Vita Tours",
   description:
@@ -36,17 +31,13 @@ export const metadata: Metadata = {
 export default function WineFoodTourPage() {
   return (
     <TourTemplate
-      name="Wine & Food"
       title="Wine & Food"
       subtitle="A journey through the finest wines and authentic flavors of the Veneto region."
       badge="UNESCO World Heritage Site"
       image="/tourwines.jpg"
       imageAlt="Wine & Food"
-      carouselImages={carouselImages}
-      ctaHeading="Ready for the Ultimate Day Trip?"
-      ctaName="Wine & Food"
     >
-      <TourDescription>
+      <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
           Italian cuisine, including its essential wine culture, is a UNESCO
           Heritage: a recognition of the art of Italian cooking as a social
@@ -69,11 +60,11 @@ export default function WineFoodTourPage() {
           cater for all your tastes and needs.
         </p>
       </TourDescription>
-      {/* Bookable departures for this theme, between the copy and the
-          existing CTA. Renders nothing while the flag is off. */}
+
+      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="wine-food" />
 
-      <TourCTA />
+      <TourCTA heading="Ready for the ultimate day trip?" />
     </TourTemplate>
   );
 }

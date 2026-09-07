@@ -2,17 +2,8 @@ import type { Metadata } from "next";
 
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
-import {
-  TourCTA,
-  TourDescription,
-  TourTemplate,
-} from "@/components/tour-template";
+import { TourCTA, TourDescription, TourTemplate } from "@/components/tour-template";
 
-/**
- * A Server Component since the booking upsell below is server-rendered. It was
- * `"use client"` only to host `TourTemplate`, which keeps its own directive —
- * so this page could not export metadata and inherited the site-wide title.
- */
 export const metadata: Metadata = {
   title: "Guided hiking and via ferrata in the Dolomites | Bea Vita Tours",
   description:
@@ -31,13 +22,10 @@ export const metadata: Metadata = {
 export default function HikingTourPage() {
   return (
     <TourTemplate
-      name="Active & Adventure"
       title="Active & Adventure"
       subtitle="To really get away, try an activity and adventure holiday!"
       image="/imgs/adventure.jpeg"
       imageAlt="Active & Adventure"
-      ctaHeading="Ready to Embrace the Adventure?"
-      ctaName="Active & Adventure"
     >
       <TourDescription>
         <p className="leading-relaxed">
@@ -61,11 +49,11 @@ export default function HikingTourPage() {
           both kids and adults.
         </p>
       </TourDescription>
-      {/* Bookable departures for this theme, between the copy and the
-          existing CTA. Renders nothing while the flag is off. */}
+
+      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="active-adventure" />
 
-      <TourCTA />
+      <TourCTA heading="Ready to embrace the adventure?" />
     </TourTemplate>
   );
 }

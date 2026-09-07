@@ -3,16 +3,17 @@ import type { Metadata } from "next";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
+  type GalleryImage,
   TourCTA,
   TourDescription,
   TourTemplate,
 } from "@/components/tour-template";
 
-/**
- * A Server Component since the booking upsell below is server-rendered. It was
- * `"use client"` only to host `TourTemplate`, which keeps its own directive —
- * so this page could not export metadata and inherited the site-wide title.
- */
+const gallery: GalleryImage[] = [
+  { src: "/prosecco 2.jpg", alt: "Vineyard terraces in the Prosecco hills" },
+  { src: "/prosecco 3.jpg", alt: "A glass of Prosecco at the winery" },
+];
+
 export const metadata: Metadata = {
   title: "Prosecco Hills tours from Venice | Bea Vita Tours",
   description:
@@ -31,16 +32,13 @@ export const metadata: Metadata = {
 export default function ProseccoTourPage() {
   return (
     <TourTemplate
-      name="The Prosecco Hills"
       title="The Prosecco Hills"
       subtitle="Explore the hills and finest wineries of the Prosecco region"
       badge="UNESCO World Heritage Site"
       image="/tourprosecco.jpg"
       imageAlt="The Prosecco Hills"
-      ctaHeading="Ready to Experience The Prosecco Region?"
-      ctaName="The Prosecco Hills"
     >
-      <TourDescription>
+      <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
           Just a 45 minute drive from Venice lies the region of Prosecco,
           UNESCO World Heritage Site. The landscape is characterized by hills,
@@ -62,11 +60,10 @@ export default function ProseccoTourPage() {
         </p>
       </TourDescription>
 
-      {/* Bookable departures for this theme, between the copy and the
-          existing CTA. Renders nothing while the flag is off. */}
+      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="prosecco" />
 
-      <TourCTA />
+      <TourCTA heading="Ready to experience the Prosecco region?" />
     </TourTemplate>
   );
 }

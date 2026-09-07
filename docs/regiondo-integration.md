@@ -333,10 +333,14 @@ UNCHANGED   /tours/group-tours          widget  -> native "Shared Tours from Ven
                                         editorial copy unchanged; each gains a
                                         bookable upsell between the copy and the
                                         existing CTA, plus real page metadata
-            /rates                      (gains a link to /tours/private-tours)
+
+REDIRECTED  /rates                      301 -> /tours/private-tours; its rates and
+                                        inclusions now sit under the private catalog
 
 NEW         /tours                      catalog index, filters in ?searchParams
-            /tours/private-tours        collection for tag 45421
+            /tours/private-tours        collection for tag 45421, plus the
+                                        tailor-made offer (renders with the flag
+                                        off too, without the catalog)
             /tours/[slug]               tour detail
             /book/[code]                checkout        (noindex)
             /book/confirmation          confirmation    (noindex)

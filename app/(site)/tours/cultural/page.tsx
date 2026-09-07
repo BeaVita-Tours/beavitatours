@@ -3,23 +3,18 @@ import type { Metadata } from "next";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
+  type GalleryImage,
   TourCTA,
   TourDescription,
   TourTemplate,
-  type CarouselImage,
 } from "@/components/tour-template";
 
-const carouselImages: CarouselImage[] = [
+const gallery: GalleryImage[] = [
   { src: "/imgs/cultural/padova1.jpeg", alt: "Padova" },
   { src: "/imgs/cultural/verona1.jpeg", alt: "Verona" },
   { src: "/imgs/cultural/verona2.jpeg", alt: "Verona scenery" },
 ];
 
-/**
- * A Server Component since the booking upsell below is server-rendered. It was
- * `"use client"` only to host `TourTemplate`, which keeps its own directive —
- * so this page could not export metadata and inherited the site-wide title.
- */
 export const metadata: Metadata = {
   title: "Medieval hill towns of the Veneto | Bea Vita Tours",
   description:
@@ -38,17 +33,13 @@ export const metadata: Metadata = {
 export default function CulturalTourPage() {
   return (
     <TourTemplate
-      name="Cultural"
       title="Cultural"
       subtitle="Veneto enchants with its immense artistic and historical heritage"
-      image="/gallaplacidia.webp"
       badge="UNESCO World Heritage Site"
+      image="/gallaplacidia.webp"
       imageAlt="Cultural"
-      carouselImages={carouselImages}
-      ctaHeading="Ready to Explore Veneto's Cultural Heritage?"
-      ctaName="Cultural"
     >
-      <TourDescription>
+      <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
           Veneto, for the richness of its historical and artistic patrimony and
           for the completeness of its offers, is the destination of choice for
@@ -70,11 +61,10 @@ export default function CulturalTourPage() {
         </p>
       </TourDescription>
 
-      {/* Bookable departures for this theme, between the copy and the
-          existing CTA. Renders nothing while the flag is off. */}
+      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="cultural" />
 
-      <TourCTA />
+      <TourCTA heading="Ready to explore Veneto's cultural heritage?" />
     </TourTemplate>
   );
 }

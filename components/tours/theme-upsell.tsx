@@ -7,17 +7,14 @@ import { THEME_UPSELLS, type ThemeKey, type ThemeUpsell } from "@/lib/regiondo/c
 import { listTours } from "@/lib/regiondo/products";
 import { itemListJsonLd, jsonLdScriptProps } from "@/lib/regiondo/structured-data";
 
-/** How many cards to show before the "see everything" link takes over. */
-const VISIBLE = 3;
-
 /**
  * Bookable departures on a theme page.
  *
  * The five hand-written pages under `/tours/*` describe a subject — the
- * Dolomites, the Prosecco hills — and then hand the reader to `/rates`, which
- * is a price list rather than something you can book. This drops the actual
- * departures for that subject into the page, between the copy and the existing
- * CTA, so the reader can act while they are still interested.
+ * Dolomites, the Prosecco hills — and this is where the reader gets to act on
+ * it: every departure that delivers the subject, between the copy and the
+ * closing CTA. The whole curated set is shown; the sets are two to seven tours,
+ * which is a page section, not a catalog.
  *
  * A Server Component with no client JavaScript: the cards are static and the
  * links are links. Dropping it into a page costs nothing but the HTML.
@@ -42,48 +39,42 @@ export async function ThemeUpsell({ theme }: { theme: ThemeKey }) {
   );
 
   // A Regiondo outage on an editorial page should leave the page as it was,
-  // not add an error box to it. The existing CTA still gets the reader to us.
+  // not add an error box to it. The closing CTA still gets the reader to us.
   if (ordered.length === 0) return null;
 
-  const shown = ordered.slice(0, VISIBLE);
-  const remaining = ordered.length - shown.length;
-
   return (
-    <section aria-labelledby={`upsell-${theme}`} className="border-t border-border py-16">
-      {/* Only the tours actually rendered are listed, so the markup matches
-          what a reader sees. */}
-      <script {...jsonLdScriptProps(itemListJsonLd(shown, config.heading))} />
+    <section aria-labelledby={`upsell-${theme}`} className="border-t border-border bg-muted/30 py-16">
+      <script {...jsonLdScriptProps(itemListJsonLd(ordered, config.heading))} />
 
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 id={`upsell-${theme}`} className="text-3xl font-bold md:text-4xl">
-            {config.heading}
-          </h2>
-          <p className="mt-3 text-lg text-muted-foreground">{config.intro}</p>
-        </div>
+        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary-strong">
+              Book a day trip
+            </p>
+            <h2 id={`upsell-${theme}`} className="text-3xl font-bold tracking-tight md:text-4xl">
+              {config.heading}
+            </h2>
+            <p className="text-lg text-muted-foreground">{config.intro}</p>
+          </div>
 
-        <div className="mt-10">
-          {/* The visible h2 above already names this region, so the grid
-              reuses it rather than adding a hidden duplicate. */}
-          <TourGrid
-            tours={shown}
-            degraded={degraded}
-            priorityCount={0}
-            headingId={`upsell-${theme}`}
-          />
-        </div>
-
-        <p className="mt-8 text-center">
           <Link
-            href={config.browseHref}
-            className="inline-flex items-center gap-1.5 font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            href="/tours"
+            className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-primary-strong underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {remaining > 0
-              ? `${config.browseLabel} (${remaining} more)`
-              : config.browseLabel}
+            See every day trip we run
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
-        </p>
+        </div>
+
+        {/* The visible h2 above already names this section, so the grid
+            reuses it rather than adding a hidden duplicate. */}
+        <TourGrid
+          tours={ordered}
+          degraded={degraded}
+          priorityCount={0}
+          headingId={`upsell-${theme}`}
+        />
       </div>
     </section>
   );

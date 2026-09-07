@@ -15,6 +15,8 @@ export const COLLECTIONS = {
     title: "Shared Tours from Venice",
     /** Existing URL — the page that hosts the Regiondo widget today. */
     href: "/tours/group-tours",
+    /** Short form for the breadcrumb and the ItemList markup. */
+    label: "Group tours",
     heading: "Group day tours from Venice",
     intro:
       "Join a small group of no more than eight travellers. A comfortable minivan, a fluent English-speaking driver, and a full day in the mountains or the vineyards — leaving from Piazzale Roma.",
@@ -23,6 +25,7 @@ export const COLLECTIONS = {
     tagId: "45421",
     title: "Private Tours from Venice",
     href: "/tours/private-tours",
+    label: "Private tours",
     heading: "Private day tours from Venice",
     intro:
       "Your own vehicle, your own driver, your own pace. Private departures let you start when you like, linger where you want, and shape the day around what you actually came to see.",
@@ -82,9 +85,9 @@ export type LandingKey = keyof typeof LANDING_PRODUCT_SETS;
  * Order is deliberate: shared, lower-priced departures first. They are the
  * easier yes, and someone who wants the private version will scroll.
  *
- * `browseHref` is where "see everything" goes. Themes whose curated set is
- * already the complete set link to the whole catalog rather than to a keyword
- * filter that could quietly return nothing later.
+ * The whole set is rendered on the page. An earlier version showed three and
+ * linked the rest to a keyword-filtered `/tours?q=`, which landed the reader on
+ * a page they could not otherwise reach with a filter they could not see.
  */
 export interface ThemeUpsell {
   /** Matches the directory under app/(site)/tours/. */
@@ -92,8 +95,6 @@ export interface ThemeUpsell {
   readonly heading: string;
   readonly intro: string;
   readonly productIds: readonly string[];
-  readonly browseHref: string;
-  readonly browseLabel: string;
 }
 
 export const THEME_UPSELLS = {
@@ -103,8 +104,6 @@ export const THEME_UPSELLS = {
     intro:
       "Everything above is a two-hour drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
     productIds: ["300877", "298190", "341597", "298188", "339660", "341596", "326843"],
-    browseHref: "/tours?q=dolomites",
-    browseLabel: "See all Dolomites day trips",
   },
   prosecco: {
     slug: "prosecco",
@@ -112,8 +111,6 @@ export const THEME_UPSELLS = {
     intro:
       "Forty-five minutes from Venice, and a different world. These departures take in the vineyards, a family-run winery and the hill towns between them.",
     productIds: ["326845", "307882", "298188", "326844"],
-    browseHref: "/tours?q=prosecco",
-    browseLabel: "See all Prosecco hills day trips",
   },
   "wine-food": {
     slug: "wine-food",
@@ -121,8 +118,6 @@ export const THEME_UPSELLS = {
     intro:
       "Prosecco at the winery that made it, cicchetti, local cheese and salami, and a long lunch somewhere worth the drive.",
     productIds: ["326845", "307882", "341599", "298188", "326844"],
-    browseHref: "/tours?q=wine",
-    browseLabel: "See all wine and food tours",
   },
   "active-adventure": {
     slug: "active-adventure",
@@ -130,10 +125,6 @@ export const THEME_UPSELLS = {
     intro:
       "Both of these go out with a qualified alpine guide, and both are private — the group is you and whoever you bring.",
     productIds: ["339660", "341596"],
-    // The curated set is already every guided mountain departure we run, so
-    // "see all" means the whole catalog rather than a narrower filter.
-    browseHref: "/tours",
-    browseLabel: "Browse every day trip",
   },
   cultural: {
     slug: "cultural",
@@ -141,8 +132,6 @@ export const THEME_UPSELLS = {
     intro:
       "Asolo, Cison di Valmarino and the walled villages between them — medieval streets, a castle or two, and wine at the end of it.",
     productIds: ["307882", "341599"],
-    browseHref: "/tours",
-    browseLabel: "Browse every day trip",
   },
 } as const satisfies Record<string, ThemeUpsell>;
 

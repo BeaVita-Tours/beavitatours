@@ -3,22 +3,17 @@ import type { Metadata } from "next";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
+  type GalleryImage,
   TourCTA,
   TourDescription,
   TourTemplate,
-  type CarouselImage,
 } from "@/components/tour-template";
 
-const carouselImages: CarouselImage[] = [
+const gallery: GalleryImage[] = [
   { src: "/imgs/dolomites/dolomites1.jpeg", alt: "Dolomites landscape" },
   { src: "/imgs/dolomites/dolomites2.jpeg", alt: "Dolomites panorama" },
 ];
 
-/**
- * A Server Component since the booking upsell below is server-rendered. It was
- * `"use client"` only to host `TourTemplate`, which keeps its own directive —
- * so this page could not export metadata and inherited the site-wide title.
- */
 export const metadata: Metadata = {
   title: "Dolomites day trips from Venice | Bea Vita Tours",
   description:
@@ -37,17 +32,13 @@ export const metadata: Metadata = {
 export default function DolomitesTourPage() {
   return (
     <TourTemplate
-      name="The Dolomites"
       title="The Dolomites"
       subtitle="Discover the Dolomites, the most beautiful mountains in the World"
       badge="UNESCO World Heritage Site"
       image="/imgs/dolomites/dolomitesmain.jpeg"
       imageAlt="The Dolomites"
-      carouselImages={carouselImages}
-      ctaHeading="Ready to Explore the Dolomites?"
-      ctaName="The Dolomites"
     >
-      <TourDescription>
+      <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
           The site of the Dolomites comprises a mountain range in the northern
           Italian Alps, featuring some of the most attractive mountain
@@ -70,11 +61,10 @@ export default function DolomitesTourPage() {
         </p>
       </TourDescription>
 
-      {/* Bookable departures for this theme, between the copy and the
-          existing CTA. Renders nothing while the flag is off. */}
+      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="dolomites" />
 
-      <TourCTA />
+      <TourCTA heading="Ready to explore the Dolomites?" />
     </TourTemplate>
   );
 }

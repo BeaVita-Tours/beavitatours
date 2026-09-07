@@ -59,6 +59,14 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.99"],
   async redirects() {
     return [
+      // The price list moved onto the private tours page, under the bookable
+      // private departures. Permanent: /rates was in the sitemap and linked
+      // from the nav for years.
+      {
+        source: "/rates",
+        destination: "/tours/private-tours",
+        permanent: true,
+      },
       // Bare locale prefix (e.g. /en, /it) redirects to the homepage.
       {
         source: `/:locale${LEGACY_LOCALES}`,

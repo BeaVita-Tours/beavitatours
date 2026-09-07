@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { CollectionPage } from "@/components/tours/collection-page";
+import { PrivateTourRates } from "@/components/tours/private-tour-rates";
 import { SITE_URL } from "@/lib/constants";
 import { COLLECTIONS } from "@/lib/regiondo/collections";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 
 /**
- * Private tours collection.
+ * Private tours: the bookable private departures, and beneath them the
+ * tailor-made offer with its rates and inclusions.
  *
- * A new URL, not a replacement for one. `/rates` has always been where private
- * tours were explained and priced, and the nav points there deliberately; this
- * page is the bookable catalog behind that pitch, linked from `/rates` rather
- * than displacing it.
+ * This is where the nav's "Private Tours" goes, and where the old `/rates`
+ * page redirects. It renders with the native flag off too — without the
+ * catalog, it is the tailor-made page that `/rates` used to be — so the nav
+ * never points at a 404.
  */
 
 const collection = COLLECTIONS.private;
@@ -20,7 +21,7 @@ const collection = COLLECTIONS.private;
 export const metadata: Metadata = {
   title: "Private day tours from Venice — Dolomites & Prosecco | Bea Vita Tours",
   description:
-    "Private day trips from Venice with your own driver and vehicle: the Dolomites, Lake Sorapis, via ferrata with an alpine guide, and the Prosecco hills. Book direct.",
+    "Private day trips from Venice with your own driver and vehicle: the Dolomites, Lake Sorapis, via ferrata with an alpine guide, and the Prosecco hills. Book direct, or ask for a tailor-made day.",
   alternates: { canonical: collection.href },
   openGraph: {
     type: "website",
@@ -37,20 +38,18 @@ export default function PrivateToursPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  if (!isNativeBookingEnabled()) notFound();
-
   return (
     <CollectionPage
+      style="private"
       heading={collection.heading}
       intro={collection.intro}
-      title={collection.title}
+      title={collection.label}
       href={collection.href}
       tagId={collection.tagId}
       searchParams={searchParams}
-      sibling={{
-        label: "Prefer to join a small group? See our shared departures →",
-        href: COLLECTIONS.shared.href,
-      }}
-    />
+      catalog={isNativeBookingEnabled()}
+    >
+      <PrivateTourRates />
+    </CollectionPage>
   );
 }

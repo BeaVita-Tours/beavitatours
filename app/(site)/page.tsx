@@ -92,17 +92,22 @@ export default async function HomePage() {
             Ready to book?
           </h2>
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Start your adventure near Venice today. Contact us to reserve your
-            private tour.
+            Join a small group on a fixed date, or let us plan a private day
+            around you.
           </p>
-          <Button
-            asChild
-            size="lg"
-            variant="secondary"
-            className="text-lg px-8"
-          >
-            <Link href="/rates">View Rates &amp; Book</Link>
-          </Button>
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Button asChild size="lg" variant="secondary" className="text-lg px-8">
+              <Link href="/tours/group-tours">Book a group tour</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-primary-foreground/40 bg-transparent px-8 text-lg text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
+              <Link href="/tours/private-tours">Plan a private tour</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </main>

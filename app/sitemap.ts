@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
-import { COLLECTIONS } from "@/lib/regiondo/collections";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { listAllTours } from "@/lib/regiondo/products";
 import { assertSlugRegistry } from "@/lib/regiondo/slugs";
@@ -15,7 +14,6 @@ const STATIC_ROUTES: Array<{
   changeFrequency: Frequency;
 }> = [
   { path: "", priority: 1, changeFrequency: "weekly" },
-  { path: "/rates", priority: 0.8, changeFrequency: "weekly" },
   { path: "/best-seller", priority: 0.8, changeFrequency: "weekly" },
   { path: "/tours/dolomites", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/prosecco", priority: 0.9, changeFrequency: "weekly" },
@@ -23,6 +21,9 @@ const STATIC_ROUTES: Array<{
   { path: "/tours/active-adventure", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/cultural", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/group-tours", priority: 0.9, changeFrequency: "weekly" },
+  // Renders with the flag off too (the tailor-made offer that /rates used to
+  // be), so it is a static route rather than a native one.
+  { path: "/tours/private-tours", priority: 0.9, changeFrequency: "weekly" },
   { path: "/about", priority: 0.6, changeFrequency: "yearly" },
   { path: "/b2b", priority: 0.5, changeFrequency: "yearly" },
   { path: "/contact", priority: 0.6, changeFrequency: "yearly" },
@@ -42,17 +43,14 @@ const STATIC_ROUTES: Array<{
  * these pages 404, and a 404 in a sitemap is a reliable way to earn a coverage
  * warning in Search Console.
  *
- * `/tours/group-tours` is not repeated here — it is already in STATIC_ROUTES and
- * keeps its URL either way, which is the point of D-002.
+ * The two collection pages are not repeated here — they are in STATIC_ROUTES
+ * and keep their URLs either way, which is the point of D-002.
  */
 const NATIVE_ROUTES: Array<{
   path: string;
   priority: number;
   changeFrequency: Frequency;
-}> = [
-  { path: "/tours", priority: 0.9, changeFrequency: "weekly" },
-  { path: COLLECTIONS.private.href, priority: 0.9, changeFrequency: "weekly" },
-];
+}> = [{ path: "/tours", priority: 0.9, changeFrequency: "weekly" }];
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const native = isNativeBookingEnabled();

@@ -13,7 +13,6 @@ import {
   Menu,
   Mountain,
   Newspaper,
-  Trophy,
   UserRound,
   Users,
   X,
@@ -22,9 +21,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
-const NAV_LINKS = [
+interface NavLink {
+  href: string;
+  label: string;
+  icon: typeof Users;
+}
+
+const NAV_LINKS: readonly NavLink[] = [
   { href: "/tours/group-tours", label: "Group Tours", icon: Users },
-  { href: "/rates", label: "Private Tours", icon: CarFront },
+  { href: "/tours/private-tours", label: "Private Tours", icon: CarFront },
   { href: "/tours/dolomites", label: "Dolomites", icon: Mountain },
   { href: "/tours/wine-food", label: "Food & Wine", icon: Grape },
   { href: "/b2b", label: "B2B", icon: BriefcaseBusiness },
@@ -32,10 +37,10 @@ const NAV_LINKS = [
   { href: "/faq", label: "FAQ", icon: CircleHelp },
   { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/contact", label: "Contact", icon: Mail },
-] as const;
+];
 
-const isActiveForPath = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
+const isActiveForPath = (pathname: string, link: NavLink) =>
+  pathname === link.href || pathname.startsWith(`${link.href}/`);
 
 /**
  * Presentational nav rows. They take an `isActive` function instead of calling
@@ -43,14 +48,16 @@ const isActiveForPath = (pathname: string, href: string) =>
  * in the static prerender shell (which must not call request-time hooks).
  */
 function DesktopNavLinks({
+  links,
   isActive,
 }: {
-  isActive: (href: string) => boolean;
+  links: readonly NavLink[];
+  isActive: (link: NavLink) => boolean;
 }) {
   return (
     <ul className="flex items-center justify-between gap-1 py-2">
-      {NAV_LINKS.map((link, index) => {
-        const active = isActive(link.href);
+      {links.map((link, index) => {
+        const active = isActive(link);
         return (
           <li
             key={link.href}
@@ -78,16 +85,18 @@ function DesktopNavLinks({
 }
 
 function MobileNavLinks({
+  links,
   isActive,
   onNavigate,
 }: {
-  isActive: (href: string) => boolean;
+  links: readonly NavLink[];
+  isActive: (link: NavLink) => boolean;
   onNavigate: () => void;
 }) {
   return (
     <ul className="flex flex-col gap-1">
-      {NAV_LINKS.map((link) => {
-        const active = isActive(link.href);
+      {links.map((link) => {
+        const active = isActive(link);
         return (
           <li key={link.href}>
             <Link
@@ -118,25 +127,38 @@ function MobileNavLinks({
  * The Suspense fallbacks render the same rows with inactive styling, so the
  * header layout is identical and only a link's color changes after hydration.
  */
-function DesktopNavActive() {
+function DesktopNavActive({ links }: { links: readonly NavLink[] }) {
   const pathname = usePathname();
   return (
-    <DesktopNavLinks isActive={(href) => isActiveForPath(pathname, href)} />
+    <DesktopNavLinks links={NAV_LINKS} isActive={(link) => isActiveForPath(pathname, link)} />
   );
 }
 
-function MobileNavActive({ onNavigate }: { onNavigate: () => void }) {
+function MobileNavActive({
+  links,
+  onNavigate,
+}: {
+  links: readonly NavLink[];
+  onNavigate: () => void;
+}) {
   const pathname = usePathname();
   return (
     <MobileNavLinks
-      isActive={(href) => isActiveForPath(pathname, href)}
+      links={NAV_LINKS}
+      isActive={(link) => isActiveForPath(pathname, link)}
       onNavigate={onNavigate}
     />
   );
 }
 
-export function Navigation() {
+/**
+ * `nativeBooking` is passed in from the (site) layout rather than read here:
+ * this is a client component, and the flag lives behind `server-only`. It
+ * decides where "Book Now" goes.
+ */
+export function Navigation({ nativeBooking = false }: { nativeBooking?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
+  const bookHref = nativeBooking ? "/tours" : "/tours/group-tours";
 
   // Close the mobile menu with Escape.
   useEffect(() => {
@@ -176,7 +198,7 @@ export function Navigation() {
 
             <div className="flex items-center gap-3">
               <Button asChild className="hidden xl:inline-flex">
-                <Link href="/tours/group-tours">Book Now</Link>
+                <Link href={bookHref}>Book Now</Link>
               </Button>
               <button
                 type="button"
@@ -201,8 +223,8 @@ export function Navigation() {
         {/* Layer 2 — the route map: every link horizontal, icon + label (translucent + blur) */}
         <div className="hidden border-t border-border/60 bg-muted/35 xl:block">
           <div className="container mx-auto px-4">
-            <Suspense fallback={<DesktopNavLinks isActive={() => false} />}>
-              <DesktopNavActive />
+            <Suspense fallback={<DesktopNavLinks links={NAV_LINKS} isActive={() => false} />}>
+              <DesktopNavActive links={NAV_LINKS} />
             </Suspense>
           </div>
         </div>
@@ -226,16 +248,17 @@ export function Navigation() {
                 <Suspense
                   fallback={
                     <MobileNavLinks
+                      links={NAV_LINKS}
                       isActive={() => false}
                       onNavigate={closeMobile}
                     />
                   }
                 >
-                  <MobileNavActive onNavigate={closeMobile} />
+                  <MobileNavActive links={NAV_LINKS} onNavigate={closeMobile} />
                 </Suspense>
                 <div className="mt-3 border-t border-border pt-3">
                   <Button asChild size="lg" className="w-full">
-                    <Link href="/tours/group-tours" onClick={closeMobile}>
+                    <Link href={bookHref} onClick={closeMobile}>
                       Book Now
                     </Link>
                   </Button>
