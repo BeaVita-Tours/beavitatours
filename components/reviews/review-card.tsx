@@ -1,5 +1,7 @@
 "use client";
 
+import { Camera } from "lucide-react";
+
 import { reviewPlatformName } from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
 import { ReviewAuthorHeader, ReviewRating } from "./review-parts";
@@ -17,6 +19,7 @@ export function ReviewCard({
   const platform = reviewPlatformName(review.source, review.platformLabel);
   const hasText = review.text.trim().length > 0;
   const isLong = review.text.length > READ_MORE_THRESHOLD;
+  const photoCount = review.photos?.length ?? 0;
   // Google review deep links send visitors off to Maps; the client prefers
   // guests to stay on page, so drop the link for Google but keep it for
   // hand-added reviews (e.g. a Facebook testimonial).
@@ -31,8 +34,27 @@ export function ReviewCard({
       {/* Author + platform */}
       <ReviewAuthorHeader review={review} />
 
-      {/* Stars */}
-      <ReviewRating rating={review.rating} />
+      {/* Stars + photo count. The chip is the whole point for a review with
+          photos: it tells the visitor there is something to open, and the
+          inspector then shows the pictures in full. */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <ReviewRating rating={review.rating} />
+        {photoCount > 0 && (
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onOpenReview?.(review);
+            }}
+            aria-haspopup="dialog"
+            aria-label={`Open review with ${photoCount} ${photoCount === 1 ? "photo" : "photos"}`}
+            className="inline-flex touch-manipulation items-center gap-1 rounded-full border bg-muted/40 px-2 py-0.5 text-[11px] font-medium text-foreground/80 transition-colors hover:bg-muted"
+          >
+            <Camera className="size-3" aria-hidden="true" />+{photoCount}{" "}
+            {photoCount === 1 ? "photo" : "photos"}
+          </button>
+        )}
+      </div>
 
       {/* Text (always clamped so the card stays its normal size in the row) */}
       {hasText && (

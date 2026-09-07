@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import {
   BriefcaseBusiness,
-  CarFront,
   CircleHelp,
+  Gem,
   Grape,
   Mail,
   Menu,
@@ -29,7 +29,8 @@ interface NavLink {
 
 const NAV_LINKS: readonly NavLink[] = [
   { href: "/tours/group-tours", label: "Group Tours", icon: Users },
-  { href: "/tours/private-tours", label: "Private Tours", icon: CarFront },
+  // A diamond, not a car: private tours are sold as the premium option.
+  { href: "/tours/private-tours", label: "Private Tours", icon: Gem },
   { href: "/tours/dolomites", label: "Dolomites", icon: Mountain },
   { href: "/tours/wine-food", label: "Food & Wine", icon: Grape },
   { href: "/b2b", label: "B2B", icon: BriefcaseBusiness },

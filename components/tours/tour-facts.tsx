@@ -9,8 +9,10 @@ import type { SafeHtml, TourDetail } from "@/lib/regiondo/types";
  * this is the content Google could not see through the iframe.
  */
 
-export function TourFacts({ tour }: { tour: TourDetail }) {
-  const facts = [
+type Fact = { icon: typeof Clock; label: string; value: string };
+
+function tourFacts(tour: TourDetail): Fact[] {
+  return [
     tour.duration && { icon: Clock, label: "Duration", value: tour.duration.label },
     tour.meetingPoint.name && {
       icon: MapPin,
@@ -27,7 +29,36 @@ export function TourFacts({ tour }: { tour: TourDetail }) {
       label: "Group",
       value: tour.collections[0]?.includes("Private") ? "Private tour" : "Small shared group",
     },
-  ].filter(Boolean) as { icon: typeof Clock; label: string; value: string }[];
+  ].filter(Boolean) as Fact[];
+}
+
+/**
+ * The key facts as a row of pill badges — the "badges" strip under the
+ * image + booking box on the tour page. Same data as `TourFacts`, lighter
+ * treatment: one line, wraps on narrow screens.
+ */
+export function TourBadges({ tour }: { tour: TourDetail }) {
+  const facts = tourFacts(tour);
+  if (facts.length === 0) return null;
+
+  return (
+    <ul className="flex flex-wrap gap-2" aria-label="Key facts">
+      {facts.map((fact) => (
+        <li
+          key={fact.label}
+          className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-sm"
+        >
+          <fact.icon className="size-3.5 shrink-0 text-primary-strong" aria-hidden="true" />
+          <span className="sr-only">{fact.label}: </span>
+          <span className="font-medium">{fact.value}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function TourFacts({ tour }: { tour: TourDetail }) {
+  const facts = tourFacts(tour);
 
   if (facts.length === 0) return null;
 

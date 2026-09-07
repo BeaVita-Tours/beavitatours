@@ -36,18 +36,36 @@ async function shuffleReviews(reviews: Review[]): Promise<Review[]> {
   return shuffled;
 }
 
+/** How many photo cards the "verified guests" row shows at most. */
+const MAX_FEATURED = 4;
+
+/**
+ * The reviews shown as photo cards under the marquee: hand-picked
+ * (`featured`) manual reviews first, then any live Google review that came
+ * with a guest photo, newest first. Only reviews that actually have a photo
+ * qualify — the row exists to show the day (and the vehicles) as guests saw it.
+ */
+function pickFeatured(reviews: Review[]): Review[] {
+  const withPhoto = reviews.filter((r) => (r.photos?.length ?? 0) > 0);
+  const pinned = withPhoto.filter((r) => r.featured);
+  const rest = withPhoto.filter((r) => !r.featured).sort(byDateDesc);
+  return [...pinned, ...rest].slice(0, MAX_FEATURED);
+}
+
 /**
  * Homepage reviews section (Server Component).
  *
  * Fetches live Google Reviews server-side (`"use cache"`, 6h revalidation via
  * the `reviews` cache-life profile in next.config.ts), merges them with the
  * hand-curated reviews in `lib/reviews/manual-reviews.ts`, and renders:
- *   - an aggregate stats row (live Google + static TripAdvisor/GetYourGuide)
+ *   - three static headline cards (TripAdvisor, GetYourGuide, live Google)
  *     plus a compact "also rated on" cluster;
- *   - a scrollable row of the merged reviews, shuffled (`shuffleReviews`).
+ *   - one auto-scrolling row of the merged reviews, shuffled
+ *     (`shuffleReviews`);
+ *   - a row of verified guest reviews with their photos shown directly.
  *
- * All the interactivity (auto-scroll, read-more) is pushed into the client
- * `ReviewsMarquee` / `ReviewCard`.
+ * All the interactivity (auto-scroll, read-more, the inspector) is pushed
+ * into the client `ReviewsMarquee` / `ReviewCard`.
  *
  * Failure modes (never a broken section):
  *   - Google unconfigured or failing → `getGoogleReviews()` returns `null` →
@@ -63,11 +81,15 @@ export async function ReviewsSection() {
   const sortedReviews = [...manualReviews, ...(google?.reviews ?? [])].sort(
     byDateDesc,
   );
-  // Shuffled (not date order) so the two-row marquee doesn't read as sorted;
-  // see `shuffleReviews` for why this needs `"use cache"` instead of a bare
+  // Shuffled (not date order) so the marquee doesn't read as sorted; see
+  // `shuffleReviews` for why this needs `"use cache"` instead of a bare
   // `.sort(() => Math.random() - 0.5)`.
   const allReviews = await shuffleReviews(sortedReviews);
+  const featured = pickFeatured(sortedReviews);
 
+  // Headline order (client request): TripAdvisor, GetYourGuide, then Google.
+  // `headlineStats` is TripAdvisor-first already; the live Google card goes
+  // last so a failed fetch drops the tail, not the middle.
   return (
     <section id="reviews" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -81,30 +103,28 @@ export async function ReviewsSection() {
         </div>
 
         {/* Aggregate stats */}
-        <div className="mx-auto max-w-3xl">
-          <div className="flex flex-wrap items-stretch justify-center gap-3">
-            {google !== null && google.url && (
-              <ReviewStatsBadge
-                name="Google"
-                ota="google"
-                href={google.url}
-                rating={google.rating}
-                count={google.totalCount}
-              />
-            )}
+        <div className="mx-auto max-w-4xl">
+          <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:flex-wrap">
             {headlineStats.map((stat) => (
               <ReviewStatsBadge
                 key={stat.platform}
                 name={stat.name}
-                href={stat.href}
                 ota={stat.platform}
                 rating={stat.rating}
                 count={stat.count}
               />
             ))}
+            {google !== null && (
+              <ReviewStatsBadge
+                name="Google"
+                ota="google"
+                rating={google.rating}
+                count={google.totalCount}
+              />
+            )}
           </div>
 
-          <div className="mt-5">
+          <div className="mt-6">
             <p className="mb-2 text-center text-xs text-muted-foreground">
               Also rated on
             </p>
@@ -124,10 +144,10 @@ export async function ReviewsSection() {
           </div>
         </div>
 
-        {/* Auto-scrolling reviews rows */}
+        {/* Auto-scrolling row + verified photo reviews */}
         {allReviews.length > 0 && (
           <div className="mt-12">
-            <ReviewsMarquee reviews={allReviews} />
+            <ReviewsMarquee reviews={allReviews} featured={featured} />
           </div>
         )}
       </div>

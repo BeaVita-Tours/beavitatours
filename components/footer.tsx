@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
-import { Facebook, Instagram } from "lucide-react";
+import { Facebook, Flag, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 
@@ -158,6 +158,27 @@ export function Footer({ nativeBooking = false }: { nativeBooking?: boolean }) {
                 <Instagram />
               </Link>
             </div>
+            {/*
+              Guest reviews and their photos are republished on the site.
+              Anyone who recognises themselves in a photo, or disputes a
+              review, needs an obvious route to ask for it to be taken down —
+              this is that route (it lands on the contact form).
+            */}
+            <p className="mb-2 text-xs leading-relaxed text-muted-foreground">
+              Reviews and photos on this site are shared by our guests. Spotted
+              something that shouldn&apos;t be here?
+            </p>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1.5 text-xs font-medium"
+            >
+              <Link href="/contact?subject=report">
+                <Flag className="size-3.5" aria-hidden="true" />
+                Report a review or photo
+              </Link>
+            </Button>
           </div>
         </div>
 

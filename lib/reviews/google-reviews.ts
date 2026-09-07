@@ -1,6 +1,6 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import type { Review } from "./types";
+import type { Review, ReviewPhoto } from "./types";
 
 /**
  * # Live Google Reviews
@@ -49,6 +49,16 @@ import type { Review } from "./types";
  * Google only returns the **most recent 5 reviews** per request. We design
  * around that (5 live reviews merged with manual ones) rather than trying to
  * assemble a larger pool.
+ *
+ * ## Review photos
+ * The v1 API has no per-review photo field. What it does expose is the
+ * place's `photos` (up to 10), each carrying `authorAttributions` — the guest
+ * who uploaded it. A photo whose uploader's display name matches a review's
+ * author is attached to that review (`attachPhotos`), and its media URL is
+ * resolved through `/media?skipHttpRedirect=true` so the card can render a
+ * plain `<img>` without a second round trip. Photos with no matching review
+ * are dropped; the card never shows an image we cannot attribute to the
+ * review it sits on.
  */
 
 const PLACES_API_URL = "https://places.googleapis.com/v1";
@@ -62,6 +72,7 @@ const PLACE_FIELDS = [
   "rating",
   "userRatingCount",
   "reviews",
+  "photos",
 ] as const;
 
 const PLACE_ID_FIELD_MASK = PLACE_FIELDS.join(",");
@@ -98,6 +109,15 @@ interface GooglePlacesReview {
   googleMapsUri?: string;
 }
 
+/** A place photo as returned by the v1 Places API. */
+interface GooglePlacesPhoto {
+  /** Resource name, e.g. "places/{placeId}/photos/{photoId}". */
+  name?: string;
+  widthPx?: number;
+  heightPx?: number;
+  authorAttributions?: { displayName?: string; uri?: string; photoUri?: string }[];
+}
+
 /** Minimal shape of a v1 Place (shared by both endpoint responses). */
 interface GooglePlace {
   id?: string;
@@ -106,6 +126,7 @@ interface GooglePlace {
   rating?: number;
   userRatingCount?: number;
   reviews?: GooglePlacesReview[];
+  photos?: GooglePlacesPhoto[];
 }
 
 /** Response of `places:searchText` — wraps the list of matching places. */
@@ -182,18 +203,104 @@ async function fetchGooglePlace(
 
 // Only this rating or higher is surfaced as a review card. The aggregate badge
 // still shows the real `rating` / `userRatingCount` — we curate the quoted text,
-// never the numbers.
-const MIN_QUOTED_RATING = 5;
+// never the numbers. Four-star reviews are shown too (client request): a wall
+// of nothing but five stars reads as curated, and a few honest 4s make the
+// strip look like a real review feed.
+const MIN_QUOTED_RATING = 4;
+
+/** Longest edge requested from the photo media endpoint. */
+const PHOTO_MAX_PX = 900;
+/** Cap per review so one enthusiastic uploader doesn't dominate the inspector. */
+const MAX_PHOTOS_PER_REVIEW = 3;
+
+/**
+ * Resolve a place photo's resource name into a fetchable image URL.
+ *
+ * `/media` normally 302s to a googleusercontent URL; `skipHttpRedirect=true`
+ * returns that URL as JSON instead, so the card can point a plain `<img>` at
+ * it (the same `referrerPolicy="no-referrer"` treatment as reviewer avatars).
+ * Any failure yields `null` — a missing photo is a non-event.
+ */
+async function resolvePhotoUrl(
+  photoName: string,
+  signal: AbortSignal,
+): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `${PLACES_API_URL}/${photoName}/media?maxWidthPx=${PHOTO_MAX_PX}&maxHeightPx=${PHOTO_MAX_PX}&skipHttpRedirect=true`,
+      { headers: { "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY! }, signal },
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as { photoUri?: string };
+    return data.photoUri ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Attach the place's guest photos to the reviews written by the same guest.
+ *
+ * Matching is by normalized display name — the only link the API gives us
+ * between a photo and a review. Only photos with exactly one attributed
+ * uploader that matches a quoted reviewer are kept, and only their media
+ * URLs are resolved (one request each, in parallel, all sharing the caller's
+ * timeout).
+ */
+async function attachPhotos(
+  reviews: Review[],
+  photos: GooglePlacesPhoto[],
+  signal: AbortSignal,
+): Promise<Review[]> {
+  if (reviews.length === 0 || photos.length === 0) return reviews;
+
+  const byAuthor = new Map<string, Review>();
+  for (const review of reviews) {
+    byAuthor.set(normalizeName(review.authorName), review);
+  }
+
+  const candidates = photos.flatMap((photo) => {
+    const authors = photo.authorAttributions ?? [];
+    const author = authors.length === 1 ? authors[0]?.displayName : undefined;
+    const review = author ? byAuthor.get(normalizeName(author)) : undefined;
+    return photo.name && review ? [{ name: photo.name, review }] : [];
+  });
+  if (candidates.length === 0) return reviews;
+
+  const resolved = await Promise.all(
+    candidates.map(async ({ name, review }) => ({
+      review,
+      url: await resolvePhotoUrl(name, signal),
+    })),
+  );
+
+  const attached = new Map<string, ReviewPhoto[]>();
+  for (const { review, url } of resolved) {
+    if (!url) continue;
+    const list = attached.get(review.id) ?? [];
+    if (list.length >= MAX_PHOTOS_PER_REVIEW) continue;
+    list.push({ url, alt: `Photo shared by ${review.authorName}` });
+    attached.set(review.id, list);
+  }
+
+  return reviews.map((review) => {
+    const list = attached.get(review.id);
+    return list && list.length > 0 ? { ...review, photos: list } : review;
+  });
+}
 
 /**
  * Map a v1 Place (from either endpoint) into the normalized result. Returns
  * `null` when the place has no numeric rating yet — a count without a rating
  * should not render as a 0-star card.
  */
-function toGoogleReviewsResult(place: GooglePlace): GoogleReviewsResult | null {
+async function toGoogleReviewsResult(
+  place: GooglePlace,
+  signal: AbortSignal,
+): Promise<GoogleReviewsResult | null> {
   if (typeof place.rating !== "number") return null;
 
-  const reviews: Review[] = (place.reviews ?? [])
+  const quoted: Review[] = (place.reviews ?? [])
     .filter((r) => (r.rating ?? 0) >= MIN_QUOTED_RATING)
     .map((r) => {
       const authorName = r.authorAttribution?.displayName ?? "Google User";
@@ -214,6 +321,8 @@ function toGoogleReviewsResult(place: GooglePlace): GoogleReviewsResult | null {
       };
     });
 
+  const reviews = await attachPhotos(quoted, place.photos ?? [], signal);
+
   return {
     rating: place.rating,
     totalCount: place.userRatingCount ?? 0,
@@ -232,8 +341,9 @@ export async function getGoogleReviews(): Promise<GoogleReviewsResult | null> {
   try {
     // 8s timeout so a slow/failing API can never hang a static build's
     // cache-fill for the default ~50s.
-    const place = await fetchGooglePlace(AbortSignal.timeout(8000));
-    return place ? toGoogleReviewsResult(place) : null;
+    const signal = AbortSignal.timeout(8000);
+    const place = await fetchGooglePlace(signal);
+    return place ? toGoogleReviewsResult(place, signal) : null;
   } catch {
     // Network / parse error → caller falls back to manual reviews only.
     return null;

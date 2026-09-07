@@ -26,21 +26,32 @@ import type { Review } from "./types";
  * },
  * ```
  *
+ * ## Reviews with photos
+ *
+ * Add a `photos` array — each entry is a path under `public/` (or an absolute
+ * URL) plus an optional `alt`. The card shows a "+N photos" chip and the
+ * inspector shows the pictures in full. Set `featured: true` on the ones that
+ * should ALSO appear as photo cards in the "verified guests" row under the
+ * marquee (max 4 are shown; pinned ones come first). Photos of the actual
+ * day — the minivan, the group, the lakes — are what that row is for.
+ *
  * ```ts
  * {
- *   id: "yelp-1",
+ *   id: "tripadvisor-7",
  *   source: "manual",
- *   platformLabel: "Yelp",
+ *   platformLabel: "TripAdvisor",
  *   authorName: "Dario",
  *   rating: 5,
  *   text: "Perfect day trip from Venice...",
  *   date: "2026-04-18T09:00:00.000Z",
+ *   photos: [{ url: "/reviews/dario-minivan.jpg", alt: "Our minivan at Lake Misurina" }],
+ *   featured: true,
  * },
  * ```
  *
  * ## Notes
  * - `id` must be unique across all entries (Google reviews use
- *   `google:<author>:<timestamp>`, so a `manual-*` / `facebook-*` prefix avoids
+ *   `google:<reviewId>`, so a `manual-*` / `facebook-*` prefix avoids
  *   collisions).
  * - `date` MUST be a full ISO timestamp (include a time and the `Z`), not a
  *   bare `YYYY-MM-DD`. The merged list is sorted by comparing these strings
@@ -48,14 +59,12 @@ import type { Review } from "./types";
  * - `text` may be empty for a rating-only review — the card simply omits it.
  * - This file is compiled into the client bundle, so keep author names to a
  *   display name only (no personal data beyond what you'd show publicly).
+ * - Reviews with 4 stars are welcome here too: the section reads as more
+ *   genuine with a few honest 4s among the 5s.
+ * - Anyone can ask for a photo or review to be taken down through the
+ *   "Report a review or photo" link in the footer — remove the entry here.
  */
 
-// ─── PLACEHOLDERS ─────────────────────────────────────────────────────────────
-// Replace these with the client's real reviews before publishing. Everything in
-// brackets is template text. Once Google reviews are fetched (see
-// google-reviews.ts), live reviews merge into this same row.
-// Delete a placeholder by removing its object; add real ones by copying the
-// header example and filling it in. `id` must be unique.
 export const manualReviews: Review[] = [
   {
     id: "manual-1",
@@ -65,6 +74,15 @@ export const manualReviews: Review[] = [
     rating: 5,
     text: "Carlo was great!!! We enjoyed seeing key sites in the Dolomites and Carlo’s friendliness.",
     date: "2026-08-19T10:00:00.000Z",
+    // PLACEHOLDER photo — swap for the guest's own picture (ideally one with
+    // the minivan in it) before publishing. Same for the other two below.
+    photos: [
+      {
+        url: "/imgs/dolomites/dolomites1.jpeg",
+        alt: "The Dolomites on a clear day",
+      },
+    ],
+    featured: true,
   },
   {
     id: "manual-2",
@@ -92,6 +110,14 @@ export const manualReviews: Review[] = [
     rating: 5,
     text: "This trip was quite literally a breath of fresh air. With it being so hot in July, it was a perfect getaway from the humidity and the views were insane. Chiara our guide was awesome, super informative and made it fun. Our driver was great and the bus was comfy and had great AC. We did the chairlift to the top of one mountain, highly recommend",
     date: "2026-08-01T10:00:00.000Z",
+    // PLACEHOLDER photo — see manual-1.
+    photos: [
+      {
+        url: "/IMG_2240.jpg",
+        alt: "Cortina d'Ampezzo under the Tofane peaks",
+      },
+    ],
+    featured: true,
   },
   {
     id: "manual-5",
@@ -101,5 +127,13 @@ export const manualReviews: Review[] = [
     rating: 5,
     text: "Marco was a fabulous tour guide. He had a wealth of knowledge about the entire area. The lakes and villages we visited along the way were absolutely stunning. Hiking around the lakes was also a bonus. Cortina is the most commercial stop, but also a must-see given that it will host the 2026 Winter Olympics. It was a busy day, but we never felt rushed and were able to admire the beauty of nature.",
     date: "2026-08-01T10:00:00.000Z",
+    // PLACEHOLDER photo — see manual-1.
+    photos: [
+      {
+        url: "/tourcustom.jpg",
+        alt: "The Olympic rings in Cortina d'Ampezzo",
+      },
+    ],
+    featured: true,
   },
 ];

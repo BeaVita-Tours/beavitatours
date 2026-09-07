@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Camera, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/drawer";
 import { reviewPlatformName } from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
-import { ReviewAuthorHeader, ReviewRating } from "./review-parts";
+import { ReviewAuthorHeader, ReviewPhoto, ReviewRating } from "./review-parts";
 import { OTAWordmark } from "../ota-wordmark";
 import { reviewPlatformLogo } from "@/lib/reviews/platform-stats";
 
@@ -89,6 +89,7 @@ export function ReviewInspector({
 function InspectorContent({ review }: { review: Review }) {
   const platform = reviewPlatformName(review.source, review.platformLabel);
   const hasText = review.text.trim().length > 0;
+  const photos = review.photos ?? [];
   // Google deep links send visitors off to Maps; keep the source link only for
   // hand-added reviews, mirroring the ReviewCard behaviour.
   const hasExternalLink =
@@ -108,8 +109,46 @@ function InspectorContent({ review }: { review: Review }) {
         dateClassName="text-sm text-muted-foreground"
       />
 
-      {/* Stars */}
-      <ReviewRating rating={review.rating} starClassName="size-5" />
+      {/* Stars + photo count */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <ReviewRating rating={review.rating} starClassName="size-5" />
+        {photos.length > 0 && (
+          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <Camera className="size-3.5" aria-hidden="true" />+{photos.length}{" "}
+            {photos.length === 1 ? "photo" : "photos"}
+          </span>
+        )}
+      </div>
+
+      {/* Guest photos — the first one large, any others as a strip beneath.
+          Shown above the text: the photo is what the "+N photo" chip promised. */}
+      {photos.length > 0 && (
+        <div className="space-y-2">
+          <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-muted">
+            <ReviewPhoto
+              photo={photos[0]!}
+              sizes="(min-width: 640px) 560px, 100vw"
+              className="size-full object-cover"
+            />
+          </div>
+          {photos.length > 1 && (
+            <div className="grid grid-cols-3 gap-2">
+              {photos.slice(1).map((photo) => (
+                <div
+                  key={photo.url}
+                  className="relative aspect-4/3 overflow-hidden rounded-lg bg-muted"
+                >
+                  <ReviewPhoto
+                    photo={photo}
+                    sizes="180px"
+                    className="size-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Full text — unclamped, whitespace preserved */}
       {hasText && (

@@ -13,21 +13,25 @@ import type { PlatformStat, Review } from "./types";
  * To update a number, edit it here and redeploy.
  */
 
-/** Headline stat cards shown next to the live Google stat. */
+/**
+ * Headline stat cards, in display order. The live Google card is rendered
+ * after these by `ReviewsSection`, so the row reads TripAdvisor, GetYourGuide,
+ * Google (client request: Google and TripAdvisor swapped ends).
+ */
 export const headlineStats: PlatformStat[] = [
-  {
-    platform: "getyourguide",
-    name: "GetYourGuide",
-    href: "https://www.getyourguide.com/bea-vita-tours-s340119/",
-    rating: 4.86,
-    count: 2256,
-  },
   {
     platform: "tripadvisor",
     name: "TripAdvisor",
     href: "https://www.tripadvisor.it/Attraction_Review-g187870-d28238909-Reviews-Bea_Vita_Tours-Venice_Veneto.html",
     rating: 4.9,
     count: 99,
+  },
+  {
+    platform: "getyourguide",
+    name: "GetYourGuide",
+    href: "https://www.getyourguide.com/bea-vita-tours-s340119/",
+    rating: 4.86,
+    count: 2256,
   },
 ];
 

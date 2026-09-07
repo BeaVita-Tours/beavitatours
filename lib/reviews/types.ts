@@ -25,6 +25,15 @@ export type PlatformId = OTAId;
  * `date` must be a full ISO timestamp (e.g. "2026-05-14T10:00:00.000Z") so
  * reviews sort correctly by date — ISO strings compare lexicographically.
  */
+/** A photo attached to a review — either a guest upload (Google) or a
+ * hand-added local image (`/landing/...`). */
+export type ReviewPhoto = {
+  /** Absolute URL (Google-hosted) or a site-relative path under `public/`. */
+  url: string;
+  /** Short description for the `alt` text; falls back to a generic label. */
+  alt?: string;
+};
+
 export type Review = {
   /** Stable React key, e.g. "google:Author:1690000000" or "manual-1". */
   id: string;
@@ -40,6 +49,17 @@ export type Review = {
   date: string;
   /** Optional deep link to the original review. */
   sourceUrl?: string;
+  /**
+   * Photos the guest attached. Cards show a "+N photos" chip, the inspector
+   * shows them in full, and `featured` reviews show the first one directly.
+   */
+  photos?: ReviewPhoto[];
+  /**
+   * Hand-picked for the "verified guests" row under the marquee — a review
+   * with a photo (ideally of the vehicle / the day itself) that is shown as a
+   * photo card rather than only inside the scrolling strip.
+   */
+  featured?: boolean;
 };
 
 /** A static platform badge (rating may be a number or a label like "NEW"). */

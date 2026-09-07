@@ -5,32 +5,26 @@ import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Marquee } from "@/components/ui/marquee";
 import type { Review } from "@/lib/reviews/types";
+import { FeaturedReviews } from "./featured-reviews";
 import { ReviewCard } from "./review-card";
 import { ReviewInspector } from "./review-inspector";
 
-/** Fixed card width so the marquee rows stay visually even at any viewport. */
+/** Fixed card width so the marquee row stays visually even at any viewport. */
 const CARD_WIDTH = "w-72 sm:w-80";
 
 function ReviewRow({
   reviews,
-  reverse,
   paused,
   touchScroll,
   onOpenReview,
 }: {
   reviews: Review[];
-  reverse?: boolean;
   paused: boolean;
   touchScroll: boolean;
   onOpenReview: (review: Review) => void;
 }) {
   return (
-    <Marquee
-      reverse={reverse}
-      repeat={4}
-      paused={paused}
-      touchScroll={touchScroll}
-    >
+    <Marquee repeat={4} paused={paused} touchScroll={touchScroll}>
       {reviews.map((review) => (
         <div key={review.id} className={CARD_WIDTH}>
           <ReviewCard review={review} onOpenReview={onOpenReview} />
@@ -41,31 +35,39 @@ function ReviewRow({
 }
 
 /**
- * Two-row auto-scrolling reviews strip.
+ * The reviews strip: one auto-scrolling row of every review, and beneath it
+ * the "verified guests" row — a static grid of reviews shown with their photo
+ * (`FeaturedReviews`).
  *
- * Replaces the old drag-to-scroll `ReviewsCarousel`. Splits the (date-sorted)
- * reviews into two rows that scroll in opposite directions (`reverse` on the
- * second), each via the shared `Marquee` component. Hovering anywhere over
- * the strip pauses both rows so the cards' interactive controls — the
- * "Read more" button and any deep links in `ReviewCard` — stay clickable.
+ * It used to be two rows scrolling in opposite directions; the client asked
+ * for a single row plus the photo row, so the photos of the actual days (and
+ * the vehicles) are visible without opening anything.
  *
- * The strip also owns the review inspector: clicking any card (or "Read more")
- * opens it in a Dialog (desktop) / Drawer (mobile), and the rows pause for its
- * whole lifetime via the Marquee's `paused` prop.
+ * Hovering anywhere over the strip pauses the row so the cards' interactive
+ * controls — the "Read more" button and any deep links in `ReviewCard` — stay
+ * clickable.
  *
- * Hovering either row pauses both: hover state is tracked here (rather than
- * per-row via CSS `:hover`) and fed into each row's `paused` prop, so mousing
- * over the top row also freezes the bottom row instead of just its own.
+ * The strip also owns the review inspector, shared by the marquee cards and
+ * the featured cards: clicking any card (or "Read more") opens it in a Dialog
+ * (desktop) / Drawer (mobile), and the row pauses for its whole lifetime via
+ * the Marquee's `paused` prop.
  */
-export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
+export function ReviewsMarquee({
+  reviews,
+  featured = [],
+}: {
+  reviews: Review[];
+  /** Reviews with a photo, shown as photo cards under the row. */
+  featured?: Review[];
+}) {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  // Coarse pointer (touch) devices let the rows be finger-scrolled. Desktop
+  // Coarse pointer (touch) devices let the row be finger-scrolled. Desktop
   // mouse/trackpad users keep auto-scroll + hover-to-pause instead.
   const isTouch = useMediaQuery("(hover: none) and (pointer: coarse)");
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
   // Last known pointer position, tracked passively so the inspector's
   // `onOpenChange` can tell — without a real mouseleave/mouseenter firing —
   // whether the pointer is still over the strip when the dialog closes.
@@ -82,39 +84,27 @@ export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
 
   if (reviews.length === 0) return null;
 
-  // Reviews arrive pre-shuffled (see `shuffleReviews`); split in half so both
-  // rows feel balanced.
-  const midpoint = Math.ceil(reviews.length / 2);
-  const top = reviews.slice(0, midpoint);
-  const bottom = reviews.slice(midpoint);
-
   const paused = selectedReview !== null || isHovering;
 
   return (
-    <div
-      ref={containerRef}
-      className="space-y-4"
-      // On touch, `:hover`/`pointerenter` can linger after a tap; touchScroll
-      // already pauses on interaction instead, so skip hover-pause there.
-      onMouseEnter={isTouch ? undefined : () => setIsHovering(true)}
-      onMouseLeave={isTouch ? undefined : () => setIsHovering(false)}
-    >
-      {top.length > 0 && (
+    <div className="space-y-12">
+      <div
+        ref={stripRef}
+        // On touch, `:hover`/`pointerenter` can linger after a tap; touchScroll
+        // already pauses on interaction instead, so skip hover-pause there.
+        onMouseEnter={isTouch ? undefined : () => setIsHovering(true)}
+        onMouseLeave={isTouch ? undefined : () => setIsHovering(false)}
+      >
         <ReviewRow
-          reviews={top}
+          reviews={reviews}
           paused={paused}
           touchScroll={isTouch}
           onOpenReview={setSelectedReview}
         />
-      )}
-      {bottom.length > 0 && (
-        <ReviewRow
-          reviews={bottom}
-          reverse
-          paused={paused}
-          touchScroll={isTouch}
-          onOpenReview={setSelectedReview}
-        />
+      </div>
+
+      {featured.length > 0 && (
+        <FeaturedReviews reviews={featured} onOpenReview={setSelectedReview} />
       )}
 
       <ReviewInspector
@@ -130,7 +120,7 @@ export function ReviewsMarquee({ reviews }: { reviews: Review[] }) {
             // the last tracked pointer position against the strip's bounds:
             // still over a card → stay paused, like the pointer never left;
             // elsewhere → resume, like a normal mouseleave would.
-            const rect = containerRef.current?.getBoundingClientRect();
+            const rect = stripRef.current?.getBoundingClientRect();
             const { x, y } = lastPointerPos.current;
             setIsHovering(
               !isTouch &&

@@ -9,7 +9,7 @@ import { BookingPanel } from "@/components/tours/booking-panel";
 import { PriceDisplay } from "@/components/tours/price-display";
 import { RatingStars } from "@/components/tours/rating-stars";
 import {
-  TourFacts,
+  TourBadges,
   TourHighlights,
   TourInclusions,
   TourMeetingPoint,
@@ -41,8 +41,14 @@ import type { TourDetail } from "@/lib/regiondo/types";
 /**
  * Tour detail page.
  *
+ * Layout (client brief): photo on the left, a box with the essentials and
+ * the booking CTA on the right; beneath them the key-fact badges, then a
+ * short description, then a few other tours. The long-form sections —
+ * highlights, inclusions, meeting point, reviews — follow after that for the
+ * reader who wants them, but they are no longer what the page leads with.
+ *
  * Structure follows from Cache Components: everything above the fold — title,
- * price, gallery, key facts, the full description — is cached catalog data and
+ * price, gallery, key facts, the description — is cached catalog data and
  * lands in the prerendered shell. The booking panel is the only part that
  * depends on live inventory, so it is the only part inside a Suspense boundary.
  * A visitor sees the whole page immediately and the calendar fills in.
@@ -144,53 +150,76 @@ export default async function TourPage({ params, searchParams }: PageProps) {
         </ol>
       </nav>
 
-      <header className="mb-6 space-y-3">
-        <h1 className="text-3xl font-bold leading-tight md:text-4xl">{tour.title}</h1>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-          {tour.rating ? <RatingStars rating={tour.rating} size="md" /> : null}
-          {tour.city ? <span>{tour.city}</span> : null}
-          {tour.duration ? <span>{tour.duration.label}</span> : null}
-        </div>
-      </header>
+      {/* Image left, essentials + CTA right. Stacks on mobile: photo, then
+          the box — the booking panel sits inline under the title there. */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-10">
+        <TourGallery images={tour.gallery} title={tour.title} layout="stacked" />
 
-      <TourGallery images={tour.gallery} title={tour.title} />
+        <div className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-sm md:p-6">
+          <header className="space-y-3">
+            {tour.collections[0] ? (
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary-strong">
+                {tour.collections[0]}
+              </p>
+            ) : null}
+            <h1 className="text-2xl font-bold leading-tight md:text-3xl">{tour.title}</h1>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+              {tour.rating ? <RatingStars rating={tour.rating} size="md" /> : null}
+              {tour.city ? <span>{tour.city}</span> : null}
+              {tour.duration ? <span>{tour.duration.label}</span> : null}
+            </div>
+          </header>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12">
-        <div className="min-w-0 space-y-10">
-          <TourFacts tour={tour} />
-          <TourHighlights highlights={tour.highlights} />
-          <TourProse id="about" heading="About this tour" html={tour.descriptionHtml} />
-          <TourInclusions tour={tour} />
-          <TourProse id="bring" heading="What to bring" html={tour.bringHtml} />
-          <TourMeetingPoint tour={tour} />
-          <TourProse id="good-to-know" heading="Good to know" html={tour.otherInfoHtml} />
-          <TourProse id="important" heading="Important information" html={tour.importantInfoHtml} />
-          <TourReviews reviews={reviews} rating={tour.rating} />
-        </div>
-
-        {/*
-          The booking module. `lg:sticky` keeps it beside the content on desktop;
-          on mobile it sits inline after the facts, which tests better than a
-          fixed bottom bar on a page this long.
-        */}
-        <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="rounded-2xl border bg-card p-5 shadow-sm">
+          <div className="border-t pt-5">
             <h2 className="sr-only">Book this tour</h2>
             <Suspense fallback={<BookingPanelFallback tour={tour} />}>
               <LiveBookingPanel tour={tour} searchParams={searchParams} />
             </Suspense>
           </div>
-        </aside>
+        </div>
       </div>
 
+      {/* Badges: the key facts as one row of pills. */}
+      <div className="mt-6">
+        <TourBadges tour={tour} />
+      </div>
+
+      {/* Short description: the excerpt, large, then the full copy under it. */}
+      <section aria-labelledby="about-heading" className="mt-10 max-w-3xl space-y-4">
+        <h2 id="about-heading" className="text-2xl font-bold">
+          About this tour
+        </h2>
+        {tour.excerpt ? (
+          <p className="text-lg leading-relaxed text-foreground/85">{tour.excerpt}</p>
+        ) : null}
+        <div
+          className="prose prose-blog max-w-none text-sm leading-relaxed"
+          // Sanitised in lib/regiondo/sanitize.ts against a narrow allowlist:
+          // no script, no iframe, no event handlers, no inline styles.
+          dangerouslySetInnerHTML={{ __html: tour.descriptionHtml }}
+        />
+      </section>
+
+      {/* A few other tours, before the long-form details. */}
       {related.length > 0 ? (
-        <section aria-labelledby="related-heading" className="mt-16 space-y-6">
+        <section aria-labelledby="related-heading" className="mt-14 space-y-6">
           <h2 id="related-heading" className="text-2xl font-bold">
             You might also like
           </h2>
           <TourGrid tours={related} priorityCount={0} headingId="related-heading" />
         </section>
       ) : null}
+
+      {/* Everything else a booker may want to check. */}
+      <div className="mt-16 max-w-3xl space-y-10 border-t pt-12">
+        <TourHighlights highlights={tour.highlights} />
+        <TourInclusions tour={tour} />
+        <TourProse id="bring" heading="What to bring" html={tour.bringHtml} />
+        <TourMeetingPoint tour={tour} />
+        <TourProse id="good-to-know" heading="Good to know" html={tour.otherInfoHtml} />
+        <TourProse id="important" heading="Important information" html={tour.importantInfoHtml} />
+        <TourReviews reviews={reviews} rating={tour.rating} />
+      </div>
     </main>
   );
 }

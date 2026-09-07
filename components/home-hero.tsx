@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface HeroPanelContent {
   /** Banner heading shown above the description. */
@@ -21,13 +22,15 @@ interface HeroPanelProps {
   /** Bottom gradient scrim for text legibility. Toggle per brick — photos
       may change later and some may not need a scrim. Defaults to on. */
   gradient?: boolean;
+  /** Extra classes on the panel wrapper (used for responsive ordering). */
+  className?: string;
 }
 
 /** One half of the split hero: a portrait full-bleed photo with a dark
     bottom overlay carrying the title, description, and CTA. */
-function HeroPanel({ image, alt, content, gradient = true }: HeroPanelProps) {
+function HeroPanel({ image, alt, content, gradient = true, className }: HeroPanelProps) {
   return (
-    <div className="relative min-h-[62svh] md:min-h-[82svh]">
+    <div className={cn("relative min-h-[62svh] md:min-h-[82svh]", className)}>
       <Image
         src={image}
         alt={alt}
@@ -82,7 +85,9 @@ const heroPanels: HeroPanelContent[] = [
 ];
 
 /** Two-panel split hero: full-bleed photo panels with title, description and
-    CTA. Stacks vertically on mobile. */
+    CTA. Stacks vertically on mobile, where Group Tours comes first (it is the
+    volume product and the one a phone visitor is most likely after); on
+    desktop the DOM order is kept — Private left, Group right. */
 export function HomeHero() {
   return (
     <section className="relative grid grid-cols-1 overflow-hidden md:grid-cols-2">
@@ -95,11 +100,13 @@ export function HomeHero() {
         image="/images/private-tours.webp"
         alt="The Dolomites rising behind the Veneto plain"
         content={heroPanels[0]}
+        className="order-2 md:order-none"
       />
       <HeroPanel
         image="/images/group-tours.webp"
         alt="Vineyard hills of the Prosecco wine region"
         content={heroPanels[1]}
+        className="order-1 md:order-none"
       />
     </section>
   );

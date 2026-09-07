@@ -70,11 +70,15 @@ test.describe("catalog", () => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Private day tours");
   });
 
-  test("the private tours page carries the tailor-made rates", async ({ page }) => {
-    // What /rates used to say, now under the bookable private departures.
+  test("the private tours page carries the tailor-made offer", async ({ page }) => {
+    // The tailor-made offer, under the bookable private departures. There is
+    // deliberately no rate card any more — a single "starting from" hook and
+    // the quote CTA is the whole pitch.
     await page.goto("/tours/private-tours");
     await expect(page.getByRole("heading", { name: /design your own day/i })).toBeVisible();
-    await expect(page.getByText("€600")).toBeVisible();
+    await expect(page.getByText("Starting from")).toBeVisible();
+    await expect(page.getByText("€900")).toBeVisible();
+    await expect(page.getByText("€600")).toHaveCount(0);
     await expect(page.getByRole("link", { name: /ask for a quote/i })).toBeVisible();
   });
 

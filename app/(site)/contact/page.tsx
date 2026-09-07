@@ -1,5 +1,7 @@
 "use client";
 
+import { Suspense } from "react";
+import { ReportNotice } from "@/components/report-notice";
 import { TravelAgencyForm } from "@/components/travel-agency-form";
 import { Mail } from "lucide-react";
 
@@ -8,6 +10,11 @@ export default function TravelAgencyPage() {
     <main className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
+          {/* Takedown route for republished reviews/photos (footer link). */}
+          <Suspense fallback={null}>
+            <ReportNotice />
+          </Suspense>
+
           {/* Contact Info for Normal Clients */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
