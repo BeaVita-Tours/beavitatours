@@ -1,0 +1,36 @@
+{
+  "buyer_data_required": [
+    {
+      "title": "First name",
+      "field_id": "1",
+      "type": "text",
+      "required": true,
+      "view_type": "first_name",
+      "value": ""
+    },
+    {
+      "title": "Last name",
+      "field_id": "2",
+      "type": "text",
+      "required": true,
+      "view_type": "last_name",
+      "value": ""
+    },
+    {
+      "title": "Email",
+      "field_id": "3",
+      "type": "text",
+      "required": true,
+      "view_type": "email",
+      "value": ""
+    },
+    {
+      "title": "Telephone",
+      "field_id": "4",
+      "type": "text",
+      "required": true,
+      "view_type": "phone",
+      "value": ""
+    }
+  ]
+}

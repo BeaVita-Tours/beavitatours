@@ -1,67 +1,62 @@
-"use client";
+import type { Metadata } from "next";
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { SharedToursRegiondoWidget } from "@/components/group-tours-regiondo-widget";
+import { CollectionPage } from "@/components/tours/collection-page";
+import { SITE_URL } from "@/lib/constants";
+import { COLLECTIONS } from "@/lib/regiondo/collections";
+import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 
-export default function SharedTourPage() {
+import { LegacyGroupToursWidgetPage } from "./legacy-widget-page";
+
+/**
+ * Group / shared tours.
+ *
+ * The URL does not change — this page hosts the Regiondo catalog widget today
+ * and the nav's "Book Now", the homepage card and `/rates` all point at it. With
+ * `REGIONDO_NATIVE_BOOKING` off it renders exactly what it renders now; with the
+ * flag on it becomes the native "Shared Tours from Venice" collection (tag
+ * 45420), which is what the page's own heading has always claimed to be.
+ *
+ * The widget currently lists a wider set than that tag, so the native version
+ * narrows the page deliberately — with links out to `/tours` and
+ * `/tours/private-tours` so nothing becomes unreachable. See D-004.
+ */
+
+const collection = COLLECTIONS.shared;
+
+export const metadata: Metadata = {
+  title: "Group day tours from Venice — Dolomites & Prosecco Hills | Bea Vita Tours",
+  description:
+    "Join a small-group day trip from Venice: the Dolomites, Cortina, Lake Misurina, Lake Braies and the Prosecco hills. Maximum eight guests, hotel-free pickup at Piazzale Roma.",
+  alternates: { canonical: collection.href },
+  openGraph: {
+    type: "website",
+    title: "Group day tours from Venice",
+    description:
+      "Small-group day trips from Venice to the Dolomites and the Prosecco hills. Top rated on Tripadvisor, GetYourGuide and Viator.",
+    url: `${SITE_URL}${collection.href}`,
+    siteName: "Bea Vita Tours",
+  },
+};
+
+export default function GroupToursPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  if (!isNativeBookingEnabled()) return <LegacyGroupToursWidgetPage />;
+
   return (
-    <div
-      style={{
-        ["--primary" as any]: "var(--secondary)",
-        ["--primary-foreground" as any]: "var(--secondary-foreground)",
-        ["--secondary" as any]: "var(--primary)",
-        ["--secondary-foreground" as any]: "var(--primary-foreground)",
+    <CollectionPage
+      heading={collection.heading}
+      intro={collection.intro}
+      title={collection.title}
+      href={collection.href}
+      tagId={collection.tagId}
+      searchParams={searchParams}
+      sibling={{
+        label: "Want the day to yourself? See our private tours →",
+        href: COLLECTIONS.private.href,
       }}
-    >
-      <main>
-        <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/tourwines.jpg"
-              alt="Group Tour"
-              fill
-              className="object-cover object-[50%_70%]"
-              priority
-            />
-            <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
-          </div>
-          <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center gap-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Group Tour
-            </h1>
-            <p className="text-xl text-white/90 max-w-2xl">
-              Book one of our group tours immediately and join a magic
-              adventure! Our experiences are top rated on Viator, Get Your
-              Guide, Tripadvisor
-            </p>
-            <div className="flex flex-row items-center gap-2 mt-4">
-              <div className="relative h-16 w-40">
-                <Image
-                  src="/bdlogo.jpg"
-                  alt="BD Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="relative h-16 w-20">
-                <Link href="https://www.kayak.co.uk/Cortina-d-Ampezzo.22382.guide">
-                  <Image
-                    src="/kayak.png"
-                    alt="Kayak"
-                    fill
-                    className="object-contain"
-                  />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="min-h-[60vh]">
-          <SharedToursRegiondoWidget />
-        </section>
-      </main>
-    </div>
+    />
   );
 }

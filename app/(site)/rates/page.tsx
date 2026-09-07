@@ -38,9 +38,15 @@ export default function RatesPage() {
                 <p className="text-lg text-muted-foreground mb-8">
                   and book immediately a GROUP TOUR HERE
                 </p>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
                   <Button asChild size="lg">
                     <Link href="/tours/group-tours">Book a Group Tour</Link>
+                  </Button>
+                  {/* The bookable private-tour catalog. The nav deliberately
+                      points at this page rather than at the catalog, so the
+                      link lives here instead. */}
+                  <Button asChild size="lg" variant="outline">
+                    <Link href="/tours/private-tours">See private tours</Link>
                   </Button>
                 </div>
               </div>

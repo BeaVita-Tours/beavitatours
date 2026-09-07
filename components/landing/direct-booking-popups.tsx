@@ -1,6 +1,11 @@
 "use client";
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+// Must be the same module instance that `components/ui/dialog.tsx` uses.
+// Importing `@radix-ui/react-dialog` directly resolves to a *different* copy
+// than the `radix-ui` meta-package, so `DialogPrimitive.Content` cannot see the
+// context created by `<Dialog>` and throws "`DialogContent` must be used within
+// `Dialog`" — which took both /lp/* pages down at runtime.
+import { Dialog as DialogPrimitive } from "radix-ui";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";

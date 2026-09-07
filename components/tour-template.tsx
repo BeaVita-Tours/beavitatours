@@ -107,8 +107,10 @@ export function TourTemplate({
             <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
           </div>
           <div className="container mx-auto px-4 z-10 text-center">
+            {/* The coral accent gave near-white text 3.16:1. Small uppercase
+                text needs 4.5:1, so this badge uses the deeper teal too. */}
             {badge ? (
-              <Badge className="mb-4 bg-accent text-accent-foreground border-0">
+              <Badge className="mb-4 bg-primary-strong text-primary-foreground border-0">
                 {badge}
               </Badge>
             ) : null}
@@ -183,17 +185,28 @@ function TourGallery({ images }: { images: CarouselImage[] }) {
             <CarouselNext />
           </Carousel>
 
-          <div className="mt-3 flex items-center justify-center gap-2">
+          {/*
+            The dot stays 10px; the button around it is 24px so it can actually
+            be tapped. The visual is unchanged — only the hit area grew, which
+            is what WCAG's minimum target size is about.
+          */}
+          <div className="mt-3 flex items-center justify-center">
             {images.map((img, index) => (
               <button
                 key={img.src}
                 type="button"
                 aria-label={`Go to slide ${index + 1}`}
-                className={`h-2.5 rounded-full transition-all ${
-                  index === selectedIndex ? "w-6 bg-primary" : "w-2.5 bg-border"
-                }`}
+                aria-current={index === selectedIndex ? "true" : undefined}
+                className="flex size-6 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={() => api?.scrollTo(index)}
-              />
+              >
+                <span
+                  aria-hidden="true"
+                  className={`block h-2.5 rounded-full transition-all ${
+                    index === selectedIndex ? "w-6 bg-primary-strong" : "w-2.5 bg-border"
+                  }`}
+                />
+              </button>
             ))}
           </div>
           {images.length > 1 ? (
@@ -252,10 +265,17 @@ export function TourCTA() {
     : "";
 
   return (
-    <section className="py-16 bg-primary text-primary-foreground">
+    /*
+      --primary-strong rather than --primary: the lighter brand teal gives this
+      band's near-white text 2.5:1, below AA. The deeper stop is 4.53:1 and is
+      the same colour family. TourTemplate is used only by the five theme pages
+      under /tours/*, so this changes nothing else on the site.
+    */
+    <section className="py-16 bg-primary-strong text-primary-foreground">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-4">{ctaHeading}</h2>
-        <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
+        {/* Full opacity: at /90 this measured 2.3:1 even on the deeper teal. */}
+        <p className="text-xl mb-8 text-primary-foreground max-w-2xl mx-auto">
           {`Book your ${ctaName} tour today.`}
           {startingFromText}
         </p>

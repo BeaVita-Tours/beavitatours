@@ -1,5 +1,7 @@
-"use client";
+import type { Metadata } from "next";
 
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { SITE_URL } from "@/lib/constants";
 import {
   TourCTA,
   TourDescription,
@@ -10,6 +12,26 @@ import {
 const carouselImages: CarouselImage[] = [
   { src: "/imgs/winefood.jpg", alt: "Wine and food experience in Veneto" },
 ];
+
+/**
+ * A Server Component since the booking upsell below is server-rendered. It was
+ * `"use client"` only to host `TourTemplate`, which keeps its own directive —
+ * so this page could not export metadata and inherited the site-wide title.
+ */
+export const metadata: Metadata = {
+  title: "Wine and food day trips from Venice | Bea Vita Tours",
+  description:
+    "Prosecco at the winery that made it, local cheese and salami, and a long lunch in the Veneto hills. Small-group and private day trips from Venice.",
+  alternates: { canonical: "/tours/wine-food" },
+  openGraph: {
+    type: "website",
+    title: "Wine and food day trips from Venice | Bea Vita Tours",
+    description:
+      "Prosecco at the winery that made it, local cheese and salami, and a long lunch in the Veneto hills. Small-group and private day trips from Venice.",
+    url: `${SITE_URL}/tours/wine-food`,
+    siteName: "Bea Vita Tours",
+  },
+};
 
 export default function WineFoodTourPage() {
   return (
@@ -47,6 +69,10 @@ export default function WineFoodTourPage() {
           cater for all your tastes and needs.
         </p>
       </TourDescription>
+      {/* Bookable departures for this theme, between the copy and the
+          existing CTA. Renders nothing while the flag is off. */}
+      <ThemeUpsell theme="wine-food" />
+
       <TourCTA />
     </TourTemplate>
   );

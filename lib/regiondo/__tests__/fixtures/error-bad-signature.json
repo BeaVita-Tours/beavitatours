@@ -1,0 +1,7 @@
+{
+  "status": 401,
+  "body": {
+    "code": 401,
+    "message": "Nicht autorisierte"
+  }
+}

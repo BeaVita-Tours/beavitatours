@@ -19,7 +19,20 @@ import { DirectBookingPopups } from "@/components/landing/direct-booking-popups"
 interface EscapeLandingPageProps {
   heroTitle: string;
   heroSubtitle: string;
-  widgetUrl: string;
+  /**
+   * @deprecated The Regiondo whitelabel URL loaded through
+   * `/api/regiondo-proxy`. Used only when `bookingSlot` is absent, i.e. while
+   * `REGIONDO_NATIVE_BOOKING` is off. Remove together with the proxy route once
+   * the native flow is verified.
+   */
+  widgetUrl?: string;
+  /**
+   * The native catalog, passed in from the page as a Server Component. React
+   * renders it on the server even though this shell is a client component, so
+   * the tour cards arrive as HTML with no client JavaScript of their own —
+   * which on a paid-traffic page is the whole point.
+   */
+  bookingSlot?: React.ReactNode;
 }
 
 const heroImage = "/landing/tourpics/gyg4.webp";
@@ -98,6 +111,7 @@ export function EscapeLandingPage({
   heroTitle,
   heroSubtitle,
   widgetUrl,
+  bookingSlot,
 }: EscapeLandingPageProps) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [showBackButton, setShowBackButton] = useState(false);
@@ -185,38 +199,45 @@ export function EscapeLandingPage({
               {ctaLabel}
             </h2>
             <Separator className="mx-auto mt-4 mb-8 w-16" />
-            <div className="relative overflow-hidden">
-              {showBackButton && (
-                <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-1.5 text-muted-foreground"
-                    onClick={goBackToMain}
-                  >
-                    <ArrowLeft className="size-4" />
-                    Back to all tours
-                  </Button>
-                </div>
-              )}
-              {!iframeLoaded && (
-                <div className="flex h-[800px] w-full flex-col items-center gap-4">
-                  <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
-                </div>
-              )}
-              <iframe
-                key={iframeKey}
-                src={"/api/regiondo-proxy?url=" + widgetUrl}
-                title="Booking widget"
-                width="100%"
-                height="800"
-                style={{ border: 0 }}
-                allow="payment"
-                loading="lazy"
-                className={cn("w-full", !iframeLoaded && "h-0")}
-                onLoad={handleIframeLoad}
-              />
-            </div>
+            {bookingSlot ? (
+              // Native catalog: server-rendered cards, no iframe, no
+              // third-party script, nothing in the critical path.
+              bookingSlot
+            ) : (
+              /* @deprecated Legacy Regiondo iframe. See widgetUrl above. */
+              <div className="relative overflow-hidden">
+                {showBackButton && (
+                  <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-1.5 text-muted-foreground"
+                      onClick={goBackToMain}
+                    >
+                      <ArrowLeft className="size-4" />
+                      Back to all tours
+                    </Button>
+                  </div>
+                )}
+                {!iframeLoaded && (
+                  <div className="flex h-[800px] w-full flex-col items-center gap-4">
+                    <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+                <iframe
+                  key={iframeKey}
+                  src={"/api/regiondo-proxy?url=" + widgetUrl}
+                  title="Booking widget"
+                  width="100%"
+                  height="800"
+                  style={{ border: 0 }}
+                  allow="payment"
+                  loading="lazy"
+                  className={cn("w-full", !iframeLoaded && "h-0")}
+                  onLoad={handleIframeLoad}
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

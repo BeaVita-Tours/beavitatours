@@ -163,7 +163,9 @@ export function Navigation() {
             >
               <Image
                 src={navbarLogo}
-                alt="BeaVitaTours"
+                // Decorative: the wrapping link already carries the name, so
+                // repeating it here makes a screen reader say it twice.
+                alt=""
                 width={480}
                 height={96}
                 priority
