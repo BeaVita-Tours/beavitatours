@@ -30,9 +30,9 @@ interface PriceDisplayProps {
 }
 
 const SIZES = {
-  sm: "text-base",
-  md: "text-xl",
-  lg: "text-3xl",
+  sm: "text-lg",
+  md: "text-2xl",
+  lg: "text-4xl",
 } as const;
 
 export function PriceDisplay({
@@ -45,7 +45,12 @@ export function PriceDisplay({
   const amount = formatPrice(price.amount, price.currency);
 
   return (
-    <p className={cn("flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5", className)}>
+    <p
+      className={cn(
+        "flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5",
+        className,
+      )}
+    >
       {showFrom ? (
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           from
@@ -58,9 +63,13 @@ export function PriceDisplay({
         </span>
       ) : null}
 
-      <span className={cn("font-bold text-foreground", SIZES[size])}>{amount}</span>
+      <span className={cn("font-bold text-foreground", SIZES[size])}>
+        {amount}
+      </span>
 
-      {unit ? <span className="text-sm text-muted-foreground">{unit}</span> : null}
+      {unit ? (
+        <span className="text-sm text-muted-foreground">{unit}</span>
+      ) : null}
     </p>
   );
 }
