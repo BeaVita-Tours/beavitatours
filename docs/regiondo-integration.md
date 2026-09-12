@@ -95,7 +95,6 @@ lib/regiondo/
   cache.ts          cache tags and the revalidation vocabulary
   slugs.ts          the tour URL registry
   collections.ts    account tags, landing-page sets, theme-page upsell sets
-  session.ts        the signed httpOnly booking cookie
   catalog-params.ts the catalog's URL contract
   action-state.ts   shared state shape for the Server Actions
 ```
@@ -220,16 +219,14 @@ origin, this server or this JavaScript — not by care, but by construction.
 
 ## Sessions
 
-Reservations are **account-global**: `GET /checkout/hold` lists every active hold
-on the API key, not per-visitor. The signed `httpOnly` cookie is therefore the
-only thing binding a reservation to a browser, and `/book/[code]` refuses any
-code that does not match the cookie. A pasted reservation code opens nothing.
+There are none. The booking panel's one action holds the places and returns
+Regiondo's checkout URL in the same request, and the customer enters their
+details on Regiondo's page (D-019). Nothing about a reservation is stored on
+our side, and no customer data ever reaches this origin.
 
-The cookie carries a reservation code, the line item and captured UTM tags —
-opaque references only. **No customer data.** Contact details are validated
-server-side and then posted nowhere: Regiondo's hosted checkout collects them
-again as part of taking payment, so keeping them here would be data we do not
-need.
+Reservations are **account-global** on the API (`GET /checkout/hold` lists
+every active hold on the key), which is exactly why no page of ours takes a
+reservation code as input any more.
 
 Its signing key is derived from the Regiondo private key with a distinct `info`
 string, rather than adding another secret to manage. Rotating the API key
@@ -342,7 +339,6 @@ NEW         /tours                      catalog index, filters in ?searchParams
                                         tailor-made offer (renders with the flag
                                         off too, without the catalog)
             /tours/[slug]               tour detail
-            /book/[code]                checkout        (noindex)
             /book/confirmation          confirmation    (noindex)
 ```
 

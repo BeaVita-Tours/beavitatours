@@ -1,34 +1,38 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
-import { AlertCircle, CalendarDays, Loader2, Minus, Plus, ShieldCheck } from "lucide-react";
+import { type ReactNode, useActionState, useEffect, useMemo, useState, useTransition } from "react";
+import { AlertCircle, ArrowRight, CalendarDays, Clock, Loader2, Minus, Plus, ShieldCheck, Users } from "lucide-react";
 
 import { startBooking } from "@/app/(site)/book/actions";
 import { IDLE } from "@/lib/regiondo/action-state";
 import { loadSlotOptions } from "@/app/(site)/tours/[slug]/actions";
+import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice, PriceDisplay } from "@/components/tours/price-display";
+import { trackBeginCheckout, trackPaymentHandoff } from "@/lib/analytics";
 import type { TourOption, TourVariation } from "@/lib/regiondo/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The calendar is the heaviest dependency on a tour page and most visitors read
- * before they book, so it loads on demand rather than in the initial bundle.
- * `ssr: false` because it has nothing to contribute to the static shell — the
- * server-rendered summary above it is what needs to be in the HTML.
+ * The calendar is the heaviest dependency on a tour page, so it loads after
+ * the static shell rather than in the initial bundle. `ssr: false` because it
+ * has nothing to contribute to that shell — and its "today" depends on the
+ * visitor's clock, which the server does not have.
  */
 const AvailabilityCalendar = dynamic(
   () => import("@/components/tours/availability-calendar").then((m) => m.AvailabilityCalendar),
   {
     ssr: false,
-    loading: () => <Skeleton className="h-[19rem] w-full" />,
+    loading: () => <Skeleton className="h-[21rem] w-full rounded-2xl" />,
   }
 );
 
 interface BookingPanelProps {
   slug: string;
+  /** For the ecommerce events. */
+  tour: { id: string; title: string; category?: string };
   variations: readonly TourVariation[];
   /** date -> times, fetched live on the server for the initial window. */
   availability: Readonly<Record<string, readonly string[]>>;
@@ -39,12 +43,22 @@ interface BookingPanelProps {
   currency: string;
   /** Hours of lead time the supplier needs, from the product. */
   bookingNoticeHours: number;
-  /** Attribution captured from the landing URL, forwarded through checkout. */
-  utm?: Record<string, string>;
 }
 
+/**
+ * The booking panel: date, time, option, party size — then one button that
+ * holds the places and sends the customer to Regiondo's checkout, where they
+ * enter their details and pay. Nothing is asked here that Regiondo asks again
+ * (D-019).
+ *
+ * The handoff is done from the client, not by a server redirect: the action
+ * returns the checkout URL, the panel fires the payment-handoff event, then
+ * navigates. A redirect from the action would leave the page before the
+ * event could be sent.
+ */
 export function BookingPanel({
   slug,
+  tour,
   variations,
   availability,
   initialOptions,
@@ -52,7 +66,6 @@ export function BookingPanel({
   initialTime,
   currency,
   bookingNoticeHours,
-  utm,
 }: BookingPanelProps) {
   const [variationId, setVariationId] = useState(variations[0]?.id ?? "");
   const [date, setDate] = useState<string | null>(initialDate);
@@ -61,13 +74,15 @@ export function BookingPanel({
   const [optionId, setOptionId] = useState(initialOptions[0]?.id ?? "");
   const [qty, setQty] = useState(() => Math.max(1, initialOptions[0]?.minPerOrder ?? 1));
   const [slotError, setSlotError] = useState<string | null>(null);
-  const [showCalendar, setShowCalendar] = useState(false);
   const [loadingSlot, startSlotLoad] = useTransition();
+  const [handingOff, setHandingOff] = useState(false);
 
   const [state, formAction, submitting] = useActionState(startBooking, IDLE);
+  const { hasAnalyticsConsent } = useCookieConsent();
 
   const option = options.find((candidate) => candidate.id === optionId) ?? options[0];
   const times = date ? (availability[date] ?? []) : [];
+  const total = option ? option.price.amount * qty : 0;
 
   const minDate = useMemo(() => {
     const earliest = new Date();
@@ -83,9 +98,21 @@ export function BookingPanel({
     setQty((current) => clampQty(current, option));
   }, [option]);
 
+  // The hold is placed; off to Regiondo.
+  useEffect(() => {
+    if (state.status !== "handoff") return;
+    setHandingOff(true);
+    trackPaymentHandoff(
+      { currency, value: total, items: [analyticsItem(tour, option, qty)] },
+      hasAnalyticsConsent
+    );
+    navigateViaLink(state.checkoutUrl);
+    // Fire once per handoff state, not on every consent or price tick.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: deliberate — see above
+  }, [state]);
+
   function selectDate(next: string) {
     setDate(next);
-    setShowCalendar(false);
     setSlotError(null);
 
     const nextTime = availability[next]?.[0] ?? null;
@@ -103,27 +130,35 @@ export function BookingPanel({
   }
 
   const soldOut = option?.seatsLeft === 0;
+  const busy = submitting || handingOff;
   const canBook = Boolean(date && time && option && !soldOut && !loadingSlot);
-  const total = option ? option.price.amount * qty : 0;
   const maxQty = option ? maxSelectable(option) : 1;
+  const perGroup = Boolean(option && option.maxPerOrder > 1);
+  const errorMessage = slotError ?? (state.status === "error" ? state.message : null);
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form
+      action={formAction}
+      onSubmit={() => {
+        trackBeginCheckout(
+          { currency, value: total, items: [analyticsItem(tour, option, qty)] },
+          hasAnalyticsConsent
+        );
+      }}
+      className="space-y-5"
+    >
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="variationId" value={variationId} />
       <input type="hidden" name="optionId" value={optionId} />
       <input type="hidden" name="date" value={date ?? ""} />
       <input type="hidden" name="time" value={time ?? ""} />
       <input type="hidden" name="qty" value={qty} />
-      {utm && Object.keys(utm).length > 0 ? (
-        <input type="hidden" name="utm" value={JSON.stringify(utm)} />
-      ) : null}
 
       <div>
         <PriceDisplay
           price={option ? option.price : { amount: 0, wasAmount: null, currency }}
           size="lg"
-          unit={option && option.maxPerOrder > 1 ? "per group" : "per person"}
+          unit={perGroup ? "per group" : "per person"}
         />
         {option?.seatsLeft !== null && option !== undefined && option.seatsLeft <= 6 && !soldOut ? (
           <p className="mt-1 text-sm font-medium text-accent">
@@ -137,66 +172,41 @@ export function BookingPanel({
           <legend className="text-sm font-medium">Ticket type</legend>
           <div className="flex flex-wrap gap-2">
             {variations.map((variation) => (
-              <button
+              <Chip
                 key={variation.id}
-                type="button"
+                pressed={variationId === variation.id}
                 onClick={() => {
                   setVariationId(variation.id);
                   setDate(null);
                   setTime(null);
                   setOptions([]);
                   setOptionId("");
-                  setShowCalendar(true);
                 }}
-                aria-pressed={variationId === variation.id}
-                className={cn(
-                  "rounded-xl border px-3 py-1.5 text-sm font-medium transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  variationId === variation.id
-                    ? "border-primary-strong bg-primary-strong text-primary-foreground"
-                    : "border-input hover:bg-muted"
-                )}
               >
                 {variation.name}
-              </button>
+              </Chip>
             ))}
           </div>
         </fieldset>
       ) : null}
 
       <div className="space-y-2">
-        <span className="block text-sm font-medium" id="booking-date-label">
-          Date
-        </span>
-        {/*
-          `aria-labelledby` here would replace the button's accessible name with
-          "Date" while it visibly reads "Mon, 7 September 2026" — a
-          label-in-name mismatch, which breaks voice control ("click Monday the
-          seventh" would not match). The visible text is the name; "Date" is
-          supporting context, so it is `aria-describedby`.
-        */}
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setShowCalendar((open) => !open)}
-          aria-expanded={showCalendar}
-          aria-describedby="booking-date-label"
-          className="w-full justify-start font-normal"
-        >
-          <CalendarDays aria-hidden="true" />
-          {date ? formatLongDate(date) : "Choose a date"}
-        </Button>
-
-        {showCalendar ? (
-          <div className="rounded-2xl border bg-card p-3">
-            <AvailabilityCalendar
-              availability={availability}
-              selected={date}
-              onSelect={selectDate}
-              minDate={minDate}
-            />
-          </div>
-        ) : null}
+        <p className="flex items-center justify-between text-sm">
+          <span className="font-medium" id="booking-date-label">
+            Pick a date
+          </span>
+          <span className="text-muted-foreground">
+            {date ? formatLongDate(date) : "Highlighted days are available"}
+          </span>
+        </p>
+        <div className="rounded-2xl border bg-card p-3" aria-labelledby="booking-date-label">
+          <AvailabilityCalendar
+            availability={availability}
+            selected={date}
+            onSelect={selectDate}
+            minDate={minDate}
+          />
+        </div>
       </div>
 
       {times.length > 1 ? (
@@ -204,28 +214,12 @@ export function BookingPanel({
           <legend className="text-sm font-medium">Departure time</legend>
           <div className="flex flex-wrap gap-2">
             {times.map((slot) => (
-              <button
-                key={slot}
-                type="button"
-                onClick={() => setTime(slot)}
-                aria-pressed={time === slot}
-                className={cn(
-                  "rounded-xl border px-3 py-1.5 text-sm transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  time === slot
-                    ? "border-primary-strong bg-primary-strong text-primary-foreground"
-                    : "border-input hover:bg-muted"
-                )}
-              >
+              <Chip key={slot} pressed={time === slot} onClick={() => setTime(slot)}>
                 {slot.slice(0, 5)}
-              </button>
+              </Chip>
             ))}
           </div>
         </fieldset>
-      ) : times.length === 1 && date ? (
-        <p className="text-sm text-muted-foreground">
-          Departs at <span className="font-medium text-foreground">{times[0]?.slice(0, 5)}</span>
-        </p>
       ) : null}
 
       {options.length > 1 ? (
@@ -269,28 +263,30 @@ export function BookingPanel({
         </fieldset>
       ) : null}
 
-      <div className="space-y-2">
-        <span className="block text-sm font-medium" id="qty-label">
-          {option && option.maxPerOrder > 1 ? "Groups" : "Guests"}
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium" id="qty-label">
+          {perGroup ? "Groups" : "Guests"}
         </span>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="outline"
             size="icon"
+            className="rounded-full"
             onClick={() => setQty((n) => Math.max(option ? Math.max(option.minPerOrder, 1) : 1, n - 1))}
             disabled={qty <= (option ? Math.max(option.minPerOrder, 1) : 1)}
             aria-label="One fewer"
           >
             <Minus />
           </Button>
-          <output aria-labelledby="qty-label" className="w-8 text-center text-lg font-semibold">
+          <output aria-labelledby="qty-label" className="w-8 text-center text-lg font-semibold tabular-nums">
             {qty}
           </output>
           <Button
             type="button"
             variant="outline"
             size="icon"
+            className="rounded-full"
             onClick={() => setQty((n) => Math.min(maxQty, n + 1))}
             disabled={qty >= maxQty}
             aria-label="One more"
@@ -300,20 +296,42 @@ export function BookingPanel({
         </div>
       </div>
 
-      {option && qty > 1 ? (
-        <div className="flex items-baseline justify-between border-t border-border pt-4">
-          <span className="text-sm text-muted-foreground">Total</span>
-          <span className="text-xl font-bold">{formatPrice(total, option.price.currency)}</span>
+      {/* What is about to be reserved, in one glance, next to what it costs. */}
+      {date && time && option ? (
+        <div className="space-y-2 rounded-2xl bg-muted/60 p-4 text-sm">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-muted-foreground">
+            <dt className="flex items-center gap-1.5">
+              <CalendarDays className="size-4" aria-hidden="true" />
+              <span className="sr-only">Date</span>
+            </dt>
+            <dd className="text-foreground">{formatLongDate(date)}</dd>
+            <dt className="flex items-center gap-1.5">
+              <Clock className="size-4" aria-hidden="true" />
+              <span className="sr-only">Departure</span>
+            </dt>
+            <dd className="text-foreground">{time.slice(0, 5)}</dd>
+            <dt className="flex items-center gap-1.5">
+              <Users className="size-4" aria-hidden="true" />
+              <span className="sr-only">{perGroup ? "Groups" : "Guests"}</span>
+            </dt>
+            <dd className="text-foreground">
+              {qty} {perGroup ? (qty === 1 ? "group" : "groups") : qty === 1 ? "guest" : "guests"}
+            </dd>
+          </dl>
+          <div className="flex items-baseline justify-between border-t border-border/70 pt-2">
+            <span className="font-medium">Total</span>
+            <span className="text-xl font-bold">{formatPrice(total, option.price.currency)}</span>
+          </div>
         </div>
       ) : null}
 
-      {slotError || state.message ? (
+      {errorMessage ? (
         <p
           role="alert"
           className="flex items-start gap-2 rounded-xl bg-destructive/10 p-3 text-sm text-destructive"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          <span>{slotError ?? state.message}</span>
+          <span>{errorMessage}</span>
         </p>
       ) : null}
 
@@ -327,20 +345,95 @@ export function BookingPanel({
         type="submit"
         size="lg"
         className="w-full bg-primary-strong hover:bg-primary-strong/90"
-        disabled={!canBook || submitting}
+        disabled={!canBook || busy}
       >
-        {submitting || loadingSlot ? (
-          <Loader2 className="animate-spin" aria-hidden="true" />
-        ) : null}
-        {soldOut ? "Sold out — pick another date" : date ? "Reserve your places" : "Choose a date"}
+        {busy || loadingSlot ? <Loader2 className="animate-spin" aria-hidden="true" /> : null}
+        {handingOff
+          ? "Taking you to secure payment…"
+          : submitting
+            ? "Reserving your places…"
+            : soldOut
+              ? "Sold out — pick another date"
+              : date
+                ? "Reserve your places"
+                : "Choose a date"}
+        {!busy && canBook ? <ArrowRight aria-hidden="true" /> : null}
       </Button>
 
-      <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
-        <ShieldCheck className="size-3.5" aria-hidden="true" />
-        Payment is taken securely by Regiondo. We never see your card details.
+      <p className="flex items-start justify-center gap-1.5 text-center text-xs text-muted-foreground">
+        <ShieldCheck className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+        <span>
+          Your places are held for 20 minutes while you enter your details and pay on
+          Regiondo&apos;s secure checkout. We never see your card details.
+        </span>
       </p>
     </form>
   );
+}
+
+/**
+ * Leave for Regiondo through a real link, not `window.location.assign`.
+ *
+ * GA4's cross-domain linker keeps the session alive across domains by
+ * appending a `_gl=` token to outbound URLs — but it only does so for
+ * navigations it can observe: a click on an anchor (it listens on
+ * `mousedown`/`keyup`) or a form submit. A programmatic `location.assign`
+ * bypasses it, and every purchase on Regiondo's page would then start a fresh
+ * session with `regiondo.com` as its referrer. So: an anchor, a synthetic
+ * `mousedown` for the linker, then the click. A normal navigation in the
+ * history (Back returns here with the date still chosen).
+ */
+function navigateViaLink(url: string) {
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.rel = "noopener";
+  anchor.style.display = "none";
+  document.body.appendChild(anchor);
+  anchor.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  anchor.click();
+  anchor.remove();
+}
+
+/** A toggle pill: ticket type, departure time. */
+function Chip({
+  pressed,
+  onClick,
+  children,
+}: {
+  pressed: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={pressed}
+      className={cn(
+        "rounded-xl border px-3 py-1.5 text-sm font-medium transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        pressed
+          ? "border-primary-strong bg-primary-strong text-primary-foreground"
+          : "border-input hover:bg-muted"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+function analyticsItem(
+  tour: BookingPanelProps["tour"],
+  option: TourOption | undefined,
+  qty: number
+) {
+  return {
+    item_id: tour.id,
+    item_name: tour.title,
+    ...(tour.category ? { item_category: tour.category } : {}),
+    price: option?.price.amount ?? 0,
+    quantity: qty,
+  };
 }
 
 /**

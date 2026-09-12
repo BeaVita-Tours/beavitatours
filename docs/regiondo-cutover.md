@@ -79,8 +79,9 @@ Use the cheapest shared departure (`/tours/venice-best-of-the-dolomites-day-trip
 
 With cookies accepted, in GTM Preview or the browser console:
 
-- [ ] `begin_checkout` fires on `/book/[code]` with the right value and currency
-- [ ] `add_payment_info` fires when you press Continue
+- [ ] `begin_checkout` fires when you press "Reserve your places", with the right
+      value and currency
+- [ ] `add_payment_info` fires just before the browser leaves for Regiondo
 - [ ] `purchase` fires **once** on the confirmation page, with the server-verified
       total and the order number as `transaction_id`
 - [ ] refreshing the confirmation page does **not** fire `purchase` again

@@ -1,5 +1,5 @@
 /**
- * Shared state shape for the booking Server Actions.
+ * Shared state shape for the booking Server Action.
  *
  * This lives outside `app/(site)/book/actions.ts` because a `"use server"`
  * module may export **async functions only** — exporting the `IDLE` constant
@@ -10,13 +10,23 @@
  * Types are erased and would have been fine; the value is what breaks it.
  */
 
-export interface ActionState {
-  readonly status: "idle" | "error";
-  readonly message?: string;
-  /** Field-level messages keyed by field name, for inline form errors. */
-  readonly fieldErrors?: Readonly<Record<string, string>>;
-  /** Set when the failure means availability has to be re-checked. */
-  readonly recheckAvailability?: boolean;
-}
+export type ActionState =
+  | { readonly status: "idle" }
+  | {
+      readonly status: "error";
+      readonly message: string;
+      /** Set when the failure means availability has to be re-checked. */
+      readonly recheckAvailability?: boolean;
+    }
+  | {
+      /**
+       * The hold is placed and Regiondo's hosted checkout is ready. The client
+       * navigates there itself (rather than the action redirecting) so it can
+       * fire the payment-handoff event first — a server redirect leaves the
+       * page before any script runs.
+       */
+      readonly status: "handoff";
+      readonly checkoutUrl: string;
+    };
 
 export const IDLE: ActionState = { status: "idle" };

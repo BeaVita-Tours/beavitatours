@@ -4,10 +4,9 @@ import { expect, type Page, test } from "@playwright/test";
  * The booking flow, end to end, against the mock Regiondo in
  * `e2e/mock-regiondo.mjs`.
  *
- * Three scenarios, chosen because they are the ones that cost money when they
- * go wrong: the happy path must reach the payment handoff, a departure that
- * sells out must not let anyone start a booking, and a hold that expired must
- * offer a way back rather than a dead end.
+ * The scenarios are the ones that cost money when they go wrong: the happy
+ * path must reach the payment handoff in one step, and a departure that sells
+ * out must not let anyone start a booking.
  */
 
 const TOUR = "/tours/venice-dolomites-cortina-misurina-day-trip";
@@ -191,50 +190,45 @@ test.describe("theme page upsells", () => {
 });
 
 test.describe("happy path", () => {
-  test("holds places and hands off to Regiondo's hosted checkout", async ({ page }) => {
+  test("holds places and hands off to Regiondo's hosted checkout in one step", async ({
+    page,
+  }) => {
+    // Never actually load Regiondo: the whole compliance position is that
+    // payment happens on their domain, so all this asserts is that we go there.
+    await page.route(/regiondo\.(com|de)/, (route) => route.abort());
+
     await page.goto(TOUR);
 
     const reserve = page.getByRole("button", { name: /reserve your places/i });
     await expect(reserve).toBeEnabled({ timeout: 20_000 });
-    await reserve.click();
 
-    await expect(page).toHaveURL(/\/book\/mock-\d+/);
-    await expect(page.getByRole("heading", { name: /complete your booking/i })).toBeVisible();
+    // There is no form of ours in between. Regiondo's checkout asks for the
+    // customer's details itself, and its link cannot be pre-filled (D-008), so
+    // asking here as well meant typing everything twice (D-019).
+    await expect(page.getByLabel(/first name/i)).toHaveCount(0);
 
-    // The form comes from the API's field definitions, deduplicated: one of
-    // each, not the two sets the API describes.
-    await expect(page.getByLabel(/first name/i)).toHaveCount(1);
-    await expect(page.getByLabel(/email/i)).toHaveCount(1);
-    await expect(page.getByText(/places held for \d+:\d\d/i)).toBeVisible();
-
-    await page.getByLabel(/first name/i).fill("Test");
-    await page.getByLabel(/last name/i).fill("Customer");
-    await page.getByLabel(/email/i).fill("test@example.com");
-    await page.getByLabel(/phone/i).fill("+39 000 000 0000");
-
-    // Do not follow the redirect off-site; assert where it points. The whole
-    // compliance position is that payment happens on Regiondo's domain.
     const handoff = page.waitForRequest(
-      (request) => request.url().includes("regiondo.com/checkout"),
+      (request) => request.isNavigationRequest() && /regiondo\.(com|de)/.test(request.url()),
       { timeout: 20_000 }
     );
-    await page.getByRole("button", { name: /continue to secure payment/i }).click();
+    await reserve.click();
 
     const request = await handoff;
-    expect(new URL(request.url()).hostname).toMatch(/regiondo\.com$/);
+    expect(new URL(request.url()).hostname).toMatch(/regiondo\.(com|de)$/);
+    expect(new URL(request.url()).pathname).toContain("/checkout");
   });
 
   test("never asks for card details on our own origin", async ({ page }) => {
     await page.goto(TOUR);
-    await page.getByRole("button", { name: /reserve your places/i }).click();
-    await expect(page).toHaveURL(/\/book\//);
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
 
-    // No field on our checkout should be capable of collecting a card.
+    // No field on our side should be capable of collecting a card — there is
+    // no field on our side at all.
     const html = await page.content();
     expect(html).not.toMatch(/card[_-]?number|cardnumber|cvv|cvc|autocomplete="cc-/i);
-    await expect(
-      page.getByText(/never see your card details|never reach this website/i).first()
-    ).toBeVisible();
+    await expect(page.getByText(/never see your card details/i).first()).toBeVisible();
   });
 });
 
@@ -267,33 +261,6 @@ test.describe("sold out", () => {
       page.getByText(/sold out|just been taken|no longer available/i)
     ).toBeVisible();
     await expect(page).toHaveURL(new RegExp(TOUR));
-  });
-});
-
-test.describe("expired reservation", () => {
-  test("gives a way back instead of a dead end", async ({ page }) => {
-    await page.goto(TOUR);
-    await page.getByRole("button", { name: /reserve your places/i }).click();
-    await expect(page).toHaveURL(/\/book\//);
-
-    // The hold lapses upstream while the customer is filling in the form.
-    await setScenario(page, "expired");
-    await page.reload();
-
-    await expect(page.getByRole("heading", { name: /expired/i })).toBeVisible();
-    await expect(page.getByText(/nothing has been charged/i)).toBeVisible();
-    await expect(page.getByRole("link", { name: /choose a date/i })).toBeVisible();
-  });
-
-  test("a reservation code alone does not open someone else's checkout", async ({ page }) => {
-    // Reservations are account-global on this API, so the signed session cookie
-    // is the only thing binding one to a browser.
-    await page.context().clearCookies();
-    await acceptCookies(page);
-    await page.goto("/book/mock-1234567890");
-
-    await expect(page.getByRole("heading", { name: /expired/i })).toBeVisible();
-    await expect(page.getByText(/complete your booking/i)).toHaveCount(0);
   });
 });
 
@@ -333,12 +300,14 @@ test.describe("keyboard access", () => {
       timeout: 20_000,
     });
 
-    // Tab until the date button has focus, then open the calendar with Enter.
-    const dateButton = page.getByRole("button", { name: /\d{1,2} \w+ \d{4}|choose a date/i });
-    await dateButton.focus();
-    await expect(dateButton).toBeFocused();
+    // The calendar is inline: an available day takes focus and Enter picks it.
+    const day = page.locator(".rdp-beavita table button:not([disabled])").first();
+    await day.focus();
+    await expect(day).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(dateButton).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
 
     // The submit button is reachable and activatable from the keyboard.
     const reserve = page.getByRole("button", { name: /reserve your places/i });

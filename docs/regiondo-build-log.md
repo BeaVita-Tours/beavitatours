@@ -434,6 +434,9 @@ shared secret — an origin check is not the control that applies there.
 
 ### D-011 — Booking state in a signed httpOnly cookie
 
+> Superseded by D-019: there is no longer a page of ours between the hold and
+> Regiondo's checkout, so there is no session to bind. Kept for the record.
+
 Reservations are account-global on this API (`GET /checkout/hold` lists every
 hold on the key), so the cookie is the only thing binding a reservation to a
 browser. It is `httpOnly`, `sameSite=lax`, and HMAC-signed, and `/book/[code]`
@@ -677,3 +680,38 @@ the known site-wide nav button left failing.
 | `next build`, flag off | upsell absent, no tour links, editorial copy unchanged |
 | typecheck, lint, `check:secrets` | clean |
 
+---
+
+## Follow-up — one step from "Reserve" to Regiondo (2026-09-12)
+
+### D-019 — No checkout page of our own; the booking panel hands off directly
+
+The flow was hold → `/book/<code>` ("your details": name, email, phone) →
+Regiondo's hosted checkout. The client tried it and pointed out the obvious:
+Regiondo's page asks for the same details again. It has to — `GET
+/checkout/checkoutlink` takes only the reservation code (D-008), so there is no
+way to pass what was typed along, and the action was validating the fields and
+then discarding them. A form whose only output is the bin is friction.
+
+Now `startBooking` does everything in one request: validate, rate-limit, check
+live stock, `POST /checkout/hold`, `GET /checkout/checkoutlink`, and return the
+URL. The panel fires `begin_checkout` on submit and `add_payment_info` when the
+URL comes back, then navigates — the client navigates rather than the action
+redirecting, because a server redirect leaves the page before any event can
+be sent. If the checkout link cannot be fetched after the hold, the hold is
+released immediately so the retry does not find its own seats taken.
+
+Removed with it: `/book/[code]`, `CheckoutForm`, `HoldCountdown`,
+`proceedToPayment`, `refreshHold`, `abandonBooking`, and the signed booking
+cookie (`lib/regiondo/session.ts`, D-011) — with no page to guard there is
+nothing for it to bind. UTM forwarding to the checkout page went too; the
+events fire from the landing page itself now, which is where the tags are.
+`/book/confirmation` is unchanged.
+
+Also in this pass, the calendar: always open inline rather than behind a
+toggle, opening on the first month that has a departure, available days shown
+as filled discs instead of every unavailable day struck through, month changes
+animated, and the caption/arrow row laid out on purpose (the arrows had been
+absolutely positioned against an ancestor that was not `relative`).
+
+*Reverse:* `git revert` — the removed page and cookie were self-contained.

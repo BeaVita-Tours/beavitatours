@@ -29,7 +29,6 @@ import {
   getTourBySlug,
   getTourReviews,
 } from "@/lib/regiondo/products";
-import { pickTrackedParams } from "@/lib/regiondo/session";
 import { productIdForSlug, TOUR_SLUGS } from "@/lib/regiondo/slugs";
 import {
   breadcrumbJsonLd,
@@ -57,7 +56,6 @@ import type { TourDetail } from "@/lib/regiondo/types";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 /**
@@ -108,7 +106,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function TourPage({ params, searchParams }: PageProps) {
+export default async function TourPage({ params }: PageProps) {
   const { slug } = await params;
 
   // With the flag off the route does not exist, so the site behaves exactly as
@@ -178,7 +176,7 @@ export default async function TourPage({ params, searchParams }: PageProps) {
           <div className="border-t pt-5">
             <h2 className="sr-only">Book this tour</h2>
             <Suspense fallback={<BookingPanelFallback tour={tour} />}>
-              <LiveBookingPanel tour={tour} searchParams={searchParams} />
+              <LiveBookingPanel tour={tour} />
             </Suspense>
           </div>
         </div>
@@ -234,13 +232,7 @@ export default async function TourPage({ params, searchParams }: PageProps) {
  * component is uncached by construction and streams in behind Suspense — it
  * cannot hold up the static shell.
  */
-async function LiveBookingPanel({
-  tour,
-  searchParams,
-}: {
-  tour: TourDetail;
-  searchParams: PageProps["searchParams"];
-}) {
+async function LiveBookingPanel({ tour }: { tour: TourDetail }) {
   // Everything below depends on "now" and on live stock, neither of which can
   // be baked into a prerender. Cache Components rejects `new Date()` in the
   // static shell for exactly that reason; `connection()` says "this part waits
@@ -283,11 +275,10 @@ async function LiveBookingPanel({
     );
   }
 
-  const resolved = await searchParams;
-
   return (
     <BookingPanel
       slug={tour.slug}
+      tour={{ id: tour.id, title: tour.title, category: tour.collections[0] }}
       variations={tour.variations}
       availability={availability}
       initialOptions={options}
@@ -295,7 +286,6 @@ async function LiveBookingPanel({
       initialTime={firstTime}
       currency={getConfig().currency}
       bookingNoticeHours={tour.bookingNoticeHours}
-      utm={pickTrackedParams(resolved)}
     />
   );
 }
