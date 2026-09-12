@@ -6,6 +6,7 @@ import { CheckoutForm } from "@/components/tours/checkout-form";
 import { PriceDisplay } from "@/components/tours/price-display";
 import { Button } from "@/components/ui/button";
 import { getTotals } from "@/lib/regiondo/checkout";
+import { COLLECTIONS } from "@/lib/regiondo/collections";
 import { getConfig, isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { isRegiondoError, userMessageFor } from "@/lib/regiondo/errors";
 import { getTour } from "@/lib/regiondo/products";
@@ -162,7 +163,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 function ExpiredNotice() {
   return (
     <RecoveryNotice
-      href="/tours"
+      href={COLLECTIONS.shared.href}
       expired
       message="Your reservation has expired and the places were released back to the calendar."
     />

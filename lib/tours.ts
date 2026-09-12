@@ -1,9 +1,15 @@
-import tourProsecco from "@/public/foto paesaggio edited.png";
 import tourWines from "@/public/tourwines.jpg";
 import mtb from "@/public/imgs/adventure.jpeg";
 import gallaplacidia from "@/public/gallaplacidia.webp";
-import shared from "@/public/shared.png";
 
+/**
+ * The homepage's "where do you want to go?" tiles — one per theme page.
+ *
+ * Four, not six: the Prosecco Hills now live inside Food & Wine (as in the
+ * nav), and "Group Tours" is a way of travelling rather than a place, so it
+ * belongs to the hero's group/private choice and not here — putting it in this
+ * row was muddling *where* with *how*. Titles match the theme pages' own.
+ */
 export const tours = [
   {
     title: "The Dolomites",
@@ -11,12 +17,7 @@ export const tours = [
     image: "/imgs/dolomites/dolomitesmain.jpeg",
   },
   {
-    title: "The Prosecco Hills",
-    href: "/tours/prosecco",
-    image: tourProsecco,
-  },
-  {
-    title: "Wine and Food",
+    title: "Food & Wine",
     href: "/tours/wine-food",
     image: tourWines,
   },
@@ -26,14 +27,9 @@ export const tours = [
     image: mtb,
   },
   {
-    title: "Cultural",
+    title: "Culture & History",
     href: "/tours/cultural",
     image: gallaplacidia,
-  },
-  {
-    title: "Group Tours",
-    href: "/tours/group-tours",
-    image: shared,
   },
 ];
 

@@ -21,6 +21,7 @@ import { TourReviews } from "@/components/tours/tour-reviews";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SITE_URL } from "@/lib/constants";
 import { getConfig, isNativeBookingEnabled } from "@/lib/regiondo/config";
+import { collectionForTour } from "@/lib/regiondo/collections";
 import {
   getAvailability,
   getOptions,
@@ -121,9 +122,13 @@ export default async function TourPage({ params, searchParams }: PageProps) {
   const reviews = await getTourReviews(tour.id);
   const related = await getRelatedTours(tour.id, tour.collections[0] ?? null);
 
+  // Home › Group tours / Private tours › this tour. There is no catalog index
+  // to sit between them any more, so the middle crumb is the collection the
+  // tour actually belongs to.
+  const collection = collectionForTour(tour.collections);
   const trail = [
     { name: "Home", href: "/" },
-    { name: "Tours", href: "/tours" },
+    { name: collection.label, href: collection.href },
     { name: tour.title, href: tour.href },
   ];
 

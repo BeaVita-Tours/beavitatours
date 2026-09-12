@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import type { ActionState } from "@/lib/regiondo/action-state";
+import { COLLECTIONS } from "@/lib/regiondo/collections";
 import {
   createHold,
   getCheckoutLink,
@@ -215,7 +216,7 @@ export async function abandonBooking(): Promise<void> {
     redirect(tourHref(session.item.productId));
   }
 
-  redirect("/tours");
+  redirect(COLLECTIONS.shared.href);
 }
 
 const contactSchema = z.object({

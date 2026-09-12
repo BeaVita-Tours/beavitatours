@@ -67,6 +67,22 @@ const nextConfig: NextConfig = {
         destination: "/tours/private-tours",
         permanent: true,
       },
+      // The catalog index was removed (client request, 2026-09-12): the two
+      // collection pages are the catalog now. Permanent, as /tours was in the
+      // sitemap while the native flow was previewed.
+      {
+        source: "/tours",
+        destination: "/tours/group-tours",
+        permanent: true,
+      },
+      // The Prosecco Hills page was folded into Food & Wine as its opening
+      // section (client revision, 2026-09-11). Permanent: it was in the
+      // sitemap and on the homepage.
+      {
+        source: "/tours/prosecco",
+        destination: "/tours/wine-food",
+        permanent: true,
+      },
       // Bare locale prefix (e.g. /en, /it) redirects to the homepage.
       {
         source: `/:locale${LEGACY_LOCALES}`,

@@ -61,7 +61,7 @@ test.afterAll(async ({ playwright }) => {
 
 test.describe("catalog", () => {
   test("the navbar links the catalog pages to each other", async ({ page }) => {
-    await page.goto("/tours");
+    await page.goto("/tours/group-tours");
     const nav = page.getByRole("navigation", { name: /main/i });
     await expect(nav.getByRole("link", { name: /all tours/i })).toHaveCount(0);
 
@@ -87,10 +87,35 @@ test.describe("catalog", () => {
     await expect(page).toHaveURL(/\/tours\/private-tours$/);
   });
 
-  test("lists tours with prices and links to a detail page", async ({ page }) => {
-    await page.goto("/tours");
+  test("/tours/prosecco redirects into Food & Wine, which opens with the Prosecco hills", async ({
+    page,
+  }) => {
+    await page.goto("/tours/prosecco");
+    await expect(page).toHaveURL(/\/tours\/wine-food$/);
+    await expect(page.getByRole("heading", { name: /start with the prosecco hills/i })).toBeVisible();
+    expect(await page.locator('a[href^="/tours/venice-prosecco-"]').count()).toBeGreaterThan(0);
+  });
 
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Day trips from Venice");
+  test("group tours are grouped by theme, empty themes hidden", async ({ page }) => {
+    // Not a flat catalog: the client wanted the shared departures offered by
+    // theme, in this order. The two private-only themes have no shared
+    // departure and are simply absent — no empty heading.
+    await page.goto("/tours/group-tours");
+    const headings = page.getByRole("heading", { level: 2 });
+    await expect(headings.filter({ hasText: "Dolomites" }).first()).toBeVisible();
+    const names = (await headings.allTextContents()).map((t) => t.trim());
+    expect(names.indexOf("Dolomites")).toBeLessThan(names.indexOf("Food & Wine"));
+    expect(names).not.toContain("Active & Adventure");
+    expect(names).not.toContain("Culture & History");
+    // No breadcrumb and no filter panel on this page.
+    await expect(page.getByRole("navigation", { name: /breadcrumb/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Under €150" })).toHaveCount(0);
+  });
+
+  test("lists tours with prices and links to a detail page", async ({ page }) => {
+    await page.goto("/tours/private-tours");
+
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Private day tours");
 
     const cards = page.getByRole("heading", { level: 3 });
     expect(await cards.count()).toBeGreaterThan(0);
@@ -100,7 +125,7 @@ test.describe("catalog", () => {
   });
 
   test("filters through the URL, so the view is shareable and crawlable", async ({ page }) => {
-    await page.goto("/tours");
+    await page.goto("/tours/private-tours");
     await page.getByRole("link", { name: "Under €150" }).click();
 
     await expect(page).toHaveURL(/[?&]price=under-150/);
@@ -137,17 +162,8 @@ test.describe("theme page upsells", () => {
     expect(await links.count()).toBeGreaterThan(0);
 
     await expect(page.getByText(/€\d/).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /see every day trip we run/i })).toBeVisible();
-  });
-
-  test("the see-all link lands on the full catalog, not a hidden filter", async ({ page }) => {
-    // An earlier version linked to /tours?q=dolomites — a page the reader could
-    // not reach any other way, narrowed by a filter the page did not show.
-    await page.goto("/tours/dolomites");
-    await page.getByRole("link", { name: /see every day trip we run/i }).click();
-
-    await expect(page).toHaveURL(/\/tours$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Day trips from Venice");
+    // No catalog index any more, so no "see every day trip" link out of the page.
+    await expect(page.getByRole("link", { name: /see every day trip we run/i })).toHaveCount(0);
   });
 
   test("a card leads into the booking flow", async ({ page }) => {
@@ -170,7 +186,7 @@ test.describe("theme page upsells", () => {
     expect(html).toContain("Tours through the hill towns");
     expect(html).toContain("ItemList");
     // And the page finally has a title of its own.
-    expect(html).toMatch(/<title>Medieval hill towns/);
+    expect(html).toMatch(/<title>Culture &amp; history/);
   });
 });
 

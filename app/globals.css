@@ -28,6 +28,14 @@
   --muted-foreground: oklch(0.5 0.02 60);
   --accent: oklch(66.9% 0.163 13);
   --accent-foreground: oklch(0.99 0.005 85);
+  /* Section veils for the homepage: pure white with a 7% overlay of a logo
+     colour — the teal of the ring, the sand of its yellow segment, and Otti's
+     brown. Barely there by design: enough that adjacent bands read as
+     separate chapters, never a block of colour. Keep the overlay at 10% or
+     under; the first attempt at ~15% was judged too visible. */
+  --tint-teal: color-mix(in oklab, var(--primary) 7%, white);
+  --tint-sand: color-mix(in oklab, oklch(0.82 0.13 85) 7%, white);
+  --tint-otter: color-mix(in oklab, oklch(0.5 0.06 60) 7%, white);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0.005 85);
   --border: oklch(0.9 0.01 85);
@@ -60,6 +68,9 @@
   --muted-foreground: oklch(0.65 0.02 85);
   --accent: oklch(66.9% 0.163 13);
   --accent-foreground: oklch(0.99 0.005 85);
+  --tint-teal: oklch(0.21 0.02 189);
+  --tint-sand: oklch(0.21 0.02 85);
+  --tint-otter: oklch(0.2 0.015 60);
   --destructive: oklch(0.5 0.2 27);
   --destructive-foreground: oklch(0.95 0.01 85);
   --border: oklch(0.3 0.02 60);
@@ -85,6 +96,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-tint-teal: var(--tint-teal);
+  --color-tint-sand: var(--tint-sand);
+  --color-tint-otter: var(--tint-otter);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);

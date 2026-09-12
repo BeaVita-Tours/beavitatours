@@ -30,12 +30,16 @@ Production. Preview and Production read separate environment variables, so this
 is safe.
 
 - [ ] `/tours` lists 11 tours with prices and ratings
-- [ ] `/tours/group-tours` shows the 6 shared departures, `/tours/private-tours` the 3 private ones
+- [ ] `/tours/group-tours` shows the shared departures grouped under Dolomites /
+      Food & Wine / Active & Adventure / Culture & History (the last two carry a
+      "private day" note, not cards); `/tours/private-tours` shows the private ones
 - [ ] every tour page loads and its booking panel shows a real date and price
 - [ ] `/lp/from-venice` shows 7 tours, `/lp/from-jesolo-cavallino` shows 2
-- [ ] each theme page (`/tours/dolomites`, `/prosecco`, `/wine-food`,
-      `/active-adventure`, `/cultural`) shows every departure for its subject
-      between the copy and the CTA, and "See every day trip we run" lands on `/tours`
+- [ ] each theme page (`/tours/dolomites`, `/wine-food`, `/active-adventure`,
+      `/cultural`) shows every departure for its subject between the copy and
+      the closing choice, and "See every day trip we run" lands on `/tours`
+- [ ] `/tours/prosecco` redirects to `/tours/wine-food`, whose "Start with the
+      Prosecco Hills" section carries the Prosecco departures
 - [ ] the switcher at the top of `/tours`, `/tours/group-tours` and
       `/tours/private-tours` moves between the three, and the nav's "All Tours"
       and "Private Tours" land on the right pages

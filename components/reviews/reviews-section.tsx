@@ -91,14 +91,17 @@ export async function ReviewsSection() {
   // `headlineStats` is TripAdvisor-first already; the live Google card goes
   // last so a failed fetch drops the tail, not the middle.
   return (
-    <section id="reviews" className="py-20 bg-background">
+    // Teal veil — the homepage alternates faint logo tints between sections
+    // so they read as separate chapters; see `--tint-*` in globals.css.
+    <section id="reviews" className="bg-tint-teal py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
+          {/* Sentence case, like every other heading on the page. */}
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-            What Our Guests Say
+            What our guests say
           </h2>
           <p className="mx-auto max-w-2xl text-pretty text-muted-foreground">
-            Real reviews from travelers who&apos;ve explored Veneto with us.
+            Real words from people who joined us on the road.
           </p>
         </div>
 

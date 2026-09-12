@@ -9,12 +9,17 @@ import { BlogSection } from "@/components/blog/blog-section";
 export default async function HomePage() {
   return (
     <main>
-      {/* One-line intro — a slim band bridging the navbar and the hero,
-          echoing the muted/hairline layering used in the nav rather than
-          floating as bare text on the page background. */}
-      <div className="border-b border-border/40 bg-muted/60">
-        <p className="mx-auto max-w-xl text-balance px-6 py-3 text-center text-sm font-medium tracking-wide text-muted-foreground md:text-base">
-          Boutique day tours from Venice — choose how you travel
+      {/* One-line intro — a slim band in the brand coral bridging the navbar
+          and the hero. Coral rather than the muted grey the nav uses: the
+          client wanted this line to read as the site's opening statement, not
+          as part of the chrome. Semibold, because white on this coral is
+          3.16:1 and the extra weight is what keeps it legible. One line on
+          desktop (no `text-balance`, which would split it evenly in two);
+          it wraps naturally below xl. */}
+      <div className="bg-accent text-accent-foreground">
+        <p className="px-6 py-3 text-center text-sm font-semibold tracking-wide md:text-base xl:whitespace-nowrap">
+          Day tours from Venice to the Dolomites, Prosecco Hills and beyond —
+          choose your way to explore, with people who live here.
         </p>
       </div>
 
@@ -24,18 +29,30 @@ export default async function HomePage() {
       {/* Reviews */}
       <ReviewsSection />
 
-      {/* Tours Section */}
-      <section id="tours" className="py-20 bg-background">
+      {/* Where do you want to go? — the four themes. Sand veil, so the band
+          reads as its own chapter between the reviews (teal) and the blog
+          (Otti's brown). The travel style (group / private) is the hero's
+          question, so it is deliberately not repeated as a tile here. */}
+      <section id="tours" className="bg-tint-sand py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tours</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Choose from our carefully curated selection of tours and day
-              trips, each crafted to immerse you in the true essence of the
-              Veneto region.
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">
+              Not just Venice. The Veneto region we actually know.
+            </h2>
+            <p className="text-pretty text-muted-foreground">
+              From the Dolomites to the Prosecco Hills to the streets of
+              Verona, from local flavours to places steeped in history,
+              explore the Veneto region through the places and experiences we
+              know best.
+            </p>
+            <p className="mt-3 text-pretty text-muted-foreground">
+              <span className="font-semibold text-foreground">
+                Choose what you&apos;d like to discover
+              </span>
+              , and let&apos;s go from there.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {tours.map((tour) => (
               <TourCard key={tour.title} {...tour} />
             ))}
@@ -89,15 +106,16 @@ export default async function HomePage() {
       <section id="book" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to book?
+            Ready to discover more?
           </h2>
-          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-            Join a small group on a fixed date, or let us plan a private day
-            around you.
+          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto text-pretty">
+            Venice is only the beginning. There&apos;s a lot more to see, taste
+            and experience beyond the city. Join one of our group tours or let
+            us create a private day around what you want to discover.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button asChild size="lg" variant="secondary" className="text-lg px-8">
-              <Link href="/tours/group-tours">Book a group tour</Link>
+              <Link href="/tours/group-tours">Explore group tours</Link>
             </Button>
             <Button
               asChild
@@ -105,7 +123,7 @@ export default async function HomePage() {
               variant="outline"
               className="border-primary-foreground/40 bg-transparent px-8 text-lg text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
             >
-              <Link href="/tours/private-tours">Plan a private tour</Link>
+              <Link href="/tours/private-tours">Explore private tours</Link>
             </Button>
           </div>
         </div>

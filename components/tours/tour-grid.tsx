@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { TourCard, TourCardSkeleton } from "@/components/tours/tour-card";
+import { COLLECTIONS } from "@/lib/regiondo/collections";
 import type { TourSummary } from "@/lib/regiondo/types";
 
 interface TourGridProps {
@@ -62,7 +63,7 @@ export function TourGrid({
         <p className="text-lg font-semibold text-foreground">{emptyTitle}</p>
         <p className="mt-1 text-sm text-muted-foreground">{emptyBody}</p>
         <Button asChild variant="outline" className="mt-6">
-          <Link href="/tours">See all tours</Link>
+          <Link href={COLLECTIONS.shared.href}>See our group tours</Link>
         </Button>
       </div>
     );

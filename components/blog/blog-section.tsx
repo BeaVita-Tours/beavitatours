@@ -8,12 +8,12 @@ import { PostCard } from "./post-card";
  * Homepage blog band — the three latest stories, shown beneath the reviews.
  *
  * Uses the same centered header and card grid as the other homepage sections
- * (Tours, Reviews), but sits on a muted band so it reads as the quiet closing
- * chapter of the page, separating the animated reviews marquee above from the
- * muted footer below. The heading echoes the blog page's own tagline ("Stories
- * from the road between Venice and the Dolomites") with the word "road" in the
- * site's teal, and the "View all stories" action sits below the grid as the
- * site's standard filled button.
+ * (Tours, Reviews), but sits on a faint wash of Otti's brown (`--tint-otter`)
+ * so it reads as the quiet closing chapter of the page, separating the sand
+ * of the tours band above from the muted footer below. The heading echoes the
+ * blog page's own tagline ("Stories from the road between Venice and the
+ * Dolomites") with the word "road" in the site's teal, and the "View all
+ * stories" action sits below the grid as the site's standard filled button.
  *
  * Failure modes (never a broken section): with no Sanity configured or no
  * posts published yet, `getPosts` returns an empty list, the grid is hidden,
@@ -25,15 +25,15 @@ export async function BlogSection() {
   const latest = posts.slice(0, 3);
 
   return (
-    <section id="blog" className="bg-muted/30 py-20">
+    <section id="blog" className="bg-tint-otter py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
             Stories from the <span className="text-primary">road</span>
           </h2>
           <p className="mx-auto max-w-2xl text-pretty text-muted-foreground">
-            Guides, tips and first-hand notes from our day trips around Venice —
-            the stops worth making and the roads worth taking.
+            Travel notes from our tours and stories about beaVita, the people
+            behind it, and the places we know best.
           </p>
         </div>
 

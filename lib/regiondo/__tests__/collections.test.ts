@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   COLLECTIONS,
   LANDING_PRODUCT_SETS,
+  THEME_PAGES,
   THEME_UPSELLS,
 } from "@/lib/regiondo/collections";
 import { RESERVED_TOUR_SLUGS, slugForProductId, TOUR_SLUGS } from "@/lib/regiondo/slugs";
@@ -17,14 +18,26 @@ import { RESERVED_TOUR_SLUGS, slugForProductId, TOUR_SLUGS } from "@/lib/regiond
 const KNOWN_PRODUCT_IDS = new Set(Object.values(TOUR_SLUGS));
 
 describe("theme upsells", () => {
-  it("covers every hand-written /tours/* theme page", () => {
+  it("has a page for every hand-written /tours/* theme directory", () => {
     // The reserved slugs are the static children of /tours. Two of them are
-    // the collection pages, which have their own catalog; the rest are the
-    // editorial theme pages and each needs an upsell.
+    // the collection pages, which have their own catalog, and one is now a
+    // redirect into Food & Wine; the rest are the editorial theme pages and
+    // each needs at least one tour set to render.
     const themePages = RESERVED_TOUR_SLUGS.filter(
-      (slug) => slug !== "group-tours" && slug !== "private-tours"
+      (slug) => slug !== "group-tours" && slug !== "private-tours" && slug !== "prosecco"
     );
-    expect(Object.keys(THEME_UPSELLS).sort()).toEqual([...themePages].sort());
+    expect(THEME_PAGES.map((page) => page.slug).sort()).toEqual([...themePages].sort());
+    for (const page of THEME_PAGES) {
+      expect(page.sets.length, `${page.slug} has no tour set`).toBeGreaterThan(0);
+      expect(page.href).toBe(`/tours/${page.slug}`);
+    }
+  });
+
+  it("renders every tour set on some page", () => {
+    // A set nobody renders is dead config; a set rendered on two pages is a
+    // duplicate section, which is fine but should be a decision, not a slip.
+    const rendered = THEME_PAGES.flatMap((page) => page.sets);
+    expect([...rendered].sort()).toEqual(Object.keys(THEME_UPSELLS).sort());
   });
 
   it("references only products that exist", () => {
@@ -48,12 +61,6 @@ describe("theme upsells", () => {
     // regression rather than a visible one.
     for (const [theme, config] of Object.entries(THEME_UPSELLS)) {
       expect(config.productIds.length, `${theme} is empty`).toBeGreaterThan(0);
-    }
-  });
-
-  it("keys match their own slug field", () => {
-    for (const [key, config] of Object.entries(THEME_UPSELLS)) {
-      expect(config.slug).toBe(key);
     }
   });
 

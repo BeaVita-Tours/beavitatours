@@ -40,14 +40,13 @@ export default function PrivateToursPage({
 }) {
   return (
     <CollectionPage
-      style="private"
       heading={collection.heading}
       intro={collection.intro}
       title={collection.label}
       href={collection.href}
       tagId={collection.tagId}
       searchParams={searchParams}
-      catalog={isNativeBookingEnabled()}
+      view={isNativeBookingEnabled() ? "catalog" : "none"}
     >
       <PrivateTourRates />
     </CollectionPage>

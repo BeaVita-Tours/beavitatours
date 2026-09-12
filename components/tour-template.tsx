@@ -1,14 +1,11 @@
 import type * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { COLLECTIONS } from "@/lib/regiondo/collections";
 import { cn } from "@/lib/utils";
 
 /**
- * The shell for the five editorial theme pages under `/tours/*`.
+ * The shell for the four editorial theme pages under `/tours/*`.
  *
  * A Server Component throughout. It used to be a client component for the sake
  * of a gallery carousel; the gallery is now a static grid, so the pages ship no
@@ -86,90 +83,143 @@ export function TourDescription({
   gallery?: GalleryImage[];
   children: React.ReactNode;
 }) {
-  const hasGallery = gallery.length > 0;
-
   return (
     <section className="bg-background py-14 md:py-16">
       <div className="container mx-auto px-4">
-        <div
-          className={cn(
-            "mx-auto max-w-6xl gap-10 lg:gap-14",
-            hasGallery ? "grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "max-w-4xl"
-          )}
-        >
-          <div className="prose prose-lg max-w-none space-y-4 text-muted-foreground">
-            {children}
-          </div>
-
-          {hasGallery ? (
-            <ul
-              aria-label="Photo gallery"
-              className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0 lg:pb-0"
-            >
-              {gallery.map((img, index) => {
-                // The first image (or a lone pair) spans the column; any
-                // further ones sit side by side beneath it.
-                const wide = index === 0 || gallery.length === 2;
-                return (
-                  <li
-                    key={img.src}
-                    className={cn(
-                      "relative shrink-0 snap-start overflow-hidden rounded-2xl bg-muted",
-                      "w-[78vw] max-w-sm aspect-4/3 lg:w-auto lg:max-w-none",
-                      wide ? "lg:col-span-2 lg:aspect-16/10" : "lg:aspect-4/3"
-                    )}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      sizes="(min-width: 1024px) 480px, 80vw"
-                      className="object-cover"
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          ) : null}
-        </div>
+        <TourCopy gallery={gallery}>{children}</TourCopy>
       </div>
     </section>
   );
 }
 
 /**
- * The closing band. Every theme can also run privately, so this is where the
- * reader who wants the day to themselves is sent — to the private catalog,
- * which now also carries the tailor-made offer, or straight to us.
+ * The copy-and-gallery layout on its own, for a `TourSection` that wants its
+ * photographs beside its prose the way the opening description has them.
  */
-export function TourCTA({ heading }: { heading: string }) {
+export function TourCopy({
+  gallery = [],
+  children,
+}: {
+  gallery?: GalleryImage[];
+  children: React.ReactNode;
+}) {
+  const hasGallery = gallery.length > 0;
+
   return (
-    /*
-      --primary-strong rather than --primary: the lighter brand teal gives this
-      band's near-white text 2.5:1, below AA. The deeper stop is 4.53:1 and is
-      the same colour family.
-    */
-    <section className="bg-primary-strong py-16 text-primary-foreground">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight">{heading}</h2>
-        {/* Full opacity: at /90 this measured 2.3:1 even on the deeper teal. */}
-        <p className="mx-auto mb-8 max-w-2xl text-balance text-xl text-primary-foreground">
-          Join a small group on a fixed date, or let us build a private day around what you
-          want to see.
-        </p>
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg" variant="secondary">
-            <Link href={COLLECTIONS.private.href}>Plan a private tour</Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+    <div
+      className={cn(
+        "mx-auto max-w-6xl gap-10 lg:gap-14",
+        hasGallery && "grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+      )}
+    >
+      {/* Without photographs the prose keeps a reading measure but stays on
+          the section's left edge, in line with the heading above it. */}
+      <div
+        className={cn(
+          "prose prose-lg space-y-4 text-muted-foreground",
+          hasGallery ? "max-w-none" : "max-w-3xl"
+        )}
+      >
+        {children}
+      </div>
+
+      {hasGallery ? (
+        <ul
+          aria-label="Photo gallery"
+          className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0 lg:pb-0"
+        >
+          {gallery.map((img, index) => {
+            // The first image (or a lone pair) spans the column; any
+            // further ones sit side by side beneath it.
+            const wide = index === 0 || gallery.length === 2;
+            return (
+              <li
+                key={img.src}
+                className={cn(
+                  "relative shrink-0 snap-start overflow-hidden rounded-2xl bg-muted",
+                  "w-[78vw] max-w-sm aspect-4/3 lg:w-auto lg:max-w-none",
+                  wide ? "lg:col-span-2 lg:aspect-16/10" : "lg:aspect-4/3"
+                )}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(min-width: 1024px) 480px, 80vw"
+                  className="object-cover"
+                />
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+/**
+ * A labelled list of places or activities — "Some of the towns we love:" —
+ * shown as pills rather than a comma-separated line, so it scans as a menu of
+ * options rather than as another paragraph.
+ */
+export function TourTagList({ label, items }: { label: string; items: readonly string[] }) {
+  return (
+    <div className="not-prose mt-6">
+      <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary-strong">
+        {label}
+      </p>
+      <ul className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <li
+            key={item}
+            className="rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-medium text-foreground"
           >
-            <Link href="/contact">Talk to us</Link>
-          </Button>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * An editorial sub-section on a theme page: a heading, an optional one-line
+ * tagline, the copy, and whatever follows (usually a `ThemeTourGrid`). The
+ * Food & Wine page is two of these — the Prosecco hills, then everything
+ * else — and Active & Adventure uses one for the list of things you can do.
+ *
+ * `id` labels the section and is what a grid beneath it should pass as its
+ * `headingId`, so the cards are announced under this heading.
+ */
+export function TourSection({
+  id,
+  heading,
+  tagline,
+  tinted = false,
+  children,
+}: {
+  id: string;
+  heading: string;
+  tagline?: string;
+  /** Sit the section on the muted band, to alternate with its neighbours. */
+  tinted?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      className={cn("py-14 md:py-16", tinted ? "border-t border-border bg-muted/30" : "bg-background")}
+    >
+      <div className="container mx-auto px-4">
+        <div className="mx-auto mb-8 max-w-6xl space-y-3">
+          <h2 id={id} className="text-3xl font-bold tracking-tight md:text-4xl">
+            {heading}
+          </h2>
+          {tagline ? (
+            <p className="max-w-3xl text-balance text-xl text-muted-foreground">{tagline}</p>
+          ) : null}
         </div>
+        {children}
       </div>
     </section>
   );

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
+import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
   type GalleryImage,
-  TourCTA,
   TourDescription,
+  TourTagList,
   TourTemplate,
 } from "@/components/tour-template";
 
@@ -15,56 +16,75 @@ const gallery: GalleryImage[] = [
   { src: "/imgs/cultural/verona2.jpeg", alt: "Verona scenery" },
 ];
 
+const towns = [
+  "Verona",
+  "Padua",
+  "Treviso",
+  "Marostica",
+  "Montagnana",
+  "Asolo",
+  "Bassano del Grappa",
+  "Feltre",
+  "Soave",
+] as const;
+
 export const metadata: Metadata = {
-  title: "Medieval hill towns of the Veneto | Bea Vita Tours",
+  title: "Culture & history day trips from Venice | Bea Vita Tours",
   description:
-    "Asolo, Cison di Valmarino and the walled villages of the Veneto. Castles, medieval streets and wine on a day trip from Venice.",
+    "Verona, Padua, Treviso and the walled towns of the Veneto — art, history, castles and medieval streets on a private day trip from Venice, built around what interests you.",
   alternates: { canonical: "/tours/cultural" },
   openGraph: {
     type: "website",
-    title: "Medieval hill towns of the Veneto | Bea Vita Tours",
+    title: "Culture & history day trips from Venice | Bea Vita Tours",
     description:
-      "Asolo, Cison di Valmarino and the walled villages of the Veneto. Castles, medieval streets and wine on a day trip from Venice.",
+      "Verona, Padua, Treviso and the walled towns of the Veneto — art, history, castles and medieval streets on a private day trip from Venice, built around what interests you.",
     url: `${SITE_URL}/tours/cultural`,
     siteName: "Bea Vita Tours",
   },
 };
 
+/**
+ * "Culture & History" — the client's rename of what the site called
+ * "Cultural". The URL stays `/tours/cultural`; it is linked and indexed.
+ */
 export default function CulturalTourPage() {
   return (
     <TourTemplate
-      title="Cultural"
-      subtitle="Veneto enchants with its immense artistic and historical heritage"
-      badge="UNESCO World Heritage Site"
+      title="Culture & History"
+      subtitle="See the Veneto region through the stories that shaped it."
       image="/gallaplacidia.webp"
-      imageAlt="Cultural"
+      imageAlt="Culture & History"
     >
       <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
-          Veneto, for the richness of its historical and artistic patrimony and
-          for the completeness of its offers, is the destination of choice for
-          tourists sensible to history, art, and traditions. Cultural routes
-          are countless. 7 art cities and 9 Unesco Heritage sites are only a
-          small part of the huge artistic tradition of this region.
+          Art, history, architecture and local traditions — tell us what
+          interests you, and we&apos;ll help you build a private day around
+          it.
         </p>
         <p className="leading-relaxed">
-          Every city is an art heritage city: from the main ones such as
-          Venice, Verona, Padua and Treviso, to the walled cities such as
-          Marostica, Montagnana, Asolo and Bassano del Grappa and the small
-          towns such as Feltre and Soave. Each one is a slice of the history of
-          our region, rich in beauty spots for you to visit and experience.
+          From the streets of Verona, Padua and Treviso to the walled towns of
+          Marostica, Montagnana, Asolo and Bassano del Grappa, there is plenty
+          beyond Venice worth a day of its own. You might want to explore a
+          medieval town, visit a castle, spend time in a museum or simply
+          wander through a place with a story to tell.
         </p>
         <p className="leading-relaxed">
-          Ancient palaces, museums and castles tells thousands of years of
-          history, guardians of a rich past. Local museums are plenty of
-          priceless treasures displaying different eras and traditions.
+          You choose what catches your interest. We take care of putting the
+          day together.
         </p>
+        <TourTagList label="Some of the towns we love" items={towns} />
       </TourDescription>
 
-      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="cultural" />
 
-      <TourCTA heading="Ready to explore Veneto's cultural heritage?" />
+      <ThemeClosingCTA
+        page="cultural"
+        privateCopy={{
+          description:
+            "Tell us what you're interested in — art, history, architecture, traditions or a particular place — and we'll help you plan your private day from Venice.",
+          action: "Plan your private cultural tour",
+        }}
+      />
     </TourTemplate>
   );
 }

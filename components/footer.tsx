@@ -8,11 +8,7 @@ import { Facebook, Flag, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 
-/**
- * `nativeBooking` is passed in from the (site) layout rather than read here:
- * this is a client component, and the flag lives behind `server-only`.
- */
-export function Footer({ nativeBooking = false }: { nativeBooking?: boolean }) {
+export function Footer() {
   const { openSettings } = useCookieConsent();
   const [year, setYear] = useState("");
 
@@ -67,23 +63,6 @@ export function Footer({ nativeBooking = false }: { nativeBooking?: boolean }) {
                   Home
                 </Link>
               </li>
-              {/*
-                The catalog index. Without a link from the site chrome, /tours
-                is reachable only from breadcrumbs and the sitemap, which is thin
-                internal linking for a page that exists to be found. Rendered
-                only when the native flow is on, so the footer does not offer a
-                404 while the flag is off.
-              */}
-              {nativeBooking ? (
-                <li>
-                  <Link
-                    href="/tours"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    All Tours
-                  </Link>
-                </li>
-              ) : null}
               <li>
                 <Link
                   href="/tours/group-tours"

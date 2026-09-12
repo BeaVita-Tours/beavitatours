@@ -1,59 +1,84 @@
 import type { Metadata } from "next";
 
+import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
-import { TourCTA, TourDescription, TourTemplate } from "@/components/tour-template";
+import {
+  type GalleryImage,
+  TourDescription,
+  TourTagList,
+  TourTemplate,
+} from "@/components/tour-template";
+
+const gallery: GalleryImage[] = [
+  { src: "/hiking.jpg", alt: "Hikers on a trail in the Dolomites" },
+  { src: "/mtb.webp", alt: "Mountain biking in the Veneto countryside" },
+];
+
+const activities = [
+  "Dolomites",
+  "hiking & trekking",
+  "via ferrata",
+  "cycling",
+  "paragliding",
+  "canyoning",
+  "ziplining",
+  "adventure parks",
+  "and more",
+] as const;
 
 export const metadata: Metadata = {
-  title: "Guided hiking and via ferrata in the Dolomites | Bea Vita Tours",
+  title: "Active & adventure day trips from Venice | Bea Vita Tours",
   description:
-    "Lake Sorapis and via ferrata in the Dolomites with a qualified alpine guide. Private departures from Venice, transport and guiding included.",
+    "Hiking, via ferrata, cycling and more — a private day in the Dolomites or the Veneto countryside, planned around the activity you have in mind. Alpine guide included where it matters.",
   alternates: { canonical: "/tours/active-adventure" },
   openGraph: {
     type: "website",
-    title: "Guided hiking and via ferrata in the Dolomites | Bea Vita Tours",
+    title: "Active & adventure day trips from Venice | Bea Vita Tours",
     description:
-      "Lake Sorapis and via ferrata in the Dolomites with a qualified alpine guide. Private departures from Venice, transport and guiding included.",
+      "Hiking, via ferrata, cycling and more — a private day in the Dolomites or the Veneto countryside, planned around the activity you have in mind. Alpine guide included where it matters.",
     url: `${SITE_URL}/tours/active-adventure`,
     siteName: "Bea Vita Tours",
   },
 };
 
-export default function HikingTourPage() {
+/**
+ * The two guided days, then the closing band. Both are private today, so the
+ * band offers the private catalog and the contact page — it reads that from
+ * the catalog, so a shared departure added here would change it.
+ */
+export default function ActiveAdventureTourPage() {
   return (
     <TourTemplate
       title="Active & Adventure"
-      subtitle="To really get away, try an activity and adventure holiday!"
+      subtitle="Make your day as active as you like."
       image="/imgs/adventure.jpeg"
       imageAlt="Active & Adventure"
     >
-      <TourDescription>
+      <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
-          Ready for adrenaline and adventure? In the Veneto region there is
-          something for every adventurer! Hiking, Trekking, Via Ferratas, Bike
-          tours, Paragliding flights, Ziplines, Canyoning, helicopter panoramic
-          rides, Adventure parks and much more!
+          From a day in the mountains to an experience built around a specific
+          activity, we can help you plan it your way.
         </p>
         <p className="leading-relaxed">
-          For all the hiking and trekking lovers, Veneto is a match made in
-          heaven. The trails and beautiful routes offer endless opportunities
-          for exploration, despite the level of hiking experience. Via ferrata
-          routes are marked trails for experienced hikers through particularly
-          difficult and rocky areas, equipped with fixed ropes and ladders.
+          Whether you want to hike through the Dolomites, cycle through the
+          countryside, try a via ferrata or simply add a little adventure to
+          your day, tell us what you have in mind. We&apos;ll help you find the
+          right place, route and experience.
         </p>
-        <p className="leading-relaxed">
-          Veneto has also plenty of activities to offer also to children, from
-          exciting roller coasters in top theme parks to bob sleigh rides
-          through the foothills of the Dolomites. The region offers a broad
-          selection of family activities the whole year round, that are fun for
-          both kids and adults.
-        </p>
+        <TourTagList label="Places and experiences you can explore" items={activities} />
       </TourDescription>
 
-      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="active-adventure" />
 
-      <TourCTA heading="Ready to embrace the adventure?" />
+      <ThemeClosingCTA
+        page="active-adventure"
+        privateCopy={{
+          description:
+            "Tell us what you'd like to do, and we'll help you turn it into a private day trip from Venice.",
+          action: "Plan your private adventure",
+        }}
+      />
     </TourTemplate>
   );
 }

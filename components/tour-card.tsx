@@ -18,12 +18,12 @@ export function TourCard({ title, href, image }: TourCardProps) {
       aria-label={`View details ${title}`}
       className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      <Card className="relative mt-0 block aspect-4/3 overflow-hidden p-0 transition-shadow duration-300 ease-out hover:shadow-md cursor-default">
+      <Card className="relative mt-0 block aspect-4/3 overflow-hidden p-0 lg:aspect-4/5 transition-shadow duration-300 ease-out hover:shadow-md cursor-default">
         <Image
           src={image}
           alt={title}
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
 

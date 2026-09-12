@@ -152,14 +152,13 @@ function MobileNavActive({
   );
 }
 
-/**
- * `nativeBooking` is passed in from the (site) layout rather than read here:
- * this is a client component, and the flag lives behind `server-only`. It
- * decides where "Book Now" goes.
- */
-export function Navigation({ nativeBooking = false }: { nativeBooking?: boolean }) {
+/** "Book Now" goes to the group tours — the volume product, and the page
+    that lists every shared departure now that the catalog index is gone. */
+const BOOK_HREF = "/tours/group-tours";
+
+export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const bookHref = nativeBooking ? "/tours" : "/tours/group-tours";
+  const bookHref = BOOK_HREF;
 
   // Close the mobile menu with Escape.
   useEffect(() => {

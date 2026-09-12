@@ -33,6 +33,8 @@ export const TOURS_BASE_PATH = "/tours";
  */
 export const RESERVED_TOUR_SLUGS = [
   "dolomites",
+  // No longer a page — it redirects to /tours/wine-food (next.config.ts) —
+  // but the redirect claims the path just as a page would.
   "prosecco",
   "wine-food",
   "active-adventure",

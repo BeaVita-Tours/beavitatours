@@ -16,7 +16,6 @@ const STATIC_ROUTES: Array<{
   { path: "", priority: 1, changeFrequency: "weekly" },
   { path: "/best-seller", priority: 0.8, changeFrequency: "weekly" },
   { path: "/tours/dolomites", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/tours/prosecco", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/wine-food", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/active-adventure", priority: 0.9, changeFrequency: "weekly" },
   { path: "/tours/cultural", priority: 0.9, changeFrequency: "weekly" },
@@ -50,7 +49,7 @@ const NATIVE_ROUTES: Array<{
   path: string;
   priority: number;
   changeFrequency: Frequency;
-}> = [{ path: "/tours", priority: 0.9, changeFrequency: "weekly" }];
+}> = [];
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const native = isNativeBookingEnabled();

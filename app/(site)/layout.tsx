@@ -4,7 +4,6 @@ import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { OrganizationJsonLd } from "@/components/organization-json-ld";
-import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 
 export default function SiteLayout({
   children,
@@ -16,9 +15,9 @@ export default function SiteLayout({
       {/* Site-wide TravelAgency markup. Lives here rather than in the root
           layout so /studio stays free of it. */}
       <OrganizationJsonLd />
-      <Navigation nativeBooking={isNativeBookingEnabled()} />
+      <Navigation />
       {children}
-      <Footer nativeBooking={isNativeBookingEnabled()} />
+      <Footer />
       <CookieConsentBanner />
       <CookieSettingsDialog />
     </>

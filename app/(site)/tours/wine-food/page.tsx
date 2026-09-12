@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 
-import { ThemeUpsell } from "@/components/tours/theme-upsell";
+import { ThemeClosingCTA } from "@/components/tours/theme-cta";
+import { ThemeTourGrid } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
   type GalleryImage,
-  TourCTA,
+  TourCopy,
   TourDescription,
+  TourSection,
   TourTemplate,
 } from "@/components/tour-template";
 
@@ -13,58 +15,91 @@ const gallery: GalleryImage[] = [
   { src: "/imgs/winefood.jpg", alt: "Wine and food experience in Veneto" },
 ];
 
+const proseccoGallery: GalleryImage[] = [
+  { src: "/prosecco 2.jpg", alt: "Vineyard terraces in the Prosecco hills" },
+  { src: "/prosecco 3.jpg", alt: "A glass of Prosecco at the winery" },
+];
+
 export const metadata: Metadata = {
-  title: "Wine and food day trips from Venice | Bea Vita Tours",
+  title: "Food, wine & Prosecco Hills day trips from Venice | Bea Vita Tours",
   description:
-    "Prosecco at the winery that made it, local cheese and salami, and a long lunch in the Veneto hills. Small-group and private day trips from Venice.",
+    "The Prosecco Hills, family-run wineries, local cheese and a long lunch in the Veneto hills. Small-group and private food & wine day trips from Venice.",
   alternates: { canonical: "/tours/wine-food" },
   openGraph: {
     type: "website",
-    title: "Wine and food day trips from Venice | Bea Vita Tours",
+    title: "Food, wine & Prosecco Hills day trips from Venice | Bea Vita Tours",
     description:
-      "Prosecco at the winery that made it, local cheese and salami, and a long lunch in the Veneto hills. Small-group and private day trips from Venice.",
+      "The Prosecco Hills, family-run wineries, local cheese and a long lunch in the Veneto hills. Small-group and private food & wine day trips from Venice.",
     url: `${SITE_URL}/tours/wine-food`,
     siteName: "Bea Vita Tours",
   },
 };
 
+/**
+ * Food & Wine, with the Prosecco Hills folded in as its opening section —
+ * the nav has one "Food & Wine" entry, and a separate Prosecco page beside it
+ * was muddling the theme with one of its places. `/tours/prosecco` redirects
+ * here (next.config.ts).
+ */
 export default function WineFoodTourPage() {
   return (
     <TourTemplate
-      title="Wine & Food"
-      subtitle="A journey through the finest wines and authentic flavors of the Veneto region."
-      badge="UNESCO World Heritage Site"
+      title="Food, wine & local flavours"
+      subtitle="Taste Veneto, one glass and one table at a time."
       image="/tourwines.jpg"
-      imageAlt="Wine & Food"
+      imageAlt="Food & Wine"
     >
       <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
-          Italian cuisine, including its essential wine culture, is a UNESCO
-          Heritage: a recognition of the art of Italian cooking as a social
-          ritual of conviviality, shared practices, and deep connection to land
-          and seasons, encompassing the entire food chain from cultivation to
-          the table, with wine acting as a crucial bridge between traditions
-          and generations.
-        </p>
-        <p className="leading-relaxed">
-          Each region has its own specialities and offers food and wine tours
-          to discover the varied and always tasty local cuisine. Veneto Region,
-          thanks to its particular morphology including flat, mountainous and
-          coastal areas, can boast a food and wine industry rich in a wide
-          variety of specialties.
-        </p>
-        <p className="leading-relaxed">
-          To whet your appetite we assist you in setting the table by giving
-          your some tips for a perfect with tours and tastings off the
-          well-trodden tourist track: undisturbed oases of tranquility able to
-          cater for all your tastes and needs.
+          From the Prosecco Hills to local flavours, discover the food, wine
+          and traditions that make this part of Italy worth tasting. We take
+          you to places we know first-hand — from family-run wineries to local
+          producers and tables worth sitting down at.
         </p>
       </TourDescription>
 
-      {/* Every departure for this subject. Renders nothing while the flag is off. */}
-      <ThemeUpsell theme="wine-food" />
+      <TourSection
+        id="prosecco"
+        heading="Start with the Prosecco Hills"
+        tagline="Rolling hills, small wineries and a glass of Prosecco in the place where it's made."
+        tinted
+      >
+        <TourCopy gallery={proseccoGallery}>
+          <p className="leading-relaxed">
+            The hills between Valdobbiadene and Conegliano — recognized by
+            UNESCO in 2019 — are one of Veneto&apos;s most distinctive
+            landscapes, and one of our favorite places to spend a day. We show
+            them to you through tastings, local food and the stories of the
+            growers who&apos;ve worked this land for generations.
+          </p>
+        </TourCopy>
 
-      <TourCTA heading="Ready for the ultimate day trip?" />
+        <div className="mx-auto mt-10 max-w-6xl">
+          <ThemeTourGrid theme="prosecco" headingId="prosecco" />
+        </div>
+      </TourSection>
+
+      {/* No departures yet beyond the Prosecco ones — this section is the
+          place for them when they exist. */}
+      <TourSection
+        id="more-than-wine"
+        heading="More than wine"
+        tagline="There is much more to taste in the Veneto region."
+      >
+        <TourCopy>
+          <p className="leading-relaxed">
+            From local wines and grappa (grape spirit) to aged cheeses and
+            family recipes, our food &amp; wine tours are about getting to know
+            the territory through what ends up on the table.
+          </p>
+          <p className="not-prose rounded-2xl border border-border bg-card px-5 py-4 text-base text-foreground">
+            <span className="font-semibold">Fun fact:</span> tiramisù was
+            invented just up the road, in Treviso.
+          </p>
+        </TourCopy>
+      </TourSection>
+
+      <ThemeClosingCTA page="wine-food" />
     </TourTemplate>
   );
 }

@@ -77,6 +77,13 @@ const server = createServer((req, res) => {
   if (path === "/v1/products") {
     let data = PRODUCTS.data;
 
+    // The two collections. The fixture products carry no tag data, but the
+    // real account's split is exactly the "(PRIVATE)" suffix in the name, so
+    // that is what stands in for the tag here. Ids from fixtures/tags.json.
+    const tag = url.searchParams.get("tag");
+    if (tag === "45420") data = data.filter((p) => !/\(PRIVATE\)/i.test(p.name));
+    if (tag === "45421") data = data.filter((p) => /\(PRIVATE\)/i.test(p.name));
+
     // Curated sets (theme upsells, landing pages) filter by id.
     const ids = url.searchParams.get("product_ids");
     if (ids) {

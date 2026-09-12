@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 
+import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
-import {
-  type GalleryImage,
-  TourCTA,
-  TourDescription,
-  TourTemplate,
-} from "@/components/tour-template";
+import { type GalleryImage, TourDescription, TourTemplate } from "@/components/tour-template";
 
 const gallery: GalleryImage[] = [
   { src: "/imgs/dolomites/dolomites1.jpeg", alt: "Dolomites landscape" },
@@ -29,42 +25,33 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Structure agreed with the client (revision of 2026-09-11): the copy, then
+ * every Dolomites departure, then the closing band — which offers group and
+ * private according to what the catalog actually has for this theme.
+ */
 export default function DolomitesTourPage() {
   return (
     <TourTemplate
-      title="The Dolomites"
-      subtitle="Discover the Dolomites, the most beautiful mountains in the World"
+      title="The Dolomites, the way we know them."
+      subtitle="Jagged peaks, mountain lakes, quiet villages and roads worth taking slowly."
       badge="UNESCO World Heritage Site"
       image="/imgs/dolomites/dolomitesmain.jpeg"
       imageAlt="The Dolomites"
     >
       <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
-          The site of the Dolomites comprises a mountain range in the northern
-          Italian Alps, featuring some of the most attractive mountain
-          landscapes in the world, with vertical walls, sheer cliffs and a
-          high density of narrow, deep and long valleys.
-        </p>
-        <p className="leading-relaxed">
-          The beauty and diversity of the Italian Dolomites alone will enchant
-          you in every season. An abundance of natural treasures, UNESCO World
-          Heritage site and magnificent views. Not forgetting cultural sights
-          such as castles, museums and churches.
-        </p>
-        <p className="leading-relaxed">
-          Breathtaking Dolomites cable cars offer iconic views, with top
-          contenders including the Lagazuoi cable car for its vast panoramas,
-          the Marmolada cable car reaching the &quot;Queen of the
-          Dolomites,&quot; and the Sass Pordoi cable car, in the heart of the
-          Sella Group. Each offers unique perspectives of jagged peaks, alpine
-          meadows and landscapes.
+          We know the Dolomites not just from the viewpoints, but from the
+          roads that connect them: the way into Cortina, the still water at
+          Lake Misurina, the turquoise chill of Lake Braies, and the villages
+          worth a slow stop along the way — and the people who live among
+          them.
         </p>
       </TourDescription>
 
-      {/* Every departure for this subject. Renders nothing while the flag is off. */}
       <ThemeUpsell theme="dolomites" />
 
-      <TourCTA heading="Ready to explore the Dolomites?" />
+      <ThemeClosingCTA page="dolomites" />
     </TourTemplate>
   );
 }

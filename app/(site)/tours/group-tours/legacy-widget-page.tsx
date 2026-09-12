@@ -14,7 +14,6 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { SharedToursRegiondoWidget } from "@/components/group-tours-regiondo-widget";
 
 export function LegacyGroupToursWidgetPage() {
@@ -40,34 +39,13 @@ export function LegacyGroupToursWidgetPage() {
             <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
           </div>
           <div className="container mx-auto px-4 z-10 text-center flex flex-col items-center gap-4">
+            {/* beaVita only — no partner logos here (client revision). */}
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Group Tour
+              Group Tours
             </h1>
             <p className="text-xl text-white/90 max-w-2xl">
-              Book one of our group tours immediately and join a magic
-              adventure! Our experiences are top rated on Viator, Get Your
-              Guide, Tripadvisor
+              Beyond Venice, with good company. Come along for the ride.
             </p>
-            <div className="flex flex-row items-center gap-2 mt-4">
-              <div className="relative h-16 w-40">
-                <Image
-                  src="/bdlogo.jpg"
-                  alt="BD Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="relative h-16 w-20">
-                <Link href="https://www.kayak.co.uk/Cortina-d-Ampezzo.22382.guide">
-                  <Image
-                    src="/kayak.png"
-                    alt="Kayak"
-                    fill
-                    className="object-contain"
-                  />
-                </Link>
-              </div>
-            </div>
           </div>
         </section>
         <section className="min-h-[60vh]">
