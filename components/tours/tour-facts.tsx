@@ -1,6 +1,7 @@
-import { Clock, Globe, MapPin, Users } from "lucide-react";
+import { Check, Clock, Globe, MapPin, Users } from "lucide-react";
 
 import type { SafeHtml, TourDetail } from "@/lib/regiondo/types";
+import { cn } from "@/lib/utils";
 
 /**
  * The key-facts strip and the prose sections below the gallery.
@@ -80,18 +81,41 @@ export function TourFacts({ tour }: { tour: TourDetail }) {
   );
 }
 
-export function TourHighlights({ highlights }: { highlights: readonly string[] }) {
+/**
+ * The highlights list. `variant="card"` is the tinted panel that sits beside
+ * the description on the tour page — one column, so it reads as a side note
+ * to the prose rather than a second body of text.
+ */
+export function TourHighlights({
+  highlights,
+  variant = "plain",
+}: {
+  highlights: readonly string[];
+  variant?: "plain" | "card";
+}) {
   if (highlights.length === 0) return null;
 
+  const card = variant === "card";
+
   return (
-    <section aria-labelledby="highlights-heading" className="space-y-3">
-      <h2 id="highlights-heading" className="text-2xl font-bold">
+    <section
+      aria-labelledby="highlights-heading"
+      className={cn(
+        "space-y-3",
+        card && "h-fit rounded-2xl border border-primary/20 bg-primary/5 p-5 md:p-6"
+      )}
+    >
+      <h2 id="highlights-heading" className={cn("font-bold", card ? "text-xl" : "text-2xl")}>
         Highlights
       </h2>
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className={cn("grid gap-2.5", !card && "sm:grid-cols-2")}>
         {highlights.map((highlight) => (
           <li key={highlight} className="flex gap-2.5 text-sm leading-relaxed">
-            <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+            <Check
+              aria-hidden="true"
+              className="mt-0.5 size-4 shrink-0 text-primary-strong"
+              strokeWidth={2.5}
+            />
             <span>{highlight}</span>
           </li>
         ))}
@@ -117,8 +141,8 @@ export function TourProse({
   if (!html) return null;
 
   return (
-    <section aria-labelledby={`${id}-heading`} className="space-y-3">
-      <h2 id={`${id}-heading`} className="text-2xl font-bold">
+    <section aria-labelledby={`${id}-heading`} className="min-w-0 space-y-3">
+      <h2 id={`${id}-heading`} className="text-xl font-bold">
         {heading}
       </h2>
       <div
@@ -132,12 +156,12 @@ export function TourProse({
 }
 
 /** Two-column included / not-included list, the standard OTA treatment. */
-export function TourInclusions({ tour }: { tour: TourDetail }) {
+export function TourInclusions({ tour, className }: { tour: TourDetail; className?: string }) {
   if (!tour.includedHtml && !tour.notIncludedHtml) return null;
 
   return (
-    <section aria-labelledby="inclusions-heading" className="space-y-3">
-      <h2 id="inclusions-heading" className="text-2xl font-bold">
+    <section aria-labelledby="inclusions-heading" className={cn("space-y-3", className)}>
+      <h2 id="inclusions-heading" className="text-xl font-bold">
         What is included
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -181,8 +205,8 @@ export function TourMeetingPoint({ tour }: { tour: TourDetail }) {
   const query = lat !== null && lon !== null ? `${lat},${lon}` : (address ?? name ?? "");
 
   return (
-    <section aria-labelledby="meeting-heading" className="space-y-3">
-      <h2 id="meeting-heading" className="text-2xl font-bold">
+    <section aria-labelledby="meeting-heading" className="min-w-0 space-y-3">
+      <h2 id="meeting-heading" className="text-xl font-bold">
         Where we meet
       </h2>
       <div className="rounded-2xl border bg-card p-5">

@@ -72,9 +72,17 @@ export const alsoRatedOnStats: PlatformStat[] = [
   },
 ];
 
-/** Display names for review cards, keyed by review `source` / platform id. */
-export const PLATFORM_META: Record<string, { name: string }> = {
+/**
+ * Display names for review cards, keyed by review `source` / platform id.
+ *
+ * `badge` overrides the "from <name>" text a card shows when there is no logo
+ * for the platform. Regiondo is the booking system, not a place a guest would
+ * recognise, so its reviews read as "Verified booking" instead of "from
+ * Regiondo".
+ */
+export const PLATFORM_META: Record<string, { name: string; badge?: string }> = {
   google: { name: "Google" },
+  regiondo: { name: "Regiondo", badge: "Verified booking" },
   tripadvisor: { name: "TripAdvisor" },
   getyourguide: { name: "GetYourGuide" },
   viator: { name: "Viator" },
@@ -91,6 +99,19 @@ export function reviewPlatformName(
 ): string {
   if (source === "manual") return platformLabel ?? "Guest";
   return PLATFORM_META[source]?.name ?? source;
+}
+
+/**
+ * The text a card shows for a review's platform when there is no logo to show
+ * instead: "from Facebook" for a manual review, "Verified booking" for one
+ * left through the booking system.
+ */
+export function reviewPlatformBadge(
+  source: Review["source"],
+  platformLabel?: string,
+): string {
+  const badge = source === "manual" ? undefined : PLATFORM_META[source]?.badge;
+  return badge ?? `from ${reviewPlatformName(source, platformLabel)}`;
 }
 
 /**

@@ -232,6 +232,165 @@ test.describe("happy path", () => {
   });
 });
 
+test.describe("the party", () => {
+  /** The stepper controls, by the labels the guest selector gives them. */
+  function stepper(page: Page, tier: string) {
+    return {
+      add: page.getByRole("button", { name: `Add one ${tier}` }),
+      remove: page.getByRole("button", { name: `Remove one ${tier}` }),
+      count: page.locator(`output[aria-label="${tier} quantity"]`),
+    };
+  }
+
+  async function ready(page: Page) {
+    await page.goto(TOUR);
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
+  }
+
+  /** The grand total in the summary box — a line total can equal it. */
+  function total(page: Page) {
+    return page.locator('output[aria-label="Total price"]');
+  }
+
+  test("offers every tier with its own quantity and opens with one adult", async ({ page }) => {
+    await ready(page);
+    await expect(page.getByText("Who is coming?")).toBeVisible();
+    await expect(stepper(page, "Adult").count).toHaveText("1");
+    await expect(stepper(page, "Young (7-14)").count).toHaveText("0");
+    // Each tier states its own price; the headline is the cheapest, "from".
+    await expect(page.getByText("€115").first()).toBeVisible();
+    await expect(page.getByText("€99").first()).toBeVisible();
+  });
+
+  test("2 Adults + 2 Young: two holds, one checkout link, the right totals", async ({
+    page,
+  }) => {
+    await page.route(/regiondo\.(com|de)/, (route) => route.abort());
+    await ready(page);
+
+    await stepper(page, "Adult").add.click();
+    await stepper(page, "Young (7-14)").add.click();
+    await stepper(page, "Young (7-14)").add.click();
+
+    await expect(stepper(page, "Adult").count).toHaveText("2");
+    await expect(stepper(page, "Young (7-14)").count).toHaveText("2");
+    await expect(page.getByText("2 × Adult")).toBeVisible();
+    await expect(page.getByText("2 × Young (7-14)")).toBeVisible();
+    await expect(page.getByText("4 guests")).toBeVisible();
+    // 2 × 115 + 2 × 99
+    await expect(total(page)).toHaveText("€428");
+
+    const handoff = page.waitForRequest(
+      (request) => request.isNavigationRequest() && /regiondo\.(com|de)/.test(request.url()),
+      { timeout: 20_000 }
+    );
+    await page.getByRole("button", { name: /reserve your places/i }).click();
+    const request = await handoff;
+
+    // What actually reached the API: one hold per tier, both under one link.
+    const recorded = await (await page.request.get(`${MOCK}/__holds`)).json();
+    expect(recorded.holds.map((h: { option_id: string; qty: number }) => [h.option_id, h.qty])).toEqual([
+      ["2052614", 2],
+      ["2052711", 2],
+    ]);
+    expect(recorded.holds.every((h: { released: boolean }) => !h.released)).toBe(true);
+    expect(recorded.checkoutLinks).toHaveLength(1);
+    expect(recorded.checkoutLinks[0]).toHaveLength(2);
+    for (const hold of recorded.holds) {
+      expect(request.url()).toContain(hold.code);
+    }
+  });
+
+  test("quantities can be changed after the fact and a tier removed entirely", async ({
+    page,
+  }) => {
+    await ready(page);
+    const adult = stepper(page, "Adult");
+    const young = stepper(page, "Young (7-14)");
+
+    // 1 Adult + 1 Young
+    await young.add.click();
+    await expect(page.getByText("2 guests")).toBeVisible();
+    await expect(total(page)).toHaveText("€214");
+
+    // Change your mind: another adult.
+    await adult.add.click();
+    await expect(page.getByText("3 guests")).toBeVisible();
+    await expect(total(page)).toHaveText("€329");
+
+    // Drop the child altogether — the line disappears from the summary.
+    await young.remove.click();
+    await expect(young.count).toHaveText("0");
+    await expect(page.getByText(/× Young/)).toHaveCount(0);
+    await expect(page.getByText("2 guests")).toBeVisible();
+    await expect(total(page)).toHaveText("€230");
+    await expect(young.remove).toBeDisabled();
+  });
+
+  test("with nobody in the party there is nothing to reserve", async ({ page }) => {
+    await ready(page);
+    await stepper(page, "Adult").remove.click();
+    await expect(page.getByText("Add at least one guest").first()).toBeVisible();
+    await expect(page.getByRole("button", { name: /add at least one guest/i })).toBeDisabled();
+    await expect(total(page)).toHaveText("€0");
+  });
+
+  test("the departure's own seat count is the ceiling, not the tier's stock", async ({
+    page,
+  }) => {
+    // The mock's tiers report 22 and 49 places each; the departure has 9.
+    await ready(page);
+    await expect(page.getByText(/only 9 places left on this departure/i)).toBeVisible();
+    const adult = stepper(page, "Adult");
+    for (let i = 0; i < 15; i++) {
+      if (await adult.add.isDisabled()) break;
+      await adult.add.click();
+    }
+    await expect(adult.count).toHaveText("9");
+    await expect(adult.add).toBeDisabled();
+  });
+
+  test("Adult and Young share the coach: the party as a whole is capped", async ({ page }) => {
+    await ready(page);
+    const adult = stepper(page, "Adult");
+    const young = stepper(page, "Young (7-14)");
+
+    await young.add.click();
+    await young.add.click();
+    for (let i = 0; i < 15; i++) {
+      if (await adult.add.isDisabled()) break;
+      await adult.add.click();
+    }
+    // 2 Young + 7 Adults = the 9 places; nothing more can be added anywhere.
+    await expect(adult.count).toHaveText("7");
+    await expect(adult.add).toBeDisabled();
+    await expect(young.add).toBeDisabled();
+    await expect(page.getByText("9 guests")).toBeVisible();
+    await expect(page.getByText(/all 9 remaining places taken/i)).toBeVisible();
+
+    // Give one adult back and the child row opens up again.
+    await adult.remove.click();
+    await expect(young.add).toBeEnabled();
+  });
+
+  test("the party survives a reload", async ({ page }) => {
+    await ready(page);
+    await stepper(page, "Adult").add.click();
+    await stepper(page, "Young (7-14)").add.click();
+    await expect(total(page)).toHaveText("€329");
+
+    await page.reload();
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
+    await expect(stepper(page, "Adult").count).toHaveText("2");
+    await expect(stepper(page, "Young (7-14)").count).toHaveText("1");
+    await expect(total(page)).toHaveText("€329");
+  });
+});
+
 test.describe("sold out", () => {
   test("offers no way to book a departure with no stock", async ({ page }) => {
     await setScenario(page, "soldout");

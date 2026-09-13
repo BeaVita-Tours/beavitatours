@@ -423,24 +423,37 @@ export async function getRequiredFields(
 /**
  * The payment handoff.
  *
- * Returns a URL into Regiondo's hosted ticketshop for an existing hold. This is
- * where the customer enters card details — on Regiondo's domain, under their
- * PCI scope, never ours.
+ * Returns a URL into Regiondo's hosted ticketshop for one or more existing
+ * holds. This is where the customer enters card details — on Regiondo's
+ * domain, under their PCI scope, never ours.
+ *
+ * A hold is one option (participant tier) at one departure, so a party of
+ * "2 Adults + 2 Young" is two holds. `reservation_code` takes them
+ * comma-separated and the ticketshop opens with both in the basket —
+ * verified live: one link, `/keys/<codeA>,<codeB>/`, totals summed.
  *
  * The endpoint takes only reservation_code, store_locale and currency: there is
  * no return-URL parameter, so the customer finishes on Regiondo's confirmation
  * page unless a return URL is configured in the ticketshop settings. See the
  * open items in docs/regiondo-build-log.md.
  */
-export async function getCheckoutLink(reservationCode: string): Promise<string> {
+export async function getCheckoutLink(
+  reservationCode: string | readonly string[]
+): Promise<string> {
   const config = requireConfig();
+  const codes = typeof reservationCode === "string" ? [reservationCode] : reservationCode;
+  if (codes.length === 0) {
+    throw new RegiondoError("validation", "No reservation code to build a checkout link for", {
+      endpoint: "/checkout/checkoutlink",
+    });
+  }
 
   const links = await request("/checkout/checkoutlink", {
     retry: false,
     cache: "no-store",
     schema: checkoutLinkSchema,
     params: {
-      reservation_code: reservationCode,
+      reservation_code: codes.join(","),
       store_locale: config.locale,
       currency: config.currency,
     },

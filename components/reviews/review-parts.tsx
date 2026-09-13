@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { Star } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { OTAWordmark } from "@/components/ota-wordmark";
 import {
+  reviewPlatformBadge,
   reviewPlatformLogo,
-  reviewPlatformName,
 } from "@/lib/reviews/platform-stats";
 import type { Review, ReviewPhoto as ReviewPhotoData } from "@/lib/reviews/types";
 
@@ -118,10 +118,13 @@ export function ReviewAuthorHeader({
   dateClassName = "text-xs text-muted-foreground",
   showPlatform = true,
 }: ReviewAuthorHeaderProps) {
-  const platform = reviewPlatformName(review.source, review.platformLabel);
+  const platformBadge = reviewPlatformBadge(review.source, review.platformLabel);
   const platformLogo = reviewPlatformLogo(review.source, review.platformLabel);
   const initial = review.authorName.trim().charAt(0).toUpperCase() || "?";
   const color = seededColor(review.authorName);
+  // Regiondo occasionally returns a review without a timestamp; `format()`
+  // throws on an invalid date, so the line is simply omitted in that case.
+  const date = new Date(review.date);
 
   return (
     <div className="flex items-start justify-between gap-3">
@@ -155,21 +158,23 @@ export function ReviewAuthorHeader({
         )}
         <div className="min-w-0">
           <p className={nameClassName}>{review.authorName}</p>
-          <p className={dateClassName}>
-            {format(new Date(review.date), "MMM d, yyyy")}
-          </p>
+          {isValid(date) && (
+            <p className={dateClassName}>{format(date, "MMM d, yyyy")}</p>
+          )}
         </div>
       </div>
       {showPlatform && (
         <span
           className="inline-flex items-center gap-1 pt-1 text-[10px] text-muted-foreground"
-          aria-label={platformLogo ? `from ${platform}` : undefined}
+          aria-label={platformLogo ? platformBadge : undefined}
         >
-          from
           {platformLogo ? (
-            <OTAWordmark ota={platformLogo} height={16} />
+            <>
+              from
+              <OTAWordmark ota={platformLogo} height={16} />
+            </>
           ) : (
-            <span>{platform}</span>
+            <span>{platformBadge}</span>
           )}
         </span>
       )}

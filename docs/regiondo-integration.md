@@ -116,7 +116,7 @@ Split by one question: does this represent inventory?
 | Data | Cached | Why |
 |---|---|---|
 | `/tags`, `/products`, `/products/{id}`, `/reviews` | `"use cache"` + `cacheLife("catalog")` | changes a few times a year |
-| `/products/availabilities`, `/products/availoptions` | **never** | live seat counts |
+| `/products/availabilities`, `/products/availoptions`, `/products/timeslots` | **never** | live seat counts |
 | `/checkout/*` | **never** | inventory and money |
 
 The `catalog` profile is in `next.config.ts`:
@@ -203,10 +203,19 @@ So the flow is:
 
 ```
 POST /checkout/hold?collect_totals=true   reserve stock, get the required fields
+                                          (one call per participant tier in the party)
 POST /checkout/totals                     recompute the price server-side
-GET  /checkout/checkoutlink               -> https://prosecco-experience.regiondo.com/...
+GET  /checkout/checkoutlink               ?reservation_code=<codeA>,<codeB>
+                                          -> https://prosecco-experience.regiondo.com/...
                                              redirect the customer there
 ```
+
+A hold is one option at one departure. A party of "2 Adults + 2 Young" is
+therefore two holds; the checkout link takes the codes comma-separated and
+opens the ticketshop with both in the basket (verified live: one URL,
+`/keys/<codeA>,<codeB>/`, totals summed). `startBooking` places the holds in
+sequence and releases every one already placed if a later hold, or the link,
+fails — a half-held party is not something the customer can pay for.
 
 **`POST /checkout/purchase` is deliberately not wrapped.** Using it for a
 consumer booking would mean taking the card ourselves. No card data reaches this

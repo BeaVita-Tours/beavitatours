@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
-import { getAvailability, getOptions } from "@/lib/regiondo/products";
+import { getAvailability, getSlot } from "@/lib/regiondo/products";
 import type { TourOption } from "@/lib/regiondo/types";
 import { consumeRateLimit } from "@/lib/rate-limit";
 
@@ -36,6 +36,8 @@ const slotSchema = z.object({
 
 export interface SlotOptionsResult {
   readonly options: readonly TourOption[];
+  /** Places the departure has left across every tier; null when unknown. */
+  readonly seatsLeft: number | null;
   readonly error?: string;
 }
 
@@ -44,26 +46,32 @@ export async function loadSlotOptions(input: {
   date: string;
   time: string;
 }): Promise<SlotOptionsResult> {
-  if (!isNativeBookingEnabled()) return { options: [], error: "Booking is unavailable." };
+  if (!isNativeBookingEnabled()) {
+    return { options: [], seatsLeft: null, error: "Booking is unavailable." };
+  }
 
   const parsed = slotSchema.safeParse(input);
-  if (!parsed.success) return { options: [], error: "That date is not valid." };
+  if (!parsed.success) return { options: [], seatsLeft: null, error: "That date is not valid." };
 
   const limit = consumeRateLimit(await rateLimitKey("regiondo:options"), {
     windowMs: 60 * 1000,
     max: 40,
   });
   if (!limit.ok) {
-    return { options: [], error: "Too many changes at once — give it a second." };
+    return { options: [], seatsLeft: null, error: "Too many changes at once — give it a second." };
   }
 
-  const options = await getOptions(parsed.data.variationId, parsed.data.date, parsed.data.time);
+  const slot = await getSlot(parsed.data.variationId, parsed.data.date, parsed.data.time);
 
-  if (options.length === 0) {
-    return { options: [], error: "That departure is no longer bookable. Please pick another date." };
+  if (slot.options.length === 0) {
+    return {
+      options: [],
+      seatsLeft: null,
+      error: "That departure is no longer bookable. Please pick another date.",
+    };
   }
 
-  return { options };
+  return { options: slot.options, seatsLeft: slot.seatsLeft };
 }
 
 const rangeSchema = z.object({

@@ -1,0 +1,19 @@
+{
+  "status": 1,
+  "total": 1,
+  "data": [
+    {
+      "start_date_time": "2026-09-21 08:00:00",
+      "opened_till": null,
+      "booking_cut_off_hours": 1,
+      "bookable_until_time": "2026-09-21 07:00:00",
+      "is_available": 1,
+      "event_capacity": 63,
+      "qty_available": 21,
+      "qty_available_by_option": { "2052614": 22, "2052711": 49 },
+      "stock_available_by_option": { "2052614": 63, "2052711": 50 },
+      "regiondo_variation_id": 731837,
+      "appointment_type": "automatically"
+    }
+  ]
+}

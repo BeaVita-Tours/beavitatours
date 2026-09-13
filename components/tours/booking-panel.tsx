@@ -1,18 +1,53 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { type ReactNode, useActionState, useEffect, useMemo, useState, useTransition } from "react";
-import { AlertCircle, ArrowRight, CalendarDays, Clock, Loader2, Minus, Plus, ShieldCheck, Users } from "lucide-react";
+import {
+  type ReactNode,
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
+import {
+  AlertCircle,
+  ArrowRight,
+  CalendarDays,
+  Clock,
+  Loader2,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 
 import { startBooking } from "@/app/(site)/book/actions";
 import { IDLE } from "@/lib/regiondo/action-state";
-import { loadSlotOptions } from "@/app/(site)/tours/[slug]/actions";
+import {
+  loadAvailability,
+  loadSlotOptions,
+} from "@/app/(site)/tours/[slug]/actions";
 import { useCookieConsent } from "@/components/cookie-consent-provider";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GuestSelector } from "@/components/tours/guest-selector";
 import { formatPrice, PriceDisplay } from "@/components/tours/price-display";
 import { trackBeginCheckout, trackPaymentHandoff } from "@/lib/analytics";
-import type { TourOption, TourVariation } from "@/lib/regiondo/types";
+import {
+  countLabel,
+  defaultQuantities,
+  isGroupOption,
+  lowestPrice,
+  normalizeQuantities,
+  type PartyQuantities,
+  type PartySummary,
+  serializeLines,
+  summarizeParty,
+} from "@/lib/regiondo/party";
+import type {
+  TourAvailability,
+  TourOption,
+  TourVariation,
+} from "@/lib/regiondo/types";
 import { cn } from "@/lib/utils";
 
 /**
@@ -35,9 +70,11 @@ interface BookingPanelProps {
   tour: { id: string; title: string; category?: string };
   variations: readonly TourVariation[];
   /** date -> times, fetched live on the server for the initial window. */
-  availability: Readonly<Record<string, readonly string[]>>;
+  availability: TourAvailability;
   /** Options for the first available slot, so the panel opens with a price. */
   initialOptions: readonly TourOption[];
+  /** Places the first slot has left across every tier; null when unknown. */
+  initialSeatsLeft: number | null;
   initialDate: string | null;
   initialTime: string | null;
   currency: string;
@@ -45,11 +82,26 @@ interface BookingPanelProps {
   bookingNoticeHours: number;
 }
 
+/** What survives a reload or a round trip to Regiondo and back. */
+interface StoredSelection {
+  variationId: string;
+  date: string | null;
+  time: string | null;
+  quantities: PartyQuantities;
+}
+
+/** Days of availability fetched when the visitor switches ticket type. */
+const AVAILABILITY_WINDOW_DAYS = 100;
+
 /**
- * The booking panel: date, time, option, party size — then one button that
- * holds the places and sends the customer to Regiondo's checkout, where they
- * enter their details and pay. Nothing is asked here that Regiondo asks again
+ * The booking panel: date, time, who is coming — then one button that holds
+ * the places and sends the customer to Regiondo's checkout, where they enter
+ * their details and pay. Nothing is asked here that Regiondo asks again
  * (D-019).
+ *
+ * "Who is coming" is a quantity per participant tier (Adult, Young, …), not
+ * one tier plus a number: a family of two adults and two children is two
+ * lines, and the server places one hold per line under a single checkout.
  *
  * The handoff is done from the client, not by a server redirect: the action
  * returns the checkout URL, the panel fires the payment-handoff event, then
@@ -60,19 +112,28 @@ export function BookingPanel({
   slug,
   tour,
   variations,
-  availability,
+  availability: initialAvailability,
   initialOptions,
+  initialSeatsLeft,
   initialDate,
   initialTime,
   currency,
   bookingNoticeHours,
 }: BookingPanelProps) {
-  const [variationId, setVariationId] = useState(variations[0]?.id ?? "");
+  const firstVariationId = variations[0]?.id ?? "";
+  const [variationId, setVariationId] = useState(firstVariationId);
+  const [availabilityByVariation, setAvailabilityByVariation] = useState<
+    Record<string, TourAvailability>
+  >(() =>
+    firstVariationId ? { [firstVariationId]: initialAvailability } : {},
+  );
   const [date, setDate] = useState<string | null>(initialDate);
   const [time, setTime] = useState<string | null>(initialTime);
   const [options, setOptions] = useState<readonly TourOption[]>(initialOptions);
-  const [optionId, setOptionId] = useState(initialOptions[0]?.id ?? "");
-  const [qty, setQty] = useState(() => Math.max(1, initialOptions[0]?.minPerOrder ?? 1));
+  const [slotSeats, setSlotSeats] = useState<number | null>(initialSeatsLeft);
+  const [quantities, setQuantities] = useState<PartyQuantities>(() =>
+    defaultQuantities(initialOptions),
+  );
   const [slotError, setSlotError] = useState<string | null>(null);
   const [loadingSlot, startSlotLoad] = useTransition();
   const [handingOff, setHandingOff] = useState(false);
@@ -80,9 +141,10 @@ export function BookingPanel({
   const [state, formAction, submitting] = useActionState(startBooking, IDLE);
   const { hasAnalyticsConsent } = useCookieConsent();
 
-  const option = options.find((candidate) => candidate.id === optionId) ?? options[0];
+  const availability = availabilityByVariation[variationId] ?? {};
   const times = date ? (availability[date] ?? []) : [];
-  const total = option ? option.price.amount * qty : 0;
+  const party = summarizeParty(options, quantities, currency, slotSeats);
+  const storageKey = `booking:${slug}`;
 
   const minDate = useMemo(() => {
     const earliest = new Date();
@@ -90,79 +152,217 @@ export function BookingPanel({
     return earliest;
   }, [bookingNoticeHours]);
 
-  // Clamp the quantity whenever the option changes: a group option may require
-  // a minimum, and seats left may be lower than what was selected on the
-  // previous date.
+  // ---- persistence -------------------------------------------------------
+  // The selection survives a reload and the trip to Regiondo and back: a
+  // visitor who compares dates in two tabs, or comes back from the checkout
+  // to change something, should not have to rebuild their party. Session
+  // storage, so it dies with the tab; restored after mount so the server and
+  // client HTML still match.
+  const restored = useRef(false);
   useEffect(() => {
-    if (!option) return;
-    setQty((current) => clampQty(current, option));
-  }, [option]);
+    if (restored.current) return;
+    restored.current = true;
+    const stored = readSelection(storageKey);
+    if (!stored || stored.variationId !== variationId) return;
 
-  // The hold is placed; off to Regiondo.
+    const sameSlot = stored.date === date && stored.time === time;
+    if (sameSlot || !stored.date || !stored.time) {
+      setQuantities((current) => {
+        const fitted = normalizeQuantities(
+          options,
+          stored.quantities,
+          slotSeats,
+        );
+        return Object.keys(fitted).length > 0 ? fitted : current;
+      });
+      return;
+    }
+    const storedTimes = availability[stored.date] ?? [];
+    if (!storedTimes.includes(stored.time)) return;
+    changeSlot(stored.date, stored.time, stored.quantities);
+    // Mount-only by design; everything it reads is the initial render's.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: deliberate — see above
+  }, []);
+
+  useEffect(() => {
+    writeSelection(storageKey, { variationId, date, time, quantities });
+  }, [storageKey, variationId, date, time, quantities]);
+
+  // ---- handoff -----------------------------------------------------------
   useEffect(() => {
     if (state.status !== "handoff") return;
     setHandingOff(true);
     trackPaymentHandoff(
-      { currency, value: total, items: [analyticsItem(tour, option, qty)] },
-      hasAnalyticsConsent
+      {
+        currency: party.currency,
+        value: party.total,
+        items: analyticsItems(tour, party),
+      },
+      hasAnalyticsConsent,
     );
     navigateViaLink(state.checkoutUrl);
     // Fire once per handoff state, not on every consent or price tick.
     // biome-ignore lint/correctness/useExhaustiveDependencies: deliberate — see above
   }, [state]);
 
-  function selectDate(next: string) {
-    setDate(next);
-    setSlotError(null);
+  // ---- slot changes ------------------------------------------------------
 
-    const nextTime = availability[next]?.[0] ?? null;
+  /**
+   * Move to a departure and refetch its options. Seat counts move while the
+   * page is open, so options are never reused across slots. The party is
+   * re-fitted to the new options rather than reset: what the visitor chose
+   * survives as far as the new stock allows.
+   */
+  function changeSlot(
+    nextDate: string,
+    nextTime: string,
+    keep: PartyQuantities = quantities,
+  ) {
+    setDate(nextDate);
     setTime(nextTime);
-    if (!nextTime) return;
-
-    // Seat counts move while the page is open, so options are refetched for
-    // the chosen slot rather than reused from the initial render.
+    setSlotError(null);
     startSlotLoad(async () => {
-      const result = await loadSlotOptions({ variationId, date: next, time: nextTime });
+      const result = await loadSlotOptions({
+        variationId,
+        date: nextDate,
+        time: nextTime,
+      });
       setOptions(result.options);
-      setOptionId(result.options[0]?.id ?? "");
+      setSlotSeats(result.seatsLeft);
+      setQuantities(() => {
+        const fitted = normalizeQuantities(
+          result.options,
+          keep,
+          result.seatsLeft,
+        );
+        return Object.keys(fitted).length > 0
+          ? fitted
+          : defaultQuantities(result.options);
+      });
       setSlotError(result.error ?? null);
     });
   }
 
-  const soldOut = option?.seatsLeft === 0;
+  function selectDate(next: string) {
+    const nextTime = availability[next]?.[0] ?? null;
+    if (!nextTime) {
+      setDate(next);
+      setTime(null);
+      return;
+    }
+    changeSlot(next, nextTime);
+  }
+
+  function selectTime(next: string) {
+    if (!date) return;
+    changeSlot(date, next);
+  }
+
+  /**
+   * Switch ticket type (a product's variations: "Ticket" vs "Group"). Each
+   * variation has its own calendar, fetched on first use; the panel then opens
+   * on its first departure so there is always a price on screen.
+   */
+  function selectVariation(next: string) {
+    if (next === variationId) return;
+    setVariationId(next);
+    setDate(null);
+    setTime(null);
+    setOptions([]);
+    setSlotSeats(null);
+    setQuantities({});
+    setSlotError(null);
+
+    startSlotLoad(async () => {
+      let calendar = availabilityByVariation[next];
+      if (!calendar) {
+        const from = toDateKey(minDate);
+        const to = toDateKey(addDays(minDate, AVAILABILITY_WINDOW_DAYS));
+        const result = await loadAvailability({ variationId: next, from, to });
+        if (result.error) {
+          setSlotError(result.error);
+          return;
+        }
+        calendar = result.availability;
+        setAvailabilityByVariation((current) => ({
+          ...current,
+          [next]: calendar!,
+        }));
+      }
+      const firstDate = Object.keys(calendar).sort()[0];
+      const firstTime = firstDate ? calendar[firstDate]?.[0] : undefined;
+      if (!firstDate || !firstTime) {
+        setSlotError("No dates are open for this ticket type at the moment.");
+        return;
+      }
+      const result = await loadSlotOptions({
+        variationId: next,
+        date: firstDate,
+        time: firstTime,
+      });
+      setDate(firstDate);
+      setTime(firstTime);
+      setOptions(result.options);
+      setSlotSeats(result.seatsLeft);
+      setQuantities(defaultQuantities(result.options));
+      setSlotError(result.error ?? null);
+    });
+  }
+
+  // ---- derived -----------------------------------------------------------
+  const soldOut =
+    slotSeats === 0 ||
+    (options.length > 0 && options.every((option) => option.seatsLeft === 0));
   const busy = submitting || handingOff;
-  const canBook = Boolean(date && time && option && !soldOut && !loadingSlot);
-  const maxQty = option ? maxSelectable(option) : 1;
-  const perGroup = Boolean(option && option.maxPerOrder > 1);
-  const errorMessage = slotError ?? (state.status === "error" ? state.message : null);
+  const hasParty = party.count > 0;
+  const canBook = Boolean(date && time && hasParty && !soldOut && !loadingSlot);
+  const errorMessage =
+    slotError ?? (state.status === "error" ? state.message : null);
+
+  const headlinePrice = lowestPrice(options);
+  const headlineUnit =
+    options.length > 0 && options.every(isGroupOption)
+      ? "per group"
+      : "per person";
 
   return (
     <form
       action={formAction}
       onSubmit={() => {
         trackBeginCheckout(
-          { currency, value: total, items: [analyticsItem(tour, option, qty)] },
-          hasAnalyticsConsent
+          {
+            currency: party.currency,
+            value: party.total,
+            items: analyticsItems(tour, party),
+          },
+          hasAnalyticsConsent,
         );
       }}
       className="space-y-5"
     >
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="variationId" value={variationId} />
-      <input type="hidden" name="optionId" value={optionId} />
       <input type="hidden" name="date" value={date ?? ""} />
       <input type="hidden" name="time" value={time ?? ""} />
-      <input type="hidden" name="qty" value={qty} />
+      {serializeLines(quantities).map((line) => (
+        <input key={line} type="hidden" name="line" value={line} />
+      ))}
 
       <div>
         <PriceDisplay
-          price={option ? option.price : { amount: 0, wasAmount: null, currency }}
+          price={headlinePrice ?? { amount: 0, wasAmount: null, currency }}
+          showFrom={options.length > 1}
           size="lg"
-          unit={perGroup ? "per group" : "per person"}
+          unit={headlineUnit}
         />
-        {option?.seatsLeft !== null && option !== undefined && option.seatsLeft <= 6 && !soldOut ? (
+        {soldOut ? (
+          <p className="mt-1 text-sm font-medium text-destructive">
+            This departure is sold out — pick another date.
+          </p>
+        ) : slotSeats !== null && slotSeats <= 10 ? (
           <p className="mt-1 text-sm font-medium text-accent">
-            Only {option.seatsLeft} {option.seatsLeft === 1 ? "place" : "places"} left
+            Only {slotSeats} {slotSeats === 1 ? "place" : "places"} left on this
+            departure
           </p>
         ) : null}
       </div>
@@ -175,13 +375,7 @@ export function BookingPanel({
               <Chip
                 key={variation.id}
                 pressed={variationId === variation.id}
-                onClick={() => {
-                  setVariationId(variation.id);
-                  setDate(null);
-                  setTime(null);
-                  setOptions([]);
-                  setOptionId("");
-                }}
+                onClick={() => selectVariation(variation.id)}
               >
                 {variation.name}
               </Chip>
@@ -199,7 +393,10 @@ export function BookingPanel({
             {date ? formatLongDate(date) : "Highlighted days are available"}
           </span>
         </p>
-        <div className="rounded-2xl border bg-card p-3" aria-labelledby="booking-date-label">
+        <div
+          className="rounded-2xl border bg-card p-3"
+          aria-labelledby="booking-date-label"
+        >
           <AvailabilityCalendar
             availability={availability}
             selected={date}
@@ -214,7 +411,11 @@ export function BookingPanel({
           <legend className="text-sm font-medium">Departure time</legend>
           <div className="flex flex-wrap gap-2">
             {times.map((slot) => (
-              <Chip key={slot} pressed={time === slot} onClick={() => setTime(slot)}>
+              <Chip
+                key={slot}
+                pressed={time === slot}
+                onClick={() => selectTime(slot)}
+              >
                 {slot.slice(0, 5)}
               </Chip>
             ))}
@@ -222,83 +423,27 @@ export function BookingPanel({
         </fieldset>
       ) : null}
 
-      {options.length > 1 ? (
-        <fieldset className="space-y-2">
-          <legend className="text-sm font-medium">Option</legend>
-          <div className="space-y-2">
-            {options.map((candidate) => (
-              <label
-                key={candidate.id}
-                className={cn(
-                  "flex cursor-pointer items-start justify-between gap-3 rounded-xl border p-3 text-sm transition-colors",
-                  optionId === candidate.id
-                    ? "border-primary-strong bg-primary-strong/5"
-                    : "border-input hover:bg-muted"
-                )}
-              >
-                <span className="flex items-start gap-2">
-                  <input
-                    type="radio"
-                    name="optionChoice"
-                    value={candidate.id}
-                    checked={optionId === candidate.id}
-                    onChange={() => setOptionId(candidate.id)}
-                    className="mt-0.5 accent-[var(--primary)]"
-                  />
-                  <span>
-                    <span className="font-medium">{candidate.name}</span>
-                    {candidate.description ? (
-                      <span className="block text-xs text-muted-foreground">
-                        {candidate.description}
-                      </span>
-                    ) : null}
-                  </span>
-                </span>
-                <span className="shrink-0 font-semibold">
-                  {formatPrice(candidate.price.amount, candidate.price.currency)}
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      ) : null}
-
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-sm font-medium" id="qty-label">
-          {perGroup ? "Groups" : "Guests"}
-        </span>
-        <div className="flex items-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="rounded-full"
-            onClick={() => setQty((n) => Math.max(option ? Math.max(option.minPerOrder, 1) : 1, n - 1))}
-            disabled={qty <= (option ? Math.max(option.minPerOrder, 1) : 1)}
-            aria-label="One fewer"
-          >
-            <Minus />
-          </Button>
-          <output aria-labelledby="qty-label" className="w-8 text-center text-lg font-semibold tabular-nums">
-            {qty}
-          </output>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="rounded-full"
-            onClick={() => setQty((n) => Math.min(maxQty, n + 1))}
-            disabled={qty >= maxQty}
-            aria-label="One more"
-          >
-            <Plus />
-          </Button>
-        </div>
-      </div>
+      {loadingSlot && options.length === 0 ? (
+        <Skeleton className="h-20 w-full rounded-2xl" />
+      ) : (
+        <GuestSelector
+          options={options}
+          quantities={quantities}
+          slotSeats={slotSeats}
+          onChange={setQuantities}
+          disabled={loadingSlot}
+        />
+      )}
 
       {/* What is about to be reserved, in one glance, next to what it costs. */}
-      {date && time && option ? (
-        <div className="space-y-2 rounded-2xl bg-muted/60 p-4 text-sm">
+      {date && time && options.length > 0 ? (
+        <div
+          className={cn(
+            "space-y-2 rounded-2xl bg-muted/60 p-4 text-sm transition-opacity",
+            loadingSlot && "opacity-60",
+          )}
+          aria-live="polite"
+        >
           <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-muted-foreground">
             <dt className="flex items-center gap-1.5">
               <CalendarDays className="size-4" aria-hidden="true" />
@@ -310,17 +455,52 @@ export function BookingPanel({
               <span className="sr-only">Departure</span>
             </dt>
             <dd className="text-foreground">{time.slice(0, 5)}</dd>
-            <dt className="flex items-center gap-1.5">
+            <dt className="flex items-start gap-1.5 pt-0.5">
               <Users className="size-4" aria-hidden="true" />
-              <span className="sr-only">{perGroup ? "Groups" : "Guests"}</span>
+              <span className="sr-only">Party</span>
             </dt>
             <dd className="text-foreground">
-              {qty} {perGroup ? (qty === 1 ? "group" : "groups") : qty === 1 ? "guest" : "guests"}
+              {hasParty ? (
+                <ul className="space-y-0.5">
+                  {party.lines.map((line) => (
+                    <li
+                      key={line.option.id}
+                      className="flex justify-between gap-3"
+                    >
+                      <span>
+                        {line.qty} × {line.option.name}
+                      </span>
+                      <span className="tabular-nums text-muted-foreground">
+                        {formatPrice(
+                          line.lineTotal,
+                          line.option.price.currency,
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <span className="text-muted-foreground">
+                  Add at least one guest
+                </span>
+              )}
             </dd>
           </dl>
           <div className="flex items-baseline justify-between border-t border-border/70 pt-2">
-            <span className="font-medium">Total</span>
-            <span className="text-xl font-bold">{formatPrice(total, option.price.currency)}</span>
+            <span className="font-medium">
+              Total
+              {hasParty ? (
+                <span className="ml-1.5 font-normal text-muted-foreground">
+                  · {countLabel(party.count, party.perGroup)}
+                </span>
+              ) : null}
+            </span>
+            <output
+              aria-label="Total price"
+              className="text-xl font-bold tabular-nums"
+            >
+              {formatPrice(party.total, party.currency)}
+            </output>
           </div>
         </div>
       ) : null}
@@ -347,24 +527,27 @@ export function BookingPanel({
         className="w-full bg-primary-strong hover:bg-primary-strong/90"
         disabled={!canBook || busy}
       >
-        {busy || loadingSlot ? <Loader2 className="animate-spin" aria-hidden="true" /> : null}
+        {busy || loadingSlot ? (
+          <Loader2 className="animate-spin" aria-hidden="true" />
+        ) : null}
         {handingOff
           ? "Taking you to secure payment…"
           : submitting
             ? "Reserving your places…"
             : soldOut
               ? "Sold out — pick another date"
-              : date
-                ? "Reserve your places"
-                : "Choose a date"}
-        {!busy && canBook ? <ArrowRight aria-hidden="true" /> : null}
+              : !date
+                ? "Choose a date"
+                : "Reserve your places"}
+        {!busy ? <ArrowRight aria-hidden="true" /> : null}
       </Button>
 
       <p className="flex items-start justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
         <span>
-          Your places are held for 20 minutes while you enter your details and pay on
-          Regiondo&apos;s secure checkout. We never see your card details.
+          Your places are held for 20 minutes while you enter your details and
+          pay on Regiondo&apos;s secure checkout. We never see your card
+          details.
         </span>
       </p>
     </form>
@@ -422,33 +605,60 @@ function Chip({
   );
 }
 
-function analyticsItem(
-  tour: BookingPanelProps["tour"],
-  option: TourOption | undefined,
-  qty: number
-) {
-  return {
+/** One ecommerce item per tier, so the events carry the real basket. */
+function analyticsItems(tour: BookingPanelProps["tour"], party: PartySummary) {
+  return party.lines.map((line) => ({
     item_id: tour.id,
     item_name: tour.title,
     ...(tour.category ? { item_category: tour.category } : {}),
-    price: option?.price.amount ?? 0,
-    quantity: qty,
-  };
+    item_variant: line.option.name,
+    price: line.option.price.amount,
+    quantity: line.qty,
+  }));
 }
 
-/**
- * `max_qty_to_sell` of 0 means "no per-order cap" in Regiondo's vocabulary, not
- * "nothing may be sold". Seats left is the real ceiling; 10 is a sane UI cap
- * for a tour with no other limit.
- */
-function maxSelectable(option: TourOption): number {
-  const perOrder = option.maxPerOrder > 0 ? option.maxPerOrder : 10;
-  const stock = option.seatsLeft ?? perOrder;
-  return Math.max(1, Math.min(perOrder, stock));
+function readSelection(key: string): StoredSelection | null {
+  try {
+    const raw = window.sessionStorage.getItem(key);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    const candidate = parsed as Partial<StoredSelection>;
+    if (typeof candidate.variationId !== "string") return null;
+    const quantities: Record<string, number> = {};
+    for (const [id, qty] of Object.entries(candidate.quantities ?? {})) {
+      if (/^\d+$/.test(id) && typeof qty === "number" && qty > 0)
+        quantities[id] = qty;
+    }
+    return {
+      variationId: candidate.variationId,
+      date: typeof candidate.date === "string" ? candidate.date : null,
+      time: typeof candidate.time === "string" ? candidate.time : null,
+      quantities,
+    };
+  } catch {
+    return null;
+  }
 }
 
-function clampQty(current: number, option: TourOption): number {
-  return Math.min(Math.max(current, Math.max(option.minPerOrder, 1)), maxSelectable(option));
+function writeSelection(key: string, selection: StoredSelection): void {
+  try {
+    window.sessionStorage.setItem(key, JSON.stringify(selection));
+  } catch {
+    // Private mode or a full store: the panel simply forgets on reload.
+  }
+}
+
+function addDays(date: Date, days: number): Date {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function toDateKey(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 function formatLongDate(key: string): string {

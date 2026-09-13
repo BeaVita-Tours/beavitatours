@@ -12,6 +12,7 @@ import {
   productDetailSchema,
   productListSchema,
   reviewListSchema,
+  timeslotListSchema,
   tagListSchema,
 } from "./schemas";
 import { productIdForSlug } from "./slugs";
@@ -22,6 +23,7 @@ import type {
   TourDetail,
   TourOption,
   TourReview,
+  TourSlot,
   TourSummary,
 } from "./types";
 
@@ -204,6 +206,11 @@ export async function getTourBySlug(slug: string): Promise<TourDetail | null> {
  * Reviews for a tour. Genuine customer reviews from Regiondo, which is what
  * makes `AggregateRating` in the tour page's JSON-LD legitimate — for the
  * products that have them. Products with none get no rating markup at all.
+ *
+ * Ordered best-first: by score, then newest. The API returns them newest
+ * first, which put a 3-star review at the top of a 4.5-star tour purely on
+ * date. Nothing is dropped — lower scores follow the higher ones, so the
+ * aggregate stays honest and the list is easy to scan.
  */
 export async function getTourReviews(productId: string, limit = 12): Promise<readonly TourReview[]> {
   "use cache";
@@ -216,7 +223,14 @@ export async function getTourReviews(productId: string, limit = 12): Promise<rea
     []
   );
 
-  return data.map(toTourReview).filter((review) => review.body.length > 0);
+  return sortReviewsBestFirst(data.map(toTourReview).filter((review) => review.body.length > 0));
+}
+
+export function sortReviewsBestFirst(reviews: readonly TourReview[]): TourReview[] {
+  return [...reviews].sort(
+    (a, b) =>
+      (b.rating ?? 0) - (a.rating ?? 0) || (b.createdAt ?? "").localeCompare(a.createdAt ?? "")
+  );
 }
 
 /**
@@ -307,6 +321,63 @@ export async function getOptions(
   } catch {
     return [];
   }
+}
+
+/**
+ * The departure's own seat count, which is what actually limits a booking —
+ * see `timeslotSchema`. Returns null when the endpoint is unavailable or the
+ * slot is not in its answer; the caller then falls back to per-option stock.
+ */
+export async function getSlotCapacity(
+  variationId: string,
+  date: string,
+  time: string
+): Promise<{ seatsLeft: number | null; byOption: Readonly<Record<string, number>> } | null> {
+  if (!getConfig().enabled) return null;
+
+  const wanted = `${date} ${time.slice(0, 5)}`;
+  try {
+    const slots = await request("/products/timeslots", {
+      schema: timeslotListSchema,
+      params: {
+        regiondo_variation_id: variationId,
+        from_datetime: `${date} 00:00:00`,
+        to_datetime: `${date} 23:59:59`,
+      },
+      cache: "no-store",
+    });
+    const slot = slots.find((candidate) => candidate.start_date_time.startsWith(wanted));
+    if (!slot) return null;
+    return {
+      seatsLeft: slot.is_available === 0 ? 0 : slot.qty_available,
+      byOption: slot.qty_available_by_option,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Everything the panel needs for one departure, in one call: the tiers with
+ * their stock capped at what the departure really has left, and that shared
+ * number itself. The two upstream reads run in parallel.
+ */
+export async function getSlot(variationId: string, date: string, time: string): Promise<TourSlot> {
+  const [options, capacity] = await Promise.all([
+    getOptions(variationId, date, time),
+    getSlotCapacity(variationId, date, time),
+  ]);
+
+  if (!capacity) return { options, seatsLeft: null };
+
+  const capped = options.map((option) => {
+    const limits = [option.seatsLeft, capacity.byOption[option.id], capacity.seatsLeft].filter(
+      (value): value is number => value !== null && value !== undefined
+    );
+    return limits.length > 0 ? { ...option, seatsLeft: Math.min(...limits) } : option;
+  });
+
+  return { options: capped, seatsLeft: capacity.seatsLeft };
 }
 
 export { TOUR_CATALOG_TAG, reviewsCacheTag, tagCacheTag, tourCacheTag };

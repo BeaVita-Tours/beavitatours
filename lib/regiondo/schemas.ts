@@ -235,6 +235,25 @@ export const optionSchema = z.object({
 export type RegiondoOption = z.infer<typeof optionSchema>;
 export const optionListSchema = keyedRecord(optionSchema);
 
+/**
+ * A departure's seat count, from `GET /products/timeslots`.
+ *
+ * This is the number that actually limits a booking. `availoptions` reports
+ * `qty_left` per option, and each option's number can be far above what the
+ * departure has left: probed live, a Cortina departure showed 33 per option
+ * and 9 for the event; the Adult/Young product 22 and 49 per option against
+ * 21 for the event. `qty_available` is the shared ceiling across every tier.
+ */
+export const timeslotSchema = z.object({
+  start_date_time: z.string(),
+  is_available: numericNullable.default(null),
+  event_capacity: numericNullable.default(null),
+  qty_available: numericNullable.default(null),
+  qty_available_by_option: z.record(z.string(), numeric).default({}),
+});
+export type RegiondoTimeslot = z.infer<typeof timeslotSchema>;
+export const timeslotListSchema = z.array(timeslotSchema);
+
 /* -------------------------------------------------------------------------- */
 /* reviews                                                                    */
 /* -------------------------------------------------------------------------- */

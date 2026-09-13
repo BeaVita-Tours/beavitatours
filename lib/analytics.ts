@@ -26,6 +26,8 @@ export interface AnalyticsItem {
   readonly item_id: string;
   readonly item_name: string;
   readonly item_category?: string;
+  /** The participant tier ("Adult", "Young (7-14)") on booking events. */
+  readonly item_variant?: string;
   readonly price: number;
   readonly quantity: number;
 }

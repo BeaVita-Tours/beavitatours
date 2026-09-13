@@ -4,6 +4,7 @@ import { Camera } from "lucide-react";
 
 import { reviewPlatformName } from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
+import { cn } from "@/lib/utils";
 import { ReviewAuthorHeader, ReviewRating } from "./review-parts";
 
 /** Texts longer than this (roughly 2–3 lines) offer a "Read more" affordance. */
@@ -18,7 +19,9 @@ export function ReviewCard({
 }) {
   const platform = reviewPlatformName(review.source, review.platformLabel);
   const hasText = review.text.trim().length > 0;
-  const isLong = review.text.length > READ_MORE_THRESHOLD;
+  // The operator's reply only shows in the inspector, so it counts as "more".
+  const isLong =
+    review.text.length > READ_MORE_THRESHOLD || Boolean(review.ownerResponse);
   const photoCount = review.photos?.length ?? 0;
   // Google review deep links send visitors off to Maps; the client prefers
   // guests to stay on page, so drop the link for Google but keep it for
@@ -56,9 +59,20 @@ export function ReviewCard({
         )}
       </div>
 
-      {/* Text (always clamped so the card stays its normal size in the row) */}
+      {/* Title (Regiondo reviews carry one) + text, always clamped so the card
+          stays its normal size in the row. */}
+      {review.title && (
+        <p className="line-clamp-1 text-sm font-semibold text-foreground">
+          {review.title}
+        </p>
+      )}
       {hasText && (
-        <p className="line-clamp-4 text-sm leading-relaxed text-foreground/80">
+        <p
+          className={cn(
+            "text-sm leading-relaxed text-foreground/80",
+            review.title ? "line-clamp-3" : "line-clamp-4",
+          )}
+        >
           {review.text}
         </p>
       )}

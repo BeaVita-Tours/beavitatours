@@ -108,6 +108,18 @@ export interface TourOption {
 /** date (YYYY-MM-DD) -> available start times (HH:MM:SS). */
 export type TourAvailability = Readonly<Record<string, readonly string[]>>;
 
+/**
+ * One departure as the booking panel sees it: its tiers, and the number of
+ * places the departure has left across all of them. Every option's
+ * `seatsLeft` is already capped at that shared number, so a single tier can
+ * never offer more than the coach holds; `seatsLeft` here is what caps the
+ * party as a whole. Null when the API did not say.
+ */
+export interface TourSlot {
+  readonly options: readonly TourOption[];
+  readonly seatsLeft: number | null;
+}
+
 export interface TourReview {
   readonly id: string;
   readonly title: string;

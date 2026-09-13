@@ -16,11 +16,14 @@ import {
   DrawerDescription,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { reviewPlatformName } from "@/lib/reviews/platform-stats";
+import {
+  reviewPlatformBadge,
+  reviewPlatformLogo,
+  reviewPlatformName,
+} from "@/lib/reviews/platform-stats";
 import type { Review } from "@/lib/reviews/types";
 import { ReviewAuthorHeader, ReviewPhoto, ReviewRating } from "./review-parts";
 import { OTAWordmark } from "../ota-wordmark";
-import { reviewPlatformLogo } from "@/lib/reviews/platform-stats";
 
 /**
  * Focused reading view for a single review. Opened by clicking any ReviewCard
@@ -95,6 +98,7 @@ function InspectorContent({ review }: { review: Review }) {
   const hasExternalLink =
     Boolean(review.sourceUrl) && review.source !== "google";
   const reviewLogo = reviewPlatformLogo(review.source, review.platformLabel);
+  const reviewBadge = reviewPlatformBadge(review.source, review.platformLabel);
 
   return (
     <div className="flex flex-col gap-4">
@@ -150,21 +154,39 @@ function InspectorContent({ review }: { review: Review }) {
         </div>
       )}
 
-      {/* Full text — unclamped, whitespace preserved */}
+      {/* Title + full text — unclamped, whitespace preserved */}
+      {review.title && (
+        <p className="text-base font-semibold text-foreground md:text-lg">
+          {review.title}
+        </p>
+      )}
       {hasText && (
         <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground/90 md:text-base">
           {review.text}
         </p>
       )}
 
+      {/* The operator's public reply, where there is one */}
+      {review.ownerResponse && (
+        <div className="border-l-2 border-primary/40 pl-3">
+          <p className="text-xs font-medium text-muted-foreground">
+            Reply from the team
+          </p>
+          <p className="mt-1 break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground/80">
+            {review.ownerResponse}
+          </p>
+        </div>
+      )}
+
       {/* Source + link */}
       <div className="flex items-center justify-between gap-4 pt-1">
         <span className="text-xs text-muted-foreground flex flex-row gap-1 items-center justify-center">
-          from{" "}
           {reviewLogo ? (
-            <OTAWordmark ota={reviewLogo} height={16} />
+            <>
+              from <OTAWordmark ota={reviewLogo} height={16} />
+            </>
           ) : (
-            <span>{platform}</span>
+            <span>{reviewBadge}</span>
           )}
         </span>
         {hasExternalLink && (

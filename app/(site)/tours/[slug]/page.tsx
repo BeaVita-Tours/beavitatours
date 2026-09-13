@@ -24,8 +24,8 @@ import { getConfig, isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { collectionForTour } from "@/lib/regiondo/collections";
 import {
   getAvailability,
-  getOptions,
   getRelatedTours,
+  getSlot,
   getTourBySlug,
   getTourReviews,
 } from "@/lib/regiondo/products";
@@ -37,14 +37,16 @@ import {
 } from "@/lib/regiondo/structured-data";
 import { truncate } from "@/lib/regiondo/sanitize";
 import type { TourDetail } from "@/lib/regiondo/types";
+import { cn } from "@/lib/utils";
 
 /**
  * Tour detail page.
  *
  * Layout (client brief): photo on the left, a box with the essentials and
- * the booking CTA on the right; beneath them the key-fact badges, then a
- * short description, then a few other tours. The long-form sections —
- * highlights, inclusions, meeting point, reviews — follow after that for the
+ * the booking CTA on the right; beneath them the key-fact badges, then the
+ * description beside the highlights, then guest reviews (where a tour has
+ * any), then a few other tours. The practical sections — inclusions, what to
+ * bring, meeting point, the small print — follow in a two-column grid for the
  * reader who wants them, but they are no longer what the page leads with.
  *
  * Structure follows from Cache Components: everything above the fold — title,
@@ -187,21 +189,37 @@ export default async function TourPage({ params }: PageProps) {
         <TourBadges tour={tour} />
       </div>
 
-      {/* Short description: the excerpt, large, then the full copy under it. */}
-      <section aria-labelledby="about-heading" className="mt-10 max-w-3xl space-y-4">
-        <h2 id="about-heading" className="text-2xl font-bold">
-          About this tour
-        </h2>
-        {tour.excerpt ? (
-          <p className="text-lg leading-relaxed text-foreground/85">{tour.excerpt}</p>
-        ) : null}
-        <div
-          className="prose prose-blog max-w-none text-sm leading-relaxed"
-          // Sanitised in lib/regiondo/sanitize.ts against a narrow allowlist:
-          // no script, no iframe, no event handlers, no inline styles.
-          dangerouslySetInnerHTML={{ __html: tour.descriptionHtml }}
-        />
-      </section>
+      {/* The description beside the highlights: what the day is, and what it
+          is for, in one screen on desktop. The prose keeps a reading measure
+          rather than filling the column; the highlights card takes the rest.
+          Stacks on mobile, description first. */}
+      <div
+        className={cn(
+          "mt-12 grid gap-10",
+          tour.highlights.length > 0 && "lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-14"
+        )}
+      >
+        <section aria-labelledby="about-heading" className="min-w-0 space-y-4">
+          <h2 id="about-heading" className="text-2xl font-bold">
+            About this tour
+          </h2>
+          {tour.excerpt ? (
+            <p className="max-w-3xl text-lg leading-relaxed text-foreground/85">{tour.excerpt}</p>
+          ) : null}
+          <div
+            className="prose prose-blog max-w-3xl text-[15px] leading-relaxed"
+            // Sanitised in lib/regiondo/sanitize.ts against a narrow allowlist:
+            // no script, no iframe, no event handlers, no inline styles.
+            dangerouslySetInnerHTML={{ __html: tour.descriptionHtml }}
+          />
+        </section>
+
+        <TourHighlights highlights={tour.highlights} variant="card" />
+      </div>
+
+      {/* Social proof, in the homepage's review cards. Renders nothing for the
+          (many) tours with no reviews yet. */}
+      <TourReviews reviews={reviews} rating={tour.rating} className="mt-14 space-y-6" />
 
       {/* A few other tours, before the long-form details. */}
       {related.length > 0 ? (
@@ -213,15 +231,18 @@ export default async function TourPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      {/* Everything else a booker may want to check. */}
-      <div className="mt-16 max-w-3xl space-y-10 border-t pt-12">
-        <TourHighlights highlights={tour.highlights} />
-        <TourInclusions tour={tour} />
-        <TourProse id="bring" heading="What to bring" html={tour.bringHtml} />
-        <TourMeetingPoint tour={tour} />
-        <TourProse id="good-to-know" heading="Good to know" html={tour.otherInfoHtml} />
-        <TourProse id="important" heading="Important information" html={tour.importantInfoHtml} />
-        <TourReviews reviews={reviews} rating={tour.rating} />
+      {/* Everything else a booker may want to check. Two columns on desktop
+          so the practical sections sit side by side instead of queueing down
+          the left; each section is short enough that pairs line up. */}
+      <div className="mt-16 border-t pt-12">
+        <h2 className="text-2xl font-bold">Good to know before you book</h2>
+        <div className="mt-8 grid gap-x-12 gap-y-10 lg:grid-cols-2">
+          <TourInclusions tour={tour} className="lg:col-span-2" />
+          <TourProse id="bring" heading="What to bring" html={tour.bringHtml} />
+          <TourMeetingPoint tour={tour} />
+          <TourProse id="good-to-know" heading="Good to know" html={tour.otherInfoHtml} />
+          <TourProse id="important" heading="Important information" html={tour.importantInfoHtml} />
+        </div>
       </div>
     </main>
   );
@@ -255,8 +276,10 @@ async function LiveBookingPanel({ tour }: { tour: TourDetail }) {
   const firstDate = Object.keys(availability).sort()[0] ?? null;
   const firstTime = firstDate ? (availability[firstDate]?.[0] ?? null) : null;
 
-  const options =
-    firstDate && firstTime ? await getOptions(variation.id, firstDate, firstTime) : [];
+  const slot =
+    firstDate && firstTime
+      ? await getSlot(variation.id, firstDate, firstTime)
+      : { options: [], seatsLeft: null };
 
   if (Object.keys(availability).length === 0) {
     return (
@@ -281,7 +304,8 @@ async function LiveBookingPanel({ tour }: { tour: TourDetail }) {
       tour={{ id: tour.id, title: tour.title, category: tour.collections[0] }}
       variations={tour.variations}
       availability={availability}
-      initialOptions={options}
+      initialOptions={slot.options}
+      initialSeatsLeft={slot.seatsLeft}
       initialDate={firstDate}
       initialTime={firstTime}
       currency={getConfig().currency}

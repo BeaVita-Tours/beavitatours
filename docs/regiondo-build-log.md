@@ -715,3 +715,68 @@ animated, and the caption/arrow row laid out on purpose (the arrows had been
 absolutely positioned against an ancestor that was not `relative`).
 
 *Reverse:* `git revert` — the removed page and cookie were self-contained.
+
+## Follow-up — a party is quantities per tier, not one tier (2026-09-13)
+
+### D-020 — One hold per participant tier, one checkout link across them
+
+The panel offered the product's options ("Adult", "Young (7-14)") as a radio
+and a single "Guests" stepper, so a family of two adults and two children
+could not be expressed at all — the most common party on a day trip. The API
+model behind it: `POST /checkout/hold` takes one `CartItem` (one option, one
+qty), but `GET /checkout/checkoutlink` takes "single or comma-separated
+reservation codes". Probed live on product 300877 (Adult €115, Young €99):
+two holds moved stock per tier (31→29, 50→48), `/checkout/checkoutlink?
+reservation_code=A,B` returned one URL (`/keys/A,B/currency/eur`), and the
+combined totals were €230 + €198 = €428. Both holds were released; stock came
+back.
+
+So: the booking state is `optionId → qty` (`lib/regiondo/party.ts`, pure and
+unit-tested — clamping to `min_qty_to_sell` / `max_qty_to_sell` / `qty_left`,
+stepping that snaps to the minimum from zero and to zero from the minimum,
+re-fitting a party to fresh options when the slot changes). The form posts one
+`line=<optionId>:<qty>` field per tier; `startBooking` re-validates each
+against live options, holds them in order, and on any failure releases the
+holds already placed before returning the error. The checkout link is fetched
+for all codes at once. Analytics items carry `item_variant` per tier.
+
+`GuestSelector` is a row per tier — name (the age range is in it), price, any
+per-booking rule, "only N left" when tight, a stepper. The summary lists each
+line with its subtotal and the guest count. The selection is kept in
+`sessionStorage` per tour so a reload, or the trip to Regiondo and back,
+does not lose the party. Switching ticket type (a product's variations) now
+fetches that variation's own calendar via `loadAvailability`, which existed
+but was never called.
+
+Also in this pass: reviews are ordered best-first (score, then date) in
+`getTourReviews` so the tour page, its cards and the JSON-LD agree; and the
+tour page below the hero uses the width — description beside a highlights
+card, reviews in three columns, the practical sections in a two-column grid —
+stacking to one column under `lg`.
+
+**`qty_left` on `availoptions` is not the number that limits a booking.** The
+client's first review of the panel asked that the selectable amount match the
+tour's availability, and a read-only probe of `GET /products/timeslots` showed
+why: it carries the departure's own `qty_available` (with `event_capacity`
+and `qty_available_by_option`), and that number is lower than every tier's
+`qty_left` — Adult 22 / Young 49 per option against 21 for the coach on
+300877; 33 per option against **9** on a Cortina departure. The tiers share
+the vehicle. `getSlot()` now fetches both in parallel, caps each option's
+`seatsLeft` at `min(qty_left, qty_available_by_option, qty_available)` and
+returns the departure count as `TourSlot.seatsLeft`; the party logic treats it
+as headroom shared across tiers (once 2 Young are in, an Adult can only take
+what is left), the panel says "Only N places left on this departure" when it
+is tight, and `startBooking` rejects a party larger than the departure before
+placing any hold. Per-tier "only N left" is shown only when the tier is
+tighter than the coach, so it never reads as N places *each*. The UI cap of
+10 now applies only when the API gives no stock number at all.
+
+The e2e mock serves the two-tier fixture (`availoptions-tiers.json`), the
+departure's seat count from `timeslots.json` (9, below both tiers), echoes
+the held item back as the real API does, and records holds at `/__holds`, so
+the suite asserts that "2 Adults + 2 Young" reaches the API as two holds
+with the right quantities under one link.
+
+*Reverse:* `git revert` — the old single-option panel and action are in the
+parent commit; nothing outside the booking panel, the action and the mock
+depends on the party shape.
