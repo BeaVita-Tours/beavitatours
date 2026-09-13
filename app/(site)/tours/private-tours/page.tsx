@@ -19,7 +19,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 const collection = COLLECTIONS.private;
 
 export const metadata: Metadata = {
-  title: "Private day tours from Venice — Dolomites & Prosecco | Bea Vita Tours",
+  title: "Private day tours from Venice — Dolomites & Prosecco | beaVita Tours",
   description:
     "Private day trips from Venice with your own driver and vehicle: the Dolomites, Lake Sorapis, via ferrata with an alpine guide, and the Prosecco hills. Book direct, or ask for a tailor-made day.",
   alternates: { canonical: collection.href },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Your own vehicle, your own driver, your own pace — private day trips to the Dolomites and the Prosecco hills.",
     url: `${SITE_URL}${collection.href}`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

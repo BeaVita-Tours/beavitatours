@@ -27,9 +27,9 @@ import { Card } from "@/components/ui/card";
 const B2B_EMAIL = "info@beavitatours.com";
 
 export const metadata: Metadata = {
-  title: "Work with us — travel trade, hotels & guides | Bea Vita Tours",
+  title: "Work with us — travel trade, hotels & guides | beaVita Tours",
   description:
-    "Bea Vita Tours works with travel agencies, tour operators, hotels and independent guides on day trips from Venice to the Dolomites and the Prosecco hills. Net rates and terms on request.",
+    "beaVita Tours works with travel agencies, tour operators, hotels and independent guides on day trips from Venice to the Dolomites and the Prosecco hills. Net rates and terms on request.",
 };
 
 interface PartnerType {
@@ -80,7 +80,7 @@ export default function B2BPage() {
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Work with us</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Bea Vita Tours is a licensed tour operator in Treviso running day trips from
+              beaVita Tours is a licensed tour operator in Treviso running day trips from
               Venice to the Dolomites and the Prosecco hills. We partner with agencies,
               hotels and guides — here is how.
             </p>
@@ -132,7 +132,7 @@ export default function B2BPage() {
             <p className="flex items-start gap-3">
               <BriefcaseBusiness className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
               <span>
-                <strong className="text-foreground">Bea Vita Tours</strong> — Tour Operator,
+                <strong className="text-foreground">BEA VITA TOURS</strong> — Tour Operator,
                 Auth. 6297 prov. TV, VAT IT05602720269. Product catalog, net rates and booking
                 terms are sent on request to{" "}
                 <a href={mailto("Catalog and net rates")} className="font-medium text-foreground underline-offset-4 hover:underline">

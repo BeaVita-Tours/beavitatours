@@ -12,7 +12,7 @@ import {
 } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
-  title: "The Bea Vita Blog — BeaVitaTours",
+  title: "The beaVita Blog — beaVita Tours",
   description: "Stories from the road between Venice and the Dolomites.",
 };
 
@@ -52,7 +52,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <BlogHeader
         title={
           <>
-            Bea Vita <span className="text-primary">Blog</span>
+            beaVita <span className="text-primary">Blog</span>
           </>
         }
         subtitle="Stories from the road between Venice and the Dolomites."

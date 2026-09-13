@@ -14,7 +14,7 @@ export const instant = false;
 
 export const metadata: Metadata = {
   ...studioMetadata,
-  title: "BeaVitaTours Studio",
+  title: "beaVita Tours Studio",
 };
 
 export const viewport: Viewport = studioViewport;

@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { privacyPolicy } from "@/lib/privacy-policy";
 
 export const metadata: Metadata = {
-  title: `${privacyPolicy.title} | BEA VITA TOURS`,
+  title: `${privacyPolicy.title} | beaVita Tours`,
   description: privacyPolicy.subtitle,
 };
 

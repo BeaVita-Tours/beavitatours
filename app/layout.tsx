@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title:
-    "BeaVitaTours - Tours and Day Trips to Dolomites & Prosecco",
+    "beaVita Tours - Tours and Day Trips to Dolomites & Prosecco",
   description:
     "Experience the best Tours and Day Trips to the Dolomites, Prosecco wine region, and Italian countryside. Direct booking with no intermediaries.",
 };

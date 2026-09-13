@@ -19,7 +19,7 @@ export function OrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
     "@id": `${SITE_URL}/#organization`,
-    name: "Bea Vita Tours",
+    name: "beaVita Tours",
     url: SITE_URL,
     description:
       "Family-run tour operator running day trips from Venice, Jesolo and Cavallino to the Dolomites and the Prosecco hills.",

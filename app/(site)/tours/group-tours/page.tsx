@@ -20,7 +20,7 @@ import { LegacyGroupToursWidgetPage } from "./legacy-widget-page";
 const collection = COLLECTIONS.shared;
 
 export const metadata: Metadata = {
-  title: "Group day tours from Venice — Dolomites & Prosecco Hills | Bea Vita Tours",
+  title: "Group day tours from Venice — Dolomites & Prosecco Hills | beaVita Tours",
   description:
     "Join a small-group day trip from Venice: the Dolomites, Cortina, Lake Misurina, Lake Braies and the Prosecco hills. Maximum eight guests, hotel-free pickup at Piazzale Roma.",
   alternates: { canonical: collection.href },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Small-group day trips from Venice to the Dolomites and the Prosecco hills. Top rated on Tripadvisor, GetYourGuide and Viator.",
     url: `${SITE_URL}${collection.href}`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

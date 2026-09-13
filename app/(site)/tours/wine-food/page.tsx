@@ -21,17 +21,17 @@ const proseccoGallery: GalleryImage[] = [
 ];
 
 export const metadata: Metadata = {
-  title: "Food, wine & Prosecco Hills day trips from Venice | Bea Vita Tours",
+  title: "Food, wine & Prosecco Hills day trips from Venice | beaVita Tours",
   description:
     "The Prosecco Hills, family-run wineries, local cheese and a long lunch in the Veneto hills. Small-group and private food & wine day trips from Venice.",
   alternates: { canonical: "/tours/wine-food" },
   openGraph: {
     type: "website",
-    title: "Food, wine & Prosecco Hills day trips from Venice | Bea Vita Tours",
+    title: "Food, wine & Prosecco Hills day trips from Venice | beaVita Tours",
     description:
       "The Prosecco Hills, family-run wineries, local cheese and a long lunch in the Veneto hills. Small-group and private food & wine day trips from Venice.",
     url: `${SITE_URL}/tours/wine-food`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

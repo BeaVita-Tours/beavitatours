@@ -21,7 +21,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
  */
 
 export const metadata: Metadata = {
-  title: "Escape Venice for a day — Dolomites & Prosecco tours | Bea Vita Tours",
+  title: "Escape Venice for a day — Dolomites & Prosecco tours | beaVita Tours",
   description:
     "Day trips from Venice to the Dolomites, Lake Braies, Cortina and the Prosecco hills. Book direct with the licensed local operator — no booking fees, free cancellation.",
   alternates: { canonical: "/lp/from-venice" },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description:
       "Trade the crowds and canals for mountain peaks and vineyard hills — just a short drive from the city.",
     url: `${SITE_URL}/lp/from-venice`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

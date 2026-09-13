@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     : undefined;
 
   return {
-    title: `${title} | BeaVitaTours Blog`,
+    title: `${title} | beaVita Tours Blog`,
     description,
     alternates: { canonical: `/blog/${slug}` },
     ...(imageUrl

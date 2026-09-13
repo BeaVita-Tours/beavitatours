@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { brandizeDeep } from "@/lib/brand";
 import { client } from "./client";
 import type { Category, Post, PostListResult, PostSummary } from "./types";
 
@@ -189,7 +190,7 @@ export async function getPosts(opts: {
     }),
   ]);
 
-  return { posts, total };
+  return { posts: brandizeDeep(posts), total };
 }
 
 export async function getPost(slug: string): Promise<Post | null> {
@@ -198,7 +199,7 @@ export async function getPost(slug: string): Promise<Post | null> {
   cacheTag(BLOG_TAG);
 
   if (!client) return null;
-  return (await client.fetch<Post | null>(POST_BY_SLUG_QUERY, { slug })) ?? null;
+  return brandizeDeep(await client.fetch<Post | null>(POST_BY_SLUG_QUERY, { slug })) ?? null;
 }
 
 export async function getPostSlugs(): Promise<string[]> {
@@ -238,7 +239,7 @@ export async function getCategories(): Promise<Category[]> {
   cacheTag(BLOG_TAG);
 
   if (!client) return [];
-  return await client.fetch<Category[]>(CATEGORIES_QUERY);
+  return brandizeDeep(await client.fetch<Category[]>(CATEGORIES_QUERY));
 }
 
 export async function getCategory(slug: string): Promise<Category | null> {
@@ -247,7 +248,7 @@ export async function getCategory(slug: string): Promise<Category | null> {
   cacheTag(BLOG_TAG);
 
   if (!client) return null;
-  return (await client.fetch<Category | null>(CATEGORY_BY_SLUG_QUERY, { slug })) ?? null;
+  return brandizeDeep(await client.fetch<Category | null>(CATEGORY_BY_SLUG_QUERY, { slug })) ?? null;
 }
 
 export async function getRelatedPosts(opts: {
@@ -259,8 +260,10 @@ export async function getRelatedPosts(opts: {
   cacheTag(BLOG_TAG);
 
   if (!client) return [];
-  return await client.fetch<PostSummary[]>(RELATED_POSTS_QUERY, {
-    currentSlug: opts.currentSlug,
-    categorySlugs: opts.categorySlugs,
-  });
+  return brandizeDeep(
+    await client.fetch<PostSummary[]>(RELATED_POSTS_QUERY, {
+      currentSlug: opts.currentSlug,
+      categorySlugs: opts.categorySlugs,
+    }),
+  );
 }

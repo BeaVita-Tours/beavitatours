@@ -18,7 +18,7 @@ const faqItems: Array<{ q: string; a: string }> = [
     a: "You can get to Piazzale Roma by water-bus (lines n. 1, 2, 4.1, 4.2, 5.1, 5.2, 5 and 6), by land bus from the any point of the mainland and by People Mover from the Cruise terminal. The main train station of Venice (Santa Lucia) is at only 5 minutes walking distance.",
   },
   {
-    q: "How will I recognize my BeaVitaTours guide at the meeting point?",
+    q: "How will I recognize my beaVita Tours guide at the meeting point?",
     a: "Your tour guide is always present at the meeting point 15 minutes prior to the starting time. He/she will wear a green jacket and/or hold a sign, making it easy for you to spot them.",
   },
   {
@@ -39,7 +39,7 @@ const faqItems: Array<{ q: string; a: string }> = [
   },
   {
     q: "What is your cancellation policy?",
-    a: "BeaVitaTours requires a minimum of 48 hours notice for cancellations, which must be done by email or whatsapp.",
+    a: "beaVita Tours requires a minimum of 48 hours notice for cancellations, which must be done by email or whatsapp.",
   },
   {
     q: "Are tours accessible for wheelchair users or people with walking disabilities?",
@@ -51,7 +51,7 @@ const faqItems: Array<{ q: string; a: string }> = [
   },
   {
     q: "Do you cancel tours due to bad weather?",
-    a: "BeaVitaTours tours run everyday, rain or shine. We reserve the right to cancel the Dolomites tour only in the event of severe weather / calamity.",
+    a: "beaVita tours run everyday, rain or shine. We reserve the right to cancel the Dolomites tour only in the event of severe weather / calamity.",
   },
 ];
 

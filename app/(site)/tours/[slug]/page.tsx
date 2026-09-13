@@ -19,6 +19,7 @@ import { TourGallery } from "@/components/tours/tour-gallery";
 import { TourGrid } from "@/components/tours/tour-grid";
 import { TourReviews } from "@/components/tours/tour-reviews";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BRAND_FULL } from "@/lib/brand";
 import { SITE_URL } from "@/lib/constants";
 import { getConfig, isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { collectionForTour } from "@/lib/regiondo/collections";
@@ -81,9 +82,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!tour) return { title: "Tour not found" };
 
-  // Regiondo's meta_title already carries the brand ("Bea Vita Tours | ..."),
-  // so it is used verbatim where present rather than re-appending the suffix.
-  const title = tour.metaTitle || `${tour.title} | Bea Vita Tours`;
+  // Regiondo's meta_title already carries the brand ("beaVita Tours | ...",
+  // spelling normalised by the mapper), so it is used as-is where present
+  // rather than re-appending the suffix.
+  const title = tour.metaTitle || `${tour.title} | ${BRAND_FULL}`;
   const description = truncate(tour.metaDescription || tour.excerpt, 155);
   const image = tour.gallery[0]?.url ?? tour.image?.url;
 
@@ -96,7 +98,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${SITE_URL}${tour.href}`,
-      siteName: "Bea Vita Tours",
+      siteName: BRAND_FULL,
       ...(image ? { images: [{ url: image, width: 600, height: 400, alt: tour.title }] } : {}),
     },
     twitter: {

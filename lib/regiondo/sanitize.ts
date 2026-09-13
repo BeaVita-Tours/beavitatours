@@ -2,6 +2,8 @@ import "server-only";
 
 import sanitizeHtmlLib from "sanitize-html";
 
+import { brandize } from "@/lib/brand";
+
 import type { SafeHtml } from "./types";
 
 /**
@@ -56,7 +58,8 @@ const OPTIONS: sanitizeHtmlLib.IOptions = {
 
 export function sanitizeHtml(html: string | null | undefined): SafeHtml {
   if (!html) return "" as SafeHtml;
-  return sanitizeHtmlLib(html, OPTIONS).trim() as SafeHtml;
+  // The supplier dashboard spells the brand every which way; visitors see one.
+  return brandize(sanitizeHtmlLib(html, OPTIONS).trim()) as SafeHtml;
 }
 
 /** Sanitise, returning null when the result has no content worth rendering. */
@@ -71,13 +74,15 @@ export function sanitizeHtmlOrNull(html: string | null | undefined): SafeHtml | 
  */
 export function stripTags(html: string | null | undefined): string {
   if (!html) return "";
-  return sanitizeHtmlLib(html, { allowedTags: [], allowedAttributes: {} })
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/\s+/g, " ")
-    .trim();
+  return brandize(
+    sanitizeHtmlLib(html, { allowedTags: [], allowedAttributes: {} })
+      .replace(/&amp;/g, "&")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, " ")
+      .trim(),
+  );
 }
 
 /** Truncate on a word boundary, for meta descriptions. */

@@ -180,7 +180,7 @@ export function Navigation() {
           <div className="flex h-16 items-center justify-between gap-4">
             <Link
               href="/"
-              aria-label="BeaVitaTours home"
+              aria-label="beaVita Tours home"
               className="flex items-center"
             >
               <Image
@@ -193,7 +193,7 @@ export function Navigation() {
                 priority
                 className="h-11 w-auto"
               />
-              <span className="sr-only">BeaVitaTours</span>
+              <span className="sr-only">beaVita Tours</span>
             </Link>
 
             <div className="flex items-center gap-3">

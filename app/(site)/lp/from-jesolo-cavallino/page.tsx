@@ -15,7 +15,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
  */
 
 export const metadata: Metadata = {
-  title: "Day trips from Jesolo & Cavallino — Dolomites & Prosecco | Bea Vita Tours",
+  title: "Day trips from Jesolo & Cavallino — Dolomites & Prosecco | beaVita Tours",
   description:
     "Private day tours from Jesolo and Cavallino to the Dolomites and the Prosecco hills. Picked up from your accommodation, run by the local operator.",
   alternates: { canonical: "/lp/from-jesolo-cavallino" },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description:
       "Swap the sun lounger for mountain peaks and vineyard hills — your day trip starts from Jesolo or Cavallino.",
     url: `${SITE_URL}/lp/from-jesolo-cavallino`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

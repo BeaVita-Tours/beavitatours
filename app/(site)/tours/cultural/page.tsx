@@ -29,17 +29,17 @@ const towns = [
 ] as const;
 
 export const metadata: Metadata = {
-  title: "Culture & history day trips from Venice | Bea Vita Tours",
+  title: "Culture & history day trips from Venice | beaVita Tours",
   description:
     "Verona, Padua, Treviso and the walled towns of the Veneto — art, history, castles and medieval streets on a private day trip from Venice, built around what interests you.",
   alternates: { canonical: "/tours/cultural" },
   openGraph: {
     type: "website",
-    title: "Culture & history day trips from Venice | Bea Vita Tours",
+    title: "Culture & history day trips from Venice | beaVita Tours",
     description:
       "Verona, Padua, Treviso and the walled towns of the Veneto — art, history, castles and medieval streets on a private day trip from Venice, built around what interests you.",
     url: `${SITE_URL}/tours/cultural`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

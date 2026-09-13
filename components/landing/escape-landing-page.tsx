@@ -89,7 +89,7 @@ const faqItems = [
   },
   {
     q: "How will I recognise my guide at the meeting point?",
-    a: "Your guide will be at the meeting point 15 minutes before departure, wearing a bright green jacket and holding a Bea Vita Tours sign — easy to spot even in a busy square.",
+    a: "Your guide will be at the meeting point 15 minutes before departure, wearing a bright green jacket and holding a beaVita Tours sign — easy to spot even in a busy square.",
   },
   {
     q: "Do you offer hotel pickup?",

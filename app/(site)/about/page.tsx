@@ -26,7 +26,7 @@ PEC beavitasrl@pec.it`}
             <div className="w-full max-w-sm">
               <img
                 src="/logo.webp"
-                alt="Bea Vita Tours logo"
+                alt="beaVita Tours logo"
                 className="w-full h-auto rounded-lg shadow"
               />
             </div>

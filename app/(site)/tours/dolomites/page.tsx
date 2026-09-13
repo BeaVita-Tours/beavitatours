@@ -11,17 +11,17 @@ const gallery: GalleryImage[] = [
 ];
 
 export const metadata: Metadata = {
-  title: "Dolomites day trips from Venice | Bea Vita Tours",
+  title: "Dolomites day trips from Venice | beaVita Tours",
   description:
     "The Dolomites are two hours from Venice. Cortina, Lake Misurina, Lake Braies and Tre Cime — small-group and private day trips, back the same evening.",
   alternates: { canonical: "/tours/dolomites" },
   openGraph: {
     type: "website",
-    title: "Dolomites day trips from Venice | Bea Vita Tours",
+    title: "Dolomites day trips from Venice | beaVita Tours",
     description:
       "The Dolomites are two hours from Venice. Cortina, Lake Misurina, Lake Braies and Tre Cime — small-group and private day trips, back the same evening.",
     url: `${SITE_URL}/tours/dolomites`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

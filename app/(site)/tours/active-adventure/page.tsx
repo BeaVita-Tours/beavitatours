@@ -28,17 +28,17 @@ const activities = [
 ] as const;
 
 export const metadata: Metadata = {
-  title: "Active & adventure day trips from Venice | Bea Vita Tours",
+  title: "Active & adventure day trips from Venice | beaVita Tours",
   description:
     "Hiking, via ferrata, cycling and more — a private day in the Dolomites or the Veneto countryside, planned around the activity you have in mind. Alpine guide included where it matters.",
   alternates: { canonical: "/tours/active-adventure" },
   openGraph: {
     type: "website",
-    title: "Active & adventure day trips from Venice | Bea Vita Tours",
+    title: "Active & adventure day trips from Venice | beaVita Tours",
     description:
       "Hiking, via ferrata, cycling and more — a private day in the Dolomites or the Veneto countryside, planned around the activity you have in mind. Alpine guide included where it matters.",
     url: `${SITE_URL}/tours/active-adventure`,
-    siteName: "Bea Vita Tours",
+    siteName: "beaVita Tours",
   },
 };
 

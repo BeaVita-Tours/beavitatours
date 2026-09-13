@@ -1,5 +1,7 @@
 import "server-only";
 
+import { brandize } from "@/lib/brand";
+
 import { sanitizeHtml, sanitizeHtmlOrNull, stripTags, truncate } from "./sanitize";
 import type {
   RegiondoOption,
@@ -73,7 +75,7 @@ function splitList(value: string | null): string[] {
 }
 
 export function toTourSummary(raw: RegiondoProductListItem): TourSummary {
-  const title = raw.name;
+  const title = brandize(raw.name);
   const excerpt = truncate(stripTags(raw.short_description || raw.description), 180);
 
   return {
@@ -107,7 +109,7 @@ function toHighlights(raw: string): string[] {
 
 export function toTourDetail(raw: RegiondoProductDetail): TourDetail {
   const summary = toTourSummary(raw as unknown as RegiondoProductListItem);
-  const title = raw.name;
+  const title = summary.title;
 
   const gallery = raw.image_sort_order.length
     ? [...raw.image_sort_order]
@@ -137,7 +139,7 @@ export function toTourDetail(raw: RegiondoProductDetail): TourDetail {
     gallery,
     variations: raw.variations.map((v) => ({
       id: v.variation_id,
-      name: v.name,
+      name: brandize(v.name),
       appointmentType: v.appointment_type,
       from: v.from,
       to: v.to,
@@ -151,10 +153,10 @@ export function toTourDetail(raw: RegiondoProductDetail): TourDetail {
     },
     timezone: raw.timezone ?? "Europe/Rome",
     bookingNoticeHours: raw.booking_notice_period ?? 0,
-    provider: raw.provider,
+    provider: brandize(raw.provider),
     // meta_description comes back wrapped in <p>, which would render literally
     // in a <meta> tag.
-    metaTitle: raw.meta_title,
+    metaTitle: brandize(raw.meta_title),
     metaDescription: stripTags(raw.meta_description) || null,
     createdAt: raw.created_at,
   };
@@ -164,7 +166,7 @@ export function toTourOption(raw: RegiondoOption, currency: string): TourOption 
   return {
     id: raw.option_id,
     variationId: raw.variation_id,
-    name: raw.name,
+    name: brandize(raw.name),
     description: stripTags(raw.description),
     price: toPrice(raw.regiondo_price, raw.original_price, currency),
     minPerOrder: Math.max(0, raw.min_qty_to_sell),

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface BlogHeaderProps {
-  /** Page heading, e.g. "The Bea Vita Blog" or a category title. */
+  /** Page heading, e.g. "The beaVita Blog" or a category title. */
   title: ReactNode;
   /** One-line tagline or category description. */
   subtitle?: string;

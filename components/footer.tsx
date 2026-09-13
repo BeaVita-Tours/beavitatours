@@ -36,7 +36,7 @@ export function Footer() {
                   priority
                   className="h-12 w-auto"
                 />
-                <span className="sr-only">BeaVitaTours</span>
+                <span className="sr-only">beaVita Tours</span>
               </Link>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -163,7 +163,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>
-            &copy; {year} BeaVitaTours. All rights
+            &copy; {year} beaVita Tours. All rights
             reserved.
           </p>
         </div>

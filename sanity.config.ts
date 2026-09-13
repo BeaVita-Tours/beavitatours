@@ -10,7 +10,7 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
 export default defineConfig({
   name: "beavitatours",
-  title: "BeaVitaTours Studio",
+  title: "beaVita Tours Studio",
   projectId,
   dataset,
   basePath: "/studio",

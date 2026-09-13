@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const category = await getCategory(slug);
   if (!category) return { title: "Category not found" };
   return {
-    title: `${category.title} — Blog | BeaVitaTours`,
+    title: `${category.title} — Blog | beaVita Tours`,
     description: category.description ?? `Posts filed under ${category.title}.`,
   };
 }
