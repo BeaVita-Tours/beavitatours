@@ -22,6 +22,10 @@ import { closingBandFor, type PrivateCopy } from "@/lib/regiondo/theme-cta";
  * and cards for whichever routes come back non-empty. Retag a tour in the
  * Regiondo dashboard and the band follows.
  *
+ * The one exception is a theme marked `privateOnly` in `THEME_PAGES`: that is
+ * an editorial fact the catalog currently gets wrong (see the flag's comment),
+ * so it wins over the tags.
+ *
  * The private card's copy can be given per page, because the client wrote a
  * line for each private-only theme ("Plan your private adventure").
  *
@@ -33,7 +37,10 @@ const EVERYTHING: ReadonlySet<CollectionKey> = new Set<CollectionKey>(["shared",
 
 /** Which collections a theme's product set has departures in. */
 async function travelStylesFor(page: ThemePageSlug): Promise<ReadonlySet<CollectionKey>> {
-  const productIds = themePage(page).sets.flatMap((set) => THEME_UPSELLS[set].productIds);
+  const theme = themePage(page);
+  if (theme.privateOnly) return new Set<CollectionKey>(["private"]);
+
+  const productIds = theme.sets.flatMap((set) => THEME_UPSELLS[set].productIds);
   const styles = new Set<CollectionKey>();
 
   await Promise.all(

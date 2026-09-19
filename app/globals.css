@@ -28,14 +28,21 @@
   --muted-foreground: oklch(0.5 0.02 60);
   --accent: oklch(66.9% 0.163 13);
   --accent-foreground: oklch(0.99 0.005 85);
-  /* Section veils for the homepage: pure white with a 7% overlay of a logo
+  /* Section veils for the homepage: pure white with an overlay of a logo
      colour — the teal of the ring, the sand of its yellow segment, and Otti's
-     brown. Barely there by design: enough that adjacent bands read as
-     separate chapters, never a block of colour. Keep the overlay at 10% or
-     under; the first attempt at ~15% was judged too visible. */
-  --tint-teal: color-mix(in oklab, var(--primary) 7%, white);
-  --tint-sand: color-mix(in oklab, oklch(0.82 0.13 85) 7%, white);
-  --tint-otter: color-mix(in oklab, oklch(0.5 0.06 60) 7%, white);
+     brown. Enough that adjacent bands read as separate chapters, never a
+     block of colour. History: ~15% was judged too visible, 7% then judged too
+     faint ("mark the colour change between sections a bit more", revision of
+     2026-09-15). The mixes differ because the three colours do not tint
+     equally: the sand is so light it needs the most to register at all,
+     Otti's brown the least. */
+  --tint-teal: color-mix(in oklab, var(--primary) 13%, white);
+  --tint-sand: color-mix(in oklab, oklch(0.82 0.13 85) 16%, white);
+  --tint-otter: color-mix(in oklab, oklch(0.5 0.06 60) 11%, white);
+  /* The homepage's opening band: the coral accent, toned down (revision of
+     2026-09-15 asked for a softer pink). A wash rather than the full accent,
+     so it takes the dark foreground instead of white text. */
+  --tint-coral: color-mix(in oklab, var(--accent) 30%, white);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0.005 85);
   --border: oklch(0.9 0.01 85);
@@ -71,6 +78,7 @@
   --tint-teal: oklch(0.21 0.02 189);
   --tint-sand: oklch(0.21 0.02 85);
   --tint-otter: oklch(0.2 0.015 60);
+  --tint-coral: oklch(0.24 0.04 13);
   --destructive: oklch(0.5 0.2 27);
   --destructive-foreground: oklch(0.95 0.01 85);
   --border: oklch(0.3 0.02 60);
@@ -99,6 +107,7 @@
   --color-tint-teal: var(--tint-teal);
   --color-tint-sand: var(--tint-sand);
   --color-tint-otter: var(--tint-otter);
+  --color-tint-coral: var(--tint-coral);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);

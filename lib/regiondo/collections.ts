@@ -21,8 +21,9 @@ export const COLLECTIONS = {
     intro: [
       "From the Dolomites to the Prosecco Hills to the streets of Verona, our group tours take you into the Veneto region — the places we know first-hand.",
       "No complicated planning. Just a fixed date, a group of fellow travelers, an English-speaking local guide, and a day we've taken care of from start to finish.",
-      "Choose your tour and let's see Veneto together.",
     ],
+    /** The closing line of the intro, set in bold (client revision, 2026-09-15). */
+    lead: "Choose your tour and let's see Veneto together.",
   },
   private: {
     tagId: "45421",
@@ -126,9 +127,9 @@ export const THEME_UPSELLS = {
     productIds: ["300877", "298190", "341597", "298188", "339660", "341596", "326843"],
   },
   prosecco: {
-    heading: "Day trips to the Prosecco hills",
+    heading: "Day trips to the Prosecco Hills",
     intro:
-      "Forty-five minutes from Venice, and a different world. These departures take in the vineyards, a family-run winery and the hill towns between them.",
+      "Everything above is under an hour's drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
     productIds: ["326845", "307882", "298188", "326844"],
   },
   "active-adventure": {
@@ -163,18 +164,58 @@ export interface ThemePage {
   /** Short name, as used on the homepage tiles and the group-tours headings. */
   readonly title: string;
   readonly sets: readonly ThemeKey[];
+  /** One line under the theme's heading on the group-tours page. */
+  readonly blurb: string;
+  /**
+   * The theme is sold as private days only. On the group-tours page it keeps
+   * its heading (the client wants all four themes named there — group
+   * departures may come later) but shows the pointer to its theme page
+   * instead of cards, and its own closing band offers private + contact.
+   *
+   * An editorial override rather than a catalog fact: Regiondo has the
+   * Medieval Hill Towns tour (341599) under the *shared* tag even though it
+   * is private (its name says so), which put a private tour on the group
+   * page and made the Culture & History band say "Come along for the ride".
+   * Until the tag is fixed in the dashboard this is what keeps the site
+   * telling the truth. Drop the flag once it is.
+   */
+  readonly privateOnly?: boolean;
 }
 
 export const THEME_PAGES = [
-  { slug: "dolomites", href: "/tours/dolomites", title: "Dolomites", sets: ["dolomites"] },
-  { slug: "wine-food", href: "/tours/wine-food", title: "Food & Wine", sets: ["prosecco"] },
+  {
+    slug: "dolomites",
+    href: "/tours/dolomites",
+    title: "Dolomites",
+    sets: ["dolomites"],
+    blurb:
+      "Jagged peaks, mountain lakes and the roads that connect them — one of our most requested day trips.",
+  },
+  {
+    slug: "wine-food",
+    href: "/tours/wine-food",
+    title: "Food & Wine",
+    sets: ["prosecco"],
+    blurb:
+      "Rolling hills, family-run wineries and a glass of Prosecco in the place where it's made.",
+  },
   {
     slug: "active-adventure",
     href: "/tours/active-adventure",
     title: "Active & Adventure",
     sets: ["active-adventure"],
+    blurb:
+      "Hiking, via ferrata, cycling and more — always built around you, never a fixed group.",
+    privateOnly: true,
   },
-  { slug: "cultural", href: "/tours/cultural", title: "Culture & History", sets: ["cultural"] },
+  {
+    slug: "cultural",
+    href: "/tours/cultural",
+    title: "Culture & History",
+    sets: ["cultural"],
+    blurb: "Medieval towns, castles and local stories — planned as a private day, at your pace.",
+    privateOnly: true,
+  },
 ] as const satisfies readonly ThemePage[];
 
 export type ThemePageSlug = (typeof THEME_PAGES)[number]["slug"];

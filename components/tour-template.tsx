@@ -184,12 +184,9 @@ export function TourTagList({ label, items }: { label: string; items: readonly s
 
 /**
  * An editorial sub-section on a theme page: a heading, an optional one-line
- * tagline, the copy, and whatever follows (usually a `ThemeTourGrid`). The
- * Food & Wine page is two of these — the Prosecco hills, then everything
- * else — and Active & Adventure uses one for the list of things you can do.
- *
- * `id` labels the section and is what a grid beneath it should pass as its
- * `headingId`, so the cards are announced under this heading.
+ * tagline, the copy, and whatever follows. The Food & Wine page is two of
+ * these — the Prosecco hills, then everything else — and Active & Adventure
+ * uses one for the list of things you can do.
  */
 export function TourSection({
   id,

@@ -31,7 +31,9 @@ export async function BlogSection() {
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
             Stories from the <span className="text-primary">road</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-pretty text-muted-foreground">
+          {/* `text-balance`, not `text-pretty`: on desktop the line broke
+              with two words orphaned on the second line. */}
+          <p className="mx-auto max-w-2xl text-balance text-muted-foreground">
             Travel notes from our tours and stories about beaVita, the people
             behind it, and the places we know best.
           </p>

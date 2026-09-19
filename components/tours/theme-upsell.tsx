@@ -14,18 +14,15 @@ import type { TourSummary } from "@/lib/regiondo/types";
  * choice. The whole curated set is shown; the sets are one to seven tours,
  * which is a page section, not a catalog.
  *
- * Two pieces:
- *   - `ThemeTourGrid` is just the cards (plus their `ItemList` markup), for a
- *     page that writes its own section around them — Food & Wine opens with a
- *     Prosecco Hills section whose copy is editorial, and the cards sit under
- *     that copy rather than under a second heading.
- *   - `ThemeUpsell` is the self-contained section: eyebrow, heading, intro
- *     and the grid.
+ * One self-contained section — eyebrow, heading, intro and the grid — the
+ * same on every theme page, so the reader meets the departures the same way
+ * wherever they are. (It used to come in a headless variant for Food & Wine;
+ * the client asked for the introduction there too.)
  *
- * Server Components with no client JavaScript: the cards are static and the
+ * A Server Component with no client JavaScript: the cards are static and the
  * links are links. Dropping one into a page costs nothing but the HTML.
  *
- * Both render nothing when `REGIONDO_NATIVE_BOOKING` is off.
+ * Renders nothing when `REGIONDO_NATIVE_BOOKING` is off.
  */
 
 async function loadThemeTours(
@@ -44,33 +41,6 @@ async function loadThemeTours(
     (a, b) => (rank.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (rank.get(b.id) ?? Number.MAX_SAFE_INTEGER)
   );
   return { tours: ordered, degraded };
-}
-
-interface ThemeTourGridProps {
-  theme: ThemeKey;
-  /**
-   * Id of the visible heading the caller renders above the grid, so the cards
-   * are labelled by it rather than by a hidden duplicate.
-   */
-  headingId: string;
-}
-
-/** The cards for one theme set, and nothing else. Null when there is nothing to show. */
-export async function ThemeTourGrid({ theme, headingId }: ThemeTourGridProps) {
-  if (!isNativeBookingEnabled()) return null;
-
-  const { tours, degraded } = await loadThemeTours(theme);
-
-  // A Regiondo outage on an editorial page should leave the page as it was,
-  // not add an error box to it. The closing CTA still gets the reader to us.
-  if (tours.length === 0) return null;
-
-  return (
-    <>
-      <script {...jsonLdScriptProps(itemListJsonLd(tours, THEME_UPSELLS[theme].heading))} />
-      <TourGrid tours={tours} degraded={degraded} priorityCount={0} headingId={headingId} />
-    </>
-  );
 }
 
 /** The self-contained section: heading, intro and the grid. */

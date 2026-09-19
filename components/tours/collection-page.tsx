@@ -8,6 +8,8 @@ interface CollectionPageProps {
   heading: string;
   /** One paragraph, or several. */
   intro: string | readonly string[];
+  /** A closing line under the intro, set in bold. */
+  lead?: string;
   /** Short name for the ItemList markup. */
   title: string;
   href: string;
@@ -39,6 +41,7 @@ interface CollectionPageProps {
 export function CollectionPage({
   heading,
   intro,
+  lead,
   title,
   href,
   tagId,
@@ -55,6 +58,7 @@ export function CollectionPage({
             {paragraph}
           </p>
         ))}
+        {lead ? <p className="text-lg font-semibold text-foreground">{lead}</p> : null}
       </header>
 
       {view === "catalog" ? (

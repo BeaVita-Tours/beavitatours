@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { ThemeClosingCTA } from "@/components/tours/theme-cta";
-import { ThemeTourGrid } from "@/components/tours/theme-upsell";
+import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import {
   type GalleryImage,
@@ -40,6 +40,11 @@ export const metadata: Metadata = {
  * the nav has one "Food & Wine" entry, and a separate Prosecco page beside it
  * was muddling the theme with one of its places. `/tours/prosecco` redirects
  * here (next.config.ts).
+ *
+ * The Prosecco departures sit in their own "Book a day trip" section under
+ * the Prosecco copy, with the same eyebrow, heading and intro the Dolomites
+ * page has — the client noticed this was the one theme without that
+ * introduction (revision of 2026-09-15).
  */
 export default function WineFoodTourPage() {
   return (
@@ -62,7 +67,6 @@ export default function WineFoodTourPage() {
         id="prosecco"
         heading="Start with the Prosecco Hills"
         tagline="Rolling hills, small wineries and a glass of Prosecco in the place where it's made."
-        tinted
       >
         <TourCopy gallery={proseccoGallery}>
           <p className="leading-relaxed">
@@ -73,11 +77,9 @@ export default function WineFoodTourPage() {
             growers who&apos;ve worked this land for generations.
           </p>
         </TourCopy>
-
-        <div className="mx-auto mt-10 max-w-6xl">
-          <ThemeTourGrid theme="prosecco" headingId="prosecco" />
-        </div>
       </TourSection>
+
+      <ThemeUpsell theme="prosecco" />
 
       {/* No departures yet beyond the Prosecco ones — this section is the
           place for them when they exist. */}
@@ -92,7 +94,8 @@ export default function WineFoodTourPage() {
             family recipes, our food &amp; wine tours are about getting to know
             the territory through what ends up on the table.
           </p>
-          <p className="not-prose rounded-2xl border border-border bg-card px-5 py-4 text-base text-foreground">
+          {/* Pink, on the client's request: a light wash of the coral accent. */}
+          <p className="not-prose rounded-2xl border border-accent/30 bg-accent/10 px-5 py-4 text-base text-foreground">
             <span className="font-semibold">Fun fact:</span> tiramisù was
             invented just up the road, in Treviso.
           </p>

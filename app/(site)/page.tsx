@@ -12,11 +12,12 @@ export default async function HomePage() {
       {/* One-line intro — a slim band in the brand coral bridging the navbar
           and the hero. Coral rather than the muted grey the nav uses: the
           client wanted this line to read as the site's opening statement, not
-          as part of the chrome. Semibold, because white on this coral is
-          3.16:1 and the extra weight is what keeps it legible. One line on
-          desktop (no `text-balance`, which would split it evenly in two);
-          it wraps naturally below xl. */}
-      <div className="bg-accent text-accent-foreground">
+          as part of the chrome. Now a softer wash of it (`--tint-coral`; the
+          full accent was judged too pink, revision of 2026-09-15), with the
+          dark foreground for contrast. One line on desktop (no
+          `text-balance`, which would split it evenly in two); it wraps
+          naturally below xl. */}
+      <div className="bg-tint-coral text-foreground">
         <p className="px-6 py-3 text-center text-sm font-semibold tracking-wide md:text-base xl:whitespace-nowrap">
           Day tours from Venice to the Dolomites, Prosecco Hills and beyond —
           choose your way to explore, with people who live here.
@@ -106,12 +107,16 @@ export default async function HomePage() {
       <section id="book" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to discover more?
+            Ready to see more?
           </h2>
+          {/* Two sentences on two lines: the client asked for the break
+              before "Join one of…". */}
           <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto text-pretty">
             Venice is only the beginning. There&apos;s a lot more to see, taste
-            and experience beyond the city. Join one of our group tours or let
-            us create a private day around what you want to discover.
+            and experience beyond the city.
+            <br />
+            Join one of our group tours, or let us build a private day around
+            what you have in mind.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button asChild size="lg" variant="secondary" className="text-lg px-8">
