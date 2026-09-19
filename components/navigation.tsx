@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { Link } from "@/i18n/navigation";
 import navbarLogo from "@/public/logo-transparent-cropped-inverted.webp";
 
-export function Navigation() {
+export function Navigation({ guideLabel }: { guideLabel?: string } = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("navigation");
 
@@ -19,6 +19,7 @@ export function Navigation() {
     { href: "/faq", label: t("faq") },
     { href: "/about", label: t("about") },
     { href: "/contact", label: t("contact") },
+    ...(guideLabel ? [{ href: "/guides", label: guideLabel }] : []),
   ];
 
   return (

@@ -35,7 +35,13 @@ export function LanguageSwitcher({
   const pathname = usePathname();
 
   const handleLanguageChange = (newLocale: Locale) => {
-    router.push(pathname, { locale: newLocale });
+    // The same slug can refer to different guides in different languages.
+    const target = /^\/guides(?:\/|$)/.test(pathname)
+      ? newLocale === "en" || newLocale === "it"
+        ? "/guides"
+        : "/"
+      : pathname;
+    router.push(target, { locale: newLocale });
   };
 
   return (

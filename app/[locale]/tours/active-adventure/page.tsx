@@ -1,37 +1,13 @@
-"use client";
+import { pageMetadata } from "@/lib/seo/metadata";
+import PageContent from "./page-content";
 
-import {
-  TourCTA,
-  TourDescription,
-  TourTemplate,
-} from "@/components/tour-template";
-import { useTranslations } from "next-intl";
-
-export default function HikingTourPage() {
-  const t = useTranslations("tours.data.activeAdventure");
-
-  return (
-    <TourTemplate
-      name={t("title")}
-      title={t("title")}
-      subtitle={t("subtitle")}
-      image="/imgs/adventure.jpeg"
-      imageAlt={t("title")}
-      ctaHeading={t("ctaHeading")}
-      ctaName={t("title")}
-    >
-      <TourDescription>
-        <p className="leading-relaxed">
-          {t("description1")}
-        </p>
-        <p className="leading-relaxed">
-          {t("description2")}
-        </p>
-        <p className="leading-relaxed">
-          {t("description3")}
-        </p>
-      </TourDescription>
-      <TourCTA />
-    </TourTemplate>
-  );
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return pageMetadata(`/${locale}/tours/active-adventure`);
 }
+
+export default PageContent;

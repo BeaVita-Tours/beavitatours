@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,10 +19,10 @@ export async function generateMetadata({
   const selectedLanguage = resolvePrivacyPolicyLanguage(locale);
   const policy = privacyPolicies[selectedLanguage];
 
-  return {
+  return pageMetadata(`/${locale}/privacy`, {
     title: `${policy.title} | BEA VITA TOURS`,
     description: policy.subtitle,
-  };
+  });
 }
 
 export default async function PrivacyPolicyPage({
