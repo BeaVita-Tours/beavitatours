@@ -23,6 +23,10 @@ export function sampleSnapshot(mode: "live" | "preview" = "live"): Snapshot {
         tourPath: "/en/tours/dolomites",
         publishedAt: "2026-09-19T12:00:00.000Z",
         canonical: `${fixtureSite}/en/guides/planning-dolomites`,
+        coverImage: {
+          url: `${fixtureSite}/imgs/dolomites/dolomitesmain.jpeg`,
+          alt: "Rocky Dolomite peaks above the Lagazuoi cable-car station",
+        },
       },
     ],
     pages: [

@@ -4,6 +4,7 @@ import { getSnapshot } from "@/lib/seo/client";
 import { articleMetadata } from "@/lib/seo/metadata";
 import { isGuideLocale } from "@/lib/seo/routes";
 import { GuideBody } from "@/components/seo/guide-body";
+import { GuideImage } from "@/components/seo/guide-image";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 async function findArticle({ locale, slug }: { locale: string; slug: string }) {
@@ -30,6 +31,7 @@ export default async function GuidePage({ params }: Props) {
     inLanguage: article.language,
     datePublished: article.publishedAt,
     mainEntityOfPage: article.canonical,
+    ...(article.coverImage ? { image: article.coverImage.url } : {}),
     publisher: {
       "@type": "Organization",
       name: "BeaVitaTours",
@@ -37,21 +39,21 @@ export default async function GuidePage({ params }: Props) {
     },
   };
   return (
-    <main className="container mx-auto max-w-3xl px-4 py-12 md:py-20">
+    <main className="container mx-auto max-w-5xl px-4 py-10 md:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <Link
-        href={`/${article.language}/guides`}
-        className="text-sm underline underline-offset-4"
-      >
-        {italian ? "Tutte le guide" : "All guides"}
-      </Link>
       <article>
-        <header className="mb-10 mt-6 space-y-5">
+        <header className="mx-auto mb-8 max-w-3xl space-y-5">
+          <Link
+            href={`/${article.language}/guides`}
+            className="inline-block text-sm underline underline-offset-4"
+          >
+            {italian ? "Tutte le guide" : "All guides"}
+          </Link>
           <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
             {article.title}
           </h1>
@@ -70,18 +72,25 @@ export default async function GuidePage({ params }: Props) {
             }).format(new Date(article.publishedAt))}
           </time>
         </header>
-        <GuideBody body={article.body} />
-        <aside className="mt-12 rounded-xl border bg-muted/30 p-6">
-          <h2 className="text-xl font-semibold">
-            {italian ? "Organizza la tua esperienza" : "Plan your experience"}
-          </h2>
-          <Link
-            className="mt-4 inline-block rounded-md bg-secondary px-5 py-3 font-medium text-secondary-foreground hover:opacity-90"
-            href={article.tourPath}
-          >
-            {italian ? "Scopri il tour" : "Explore the tour"}
-          </Link>
-        </aside>
+        {article.coverImage && (
+          <div className="mb-10 md:mb-14">
+            <GuideImage image={article.coverImage} priority />
+          </div>
+        )}
+        <div className="mx-auto max-w-3xl">
+          <GuideBody body={article.body} />
+          <aside className="mt-12 rounded-xl border bg-muted/30 p-6">
+            <h2 className="text-xl font-semibold">
+              {italian ? "Organizza la tua esperienza" : "Plan your experience"}
+            </h2>
+            <Link
+              className="mt-4 inline-block rounded-md bg-secondary px-5 py-3 font-medium text-secondary-foreground hover:opacity-90"
+              href={article.tourPath}
+            >
+              {italian ? "Scopri il tour" : "Explore the tour"}
+            </Link>
+          </aside>
+        </div>
       </article>
     </main>
   );

@@ -24,6 +24,26 @@ const articleSchema = z
     tourPath: path,
     publishedAt: z.string().datetime(),
     canonical: z.string().url().max(700),
+    coverImage: z
+      .object({
+        url: z
+          .string()
+          .url()
+          .max(2000)
+          .refine((value) => {
+            try {
+              const url = new URL(value);
+              return (
+                url.protocol === "https:" && !url.username && !url.password
+              );
+            } catch {
+              return false;
+            }
+          }, "Use an HTTPS image address without credentials"),
+        alt: z.string().trim().min(1).max(300),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 const pageSchema = z

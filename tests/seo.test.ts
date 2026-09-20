@@ -86,4 +86,35 @@ describe("website publication contract", () => {
     }) as typeof fetch);
     assert.equal(result.articles[0].version, 1);
   });
+  it("accepts cover photos and older text-only articles while rejecting unsafe or incomplete images", () => {
+    const withPhoto = sampleSnapshot();
+    assert.equal(
+      snapshotSchema.parse(withPhoto).articles[0].coverImage?.alt,
+      withPhoto.articles[0].coverImage?.alt,
+    );
+    const legacy = sampleSnapshot();
+    delete legacy.articles[0].coverImage;
+    rehash(legacy);
+    assert.equal(
+      snapshotSchema.parse(legacy).articles[0].coverImage,
+      undefined,
+    );
+    for (const image of [
+      { url: "javascript:alert(1)", alt: "Photo" },
+      { url: "https://user:secret@example.com/photo.jpg", alt: "Photo" },
+      { url: "http://example.com/photo.jpg", alt: "Photo" },
+      { url: "https://example.com/photo.jpg", alt: "" },
+      { url: "/api/media/local.webp", alt: "Photo" },
+      {
+        url: "https://example.com/photo.jpg",
+        alt: "Photo",
+        privateNote: "private",
+      },
+    ]) {
+      const invalid = sampleSnapshot();
+      invalid.articles[0].coverImage = image;
+      rehash(invalid);
+      assert.equal(snapshotSchema.safeParse(invalid).success, false);
+    }
+  });
 });

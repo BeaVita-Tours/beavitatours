@@ -45,6 +45,25 @@ export function articleMetadata(article: PublishedArticle): Metadata {
       url: article.canonical,
       publishedTime: article.publishedAt,
       locale: article.language,
+      ...(article.coverImage
+        ? {
+            images: [
+              { url: article.coverImage.url, alt: article.coverImage.alt },
+            ],
+          }
+        : {}),
     },
+    ...(article.coverImage
+      ? {
+          twitter: {
+            card: "summary_large_image" as const,
+            title: article.metaTitle,
+            description: article.metaDescription,
+            images: [
+              { url: article.coverImage.url, alt: article.coverImage.alt },
+            ],
+          },
+        }
+      : {}),
   };
 }

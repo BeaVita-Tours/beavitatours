@@ -58,6 +58,24 @@ test("serves published HTML, safe markdown, canonical metadata and a real tour l
     (await page.locator('script[type="application/ld+json"]').textContent())!,
   );
   expect(jsonLd["@type"]).toBe("BlogPosting");
+  expect(jsonLd.image).toBe(
+    "https://www.beavitatours.com/imgs/dolomites/dolomitesmain.jpeg",
+  );
+  const cover = page.getByRole("img", {
+    name: "Rocky Dolomite peaks above the Lagazuoi cable-car station",
+  });
+  await expect(cover).toBeVisible();
+  await expect
+    .poll(() => cover.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBeGreaterThan(0);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    jsonLd.image,
+  );
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary_large_image",
+  );
   await expect(
     page.getByRole("link", { name: "Explore the tour", exact: true }).last(),
   ).toHaveAttribute("href", "/en/tours/dolomites");
@@ -80,6 +98,12 @@ test("serves published HTML, safe markdown, canonical metadata and a real tour l
     path: "test-results/guide-desktop.png",
     fullPage: true,
   });
+  await page.goto("/en/guides");
+  await expect(
+    page.locator(
+      `img[alt="Rocky Dolomite peaks above the Lagazuoi cable-car station"]`,
+    ),
+  ).toBeVisible();
 });
 
 test("applies approved page metadata, excludes noindex pages, and respects guide languages", async ({

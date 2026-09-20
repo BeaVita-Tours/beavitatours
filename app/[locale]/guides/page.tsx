@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getSnapshot } from "@/lib/seo/client";
 import { isSeoPreview, siteUrl } from "@/lib/seo/config";
 import { isGuideLocale } from "@/lib/seo/routes";
+import { GuideImage } from "@/components/seo/guide-image";
 
 type Props = { params: Promise<{ locale: string }> };
 async function guides(locale: string) {
@@ -44,6 +45,16 @@ export default async function GuidesPage({ params }: Props) {
       <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {articles.map((article) => (
           <article key={article.id} className="rounded-xl border bg-card p-6">
+            {article.coverImage && (
+              <Link
+                href={`/${locale}/guides/${article.slug}`}
+                className="mb-5 block"
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                <GuideImage image={article.coverImage} />
+              </Link>
+            )}
             <h2 className="text-xl font-semibold">
               <Link
                 className="hover:underline"
