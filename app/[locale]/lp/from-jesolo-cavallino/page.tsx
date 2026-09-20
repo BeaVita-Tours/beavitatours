@@ -1,7 +1,13 @@
-"use client";
+import { pageMetadata } from "@/lib/seo/metadata";
+import PageContent from "./page-content";
 
-import { EscapeLandingPage } from "@/components/landing/escape-landing-page";
-
-export default function FromJesoloLandingPage() {
-  return <EscapeLandingPage departureKey="fromJesolo" />;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return pageMetadata(`/${locale}/lp/from-jesolo-cavallino`);
 }
+
+export default PageContent;

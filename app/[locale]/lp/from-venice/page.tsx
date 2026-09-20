@@ -1,7 +1,13 @@
-"use client";
+import { pageMetadata } from "@/lib/seo/metadata";
+import PageContent from "./page-content";
 
-import { EscapeLandingPage } from "@/components/landing/escape-landing-page";
-
-export default function FromVeniceLandingPage() {
-  return <EscapeLandingPage departureKey="fromVenice" />;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return pageMetadata(`/${locale}/lp/from-venice`);
 }
+
+export default PageContent;

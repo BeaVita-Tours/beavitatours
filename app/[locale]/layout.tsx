@@ -11,6 +11,8 @@ import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { TrackingScripts } from "@/components/tracking-scripts";
 import { CONSENT_COOKIE_NAME, parseConsentRecord } from "@/lib/cookie-consent";
+import { getOptionalSnapshot } from "@/lib/seo/client";
+import { isGuideLocale } from "@/lib/seo/routes";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -24,6 +26,14 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const publications = await getOptionalSnapshot();
+  const guideLabel =
+    isGuideLocale(locale) &&
+    publications?.articles.some((a) => a.language === locale)
+      ? locale === "it"
+        ? "Guide"
+        : "Guides"
+      : undefined;
   const messages = await getMessages();
   const cookieStore = await cookies();
   const initialConsent = parseConsentRecord(
@@ -39,7 +49,7 @@ export default async function LocaleLayout({
         <body className={`font-sans antialiased`}>
           <Umami />
           <NextIntlClientProvider messages={messages}>
-            <Navigation />
+            <Navigation guideLabel={guideLabel} />
             {children}
             <Footer />
             <CookieConsentBanner />
