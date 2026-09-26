@@ -9,9 +9,9 @@ import { SITE_URL } from "@/lib/constants";
  * About.
  *
  * Structure and copy from the client's brief ("Pagina about: struttura e
- * bozza copy", September 2026): hero, the story, five reasons, the numbers,
- * the credentials as verifiable text rather than badges, and a call to
- * action into the tours. The legal block keeps the registered name in
+ * bozza copy", September 2026, revised 23 September): hero, the story, five
+ * reasons, the numbers, the credentials as verifiable text rather than
+ * badges, and a call to action into the tours. The legal block keeps the registered name in
  * capitals, as the footer does (lib/brand.ts).
  *
  * Mostly prose, deliberately: the reasons are a ruled list and the figures
@@ -48,7 +48,7 @@ const reasons: readonly Reason[] = [
   },
   {
     title: "Because we care about authenticity.",
-    body: "We choose experiences and local partners for their quality and genuine connection to the territory. We want you to experience the Veneto region, because we don't do bus-window tourism.",
+    body: "We choose experiences and local partners for their quality and genuine connection to the territory, keeping business local rather than chasing the cheapest supplier. We want you to experience the Veneto region, because we don't do bus-window tourism.",
   },
   {
     title: "Because people make the difference.",
@@ -71,8 +71,8 @@ interface Figure {
 
 const figures: readonly Figure[] = [
   { value: "20", label: "people on the team, all of them local" },
-  { value: "500", label: "groups our founder guided before beaVita existed" },
-  { value: "20,000", label: "travelers welcomed on tour since 2018" },
+  { value: "500+", label: "groups our founder guided" },
+  { value: "20,000+", label: "travelers welcomed on tour since 2018" },
 ];
 
 export default function AboutPage() {
@@ -113,12 +113,15 @@ export default function AboutPage() {
               quiet villages, local food and wine, hidden corners of the lagoon and countless
               stories worth stopping for.
             </p>
+            <p className="font-bold leading-relaxed text-foreground">
+              Venice is our gateway. Veneto is our territory.
+            </p>
             <p className="leading-relaxed">
               At beaVita, we believe the best way to experience this region is with people who
               actually live here.
             </p>
             <p className="leading-relaxed">
-              We are a local tour operator creating experiences for travelers who want to go
+              We are a DMC &amp; tour operator creating experiences for travelers who want to go
               beyond the usual tourist routes and discover a more authentic side of Veneto.
             </p>
             </div>
@@ -138,10 +141,10 @@ export default function AboutPage() {
               <p className="mb-6 text-xl text-muted-foreground">It all started with a tour in Miami.</p>
               <div className="prose prose-lg max-w-none space-y-4 text-muted-foreground">
                 <p className="leading-relaxed">
-                  In 2016, our founder was working in logistics for an automotive company; until a
-                  half-day off during a work trip to Miami changed everything. A local driver took
-                  him through the Everglades, sharing his home with a kind of passion that stuck.
-                  It took a few more years, and a personal crossroads, before he finally made the
+                  In 2016, our founder was working as VP of logistics for an automotive company;
+                  until a half-day off during a work trip to Miami changed everything. A local
+                  driver took him through the Everglades, sharing his home with a kind of passion
+                  that stuck. It took a few more years, and a personal crossroads, before he finally made the
                   leap: from watching someone else share their home, to sharing his own.
                 </p>
                 <p className="leading-relaxed">He wasn&apos;t the only one ready to make that leap.</p>
@@ -169,9 +172,9 @@ export default function AboutPage() {
               </div>
               {/* Pink, like the fun fact on the Food & Wine page. */}
               <aside className="rounded-2xl bg-accent/10 px-5 py-4 text-base text-foreground">
-                <span className="font-semibold">Fun fact:</span> in our dialect, &ldquo;fare bea
-                vita&rdquo; usually describes someone who barely works. We decided to flip it: for
-                us, &ldquo;la bea vita&rdquo; means being rich in time, not things.
+                <span className="font-semibold">Fun fact:</span> in our local dialect, &ldquo;fare
+                bea vita&rdquo; usually describes someone who barely works. We decided to flip it:
+                for us, &ldquo;bea vita&rdquo; means being rich in time, not things.
               </aside>
             </div>
           </div>
@@ -217,7 +220,7 @@ export default function AboutPage() {
               {figures.map(({ value, label }) => (
                 <div key={value} className="flex flex-col">
                   <dt className="order-last max-w-56 text-pretty text-muted-foreground">{label}</dt>
-                  <dd className="mb-1 text-5xl font-bold tracking-tight text-primary-strong md:text-6xl">
+                  <dd className="mb-1 text-5xl font-bold tracking-tight text-primary-strong sm:text-4xl lg:text-6xl">
                     {value}
                   </dd>
                 </div>
@@ -225,9 +228,8 @@ export default function AboutPage() {
             </dl>
             <p className="mt-10 max-w-3xl text-pretty text-lg text-muted-foreground">
               Our team today is around 20 people — drivers, guides and team leaders — all local,
-              all trained and experienced in tourism. Before beaVita even existed as a company,
-              our founder had personally guided around 500 groups. Since then, we&apos;ve welcomed
-              close to 20,000 travelers on tour.
+              all trained and experienced in tourism. Our founder had personally guided around 500
+              groups, and together we&apos;ve welcomed close to 20,000 travelers on tour.
             </p>
           </div>
         </div>
