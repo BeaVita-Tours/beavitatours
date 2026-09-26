@@ -49,6 +49,10 @@ export function seoConfig(
     );
   return { mode, studioUrl: url.origin, readToken, refreshSecret };
 }
+/** The connector is switched off (the default) — known without validating the rest. */
+export function isSeoOff(env: Record<string, string | undefined> = process.env) {
+  return (env.SEO_DELIVERY_MODE || "off") === "off";
+}
 export function isSeoPreview(
   env: Record<string, string | undefined> = process.env,
 ) {

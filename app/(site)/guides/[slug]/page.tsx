@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { GuideBody } from "@/components/seo/guide-body";
 import { GuideImage } from "@/components/seo/guide-image";
@@ -10,18 +9,26 @@ import { workspaceSiteUrl } from "@/lib/seo/config";
 import { guideMetadata } from "@/lib/seo/metadata";
 import { findGuide } from "@/lib/seo/publications";
 
-// instant = false: guides render on demand so unknown or withdrawn slugs are a
-// real 404 (see app/(site)/blog/[slug]), and `connection()` keeps the snapshot
-// read out of the prerendered shell, so SEO Workspace can never fail a build.
-// The snapshot read is cached.
+// Guides render on demand, reading the cached snapshot (lib/seo/client).
 export const instant = false;
 
 type Props = { params: Promise<{ slug: string }> };
 
+/**
+ * Deliberately no real guides here: listing them would make every build depend
+ * on SEO Workspace. But the route needs a `generateStaticParams` — without one,
+ * a request for an unknown or withdrawn guide is served from the fallback shell
+ * and its 404 goes out as a 200. Cache Components requires at least one entry,
+ * so this is a placeholder that fails the slug check below: it prerenders as a
+ * 404 without a network call.
+ */
+export function generateStaticParams() {
+  return [{ slug: "_" }];
+}
+
 async function guideFor(params: Props["params"]) {
   const { slug } = await params;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) notFound();
-  await connection();
   const snapshot = await getSnapshot();
   const guide = snapshot && findGuide(snapshot, slug);
   if (!guide) notFound();
