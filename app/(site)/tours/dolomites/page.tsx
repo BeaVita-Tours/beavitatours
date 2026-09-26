@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
@@ -10,7 +11,7 @@ const gallery: GalleryImage[] = [
   { src: "/imgs/dolomites/dolomites2.jpeg", alt: "Dolomites panorama" },
 ];
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Dolomites day trips from Venice | beaVita Tours",
   description:
     "The Dolomites are two hours from Venice. Cortina, Lake Misurina, Lake Braies and Tre Cime — small-group and private day trips, back the same evening.",
@@ -24,6 +25,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/dolomites", metadata);
+}
 
 /**
  * Structure agreed with the client (revision of 2026-09-11): the copy, then

@@ -37,6 +37,15 @@ const nextConfig: NextConfig = {
       revalidate: 60 * 60,
       expire: 60 * 60 * 24,
     },
+    // SEO Workspace publications (lib/seo/client.ts): page metadata and the
+    // guides. Checked every minute, as the connector always was; publishing
+    // also expires it at once via POST /api/seo/connection. The long expiry
+    // keeps the last good copy serving through a SEO Workspace outage.
+    seo: {
+      stale: 60,
+      revalidate: 60,
+      expire: 60 * 60 * 24 * 30,
+    },
   },
   images: {
     qualities: [60, 66, 70, 72, 75, 80],

@@ -3,8 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * End-to-end configuration.
  *
- * Both servers are started here: a mock Regiondo on 4010 and the Next app on
- * 3200 pointed at it. Pointing at a mock rather than the live API is not a
+ * All three servers are started here: a mock Regiondo on 4010, a mock SEO
+ * Workspace on 4011, and the Next app on 3200 pointed at both. Pointing at a mock rather than the live API is not a
  * shortcut — sold-out and expired-hold cannot be produced on demand against
  * production without genuinely selling out a departure, and the happy path
  * against live would create and abandon a real reservation on every run.
@@ -38,6 +38,12 @@ export default defineConfig({
       stdout: "ignore",
     },
     {
+      command: "node e2e/mock-seo-workspace.mjs 4011",
+      url: "http://localhost:4011/api/website/content",
+      reuseExistingServer: !process.env.CI,
+      stdout: "ignore",
+    },
+    {
       command: "pnpm next dev -p 3200",
       url: "http://localhost:3200/tours",
       reuseExistingServer: !process.env.CI,
@@ -53,6 +59,12 @@ export default defineConfig({
         REGIONDO_CURRENCY: "EUR",
         REGIONDO_DEFAULT_LOCALE: "en-US",
         REGIONDO_PAYMENT_MODE: "hosted",
+        // Live mode against the mock (plain http is allowed for localhost
+        // outside production). Tokens match lib/seo/__tests__/fixture.ts.
+        SEO_DELIVERY_MODE: "live",
+        SEO_STUDIO_URL: "http://localhost:4011",
+        SEO_STUDIO_READ_TOKEN: `read-test-${"a".repeat(43)}`,
+        SEO_REFRESH_SECRET: `refresh-test-${"b".repeat(43)}`,
       },
     },
   ],

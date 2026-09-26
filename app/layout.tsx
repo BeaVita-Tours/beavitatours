@@ -5,10 +5,13 @@ import "./globals.css";
 import { Umami } from "@/components/umami";
 import { CookieConsentProvider } from "@/components/cookie-consent-provider";
 import { TrackingScripts } from "@/components/tracking-scripts";
+import { isSeoPreview } from "@/lib/seo/config";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
+  // Preview deployments and SEO Workspace preview mode are never indexed.
+  ...(isSeoPreview() ? { robots: { index: false, follow: false } } : {}),
   title:
     "beaVita Tours - Tours and Day Trips to Dolomites & Prosecco",
   description:

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { EscapeLandingPage } from "@/components/landing/escape-landing-page";
 import { LandingCatalog } from "@/components/tours/landing-catalog";
@@ -14,7 +15,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
  * and what the native booking slot replaces.
  */
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Day trips from Jesolo & Cavallino — Dolomites & Prosecco | beaVita Tours",
   description:
     "Private day tours from Jesolo and Cavallino to the Dolomites and the Prosecco hills. Picked up from your accommodation, run by the local operator.",
@@ -28,6 +29,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/lp/from-jesolo-cavallino", metadata);
+}
 
 export default function FromJesoloCavallinoLandingPage() {
   const native = isNativeBookingEnabled();

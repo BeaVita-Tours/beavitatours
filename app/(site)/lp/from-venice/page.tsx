@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { EscapeLandingPage } from "@/components/landing/escape-landing-page";
 import { LandingCatalog } from "@/components/tours/landing-catalog";
@@ -20,7 +21,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
  * from the critical path of the page where interaction latency costs the most.
  */
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Escape Venice for a day — Dolomites & Prosecco tours | beaVita Tours",
   description:
     "Day trips from Venice to the Dolomites, Lake Braies, Cortina and the Prosecco hills. Book direct with the licensed local operator — no booking fees, free cancellation.",
@@ -34,6 +35,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/lp/from-venice", metadata);
+}
 
 export default function FromVeniceLandingPage() {
   const native = isNativeBookingEnabled();

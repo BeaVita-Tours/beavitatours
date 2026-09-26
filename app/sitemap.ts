@@ -4,6 +4,9 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { listAllTours } from "@/lib/regiondo/products";
 import { assertSlugRegistry } from "@/lib/regiondo/slugs";
 import { getCategories, getPostSitemapEntries } from "@/lib/sanity/queries";
+import { getOptionalSnapshot } from "@/lib/seo/client";
+import { isSeoPreview, workspaceSiteUrl } from "@/lib/seo/config";
+import { findPage, listGuides } from "@/lib/seo/publications";
 
 type Frequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -52,14 +55,19 @@ const NATIVE_ROUTES: Array<{
 }> = [];
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+  // Preview deployments are noindex and disallowed in robots.txt; an empty
+  // sitemap keeps them from advertising URLs.
+  if (isSeoPreview()) return [];
+
   const native = isNativeBookingEnabled();
 
   // Fetch dynamic content in parallel. With no Sanity configured, the
   // accessors return [] and the sitemap falls back to static routes only.
-  const [postEntries, categories, tours] = await Promise.all([
+  const [postEntries, categories, tours, publications] = await Promise.all([
     getPostSitemapEntries(),
     getCategories(),
     native ? listAllTours() : Promise.resolve([]),
+    getOptionalSnapshot(),
   ]);
 
   // The sitemap build is where the slug registry is checked against the live
@@ -72,12 +80,38 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     assertSlugRegistry(tours.map((tour) => tour.id));
   }
 
-  const staticUrls: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({
+  // SEO Workspace can mark a page noindex or canonicalise it elsewhere; either
+  // way it no longer belongs in the sitemap.
+  const staticUrls: MetadataRoute.Sitemap = STATIC_ROUTES.filter((route) => {
+    const page = publications && findPage(publications, route.path || "/");
+    return (
+      !page ||
+      (page.indexable &&
+        page.canonical === `${workspaceSiteUrl}${route.path || "/"}`)
+    );
+  }).map((route) => ({
     url: `${SITE_URL}${route.path}`,
     lastModified: new Date(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
+
+  const guides = publications ? listGuides(publications) : [];
+  const guideUrls: MetadataRoute.Sitemap = guides.length
+    ? [
+        {
+          url: `${workspaceSiteUrl}/guides`,
+          changeFrequency: "weekly",
+          priority: 0.6,
+        },
+        ...guides.map((guide) => ({
+          url: guide.url,
+          lastModified: guide.publishedAt,
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+        })),
+      ]
+    : [];
 
   const postUrls: MetadataRoute.Sitemap = postEntries.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
@@ -112,7 +146,14 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     priority: 0.9,
   }));
 
-  return [...staticUrls, ...nativeUrls, ...tourUrls, ...postUrls, ...categoryUrls];
+  return [
+    ...staticUrls,
+    ...nativeUrls,
+    ...tourUrls,
+    ...postUrls,
+    ...categoryUrls,
+    ...guideUrls,
+  ];
 };
 
 export default sitemap;

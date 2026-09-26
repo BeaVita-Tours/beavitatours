@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HomeHero } from "@/components/home-hero";
@@ -5,6 +6,13 @@ import { TourCard } from "@/components/tour-card";
 import { tours } from "@/lib/tours";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { BlogSection } from "@/components/blog/blog-section";
+import { pageMetadata } from "@/lib/seo/metadata";
+
+// The root layout's title and description, unless SEO Workspace has approved
+// others for the homepage.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/");
+}
 
 export default async function HomePage() {
   return (

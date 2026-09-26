@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
@@ -27,7 +28,7 @@ const activities = [
   "and more",
 ] as const;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Active & adventure day trips from Venice | beaVita Tours",
   description:
     "Hiking, via ferrata, cycling and more — a private day in the Dolomites or the Veneto countryside, planned around the activity you have in mind. Alpine guide included where it matters.",
@@ -41,6 +42,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/active-adventure", metadata);
+}
 
 /**
  * The two guided days, then the closing band. Both are private today, so the

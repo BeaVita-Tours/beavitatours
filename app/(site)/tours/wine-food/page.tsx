@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
@@ -20,7 +21,7 @@ const proseccoGallery: GalleryImage[] = [
   { src: "/prosecco 3.jpg", alt: "A glass of Prosecco at the winery" },
 ];
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Food, wine & Prosecco Hills day trips from Venice | beaVita Tours",
   description:
     "The Prosecco Hills, family-run wineries, local cheese and a long lunch in the Veneto hills. Small-group and private food & wine day trips from Venice.",
@@ -34,6 +35,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/wine-food", metadata);
+}
 
 /**
  * Food & Wine, with the Prosecco Hills folded in as its opening section —

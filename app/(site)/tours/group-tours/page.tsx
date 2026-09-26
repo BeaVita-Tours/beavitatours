@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 
 import { CollectionPage } from "@/components/tours/collection-page";
@@ -24,7 +25,7 @@ import { LegacyGroupToursWidgetPage } from "./legacy-widget-page";
 
 const collection = COLLECTIONS.shared;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Group day tours from Venice — Dolomites & Prosecco Hills | beaVita Tours",
   description:
     "Join a small-group day trip from Venice: the Dolomites, Cortina, Lake Misurina, Lake Braies and the Prosecco hills. Maximum eight guests, hotel-free pickup at Piazzale Roma.",
@@ -38,6 +39,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/group-tours", metadata);
+}
 
 export default function GroupToursPage({
   searchParams,

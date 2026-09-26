@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import {
+  BookOpen,
   BriefcaseBusiness,
   CircleHelp,
   Gem,
@@ -39,6 +40,12 @@ const NAV_LINKS: readonly NavLink[] = [
   { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/contact", label: "Contact", icon: Mail },
 ];
+
+/** Shown after Blog only while SEO Workspace has published guides. */
+const GUIDES_LINK: NavLink = { href: "/guides", label: "Guides", icon: BookOpen };
+const NAV_LINKS_WITH_GUIDES: readonly NavLink[] = NAV_LINKS.flatMap((link) =>
+  link.href === "/blog" ? [link, GUIDES_LINK] : [link],
+);
 
 const isActiveForPath = (pathname: string, link: NavLink) =>
   pathname === link.href || pathname.startsWith(`${link.href}/`);
@@ -131,7 +138,7 @@ function MobileNavLinks({
 function DesktopNavActive({ links }: { links: readonly NavLink[] }) {
   const pathname = usePathname();
   return (
-    <DesktopNavLinks links={NAV_LINKS} isActive={(link) => isActiveForPath(pathname, link)} />
+    <DesktopNavLinks links={links} isActive={(link) => isActiveForPath(pathname, link)} />
   );
 }
 
@@ -145,7 +152,7 @@ function MobileNavActive({
   const pathname = usePathname();
   return (
     <MobileNavLinks
-      links={NAV_LINKS}
+      links={links}
       isActive={(link) => isActiveForPath(pathname, link)}
       onNavigate={onNavigate}
     />
@@ -156,9 +163,10 @@ function MobileNavActive({
     that lists every shared departure now that the catalog index is gone. */
 const BOOK_HREF = "/tours/group-tours";
 
-export function Navigation() {
+export function Navigation({ showGuides = false }: { showGuides?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const bookHref = BOOK_HREF;
+  const links = showGuides ? NAV_LINKS_WITH_GUIDES : NAV_LINKS;
 
   // Close the mobile menu with Escape.
   useEffect(() => {
@@ -223,8 +231,8 @@ export function Navigation() {
         {/* Layer 2 — the route map: every link horizontal, icon + label (translucent + blur) */}
         <div className="hidden border-t border-border/60 bg-muted/35 xl:block">
           <div className="container mx-auto px-4">
-            <Suspense fallback={<DesktopNavLinks links={NAV_LINKS} isActive={() => false} />}>
-              <DesktopNavActive links={NAV_LINKS} />
+            <Suspense fallback={<DesktopNavLinks links={links} isActive={() => false} />}>
+              <DesktopNavActive links={links} />
             </Suspense>
           </div>
         </div>
@@ -248,13 +256,13 @@ export function Navigation() {
                 <Suspense
                   fallback={
                     <MobileNavLinks
-                      links={NAV_LINKS}
+                      links={links}
                       isActive={() => false}
                       onNavigate={closeMobile}
                     />
                   }
                 >
-                  <MobileNavActive links={NAV_LINKS} onNavigate={closeMobile} />
+                  <MobileNavActive links={links} onNavigate={closeMobile} />
                 </Suspense>
                 <div className="mt-3 border-t border-border pt-3">
                   <Button asChild size="lg" className="w-full">

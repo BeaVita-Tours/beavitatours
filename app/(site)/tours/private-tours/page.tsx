@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { CollectionPage } from "@/components/tours/collection-page";
 import { PrivateTourRates } from "@/components/tours/private-tour-rates";
@@ -18,7 +19,7 @@ import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 
 const collection = COLLECTIONS.private;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Private day tours from Venice — Dolomites & Prosecco | beaVita Tours",
   description:
     "Private day trips from Venice with your own driver and vehicle: the Dolomites, Lake Sorapis, via ferrata with an alpine guide, and the Prosecco hills. Book direct, or ask for a tailor-made day.",
@@ -32,6 +33,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/private-tours", metadata);
+}
 
 export default function PrivateToursPage({
   searchParams,

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,7 +22,7 @@ import { SITE_URL } from "@/lib/constants";
  * A Server Component: it is copy, two photographs and a few links.
  */
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "About beaVita Tours — a local tour operator in the Veneto",
   description:
     "We don't just show you around, we live here. beaVita is a registered tour operator from the Treviso province, running day trips from Venice to the Dolomites, the Prosecco Hills and the towns in between.",
@@ -35,6 +36,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/about", metadata);
+}
 
 interface Reason {
   title: string;

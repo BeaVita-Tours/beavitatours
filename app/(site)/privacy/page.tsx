@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 import { Card, CardContent } from "@/components/ui/card";
 import { privacyPolicy } from "@/lib/privacy-policy";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: `${privacyPolicy.title} | beaVita Tours`,
   description: privacyPolicy.subtitle,
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/privacy", metadata);
+}
 
 export default function PrivacyPolicyPage() {
   const policy = privacyPolicy;

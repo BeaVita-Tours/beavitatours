@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 import { ThemeClosingCTA } from "@/components/tours/theme-cta";
 import { ThemeUpsell } from "@/components/tours/theme-upsell";
@@ -28,7 +29,7 @@ const towns = [
   "Soave",
 ] as const;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Culture & history day trips from Venice | beaVita Tours",
   description:
     "Verona, Padua, Treviso and the walled towns of the Veneto — art, history, castles and medieval streets on a private day trip from Venice, built around what interests you.",
@@ -42,6 +43,11 @@ export const metadata: Metadata = {
     siteName: "beaVita Tours",
   },
 };
+
+// SEO Workspace's approved title, description and robots apply over these.
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("/tours/cultural", metadata);
+}
 
 /**
  * "Culture & History" — the client's rename of what the site called
