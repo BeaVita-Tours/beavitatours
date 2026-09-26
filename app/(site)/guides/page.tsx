@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { GuideImage } from "@/components/seo/guide-image";
 import { getSnapshot } from "@/lib/seo/client";
 import { isSeoPreview, workspaceSiteUrl } from "@/lib/seo/config";
@@ -9,13 +10,16 @@ import { listGuides } from "@/lib/seo/publications";
 /**
  * Travel guides published from SEO Workspace (English only).
  *
- * instant = false: rendered on demand so the page is a real 404 while the
- * connector is off, and so a SEO Workspace outage surfaces as an error here
- * rather than failing a deploy. The snapshot itself is cached (lib/seo/client).
+ * Rendered at request time (instant = false, plus `connection()` — the page
+ * has no params, so it would otherwise still prerender): it is a real 404
+ * while the connector is off, and a SEO Workspace outage or misconfiguration
+ * surfaces as an error here rather than failing a deploy. The snapshot itself
+ * is cached (lib/seo/client).
  */
 export const instant = false;
 
 async function guides() {
+  await connection();
   const snapshot = await getSnapshot();
   if (!snapshot) notFound();
   return listGuides(snapshot);

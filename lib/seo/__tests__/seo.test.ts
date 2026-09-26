@@ -233,4 +233,14 @@ describe("delivery modes", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect(await pageMetadata("/about", fallback)).toEqual(fallback);
   });
+
+  it("live settings on a preview deployment: pages fall back instead of throwing", async () => {
+    serve("live");
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(await pageMetadata("/about", fallback)).toEqual({
+      ...fallback,
+      robots: { index: false, follow: false },
+    });
+  });
 });

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { GuideBody } from "@/components/seo/guide-body";
 import { GuideImage } from "@/components/seo/guide-image";
@@ -10,7 +11,9 @@ import { guideMetadata } from "@/lib/seo/metadata";
 import { findGuide } from "@/lib/seo/publications";
 
 // instant = false: guides render on demand so unknown or withdrawn slugs are a
-// real 404 (see app/(site)/blog/[slug]). The snapshot read is cached.
+// real 404 (see app/(site)/blog/[slug]), and `connection()` keeps the snapshot
+// read out of the prerendered shell, so SEO Workspace can never fail a build.
+// The snapshot read is cached.
 export const instant = false;
 
 type Props = { params: Promise<{ slug: string }> };
@@ -18,6 +21,7 @@ type Props = { params: Promise<{ slug: string }> };
 async function guideFor(params: Props["params"]) {
   const { slug } = await params;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) notFound();
+  await connection();
   const snapshot = await getSnapshot();
   const guide = snapshot && findGuide(snapshot, slug);
   if (!guide) notFound();
