@@ -98,7 +98,7 @@ back to us after payment. If the ticketshop settings allow a post-purchase
 redirect, point it at:
 
 ```
-https://beavitatours.com/book/confirmation?order={ORDER_NUMBER}
+https://www.beavitatours.com/book/confirmation?order={ORDER_NUMBER}
 ```
 
 - [ ] set it, if the setting exists

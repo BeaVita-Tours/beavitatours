@@ -144,7 +144,7 @@ never carry a stale calendar. Availability comes from the uncached
 ### Invalidation
 
 ```bash
-curl -X POST "https://beavitatours.com/api/regiondo/revalidate?secret=$REVALIDATE_SECRET&product_id=298190"
+curl -X POST "https://www.beavitatours.com/api/regiondo/revalidate?secret=$REVALIDATE_SECRET&product_id=298190"
 ```
 
 Omit `product_id` to flush the whole catalog — right after a bulk edit, wrong as
