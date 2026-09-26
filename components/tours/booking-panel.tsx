@@ -538,7 +538,9 @@ export function BookingPanel({
               ? "Sold out — pick another date"
               : !date
                 ? "Choose a date"
-                : "Reserve your places"}
+                : !hasParty
+                  ? "Add at least one guest"
+                  : "Reserve your places"}
         {!busy ? <ArrowRight aria-hidden="true" /> : null}
       </Button>
 

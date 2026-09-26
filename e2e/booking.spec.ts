@@ -64,6 +64,8 @@ test.describe("catalog", () => {
     const nav = page.getByRole("navigation", { name: /main/i });
     await expect(nav.getByRole("link", { name: /all tours/i })).toHaveCount(0);
 
+    // Mobile viewport: the links live in the collapsed menu.
+    await page.getByRole("button", { name: "Open menu" }).click();
     await nav.getByRole("link", { name: /private tours/i }).first().click();
     await expect(page).toHaveURL(/\/tours\/private-tours$/);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Private day tours");
