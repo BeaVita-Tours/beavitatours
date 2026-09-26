@@ -1,30 +1,34 @@
 import "server-only";
 import type { Metadata } from "next";
 import { getOptionalSnapshot } from "./client";
-import { isSeoPreview, siteUrl } from "./config";
-import type { PublishedArticle } from "./contract";
+import { isSeoPreview } from "./config";
+import { findPage, type Guide } from "./publications";
 
+/**
+ * A page's metadata with SEO Workspace's approved title, description,
+ * canonical and robots applied over the page's own. The rest of the page's
+ * metadata (Open Graph images, site name) is kept.
+ */
 export async function pageMetadata(
   path: string,
   fallback: Metadata = {},
 ): Promise<Metadata> {
   const snapshot = await getOptionalSnapshot();
-  const page = snapshot?.pages.find((p) => p.path === path);
+  const page = snapshot && findPage(snapshot, path);
   const metadata: Metadata = page
     ? {
+        ...fallback,
         title: page.title,
         description: page.description,
         alternates: {
-          canonical: page.canonical,
-          languages: Object.fromEntries(
-            page.alternates.map((a) => [a.language, `${siteUrl}${a.path}`]),
-          ),
+          canonical: page.canonical ?? fallback.alternates?.canonical,
         },
         robots: { index: page.indexable, follow: page.follow },
         openGraph: {
+          ...fallback.openGraph,
           title: page.title,
           description: page.description,
-          url: page.canonical,
+          ...(page.canonical ? { url: page.canonical } : {}),
         },
       }
     : fallback;
@@ -32,36 +36,32 @@ export async function pageMetadata(
     ? { ...metadata, robots: { index: false, follow: false } }
     : metadata;
 }
-export function articleMetadata(article: PublishedArticle): Metadata {
+export function guideMetadata(guide: Guide): Metadata {
   return {
-    title: article.metaTitle,
-    description: article.metaDescription,
-    alternates: { canonical: article.canonical },
+    title: guide.metaTitle,
+    description: guide.metaDescription,
+    alternates: { canonical: guide.url },
     robots: { index: !isSeoPreview(), follow: !isSeoPreview() },
     openGraph: {
       type: "article",
-      title: article.metaTitle,
-      description: article.metaDescription,
-      url: article.canonical,
-      publishedTime: article.publishedAt,
-      locale: article.language,
-      ...(article.coverImage
+      title: guide.metaTitle,
+      description: guide.metaDescription,
+      url: guide.url,
+      publishedTime: guide.publishedAt,
+      locale: "en",
+      ...(guide.coverImage
         ? {
-            images: [
-              { url: article.coverImage.url, alt: article.coverImage.alt },
-            ],
+            images: [{ url: guide.coverImage.url, alt: guide.coverImage.alt }],
           }
         : {}),
     },
-    ...(article.coverImage
+    ...(guide.coverImage
       ? {
           twitter: {
             card: "summary_large_image" as const,
-            title: article.metaTitle,
-            description: article.metaDescription,
-            images: [
-              { url: article.coverImage.url, alt: article.coverImage.alt },
-            ],
+            title: guide.metaTitle,
+            description: guide.metaDescription,
+            images: [{ url: guide.coverImage.url, alt: guide.coverImage.alt }],
           },
         }
       : {}),

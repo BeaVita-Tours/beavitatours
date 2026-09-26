@@ -30,10 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local environment files
+# env files (can opt-in for committing if needed)
 .env*
-/test-results/
-/playwright-report/
+!.env.example
 
 # vercel
 .vercel
@@ -41,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache

@@ -1,0 +1,56 @@
+{
+  "data": [
+    {
+      "locale_name": "English (UK/US)",
+      "locale_code": "en-US"
+    },
+    {
+      "locale_name": "Deutsch (AT)",
+      "locale_code": "de-AT"
+    },
+    {
+      "locale_name": "中文 (CN)",
+      "locale_code": "zh-CN"
+    },
+    {
+      "locale_name": "Deutsch (DE)",
+      "locale_code": "de-DE"
+    },
+    {
+      "locale_name": "Español (ES)",
+      "locale_code": "es-ES"
+    },
+    {
+      "locale_name": "Français (FR)",
+      "locale_code": "fr-FR"
+    },
+    {
+      "locale_name": "Italiano (IT)",
+      "locale_code": "it-IT"
+    },
+    {
+      "locale_name": "Magyar (HU)",
+      "locale_code": "hu-HU"
+    },
+    {
+      "locale_name": "日本語 (JP)",
+      "locale_code": "ja-JP"
+    },
+    {
+      "locale_name": "Español (MX)",
+      "locale_code": "es-MX"
+    },
+    {
+      "locale_name": "Nederlands (NL)",
+      "locale_code": "nl-NL"
+    },
+    {
+      "locale_name": "Português (PT)",
+      "locale_code": "pt-PT"
+    },
+    {
+      "locale_name": "Türk (TR)",
+      "locale_code": "tr-TR"
+    }
+  ]
+}

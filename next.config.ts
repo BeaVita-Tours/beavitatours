@@ -1,13 +1,113 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin("./i18n.ts");
+const LEGACY_LOCALES = "(en|it|zh|ja)";
 
 const nextConfig: NextConfig = {
   typedRoutes: false,
+  cacheComponents: true,
+  // Blog cache-life profile: serve stale for an hour while revalidating in
+  // the background, fall back to a full revalidation every day, hard-expire
+  // after 30 days. A Sanity webhook (app/api/revalidate) busts the cache
+  // immediately when content changes.
+  //
+  // Reviews cache-life profile: used by the homepage's live Google Reviews
+  // (`lib/reviews/google-reviews.ts`). Revalidates in the background at most
+  // every 6 hours — reviews change slowly, so 6–12h keeps the rating and
+  // count fresh. To change the refresh interval, edit `revalidate` here.
+  cacheLife: {
+    blog: {
+      stale: 60 * 60,
+      revalidate: 60 * 60 * 24,
+      expire: 60 * 60 * 24 * 30,
+    },
+    reviews: {
+      stale: 60 * 60,
+      revalidate: 6 * 60 * 60,
+      expire: 60 * 60 * 24 * 30,
+    },
+    // Regiondo catalog profile: tour copy, prices and images (lib/regiondo/*).
+    // Short stale window because a price edit is usually a correction of
+    // something wrong, hourly background refresh, and a one-day hard ceiling so
+    // a Regiondo outage cannot serve week-old prices. Availability, seat counts
+    // and totals are NOT covered by this — they are fetched fresh on every
+    // request. A product webhook can bust a single tour via
+    // POST /api/regiondo/revalidate.
+    catalog: {
+      stale: 5 * 60,
+      revalidate: 60 * 60,
+      expire: 60 * 60 * 24,
+    },
+    // SEO Workspace publications (lib/seo/client.ts): page metadata and the
+    // guides. Checked every minute, as the connector always was; publishing
+    // also expires it at once via POST /api/seo/connection. The long expiry
+    // keeps the last good copy serving through a SEO Workspace outage.
+    seo: {
+      stale: 60,
+      revalidate: 60,
+      expire: 60 * 60 * 24 * 30,
+    },
+  },
   images: {
-    qualities: [60, 66, 72, 75, 80],
+    qualities: [60, 66, 70, 72, 75, 80],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        pathname: "/images/**",
+      },
+      // Regiondo product imagery. Their CDN only renders two crops
+      // (-cropped600-400 and -thumbnail-360x240); larger renditions 404, so
+      // 600x400 really is the largest source available for a tour hero.
+      {
+        protocol: "https",
+        hostname: "cdn.regiondo.net",
+        pathname: "/media/**",
+      },
+    ],
+  },
+  allowedDevOrigins: ["192.168.1.99"],
+  async redirects() {
+    return [
+      // The price list moved onto the private tours page, under the bookable
+      // private departures. Permanent: /rates was in the sitemap and linked
+      // from the nav for years.
+      {
+        source: "/rates",
+        destination: "/tours/private-tours",
+        permanent: true,
+      },
+      // The catalog index was removed (client request, 2026-09-12): the two
+      // collection pages are the catalog now. Permanent, as /tours was in the
+      // sitemap while the native flow was previewed.
+      {
+        source: "/tours",
+        destination: "/tours/group-tours",
+        permanent: true,
+      },
+      // The Prosecco Hills page was folded into Food & Wine as its opening
+      // section (client revision, 2026-09-11). Permanent: it was in the
+      // sitemap and on the homepage.
+      {
+        source: "/tours/prosecco",
+        destination: "/tours/wine-food",
+        permanent: true,
+      },
+      // Bare locale prefix (e.g. /en, /it) redirects to the homepage.
+      {
+        source: `/:locale${LEGACY_LOCALES}`,
+        destination: "/",
+        permanent: true,
+      },
+      // Old localized URLs (e.g. /en/about, /it/foo/bar) permanently redirect
+      // to their locale-less canonical path, preserving the rest of the path
+      // and any query string.
+      {
+        source: `/:locale${LEGACY_LOCALES}/:path+`,
+        destination: "/:path+",
+        permanent: true,
+      },
+    ];
   },
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

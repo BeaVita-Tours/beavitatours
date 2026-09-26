@@ -1,16 +1,18 @@
 import { timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
+import { connection } from "next/server";
 import { seoConfig } from "@/lib/seo/config";
 import { fetchSnapshot } from "@/lib/seo/transport";
 import { getSnapshot, publicationTag } from "@/lib/seo/client";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 const headers = {
   "Cache-Control": "no-store",
   "X-Robots-Tag": "noindex, nofollow",
 };
-async function connection(request: Request) {
+async function handle(request: Request) {
+  // Always answer at request time: with the connector off, GET would
+  // otherwise never read the request and be prerendered.
+  await connection();
   try {
     const config = seoConfig();
     if (!config)
@@ -65,5 +67,5 @@ async function connection(request: Request) {
     );
   }
 }
-export const GET = connection;
-export const POST = connection;
+export const GET = handle;
+export const POST = handle;

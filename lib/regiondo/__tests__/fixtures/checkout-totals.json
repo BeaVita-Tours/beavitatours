@@ -1,0 +1,38 @@
+{
+  "totals": {
+    "subtotal": 144.5455,
+    "tax": { "title": "Tax", "value": 14.4545 },
+    "grand_total": 159,
+    "currency": "EUR"
+  },
+  "contact_data_required": ["firstname", "lastname", "email", "telephone"],
+  "buyer_data_required": [
+    { "title": "First name", "field_id": "1", "type": "text", "required": true, "value": "" },
+    { "title": "Last name", "field_id": "2", "type": "text", "required": true, "value": "" },
+    { "title": "Email", "field_id": "3", "type": "text", "required": true, "value": "" },
+    { "title": "Telephone", "field_id": "4", "type": "text", "required": true, "value": "" }
+  ],
+  "payments_available": [
+    { "code": "reservation", "title": "Reservation (no payment now)" },
+    {
+      "code": "cashregister",
+      "title": "Cash Register payment (dashboard)",
+      "payment_options": [
+        { "name": "unpaid_offline", "title": "Unpaid" },
+        { "name": "paid_cc", "title": "Credit card" },
+        { "name": "paid_cash", "title": "Cash" }
+      ]
+    },
+    {
+      "code": "invoice",
+      "title": "Invoice",
+      "payment_options": [
+        { "name": "tax_invoice_recipient_name", "title": "Name on Tax Receipt", "required": true },
+        { "name": "street", "title": "Street", "required": true },
+        { "name": "city", "title": "City", "required": true }
+      ]
+    },
+    { "code": "api_external", "title": "" }
+  ],
+  "discount_info": []
+}

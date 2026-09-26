@@ -1,0 +1,6 @@
+{
+  "data": {
+    "result": "reservation_not_found",
+    "message": "Reservation with given code was not found"
+  }
+}

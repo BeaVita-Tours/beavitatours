@@ -1,3 +1,15 @@
+/**
+ * @deprecated Proxy for the Regiondo whitelabel iframe on the /lp/* pages.
+ *
+ * Used only while `REGIONDO_NATIVE_BOOKING` is off. The native landing pages
+ * render tour cards server-side and load no iframe at all.
+ *
+ * SECURITY: this route fetches an arbitrary caller-supplied `url` with no host
+ * allowlist and serves the response from our own origin — an open proxy and an
+ * SSRF surface. It predates this work and is left running only so the flag can
+ * be switched back. **Delete it in the same change that removes the iframe**;
+ * do not extend it in the meantime.
+ */
 import { NextRequest, NextResponse } from "next/server";
 
 const PAGE_BG = "#fcfaf5";

@@ -1,0 +1,28 @@
+{
+  "label": "before",
+  "origin": "http://localhost:3100",
+  "measuredAt": "2026-09-06T22:27:58.547Z",
+  "results": {
+    "home": {
+      "url": "/",
+      "chunks": 14,
+      "rawKb": 769,
+      "gzipKb": 240,
+      "htmlKb": 362
+    },
+    "collection": {
+      "url": "/tours/group-tours",
+      "chunks": 13,
+      "rawKb": 693,
+      "gzipKb": 217,
+      "htmlKb": 55
+    },
+    "landing": {
+      "url": "/lp/from-venice",
+      "chunks": 13,
+      "rawKb": 721,
+      "gzipKb": 225,
+      "htmlKb": 73
+    }
+  }
+}

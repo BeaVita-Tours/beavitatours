@@ -1,0 +1,21 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "beavitatours",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 3000
+    },
+    {
+      "name": "beavitatours-native",
+      "runtimeExecutable": "pwsh",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-Command",
+        "$env:REGIONDO_NATIVE_BOOKING='true'; $env:REGIONDO_API_BASE_URL='http://localhost:4010/v1'; $env:REGIONDO_PUBLIC_KEY='E2E_PUBLIC_KEY'; $env:REGIONDO_PRIVATE_KEY='E2E_PRIVATE_KEY'; $env:REGIONDO_CURRENCY='EUR'; $env:REGIONDO_DEFAULT_LOCALE='en-US'; $env:REGIONDO_PAYMENT_MODE='hosted'; pnpm next dev -p 3200"
+      ],
+      "port": 3200
+    }
+  ]
+}

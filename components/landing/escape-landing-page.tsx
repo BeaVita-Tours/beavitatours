@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import {
   Accordion,
@@ -17,55 +16,103 @@ import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { DirectBookingPopups } from "@/components/landing/direct-booking-popups";
 
-export type DepartureKey = "fromVenice" | "fromJesolo";
-
 interface EscapeLandingPageProps {
-  departureKey: DepartureKey;
+  heroTitle: string;
+  heroSubtitle: string;
+  /**
+   * @deprecated The Regiondo whitelabel URL loaded through
+   * `/api/regiondo-proxy`. Used only when `bookingSlot` is absent, i.e. while
+   * `REGIONDO_NATIVE_BOOKING` is off. Remove together with the proxy route once
+   * the native flow is verified.
+   */
+  widgetUrl?: string;
+  /**
+   * The native catalog, passed in from the page as a Server Component. React
+   * renders it on the server even though this shell is a client component, so
+   * the tour cards arrive as HTML with no client JavaScript of their own —
+   * which on a paid-traffic page is the whole point.
+   */
+  bookingSlot?: React.ReactNode;
 }
 
-const heroImages: Record<DepartureKey, string> = {
-  fromVenice: "/landing/tourpics/gyg4.webp",
-  fromJesolo: "/landing/tourpics/gyg4.webp",
-};
+const heroImage = "/landing/tourpics/gyg4.webp";
 
-const trustBadgeKeys = [
-  "rating",
-  "ranking",
-  "licensed",
-  "familyRun",
-  "freeCancellation",
-] as const;
+const trustBadges = [
+  "⭐ 4.9 Tripadvisor (71 reviews)",
+  "🏅 #22 of 293 in Venice",
+  "✅ Licensed operator · Auth. 6297 TV",
+  "🏠 Family-run",
+  "🔄 Free cancellation",
+];
 
 const steps = [
-  { icon: "step1Icon", title: "step1Title", desc: "step1Desc" },
-  { icon: "step2Icon", title: "step2Title", desc: "step2Desc" },
-  { icon: "step3Icon", title: "step3Title", desc: "step3Desc" },
-] as const;
+  {
+    icon: "📍",
+    title: "Choose your tour",
+    desc: "Dolomites, Prosecco hills, or a combo — departing from where you're staying",
+  },
+  {
+    icon: "📞",
+    title: "Book direct",
+    desc: "No booking fees, no middlemen. You book straight with the local operator.",
+  },
+  {
+    icon: "👋",
+    title: "Meet your guide",
+    desc: "Easy meeting point. Just look for the guide in the green jacket.",
+  },
+];
 
 const whyBookProps = [
-  { title: "prop1Title", desc: "prop1Desc" },
-  { title: "prop2Title", desc: "prop2Desc" },
-  { title: "prop3Title", desc: "prop3Desc" },
-  { title: "prop4Title", desc: "prop4Desc" },
-] as const;
+  {
+    title: "Talk directly to the operator",
+    desc: "Got questions about the meeting point, special requests, or the itinerary? You'll get answers straight from the person running the tour — before and during your trip.",
+  },
+  {
+    title: "No booking fees, best price",
+    desc: "No platform commissions added. What you see is exactly what you pay.",
+  },
+  {
+    title: "Free cancellation up to 48h before",
+    desc: "Plans change. Cancel free of charge up to 48 hours before your tour — full refund, no questions asked.",
+  },
+  {
+    title: "Licensed, family-run local operator",
+    desc: "Auth. 6297 prov. TV. We're a fully licensed tour operator based in the Veneto region — not a third-party reseller.",
+  },
+];
 
 const faqItems = [
-  { q: "q1", a: "a1" },
-  { q: "q2", a: "a2" },
-  { q: "q3", a: "a3" },
-  { q: "q4", a: "a4" },
-  { q: "q5", a: "a5" },
-] as const;
+  {
+    q: "Where do I meet my guide for pickup?",
+    a: "Our group day trips depart from a designated meeting point in Venice. For private tours, we can pick you up at your accommodation on the mainland or arrange a convenient meeting spot. You'll receive full details in your booking confirmation.",
+  },
+  {
+    q: "How will I recognise my guide at the meeting point?",
+    a: "Your guide will be at the meeting point 15 minutes before departure, wearing a bright green jacket and holding a beaVita Tours sign — easy to spot even in a busy square.",
+  },
+  {
+    q: "Do you offer hotel pickup?",
+    a: "For private tours we offer complimentary pickup from any hotel or address on the mainland. For group tours, guests make their own way to the designated meeting point. If you're staying on the Venice island, a private water taxi can be arranged at an additional cost.",
+  },
+  {
+    q: "What is your cancellation policy?",
+    a: "You can cancel free of charge up to 48 hours before the tour starts. Cancellations must be sent by email or WhatsApp. After that window, the full rate applies.",
+  },
+  {
+    q: "Are the tours suitable for children?",
+    a: "Private tours are child-friendly. Children under 36 kg (79 lb) or 150 cm (4'9\") must use a proper car seat — we can provide baby seats and booster seats free of charge if you let us know a few days in advance. Group tours have age restrictions, so please check when booking.",
+  },
+];
 
-export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
-  const t = useTranslations("landingPages");
-  const shared = t.raw("shared") as Record<string, unknown>;
-  const departure = t.raw(departureKey) as Record<string, string>;
-  const trustBadges = (shared.trustBadges as Record<string, string>) ?? {};
-  const howItWorks = (shared.howItWorks as Record<string, string>) ?? {};
-  const whyBookDirect = (shared.whyBookDirect as Record<string, string>) ?? {};
-  const faq = (shared.faq as Record<string, string>) ?? {};
-  const widgetUrl = departure.widgetUrl ?? "";
+const ctaLabel = "Book your day trip now";
+
+export function EscapeLandingPage({
+  heroTitle,
+  heroSubtitle,
+  widgetUrl,
+  bookingSlot,
+}: EscapeLandingPageProps) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [showBackButton, setShowBackButton] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
@@ -99,7 +146,7 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
         {/* TODO: swap hero image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={heroImages[departureKey]}
+            src={heroImage}
             alt=""
             fill
             className="object-cover"
@@ -110,10 +157,10 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
 
         <div className="container relative z-10 mx-auto px-4 text-center">
           <h1 className="mx-auto max-w-3xl text-balance text-3xl font-bold leading-tight text-white md:text-5xl md:leading-tight">
-            {departure.heroTitle}
+            {heroTitle}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-balance text-lg text-white/80 md:text-xl">
-            {departure.heroSubtitle}
+            {heroSubtitle}
           </p>
           <Button
             size="lg"
@@ -124,19 +171,18 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            {whyBookDirect.ctaLabel ?? "Book now"}{" "}
-            <ArrowRight className="ml-1 size-4" />
+            {ctaLabel} <ArrowRight className="ml-1 size-4" />
           </Button>
 
           {/* Trust badges inside the hero overlay */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-2 md:gap-3">
-            {trustBadgeKeys.map((key) => (
+            {trustBadges.map((badge) => (
               <Badge
-                key={key}
+                key={badge}
                 variant="outline"
                 className="rounded-full border-white/20 bg-black/40 px-3 py-1.5 text-xs font-medium text-white/90 shadow-sm backdrop-blur-md normal-case"
               >
-                {trustBadges[key]}
+                {badge}
               </Badge>
             ))}
           </div>
@@ -150,41 +196,48 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-5xl">
             <h2 className="mb-2 text-center text-2xl font-bold md:text-3xl">
-              {whyBookDirect.ctaLabel}
+              {ctaLabel}
             </h2>
             <Separator className="mx-auto mt-4 mb-8 w-16" />
-            <div className="relative overflow-hidden">
-              {showBackButton && (
-                <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-1.5 text-muted-foreground"
-                    onClick={goBackToMain}
-                  >
-                    <ArrowLeft className="size-4" />
-                    {(shared.backLabel as string) ?? "Back to all tours"}
-                  </Button>
-                </div>
-              )}
-              {!iframeLoaded && (
-                <div className="flex h-[800px] w-full flex-col items-center gap-4">
-                  <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
-                </div>
-              )}
-              <iframe
-                key={iframeKey}
-                src={"/api/regiondo-proxy?url=" + widgetUrl}
-                title="Booking widget"
-                width="100%"
-                height="800"
-                style={{ border: 0 }}
-                allow="payment"
-                loading="lazy"
-                className={cn("w-full", !iframeLoaded && "h-0")}
-                onLoad={handleIframeLoad}
-              />
-            </div>
+            {bookingSlot ? (
+              // Native catalog: server-rendered cards, no iframe, no
+              // third-party script, nothing in the critical path.
+              bookingSlot
+            ) : (
+              /* @deprecated Legacy Regiondo iframe. See widgetUrl above. */
+              <div className="relative overflow-hidden">
+                {showBackButton && (
+                  <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/80 px-4 py-2 backdrop-blur-sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-1.5 text-muted-foreground"
+                      onClick={goBackToMain}
+                    >
+                      <ArrowLeft className="size-4" />
+                      Back to all tours
+                    </Button>
+                  </div>
+                )}
+                {!iframeLoaded && (
+                  <div className="flex h-[800px] w-full flex-col items-center gap-4">
+                    <Loader2 className="mt-16 size-12 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+                <iframe
+                  key={iframeKey}
+                  src={"/api/regiondo-proxy?url=" + widgetUrl}
+                  title="Booking widget"
+                  width="100%"
+                  height="800"
+                  style={{ border: 0 }}
+                  allow="payment"
+                  loading="lazy"
+                  className={cn("w-full", !iframeLoaded && "h-0")}
+                  onLoad={handleIframeLoad}
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -195,13 +248,13 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 text-center text-2xl font-bold md:text-3xl">
-            {howItWorks.title}
+            How it works
           </h2>
           <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
             {steps.map((step, index) => (
               <div key={step.title} className="text-center">
                 <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-primary/10 text-2xl">
-                  {howItWorks[step.icon]}
+                  {step.icon}
                 </div>
                 <div className="mb-2 flex items-center justify-center gap-2">
                   <span className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
@@ -209,10 +262,10 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
                   </span>
                 </div>
                 <h3 className="mb-2 text-lg font-semibold">
-                  {howItWorks[step.title]}
+                  {step.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  {howItWorks[step.desc]}
+                  {step.desc}
                 </p>
               </div>
             ))}
@@ -227,10 +280,11 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-2xl font-bold md:text-3xl">
-              {whyBookDirect.title}
+              Why book direct
             </h2>
             <p className="mt-3 text-muted-foreground">
-              {whyBookDirect.subtitle}
+              No platforms, no markups — just a local family welcoming you to
+              their backyard.
             </p>
           </div>
 
@@ -242,10 +296,10 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
                     <Check className="size-5 text-primary" />
                   </div>
                   <h3 className="mb-2 font-semibold">
-                    {whyBookDirect[prop.title]}
+                    {prop.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {whyBookDirect[prop.desc]}
+                    {prop.desc}
                   </p>
                 </CardContent>
               </Card>
@@ -262,7 +316,7 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              {whyBookDirect.ctaLabel} <ArrowRight className="ml-1 size-4" />
+              {ctaLabel} <ArrowRight className="ml-1 size-4" />
             </Button>
           </div>
         </div>
@@ -275,20 +329,20 @@ export function EscapeLandingPage({ departureKey }: EscapeLandingPageProps) {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">
-              {faq.title}
+              Frequently asked questions
             </h2>
             <Accordion type="single" collapsible className="space-y-3">
-              {faqItems.map((item) => (
+              {faqItems.map((item, index) => (
                 <AccordionItem
-                  key={item.q}
-                  value={item.q}
+                  key={`item-${index + 1}`}
+                  value={`item-${index + 1}`}
                   className="rounded-xl border px-6 last:border-b"
                 >
                   <AccordionTrigger className="text-left hover:no-underline">
-                    <span className="font-medium">{faq[item.q]}</span>
+                    <span className="font-medium">{item.q}</span>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed">
-                    {faq[item.a]}
+                    {item.a}
                   </AccordionContent>
                 </AccordionItem>
               ))}

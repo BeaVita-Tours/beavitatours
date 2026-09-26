@@ -11,13 +11,15 @@ import {
   clearTrackingArtifacts,
   createConsentRecord,
   DEFAULT_CONSENT,
-  parseConsentRecord,
+  parseConsentFromCookieHeader,
 } from "@/lib/cookie-consent";
 
 type CookieConsentContextValue = {
   consent: ConsentRecord | null;
   hasAnalyticsConsent: boolean;
   hasMarketingConsent: boolean;
+  /** True after the consent cookie has been read on the client. */
+  hydrated: boolean;
   isSettingsOpen: boolean;
   openSettings: () => void;
   closeSettings: () => void;
@@ -25,6 +27,14 @@ type CookieConsentContextValue = {
   rejectAll: () => void;
   savePreferences: (preferences: ConsentPreferences) => void;
 };
+
+function readConsentCookie(): ConsentRecord | null {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  return parseConsentFromCookieHeader(document.cookie);
+}
 
 const CookieConsentContext = React.createContext<CookieConsentContextValue | null>(
   null
@@ -50,15 +60,19 @@ function getConsentAction(preferences: ConsentPreferences) {
 
 export function CookieConsentProvider({
   children,
-  initialConsent,
 }: {
   children: React.ReactNode;
-  initialConsent: ConsentRecord | null;
 }) {
-  const [consent, setConsent] = React.useState<ConsentRecord | null>(initialConsent);
+  const [consent, setConsent] = React.useState<ConsentRecord | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
+  const [hydrated, setHydrated] = React.useState(false);
   const hasAnalyticsConsent = Boolean(consent?.preferences.analytics);
   const hasMarketingConsent = Boolean(consent?.preferences.marketing);
+
+  React.useEffect(() => {
+    setConsent(readConsentCookie());
+    setHydrated(true);
+  }, []);
 
   React.useEffect(() => {
     if (!consent || consent.action === "reject-all") {
@@ -109,6 +123,7 @@ export function CookieConsentProvider({
       consent,
       hasAnalyticsConsent,
       hasMarketingConsent,
+      hydrated,
       isSettingsOpen,
       openSettings,
       closeSettings,
@@ -122,6 +137,7 @@ export function CookieConsentProvider({
       consent,
       hasAnalyticsConsent,
       hasMarketingConsent,
+      hydrated,
       isSettingsOpen,
       openSettings,
       rejectAll,
@@ -144,8 +160,4 @@ export function useCookieConsent() {
   }
 
   return context;
-}
-
-export function getInitialConsentFromCookie(rawCookieValue: string | null | undefined) {
-  return parseConsentRecord(rawCookieValue);
 }

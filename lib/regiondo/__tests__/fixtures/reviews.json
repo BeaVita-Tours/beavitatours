@@ -1,0 +1,93 @@
+{
+  "data": [
+    {
+      "review_id": "1326327",
+      "review_detail_id": "1326266",
+      "title": "Day Mountain Excursion to Cortina Dolomites ",
+      "detail": "I had a wonderful experience on the one-day mountain excursion organised through the tour package. The trip was well planned, with good arrangements for transportation, activities, and overall coordination. The mountain views were breathtaking, and spending a day surrounded by nature was refreshing and memorable.\r\n\r\nThe team was friendly, supportive, and professional throughout the journey, making the entire experience comfortable and enjoyable. One suggestion for improvement would be to allow a little more time at each location. Spending some extra time at the scenic spots would make the experience more relaxed and give travellers a better opportunity to explore, enjoy the surroundings, and create lasting memories.\r\n\r\nOverall, it was a great combination of adventure, relaxation, and exploration. We thoroughly enjoyed the trip and would definitely recommend this mountain excursion to others.\r\n",
+      "nickname": "Ajay Kandari",
+      "created_at": "2026-08-29 08:04:10",
+      "vote_details": [
+        {
+          "percent": "80",
+          "value": "4",
+          "rating_code": "Overall rating"
+        },
+        {
+          "percent": "80",
+          "value": "4",
+          "rating_code": "Value"
+        },
+        {
+          "percent": "80",
+          "value": "4",
+          "rating_code": "Fun factor"
+        }
+      ],
+      "responses": []
+    },
+    {
+      "review_id": "1303974",
+      "review_detail_id": "1303913",
+      "title": "Excellent trip to the dolomites",
+      "detail": "A great trip to the Dolomites although it was a long day on the coach.  We stopped after around an hour at a cafe for a coffee and a toilet stop.  1st stop was Cortina which was really lovely but could definitely have stayed there a bit longer.  Gorgeous scenery and very picturesque.  2nd stop was at Lake Misurini - this was incredibly dry due to the weather but still beautiful.  We did the ski lift which was good - 15 minutes each way and walked around the lake but didnt  really have enough time to get a drink at the cafes.  The guide was really good & kept us updated throughout.  We then visited another lake but was literally walk down, take a photo and back to the coach.  It was a good trip and we enjoyed it and would definitely visit the dolomites again with more time.  ",
+      "nickname": "Joanne  Marshall",
+      "created_at": "2026-08-03 16:31:19",
+      "vote_details": [
+        {
+          "percent": "100",
+          "value": "5",
+          "rating_code": "Overall rating"
+        },
+        {
+          "percent": "100",
+          "value": "5",
+          "rating_code": "Value"
+        },
+        {
+          "percent": "80",
+          "value": "4",
+          "rating_code": "Fun factor"
+        }
+      ],
+      "responses": []
+    },
+    {
+      "review_id": "1280482",
+      "review_detail_id": "1280422",
+      "title": "世外桃源",
+      "detail": "行程安排剛剛好，每個停留地點所給予的時間都足夠，風景優美，導遊講解風趣，大巴車坐得舒適，我會極力推薦給我的朋友們。",
+      "nickname": "Michelle Leung",
+      "created_at": "2026-06-25 09:50:04",
+      "vote_details": [
+        {
+          "percent": "100",
+          "value": "5",
+          "rating_code": "Overall rating"
+        },
+        {
+          "percent": "100",
+          "value": "5",
+          "rating_code": "Value"
+        },
+        {
+          "percent": "100",
+          "value": "5",
+          "rating_code": "Fun factor"
+        }
+      ],
+      "responses": []
+    }
+  ],
+  "page": {
+    "first": 1,
+    "before": 1,
+    "previous": 1,
+    "current": 1,
+    "last": 3,
+    "next": 2,
+    "total_pages": 3,
+    "total_items": 7,
+    "limit": 3
+  }
+}

@@ -18,6 +18,20 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Blog (Sanity CMS)
+
+The site includes a blog powered by [Sanity](https://www.sanity.io) as a headless
+CMS, with the content-authoring Studio embedded at `/studio`.
+
+- **Setup (one time):** [`docs/sanity-blog-setup.md`](docs/sanity-blog-setup.md) —
+  run `pnpm dlx sanity@latest init`, configure the revalidation webhook and
+  CORS, set production env vars.
+- **Developer guide:** [`docs/blog-dev-guide.md`](docs/blog-dev-guide.md) — how
+  the blog is implemented (schemas, GROQ queries, cache-components strategy,
+  file map) and how to extend it.
+- **Content authors:** [`docs/blog-client-guide.md`](docs/blog-client-guide.md) —
+  how to write and publish posts from the Studio.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More

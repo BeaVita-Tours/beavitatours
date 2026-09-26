@@ -1,4 +1,10 @@
-export const siteUrl = "https://www.beavitatours.com";
+/**
+ * The origin SEO Workspace publishes for — the live www host. It is part of
+ * the publication contract (the snapshot's `siteUrl` and every canonical must
+ * use it), and the canonicals, guide URLs and sitemap entries the connector
+ * produces keep it, as they did on the localized site.
+ */
+export const workspaceSiteUrl = "https://www.beavitatours.com";
 export type SeoConfig = {
   mode: "preview" | "live";
   studioUrl: string;
@@ -42,6 +48,10 @@ export function seoConfig(
       "Configure two different random server-only connector secrets.",
     );
   return { mode, studioUrl: url.origin, readToken, refreshSecret };
+}
+/** The connector is switched off (the default) — known without validating the rest. */
+export function isSeoOff(env: Record<string, string | undefined> = process.env) {
+  return (env.SEO_DELIVERY_MODE || "off") === "off";
 }
 export function isSeoPreview(
   env: Record<string, string | undefined> = process.env,
