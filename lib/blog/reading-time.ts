@@ -1,8 +1,7 @@
 const WORDS_PER_MINUTE = 200;
 
 /**
- * Estimated reading time in minutes for a plain-text string, as produced by
- * GROQ's `pt::text(body)`. Returns 0 for empty/missing text so callers can
+ * Estimated reading time in minutes for the article text without Markdown syntax. Returns 0 for empty/missing text so callers can
  * drop the "· N min read" segment from the meta line.
  */
 export function readingTimeInMinutes(text: string | null | undefined): number {

@@ -9,7 +9,7 @@ import {
   getCategories,
   getPosts,
   POSTS_PER_PAGE,
-} from "@/lib/sanity/queries";
+} from "@/lib/blog/queries";
 
 export const metadata: Metadata = {
   title: "The beaVita Blog — beaVita Tours",

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import {
-  BookOpen,
   BriefcaseBusiness,
   CircleHelp,
   Gem,
@@ -40,12 +39,6 @@ const NAV_LINKS: readonly NavLink[] = [
   { href: "/blog", label: "Blog", icon: Newspaper },
   { href: "/contact", label: "Contact", icon: Mail },
 ];
-
-/** Shown after Blog only while SEO Workspace has published guides. */
-const GUIDES_LINK: NavLink = { href: "/guides", label: "Guides", icon: BookOpen };
-const NAV_LINKS_WITH_GUIDES: readonly NavLink[] = NAV_LINKS.flatMap((link) =>
-  link.href === "/blog" ? [link, GUIDES_LINK] : [link],
-);
 
 const isActiveForPath = (pathname: string, link: NavLink) =>
   pathname === link.href || pathname.startsWith(`${link.href}/`);
@@ -163,10 +156,10 @@ function MobileNavActive({
     that lists every shared departure now that the catalog index is gone. */
 const BOOK_HREF = "/tours/group-tours";
 
-export function Navigation({ showGuides = false }: { showGuides?: boolean }) {
+export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const bookHref = BOOK_HREF;
-  const links = showGuides ? NAV_LINKS_WITH_GUIDES : NAV_LINKS;
+  const links = NAV_LINKS;
 
   // Close the mobile menu with Escape.
   useEffect(() => {

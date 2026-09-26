@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Category } from "@/lib/sanity/types";
+import type { Category } from "@/lib/blog/types";
 import { cn } from "@/lib/utils";
 
 interface CategoryFilterProps {

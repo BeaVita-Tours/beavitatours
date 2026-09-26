@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
+import { blogPresentationSchema } from "./blog-contract";
 import { publishablePaths } from "./routes";
 import { workspaceSiteUrl } from "./config";
 
@@ -27,6 +28,9 @@ const articleSchema = z
     tourPath: path,
     publishedAt: z.string().datetime(),
     canonical: z.string().url().max(700),
+    blog: blogPresentationSchema.optional(),
+    modifiedAt: z.string().datetime().optional(),
+    aliases: z.array(z.string().url().max(700)).max(20).optional(),
     coverImage: z
       .object({
         url: z
@@ -90,8 +94,9 @@ export const snapshotSchema = z
     )
       reject();
     // Legacy (/en/guides/...) or English-only (/guides/...) addresses.
-    for (const article of snapshot.articles)
+    for (const article of snapshot.articles) {
       if (
+        article.canonical !== `${workspaceSiteUrl}/blog/${article.slug}` &&
         article.canonical !==
           `${workspaceSiteUrl}/${article.language}/guides/${article.slug}` &&
         !(
@@ -100,6 +105,11 @@ export const snapshotSchema = z
         )
       )
         reject();
+      for (const alias of article.aliases ?? []) {
+        const url = new URL(alias);
+        if (url.origin !== workspaceSiteUrl || url.search || url.hash || !/^\/(?:en\/)?(?:blog|guides)\/[a-z0-9-]+$/.test(url.pathname)) reject();
+      }
+    }
     for (const page of snapshot.pages) {
       const canonical = new URL(page.canonical);
       if (

@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { PortableText } from "@portabletext/react";
-import type { Author } from "@/lib/sanity/types";
+import { BlogImage as Image } from "./blog-image";
+import { BlogBody } from "./blog-body";
+import type { Author } from "@/lib/blog/types";
 
 /**
  * The byline card at the end of an article — the same bordered card language
- * as the rest of the site. The bio is Portable Text from Sanity, scoped to the
+ * as the rest of the site. The versioned author bio is scoped to the
  * small muted reading style.
  */
 export function AuthorCard({ author }: { author?: Author }) {
@@ -31,7 +31,7 @@ export function AuthorCard({ author }: { author?: Author }) {
           <h2 className="text-lg font-bold text-foreground">{author.name}</h2>
           {author.bio ? (
             <div className="prose prose-sm mt-2 max-w-none [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_p]:text-muted-foreground">
-              <PortableText value={author.bio} />
+              <BlogBody value={author.bio} />
             </div>
           ) : null}
         </div>

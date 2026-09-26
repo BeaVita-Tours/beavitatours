@@ -38,7 +38,10 @@ function sampleSnapshot() {
           "Questions to ask before booking your Dolomites day trip.",
         tourPath: "/en/tours/dolomites",
         publishedAt: "2026-09-19T12:00:00.000Z",
-        canonical: `${site}/en/guides/planning-dolomites`,
+        canonical: `${site}/blog/planning-dolomites`,
+        blog: { author: { name: "The beaVita Team", bio: "Local people, shared stories." }, categories: [{ slug: "our-story", title: "Our Story" }], inlineImages: [] },
+        modifiedAt: "2026-09-19T12:00:00.000Z",
+        aliases: [`${site}/en/guides/planning-dolomites`],
         coverImage: {
           url: `${site}/imgs/dolomites/dolomitesmain.jpeg`,
           alt: "Rocky Dolomite peaks above the Lagazuoi cable-car station",

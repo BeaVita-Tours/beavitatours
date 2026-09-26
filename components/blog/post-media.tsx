@@ -1,6 +1,5 @@
-import Image from "next/image";
-import { urlFor } from "@/lib/sanity/image";
-import type { PostSummary } from "@/lib/sanity/types";
+import { BlogImage as Image } from "./blog-image";
+import type { PostSummary } from "@/lib/blog/types";
 import { cn } from "@/lib/utils";
 
 interface PostMediaProps {
@@ -38,7 +37,7 @@ export function PostMedia({
     >
       {mainImage?.asset?.url ? (
         <Image
-          src={urlFor(mainImage).width(1200).url()}
+          src={mainImage.asset!.url}
           alt={mainImage.alt ?? post.title}
           fill
           priority={priority}

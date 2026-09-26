@@ -1,12 +1,11 @@
-import Image from "next/image";
+import { BlogImage as Image } from "./blog-image";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
-import { urlFor } from "@/lib/sanity/image";
-import { formatDate } from "@/lib/sanity/format-date";
-import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
-import type { Post } from "@/lib/sanity/types";
+import { formatDate } from "@/lib/blog/format-date";
+import { readingTimeInMinutes } from "@/lib/blog/reading-time";
+import type { Post } from "@/lib/blog/types";
 import { BlogBadge } from "./blog-badge";
-import { PortableTextBody } from "./portable-text";
+import { BlogBody } from "./blog-body";
 import { ReadingProgress } from "./reading-progress";
 import { AuthorCard } from "./author-card";
 import { ShareRow } from "./share-row";
@@ -88,7 +87,7 @@ export function PostArticle({ post }: { post: Post }) {
         {post.mainImage?.asset?.url ? (
           <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl">
             <Image
-              src={urlFor(post.mainImage).width(1600).url()}
+              src={post.mainImage.asset!.url}
               alt={post.mainImage.alt ?? post.title}
               fill
               priority
@@ -99,7 +98,7 @@ export function PostArticle({ post }: { post: Post }) {
         ) : null}
 
         <div className="prose prose-blog prose-lg mx-auto mt-10 max-w-none">
-          <PortableTextBody value={post.body} />
+          <BlogBody value={post.body} images={post.inlineImages} />
         </div>
 
         <AuthorCard author={post.author} />

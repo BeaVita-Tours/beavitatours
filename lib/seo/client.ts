@@ -7,11 +7,11 @@ export const publicationTag = "seo-studio-publications-v1";
 
 /**
  * The validated publication snapshot, or null when the connector is off.
- * For the guides and the connection route, which run at request time.
+ * For the blog and the connection route, which run at request time.
  *
  * Only data that passed validation is cached: a failed fetch (or a connector
  * misconfiguration) throws, and a throw is never cached, so an outage cannot be
- * stored as "no guides". The `seo` cache-life profile is in next.config.ts;
+ * stored as "no articles". The `seo` cache-life profile is in next.config.ts;
  * POST /api/seo/connection expires the tag when SEO Workspace publishes.
  */
 export async function getSnapshot() {

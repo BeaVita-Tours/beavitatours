@@ -1,4 +1,4 @@
-import { getRelatedPosts } from "@/lib/sanity/queries";
+import { getRelatedPosts } from "@/lib/blog/queries";
 import { PostCard } from "./post-card";
 
 interface RelatedPostsProps {

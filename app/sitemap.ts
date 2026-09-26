@@ -3,10 +3,10 @@ import { SITE_URL } from "@/lib/constants";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { listAllTours } from "@/lib/regiondo/products";
 import { assertSlugRegistry } from "@/lib/regiondo/slugs";
-import { getCategories, getPostSitemapEntries } from "@/lib/sanity/queries";
+import { getCategories, getPostSitemapEntries } from "@/lib/blog/queries";
 import { getOptionalSnapshot } from "@/lib/seo/client";
 import { isSeoPreview, workspaceSiteUrl } from "@/lib/seo/config";
-import { findPage, listGuides } from "@/lib/seo/publications";
+import { findPage } from "@/lib/seo/publications";
 
 type Frequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -61,7 +61,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
   const native = isNativeBookingEnabled();
 
-  // Fetch dynamic content in parallel. With no Sanity configured, the
+  // Fetch dynamic content in parallel. With no blog connector configured, the
   // accessors return [] and the sitemap falls back to static routes only.
   const [postEntries, categories, tours, publications] = await Promise.all([
     getPostSitemapEntries(),
@@ -96,27 +96,10 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     priority: route.priority,
   }));
 
-  const guides = publications ? listGuides(publications) : [];
-  const guideUrls: MetadataRoute.Sitemap = guides.length
-    ? [
-        {
-          url: `${workspaceSiteUrl}/guides`,
-          changeFrequency: "weekly",
-          priority: 0.6,
-        },
-        ...guides.map((guide) => ({
-          url: guide.url,
-          lastModified: guide.publishedAt,
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        })),
-      ]
-    : [];
-
   const postUrls: MetadataRoute.Sitemap = postEntries.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
     // publishedAt is the freshest known change timestamp per post.
-    lastModified: post.publishedAt,
+    lastModified: post.modifiedAt ?? post.publishedAt,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
@@ -152,7 +135,6 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     ...tourUrls,
     ...postUrls,
     ...categoryUrls,
-    ...guideUrls,
   ];
 };
 

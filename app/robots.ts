@@ -13,7 +13,7 @@ const robots = (): MetadataRoute.Robots =>
           // /book/* is the checkout and confirmation flow. Both also send
           // `noindex` in their metadata; this stops the crawl budget being spent on
           // them in the first place.
-          disallow: ["/studio", "/api/", "/book/"],
+          disallow: ["/api/", "/book/"],
         },
         sitemap: `${SITE_URL}/sitemap.xml`,
       };

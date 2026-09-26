@@ -38,14 +38,14 @@ test("serves published HTML, safe markdown, canonical metadata and a real tour l
   page,
   request,
 }) => {
-  await page.goto("/guides/planning-dolomites");
+  await page.goto("/blog/planning-dolomites");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Planning a Dolomites day trip",
   );
-  await expect(page).toHaveTitle("Plan a Dolomites trip | BeaVitaTours");
+  await expect(page).toHaveTitle("Plan a Dolomites trip | BeaVitaTours | beaVita Tours Blog");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://www.beavitatours.com/guides/planning-dolomites",
+    "https://www.beavitatours.com/blog/planning-dolomites",
   );
   expect(
     await page.evaluate(
@@ -84,8 +84,8 @@ test("serves published HTML, safe markdown, canonical metadata and a real tour l
   // tour button is mapped onto this site.
   await expect(
     page.getByRole("link", { name: "Explore the tour", exact: true }).last(),
-  ).toHaveAttribute("href", "/tours/dolomites");
-  const raw = await (await request.get("/guides/planning-dolomites")).text();
+  ).toHaveAttribute("href", "/en/tours/dolomites");
+  const raw = await (await request.get("/blog/planning-dolomites")).text();
   expect(raw).toContain("Before your trip");
   expect(raw).not.toContain(readToken);
   expect(raw).not.toContain(refreshSecret);
@@ -104,9 +104,9 @@ test("serves published HTML, safe markdown, canonical metadata and a real tour l
     path: "test-results/guide-desktop.png",
     fullPage: true,
   });
-  await page.goto("/guides");
+  await page.goto("/blog");
   await expect(page.locator(`img[alt="${guideAlt}"]`)).toBeVisible();
-  await expect(page.getByRole("link", { name: "Guides" }).first()).toBeAttached();
+  await expect(page.getByRole("link", { name: "Blog" }).first()).toBeAttached();
 });
 
 test("applies approved page metadata, excludes noindex pages, and serves English only", async ({
@@ -121,10 +121,10 @@ test("applies approved page metadata, excludes noindex pages, and serves English
   );
   expect(await page.locator("link[hreflang]").count()).toBe(0);
   const sitemap = await (await request.get("/sitemap.xml")).text();
-  expect(sitemap).toContain("/guides/planning-dolomites</loc>");
+  expect(sitemap).toContain("/blog/planning-dolomites</loc>");
   expect(sitemap).not.toContain("/about</loc>");
   expect(sitemap).toContain("/tours/dolomites</loc>");
-  await page.goto("/guides/planning-dolomites");
+  await page.goto("/blog/planning-dolomites");
   expect(await page.locator("link[hreflang]").count()).toBe(0);
   // Old localized guide URLs redirect to the English guide.
   const legacy = await request.get("/en/guides/planning-dolomites", {
@@ -132,7 +132,12 @@ test("applies approved page metadata, excludes noindex pages, and serves English
   });
   expect(legacy.status()).toBe(308);
   expect(legacy.headers().location).toBe("/guides/planning-dolomites");
+  const oldGuide = await request.get("/guides/planning-dolomites", { maxRedirects: 0 });
+  expect(oldGuide.status()).toBe(308);
+  expect(oldGuide.headers().location).toBe("/blog/planning-dolomites");
   expect((await request.get("/guides/not-published")).status()).toBe(404);
+  expect((await request.get("/studio")).status()).toBe(404);
+  expect((await request.get("/blog/not-published")).status()).toBe(404);
 });
 
 test("refreshes publications and withdrawals without exposing other server capabilities", async ({
@@ -156,11 +161,11 @@ test("refreshes publications and withdrawals without exposing other server capab
   await change(request, "publish");
   expect((await sync(request)).ok()).toBeTruthy();
   expect(
-    await (await request.get("/guides/planning-dolomites")).text(),
+    await (await request.get("/blog/planning-dolomites")).text(),
   ).toContain("Updated published guide");
   await change(request, "withdraw");
   expect((await sync(request)).ok()).toBeTruthy();
-  expect((await request.get("/guides/planning-dolomites")).status()).toBe(404);
+  expect((await request.get("/blog/planning-dolomites")).status()).toBe(404);
   expect(await (await request.get("/sitemap.xml")).text()).not.toContain(
     "/guides",
   );
@@ -174,7 +179,7 @@ test("keeps the last valid snapshot through a failed refresh and recovers", asyn
 }) => {
   await change(request, "fail");
   expect((await sync(request)).status()).toBe(503);
-  const page = await request.get("/guides/planning-dolomites");
+  const page = await request.get("/blog/planning-dolomites");
   expect(page.status()).toBe(200);
   expect(await page.text()).toContain("Planning a Dolomites day trip");
   await change(request, "recover");

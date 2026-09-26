@@ -10,7 +10,7 @@ import {
   getCategory,
   getPosts,
   POSTS_PER_PAGE,
-} from "@/lib/sanity/queries";
+} from "@/lib/blog/queries";
 
 // instant = false: this page reads params (the category slug) and searchParams
 // (the page number) for server-side pagination, so it's kept dynamic.
@@ -24,7 +24,7 @@ interface CategoryPageProps {
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
   const category = await getCategory(slug);
-  if (!category) return { title: "Category not found" };
+  if (!category) notFound();
   return {
     title: `${category.title} — Blog | beaVita Tours`,
     description: category.description ?? `Posts filed under ${category.title}.`,

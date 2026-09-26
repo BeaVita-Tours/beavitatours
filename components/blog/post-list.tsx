@@ -1,4 +1,4 @@
-import type { PostSummary } from "@/lib/sanity/types";
+import type { PostSummary } from "@/lib/blog/types";
 import { PostCard } from "./post-card";
 
 /** The archive grid of post cards, with the site's empty state. */

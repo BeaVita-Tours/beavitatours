@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getPosts } from "@/lib/sanity/queries";
+import { getHomePosts } from "@/lib/blog/queries";
 import { PostCard } from "./post-card";
 
 /**
@@ -15,14 +15,13 @@ import { PostCard } from "./post-card";
  * Dolomites") with the word "road" in the site's teal, and the "View all
  * stories" action sits below the grid as the site's standard filled button.
  *
- * Failure modes (never a broken section): with no Sanity configured or no
- * posts published yet, `getPosts` returns an empty list, the grid is hidden,
+ * Failure modes (never a broken section): with the connector unavailable or no
+ * posts published yet, `getHomePosts` returns an empty list, the grid is hidden,
  * and the header (plus the button into the archive) still renders — the same
  * robustness the reviews section follows.
  */
 export async function BlogSection() {
-  const { posts } = await getPosts({ page: 1 });
-  const latest = posts.slice(0, 3);
+  const latest = await getHomePosts();
 
   return (
     <section id="blog" className="bg-tint-otter py-20">

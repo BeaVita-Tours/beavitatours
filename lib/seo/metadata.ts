@@ -2,7 +2,7 @@ import "server-only";
 import type { Metadata } from "next";
 import { getOptionalSnapshot } from "./client";
 import { isSeoPreview } from "./config";
-import { findPage, type Guide } from "./publications";
+import { findPage } from "./publications";
 
 /**
  * A page's metadata with SEO Workspace's approved title, description,
@@ -35,35 +35,4 @@ export async function pageMetadata(
   return isSeoPreview()
     ? { ...metadata, robots: { index: false, follow: false } }
     : metadata;
-}
-export function guideMetadata(guide: Guide): Metadata {
-  return {
-    title: guide.metaTitle,
-    description: guide.metaDescription,
-    alternates: { canonical: guide.url },
-    robots: { index: !isSeoPreview(), follow: !isSeoPreview() },
-    openGraph: {
-      type: "article",
-      title: guide.metaTitle,
-      description: guide.metaDescription,
-      url: guide.url,
-      publishedTime: guide.publishedAt,
-      locale: "en",
-      ...(guide.coverImage
-        ? {
-            images: [{ url: guide.coverImage.url, alt: guide.coverImage.alt }],
-          }
-        : {}),
-    },
-    ...(guide.coverImage
-      ? {
-          twitter: {
-            card: "summary_large_image" as const,
-            title: guide.metaTitle,
-            description: guide.metaDescription,
-            images: [{ url: guide.coverImage.url, alt: guide.coverImage.alt }],
-          },
-        }
-      : {}),
-  };
 }

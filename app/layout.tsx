@@ -27,12 +27,12 @@ export default function RootLayout({
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <CookieConsentProvider>
         <head>
-          <TrackingScripts />
+          {!isSeoPreview() && <TrackingScripts />}
         </head>
         {/* Site chrome (Navigation, Footer, consent banner/dialog) lives in
-            app/(site)/layout.tsx so routes like /studio render standalone. */}
+            app/(site)/layout.tsx. */}
         <body className="font-sans antialiased" suppressHydrationWarning>
-          <Umami />
+          {!isSeoPreview() && <Umami />}
           {children}
         </body>
       </CookieConsentProvider>

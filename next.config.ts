@@ -5,21 +5,14 @@ const LEGACY_LOCALES = "(en|it|zh|ja)";
 const nextConfig: NextConfig = {
   typedRoutes: false,
   cacheComponents: true,
-  // Blog cache-life profile: serve stale for an hour while revalidating in
-  // the background, fall back to a full revalidation every day, hard-expire
-  // after 30 days. A Sanity webhook (app/api/revalidate) busts the cache
-  // immediately when content changes.
-  //
+  // Resolve metadata before sending headers so unpublished article URLs return
+  // HTTP 404. Blog metadata reads the same cached snapshot as the article.
+  htmlLimitedBots: /.*/,
   // Reviews cache-life profile: used by the homepage's live Google Reviews
   // (`lib/reviews/google-reviews.ts`). Revalidates in the background at most
   // every 6 hours — reviews change slowly, so 6–12h keeps the rating and
   // count fresh. To change the refresh interval, edit `revalidate` here.
   cacheLife: {
-    blog: {
-      stale: 60 * 60,
-      revalidate: 60 * 60 * 24,
-      expire: 60 * 60 * 24 * 30,
-    },
     reviews: {
       stale: 60 * 60,
       revalidate: 6 * 60 * 60,
@@ -38,7 +31,7 @@ const nextConfig: NextConfig = {
       expire: 60 * 60 * 24,
     },
     // SEO Workspace publications (lib/seo/client.ts): page metadata and the
-    // guides. Checked every minute, as the connector always was; publishing
+    // blog. Checked every minute, as the connector always was; publishing
     // also expires it at once via POST /api/seo/connection. The long expiry
     // keeps the last good copy serving through a SEO Workspace outage.
     seo: {
@@ -50,11 +43,6 @@ const nextConfig: NextConfig = {
   images: {
     qualities: [60, 66, 70, 72, 75, 80],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-        pathname: "/images/**",
-      },
       // Regiondo product imagery. Their CDN only renders two crops
       // (-cropped600-400 and -thumbnail-360x240); larger renditions 404, so
       // 600x400 really is the largest source available for a tour hero.

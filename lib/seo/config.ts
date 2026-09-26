@@ -1,10 +1,14 @@
-/**
- * The origin SEO Workspace publishes for — the live www host. It is part of
- * the publication contract (the snapshot's `siteUrl` and every canonical must
- * use it), and the canonicals, guide URLs and sitemap entries the connector
- * produces keep it, as they did on the localized site.
- */
-export const workspaceSiteUrl = "https://www.beavitatours.com";
+/** Canonicals stay on www in production. Only an isolated preview may override it. */
+export function publicationOrigin(env: Record<string, string | undefined> = process.env) {
+  if (!env.SEO_PREVIEW_SITE_URL) return "https://www.beavitatours.com";
+  const url = new URL(env.SEO_PREVIEW_SITE_URL);
+  if (env.SEO_DELIVERY_MODE !== "preview" || env.VERCEL_ENV === "production" ||
+      url.protocol !== "https:" || !url.hostname.endsWith(".up.railway.app") || !url.hostname.includes("staging") ||
+      url.pathname !== "/" || url.search || url.hash || url.username || url.password)
+    throw new Error("SEO_PREVIEW_SITE_URL must be an isolated Railway staging website in preview mode.");
+  return url.origin;
+}
+export const workspaceSiteUrl = publicationOrigin();
 export type SeoConfig = {
   mode: "preview" | "live";
   studioUrl: string;

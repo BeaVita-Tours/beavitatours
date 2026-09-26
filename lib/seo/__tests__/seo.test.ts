@@ -4,7 +4,7 @@ import { snapshotSchema } from "../contract";
 import { fetchSnapshot } from "../transport";
 import { seoConfig } from "../config";
 import { pageMetadata } from "../metadata";
-import { findGuide, findPage, listGuides } from "../publications";
+import { findPage } from "../publications";
 import { toSitePath } from "../routes";
 import {
   sampleSnapshot,
@@ -148,26 +148,6 @@ describe("English-only site mapping", () => {
     expect(toSitePath("/it/about")).toBeNull();
     expect(toSitePath("/ja")).toBeNull();
     expect(toSitePath("/tours/cultural")).toBe("/tours/cultural");
-  });
-
-  it("serves English guides only, at /guides, linking to the tour on this site", () => {
-    const snapshot = sampleSnapshot();
-    snapshot.articles.push({
-      ...snapshot.articles[0],
-      id: "italian-guide",
-      language: "it",
-      canonical: `${fixtureSite}/it/guides/planning-dolomites`,
-      tourPath: "/it/tours/dolomites",
-    });
-
-    const guides = listGuides(snapshot);
-    expect(guides.map((g) => g.id)).toEqual(["test-guide"]);
-    expect(guides[0].url).toBe(`${fixtureSite}/guides/planning-dolomites`);
-    expect(guides[0].tourHref).toBe("/tours/dolomites");
-    // Rendered exactly as approved.
-    expect(guides[0].metaTitle).toBe("Plan a Dolomites trip | BeaVitaTours");
-    expect(findGuide(snapshot, "planning-dolomites")?.language).toBe("en");
-    expect(findGuide(snapshot, "missing")).toBeNull();
   });
 
   it("prefers a page published under the site's own path over a legacy one", () => {
