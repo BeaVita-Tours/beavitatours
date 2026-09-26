@@ -49,19 +49,9 @@ export function seoConfig(
     );
   return { mode, studioUrl: url.origin, readToken, refreshSecret };
 }
-/**
- * The connector is off for this deployment — known without validating the
- * rest. That includes live settings on a non-production deployment: Vercel
- * gives previews production's variables, and `seoConfig` refuses live mode
- * there, so on a preview the site behaves as if the connector were off
- * (guides 404, pages keep their own metadata) instead of erroring.
- */
+/** The connector is switched off (the default) — known without validating the rest. */
 export function isSeoOff(env: Record<string, string | undefined> = process.env) {
-  const mode = env.SEO_DELIVERY_MODE || "off";
-  return (
-    mode === "off" ||
-    (mode === "live" && !!env.VERCEL_ENV && env.VERCEL_ENV !== "production")
-  );
+  return (env.SEO_DELIVERY_MODE || "off") === "off";
 }
 export function isSeoPreview(
   env: Record<string, string | undefined> = process.env,

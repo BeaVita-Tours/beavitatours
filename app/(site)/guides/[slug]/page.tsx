@@ -5,7 +5,7 @@ import { GuideBody } from "@/components/seo/guide-body";
 import { GuideImage } from "@/components/seo/guide-image";
 import { Button } from "@/components/ui/button";
 import { getSnapshot } from "@/lib/seo/client";
-import { isSeoOff, workspaceSiteUrl } from "@/lib/seo/config";
+import { workspaceSiteUrl } from "@/lib/seo/config";
 import { guideMetadata } from "@/lib/seo/metadata";
 import { findGuide } from "@/lib/seo/publications";
 
@@ -28,7 +28,7 @@ export function generateStaticParams() {
 
 async function guideFor(params: Props["params"]) {
   const { slug } = await params;
-  if (isSeoOff() || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) notFound();
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) notFound();
   const snapshot = await getSnapshot();
   const guide = snapshot && findGuide(snapshot, slug);
   if (!guide) notFound();

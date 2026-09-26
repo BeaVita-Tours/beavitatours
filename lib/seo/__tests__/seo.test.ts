@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import { snapshotSchema } from "../contract";
 import { fetchSnapshot } from "../transport";
-import { isSeoOff, seoConfig } from "../config";
+import { seoConfig } from "../config";
 import { pageMetadata } from "../metadata";
 import { findGuide, findPage, listGuides } from "../publications";
 import { toSitePath } from "../routes";
@@ -234,19 +234,13 @@ describe("delivery modes", () => {
     expect(await pageMetadata("/about", fallback)).toEqual(fallback);
   });
 
-  it("live settings on a preview deployment: the connector is off there", async () => {
+  it("live settings on a preview deployment: pages fall back instead of throwing", async () => {
     serve("live");
     vi.stubEnv("VERCEL_ENV", "preview");
-    const fetched = vi.fn();
-    vi.stubGlobal("fetch", fetched);
-    expect(isSeoOff()).toBe(true);
+    vi.spyOn(console, "error").mockImplementation(() => {});
     expect(await pageMetadata("/about", fallback)).toEqual({
       ...fallback,
       robots: { index: false, follow: false },
     });
-    expect(fetched).not.toHaveBeenCalled();
-    // Production with the same settings is live.
-    vi.stubEnv("VERCEL_ENV", "production");
-    expect(isSeoOff()).toBe(false);
   });
 });
