@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { connection } from "next/server";
-import { seoConfig } from "@/lib/seo/config";
+import { isSeoOff, seoConfig } from "@/lib/seo/config";
 import { fetchSnapshot } from "@/lib/seo/transport";
 import { getSnapshot, publicationTag } from "@/lib/seo/client";
 
@@ -14,7 +14,7 @@ async function handle(request: Request) {
   // otherwise never read the request and be prerendered.
   await connection();
   try {
-    const config = seoConfig();
+    const config = isSeoOff() ? null : seoConfig();
     if (!config)
       return Response.json(
         { error: "Connector disabled." },

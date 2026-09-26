@@ -1,6 +1,6 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import { seoConfig } from "./config";
+import { isSeoOff, seoConfig } from "./config";
 import { fetchSnapshot } from "./transport";
 
 export const publicationTag = "seo-studio-publications-v1";
@@ -18,7 +18,7 @@ export async function getSnapshot() {
   "use cache";
   cacheTag(publicationTag);
 
-  const config = seoConfig();
+  const config = isSeoOff() ? null : seoConfig();
   if (!config) {
     cacheLife("max");
     return null;
@@ -29,8 +29,7 @@ export async function getSnapshot() {
 
 /**
  * For page metadata, the nav and the sitemap: if SEO Workspace can't be
- * reached, or the connector is misconfigured for this deployment (live mode on
- * a preview), pages keep their own metadata.
+ * reached, or the connector is misconfigured, pages keep their own metadata.
  *
  * These are prerendered, so nothing may throw out of here: an error escaping a
  * cache during prerender fails the build. That is also why this reads the
@@ -43,7 +42,7 @@ export async function getOptionalSnapshot() {
   cacheTag(publicationTag);
 
   try {
-    const config = seoConfig();
+    const config = isSeoOff() ? null : seoConfig();
     if (!config) {
       cacheLife("max");
       return null;
