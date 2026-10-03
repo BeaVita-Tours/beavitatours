@@ -68,6 +68,10 @@ const reasons: readonly Reason[] = [
     title: "Because every detail matters.",
     body: "We carefully test our experiences, from the people we work with to the rhythm of the day and the practical details that can make a tour truly enjoyable.",
   },
+  {
+    title: "Because good is never finished.",
+    body: "We follow an idea we picked up along the way: kaizen, the practice of small, constant improvements instead of one big fix. After every tour we ask what could be better — a stop, a timing, an explanation that could land clearer — and we change it. Nothing here is ever quite finished. It just keeps getting better, one detail at a time.",
+  },
 ];
 
 interface Figure {
@@ -84,21 +88,24 @@ const figures: readonly Figure[] = [
 export default function AboutPage() {
   return (
     <main>
-      {/* Hero — the same photo-and-overlay opening the theme pages use. */}
+      {/* Hero — the same photo-and-overlay opening the theme pages use.
+          Asolo, as the client wants, but a calmer view of it than the aerial
+          shot that was here (its rooftops ran straight through the heading),
+          under a heavier veil in the middle where the text sits. */}
       <section className="relative flex min-h-[440px] items-center justify-center overflow-hidden md:min-h-[520px]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/prosecco 3.jpg"
-            alt="Asolo from above, roofs and cypresses on the edge of the Prosecco hills"
+            src="/imgs/about/asolo.jpg"
+            alt="Asolo's rooftops and bell tower, with the Rocca on the hill above"
             fill
             priority
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/55 via-black/55 to-black/70" />
         </div>
         <div className="container relative z-10 mx-auto px-4 py-16 text-center">
-          <h1 className="mx-auto mb-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white md:text-5xl">
+          <h1 className="mx-auto mb-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white drop-shadow-md md:text-5xl">
             We don&apos;t just show you around. We live here.
           </h1>
           <p className="mx-auto max-w-2xl text-balance text-xl text-white/90">
@@ -166,16 +173,23 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-muted lg:aspect-auto lg:min-h-80 lg:flex-1">
+            <div className="flex flex-col gap-6 lg:justify-center">
+              {/* The first pencil sketch of the logo (client, 2026-09-29), on
+                  a white sheet; the scan's paper is evened out to white, and
+                  `mix-blend-multiply` drops what is left into the card. */}
+              <figure className="rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-6">
                 <Image
-                  src="/foto paesaggio edited.png"
-                  alt="The Prosecco hills seen from a wooden terrace, a village among the vineyards"
-                  fill
-                  sizes="(min-width: 1024px) 480px, 100vw"
-                  className="object-cover"
+                  src="/imgs/about/logo-sketch.webp"
+                  alt="A pencil sketch of the beaVita logo: the word beaVita with a smiling face held in the V, and Venezia written beneath"
+                  width={1538}
+                  height={496}
+                  sizes="(min-width: 1024px) 440px, 90vw"
+                  className="h-auto w-full mix-blend-multiply"
                 />
-              </div>
+                <figcaption className="mt-4 text-center text-sm text-muted-foreground">
+                  Where it started: the first sketch of the beaVita logo.
+                </figcaption>
+              </figure>
               {/* Pink, like the fun fact on the Food & Wine page. */}
               <aside className="rounded-2xl bg-accent/10 px-5 py-4 text-base text-foreground">
                 <span className="font-semibold">Fun fact:</span> in our local dialect, &ldquo;fare

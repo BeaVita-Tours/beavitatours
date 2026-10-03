@@ -10,10 +10,10 @@ import { PostCard } from "./post-card";
  * Uses the same centered header and card grid as the other homepage sections
  * (Tours, Reviews), but sits on a faint wash of Otti's brown (`--tint-otter`)
  * so it reads as the quiet closing chapter of the page, separating the sand
- * of the tours band above from the muted footer below. The heading echoes the
- * blog page's own tagline ("Stories from the road between Venice and the
- * Dolomites") with the word "road" in the site's teal, and the "View all
- * stories" action sits below the grid as the site's standard filled button.
+ * of the tours band above from the muted footer below. The heading and line
+ * are the blog page's own, word for word, with the word "road" in the site's
+ * teal; the "View all stories" action sits below the grid as the site's
+ * standard filled button.
  *
  * Failure modes (never a broken section): with no Sanity configured or no
  * posts published yet, `getPosts` returns an empty list, the grid is hidden,

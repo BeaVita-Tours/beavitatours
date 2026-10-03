@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Star, X } from "lucide-react";
+import { Check, Plus, Star } from "lucide-react";
 
 import { OTAWordmark } from "@/components/ota-wordmark";
 import { Button } from "@/components/ui/button";
 import {
+  PRIVATE_TOUR_BOOKING_TERMS,
   PRIVATE_TOUR_FORMATS,
   PRIVATE_TOUR_INCLUDED,
-  PRIVATE_TOUR_NOT_INCLUDED,
+  PRIVATE_TOUR_ON_REQUEST,
   PRIVATE_TOUR_PHOTOS,
   PRIVATE_TOUR_STARTING_PRICE,
 } from "@/lib/private-tours";
@@ -77,10 +78,11 @@ export function PrivateTourRates() {
             <h2 id="tailor-made-heading" className="text-3xl font-bold md:text-4xl">
               Design your own day
             </h2>
+            {/* "Your own vehicle, your own pace" is the page intro's line;
+                the client asked for it not to be said twice. */}
             <p className="text-lg text-muted-foreground">
-              Your own driver-guide, your own vehicle, your own pace. We build private
-              itineraries from scratch — half a day in the Prosecco hills, a long day in the
-              Dolomites, or several days across the Veneto.
+              We build private itineraries from scratch — half a day in the Prosecco hills, a
+              long day in the Dolomites, or several days across the Veneto.
             </p>
           </div>
 
@@ -114,9 +116,7 @@ export function PrivateTourRates() {
             <Button asChild size="lg" className="bg-primary-strong hover:bg-primary-strong/90">
               <Link href="/contact">Ask for a quote</Link>
             </Button>
-            <p className="text-sm text-muted-foreground">
-              No deposit to ask. Free cancellation up to 48h before.
-            </p>
+            <p className="text-sm text-muted-foreground">{PRIVATE_TOUR_BOOKING_TERMS}</p>
           </div>
         </div>
       </div>
@@ -177,18 +177,11 @@ export function PrivateTourRates() {
         </div>
       </div>
 
-      {/* What is and isn't in the price. */}
+      {/* What is in the price, and what can be added to it. */}
       <div className="grid gap-4 sm:grid-cols-2">
         <InclusionList tone="included" heading="Included" items={PRIVATE_TOUR_INCLUDED} />
-        <InclusionList
-          tone="excluded"
-          heading="Not included"
-          items={PRIVATE_TOUR_NOT_INCLUDED}
-        />
+        <InclusionList tone="on-request" heading="On request" items={PRIVATE_TOUR_ON_REQUEST} />
       </div>
-      <p className="text-sm text-muted-foreground">
-        Extras such as entrance fees and tastings are paid directly to the venue on the day.
-      </p>
     </section>
   );
 }
@@ -198,11 +191,11 @@ function InclusionList({
   heading,
   items,
 }: {
-  tone: "included" | "excluded";
+  tone: "included" | "on-request";
   heading: string;
   items: readonly string[];
 }) {
-  const Icon = tone === "included" ? Check : X;
+  const Icon = tone === "included" ? Check : Plus;
   const iconColor = tone === "included" ? "text-primary-strong" : "text-muted-foreground";
 
   return (

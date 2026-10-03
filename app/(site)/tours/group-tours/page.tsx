@@ -45,11 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/tours/group-tours", metadata);
 }
 
-export default function GroupToursPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default function GroupToursPage() {
   if (!isNativeBookingEnabled()) return <LegacyGroupToursWidgetPage />;
 
   return (
@@ -58,9 +54,7 @@ export default function GroupToursPage({
       intro={collection.intro}
       lead={collection.lead}
       title={collection.label}
-      href={collection.href}
       tagId={collection.tagId}
-      searchParams={searchParams}
       view="themed"
     >
       <section

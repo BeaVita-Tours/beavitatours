@@ -125,15 +125,11 @@ test.describe("catalog", () => {
     await expect(page.getByText(/€\d/).first()).toBeVisible();
   });
 
-  test("filters through the URL, so the view is shareable and crawlable", async ({ page }) => {
+  test("private tours are one plain list, with no filter panel", async ({ page }) => {
+    // The price and length filters were removed (client revision, 2026-09-29).
     await page.goto("/tours/private-tours");
-    await page.getByRole("link", { name: "Under €150" }).click();
-
-    await expect(page).toHaveURL(/[?&]price=under-150/);
-    await expect(page.getByRole("link", { name: "Under €150" })).toHaveAttribute(
-      "aria-current",
-      "true"
-    );
+    await expect(page.getByRole("heading", { level: 3 }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "Under €150" })).toHaveCount(0);
   });
 
   test("renders tour content into the HTML for crawlers", async ({ page }) => {

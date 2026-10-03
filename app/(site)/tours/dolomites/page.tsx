@@ -6,9 +6,11 @@ import { ThemeUpsell } from "@/components/tours/theme-upsell";
 import { SITE_URL } from "@/lib/constants";
 import { type GalleryImage, TourDescription, TourTemplate } from "@/components/tour-template";
 
+// One photograph: the copy is a single paragraph, and a second, stacked image
+// (Cortina's church in cloud, cut on the client's request, 2026-09-29) left a
+// tall white gap beside it.
 const gallery: GalleryImage[] = [
-  { src: "/imgs/dolomites/dolomites1.jpeg", alt: "Dolomites landscape" },
-  { src: "/imgs/dolomites/dolomites2.jpeg", alt: "Dolomites panorama" },
+  { src: "/imgs/dolomites/dolomites2.jpeg", alt: "A mountain hut beneath the jagged Odle peaks" },
 ];
 
 const metadata: Metadata = {

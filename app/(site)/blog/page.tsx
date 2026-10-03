@@ -49,13 +49,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <main>
+      {/* The homepage band's heading and line, word for word (client,
+          2026-09-29): the blog should introduce itself the same way in
+          both places. */}
       <BlogHeader
         title={
           <>
-            beaVita <span className="text-primary">Blog</span>
+            Stories from the <span className="text-primary">road</span>
           </>
         }
-        subtitle="Stories from the road between Venice and the Dolomites."
+        subtitle="Travel notes from our tours and stories about beaVita, the people behind it, and the places we know best."
         meta={["Guides", "Tips", "Stories"]}
       />
 

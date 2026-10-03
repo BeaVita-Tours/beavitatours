@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { CookieSettingsDialog } from "@/components/cookie-settings-dialog";
 import { OrganizationJsonLd } from "@/components/organization-json-ld";
+import { SitePromoPopup } from "@/components/site-promo-popup";
 import { getOptionalSnapshot } from "@/lib/seo/client";
 import { listGuides } from "@/lib/seo/publications";
 
@@ -26,6 +27,7 @@ export default async function SiteLayout({
       <Footer />
       <CookieConsentBanner />
       <CookieSettingsDialog />
+      <SitePromoPopup />
     </>
   );
 }

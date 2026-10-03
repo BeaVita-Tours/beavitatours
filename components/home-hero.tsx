@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { type HeroSlide, HeroSlideshow } from "@/components/hero-slideshow";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -15,8 +15,10 @@ interface HeroPanelContent {
 }
 
 interface HeroPanelProps {
-  image: string;
-  alt: string;
+  /** The panel's photographs, the first one shown first. */
+  slides: readonly HeroSlide[];
+  /** Delay before this panel's first change, to stagger the two. */
+  offset?: number;
   /** Editable title / description / CTA copy for this brick. */
   content: HeroPanelContent;
   /** Bottom gradient scrim for text legibility. Toggle per brick — photos
@@ -26,19 +28,12 @@ interface HeroPanelProps {
   className?: string;
 }
 
-/** One half of the split hero: a portrait full-bleed photo with a dark
+/** One half of the split hero: full-bleed photos cross-fading behind a dark
     bottom overlay carrying the title, description, and CTA. */
-function HeroPanel({ image, alt, content, gradient = true, className }: HeroPanelProps) {
+function HeroPanel({ slides, offset, content, gradient = true, className }: HeroPanelProps) {
   return (
     <div className={cn("relative min-h-[62svh] md:min-h-[82svh]", className)}>
-      <Image
-        src={image}
-        alt={alt}
-        fill
-        priority
-        sizes="(min-width: 768px) 50vw, 100vw"
-        className="object-cover"
-      />
+      <HeroSlideshow slides={slides} offset={offset} label={`${content.title} photos`} />
       {/* Bottom overlay — keeps the supporting copy and CTA legible over the
           photo. Conditional so a brick can opt out via `gradient={false}`. */}
       {gradient && (
@@ -84,6 +79,23 @@ const heroPanels: HeroPanelContent[] = [
   },
 ];
 
+/**
+ * Three photos per panel (client, 2026-09-29). Private: the day as yours —
+ * the view, a table set for two, the Prosecco poured. Group: real guests on
+ * the road, at a winery terrace and under the Dolomites.
+ */
+const privateSlides: HeroSlide[] = [
+  { src: "/images/private-tours.webp", alt: "The Dolomites rising behind Cortina d'Ampezzo at sunset" },
+  { src: "/landing/tourpics/gyg2.webp", alt: "Two glasses of Prosecco and a board of cured meats on a terrace above the hills" },
+  { src: "/tourprosecco.jpg", alt: "Prosecco poured on a terrace above the vineyards" },
+];
+
+const groupSlides: HeroSlide[] = [
+  { src: "/images/group-tours.webp", alt: "A beaVita group smiling on a Dolomites day trip" },
+  { src: "/landing/broll1.jpg", alt: "Guests on a shaded winery terrace in the Prosecco hills" },
+  { src: "/imgs/dolomites/dolomites2.jpeg", alt: "A mountain hut beneath the jagged Odle peaks" },
+];
+
 /** Two-panel split hero: full-bleed photo panels with title, description and
     CTA. Stacks vertically on mobile, where Group Tours comes first (it is the
     volume product and the one a phone visitor is most likely after); on
@@ -97,14 +109,13 @@ export function HomeHero() {
       />
 
       <HeroPanel
-        image="/images/private-tours.webp"
-        alt="The Dolomites rising behind the Veneto plain"
+        slides={privateSlides}
         content={heroPanels[0]}
         className="order-2 md:order-none"
       />
       <HeroPanel
-        image="/images/group-tours.webp"
-        alt="Vineyard hills of the Prosecco wine region"
+        slides={groupSlides}
+        offset={3000}
         content={heroPanels[1]}
         className="order-1 md:order-none"
       />

@@ -44,13 +44,16 @@ export default async function HomePage() {
           question, so it is deliberately not repeated as a tile here. */}
       <section id="tours" className="bg-tint-sand py-20">
         <div className="container mx-auto px-4">
-          <div className="mx-auto mb-12 max-w-2xl text-center">
+          <div className="mx-auto mb-12 max-w-3xl text-center">
+            {/* Broken after the first sentence on desktop; balancing split
+                it mid-phrase ("The Veneto / region…"). */}
             <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">
-              Not just Venice. The Veneto region we actually know.
+              Not just Venice. <br className="hidden md:inline" />
+              The Veneto region we actually know.
             </h2>
-            <p className="text-pretty text-muted-foreground">
+            <p className="text-balance text-muted-foreground">
               From the Dolomites to the Prosecco Hills to the streets of
-              Verona, from local flavours to places steeped in history,
+              Verona, from local flavors to places steeped in history,
               explore the Veneto region through the places and experiences we
               know best.
             </p>
@@ -118,13 +121,17 @@ export default async function HomePage() {
             Ready to see more?
           </h2>
           {/* Two sentences on two lines: the client asked for the break
-              before "Join one of…". */}
-          <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto text-pretty">
-            Venice is only the beginning. There&apos;s a lot more to see, taste
-            and experience beyond the city.
-            <br />
-            Join one of our group tours, or let us build a private day around
-            what you have in mind.
+              before "Join one of…". Each is its own balanced block, so on a
+              narrower screen neither leaves a word or two dangling. */}
+          <p className="text-xl mb-8 text-primary-foreground/90 max-w-4xl mx-auto">
+            <span className="block text-balance">
+              Venice is only the beginning. There&apos;s a lot more to see, taste
+              and experience beyond the city.
+            </span>
+            <span className="block text-balance">
+              Join one of our group tours, or let us build a private day around
+              what you have in mind.
+            </span>
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button asChild size="lg" variant="secondary" className="text-lg px-8">

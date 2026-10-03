@@ -22,7 +22,7 @@ const towns = [
   "Padua",
   "Treviso",
   "Marostica",
-  "Montagnana",
+  "Ravenna",
   "Asolo",
   "Bassano del Grappa",
   "Feltre",
@@ -58,8 +58,9 @@ export default function CulturalTourPage() {
     <TourTemplate
       title="Culture & History"
       subtitle="See the Veneto region through the stories that shaped it."
-      image="/gallaplacidia.webp"
-      imageAlt="Culture & History"
+      image="/imgs/cultural/verona-arena.jpg"
+      imageAlt="The Arena of Verona lit up at dusk, across the cobbles of Piazza Bra"
+      imagePosition="50% 35%"
     >
       <TourDescription gallery={gallery}>
         <p className="leading-relaxed">
@@ -69,7 +70,7 @@ export default function CulturalTourPage() {
         </p>
         <p className="leading-relaxed">
           From the streets of Verona, Padua and Treviso to the walled towns of
-          Marostica, Montagnana, Asolo and Bassano del Grappa, there is plenty
+          Marostica, Asolo and Bassano del Grappa, there is plenty
           beyond Venice worth a day of its own. You might want to explore a
           medieval town, visit a castle, spend time in a museum or simply
           wander through a place with a story to tell.

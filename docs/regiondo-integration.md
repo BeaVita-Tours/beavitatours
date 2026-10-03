@@ -95,7 +95,6 @@ lib/regiondo/
   cache.ts          cache tags and the revalidation vocabulary
   slugs.ts          the tour URL registry
   collections.ts    account tags, landing-page sets, theme-page upsell sets
-  catalog-params.ts the catalog's URL contract
   action-state.ts   shared state shape for the Server Actions
 ```
 

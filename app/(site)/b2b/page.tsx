@@ -22,9 +22,15 @@ import { Card } from "@/components/ui/card";
  * same email. Deliberately sparse (client request): the point is that the
  * page exists, says who we work with, and gives a direct address. Terms, net
  * rates and the catalog are sent by email, not published.
+ *
+ * Partners write to business@ since the revision of 2026-09-29 (info@ is
+ * for tour questions, booking@ for existing bookings — see /contact). The
+ * catalog and net rates stay on info@, as the client's legal-block text has
+ * it.
  */
 
-const B2B_EMAIL = "info@beavitatours.com";
+const B2B_EMAIL = "business@beavitatours.com";
+const CATALOG_EMAIL = "info@beavitatours.com";
 
 export const metadata: Metadata = {
   title: "Work with us — travel trade, hotels & guides | beaVita Tours",
@@ -52,21 +58,21 @@ const partnerTypes: readonly PartnerType[] = [
   {
     icon: Building2,
     title: "Hotels & holiday resorts",
-    question: "Do your guests ask about the Dolomites?",
+    question: "Do your guests ask about the mainland?",
     body: "Offer our tours at reception or in your app, with pickup arranged around your property. Commission on every booking, printed material for the desk, and a direct line for your concierge.",
     subject: "Hotel partnership",
   },
   {
     icon: UserRoundCheck,
-    title: "Guides & driver-guides",
+    title: "Guides & drivers",
     question: "Do you know the Veneto well and speak good English?",
-    body: "We work with licensed guides and driver-guides on a freelance basis, from Venice, Treviso and the Prosecco area. Send a short introduction and your licences.",
+    body: "We work with licensed guides and NCC drivers on a freelance basis, from Venice, Treviso and the Prosecco area. Send a short introduction and your licences.",
     subject: "Guide application",
   },
 ];
 
-function mailto(subject: string): string {
-  return `mailto:${B2B_EMAIL}?subject=${encodeURIComponent(subject)}`;
+function mailto(subject: string, email: string = B2B_EMAIL): string {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 }
 
 export default function B2BPage() {
@@ -76,13 +82,16 @@ export default function B2BPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="mb-4 bg-accent uppercase text-accent-foreground border-0">
-              For travel professionals
+              Work with us
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Work with us</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              beaVita Tours is a licensed tour operator in Treviso running day trips from
-              Venice to the Dolomites and the Prosecco hills. We partner with agencies,
-              hotels and guides — here is how.
+            <h1 className="mb-4 text-balance text-4xl font-bold md:text-5xl">
+              Bring Veneto to your clients.
+            </h1>
+            <p className="mx-auto max-w-2xl text-pretty text-xl leading-relaxed text-muted-foreground">
+              beaVita Tours is a licensed tour operator based in Veneto, offering day tours from
+              Venice to destinations across the region. We work with travel agencies, hotels,
+              guides and other travel partners to make it easy to include Veneto experiences in
+              your clients&apos; itineraries.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="lg">
@@ -133,10 +142,13 @@ export default function B2BPage() {
               <BriefcaseBusiness className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
               <span>
                 <strong className="text-foreground">BEA VITA TOURS</strong> — Tour Operator,
-                Auth. 6297 prov. TV, VAT IT05602720269. Product catalog, net rates and booking
-                terms are sent on request to{" "}
-                <a href={mailto("Catalog and net rates")} className="font-medium text-foreground underline-offset-4 hover:underline">
-                  {B2B_EMAIL}
+                Auth. 6297 prov. TV, BEA VITA SRL VAT IT05602720269. Product catalog, net rates
+                and booking terms are sent on request to{" "}
+                <a
+                  href={mailto("Catalog and net rates", CATALOG_EMAIL)}
+                  className="font-medium text-foreground underline-offset-4 hover:underline"
+                >
+                  {CATALOG_EMAIL}
                 </a>
                 .
               </span>

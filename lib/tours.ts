@@ -1,6 +1,6 @@
 import tourWines from "@/public/tourwines.jpg";
-import mtb from "@/public/imgs/adventure.jpeg";
-import gallaplacidia from "@/public/gallaplacidia.webp";
+import viaFerrata from "@/public/imgs/adventure/via-ferrata-tre-cime.jpg";
+import veronaArena from "@/public/imgs/cultural/verona-arena.jpg";
 
 /**
  * The homepage's "where do you want to go?" tiles — one per theme page.
@@ -24,12 +24,12 @@ export const tours = [
   {
     title: "Active & Adventure",
     href: "/tours/active-adventure",
-    image: mtb,
+    image: viaFerrata,
   },
   {
     title: "Culture & History",
     href: "/tours/cultural",
-    image: gallaplacidia,
+    image: veronaArena,
   },
 ];
 

@@ -39,19 +39,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata("/tours/private-tours", metadata);
 }
 
-export default function PrivateToursPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default function PrivateToursPage() {
   return (
     <CollectionPage
       heading={collection.heading}
       intro={collection.intro}
       title={collection.label}
-      href={collection.href}
       tagId={collection.tagId}
-      searchParams={searchParams}
       view={isNativeBookingEnabled() ? "catalog" : "none"}
     >
       <PrivateTourRates />

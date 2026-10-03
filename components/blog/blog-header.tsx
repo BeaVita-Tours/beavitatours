@@ -22,7 +22,7 @@ export function BlogHeader({ title, subtitle, meta }: BlogHeaderProps) {
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{title}</h1>
           {subtitle ? (
-            <p className="mx-auto mt-4 max-w-2xl text-xl leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-4 max-w-2xl text-balance text-xl leading-relaxed text-muted-foreground">
               {subtitle}
             </p>
           ) : null}

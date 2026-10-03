@@ -83,7 +83,7 @@ export function PostCard({
           </div>
         ) : null}
 
-        <h2 className="text-lg font-bold leading-snug text-foreground transition-colors">
+        <h2 className="text-pretty text-lg font-bold leading-snug text-foreground transition-colors">
           {post.title}
         </h2>
 

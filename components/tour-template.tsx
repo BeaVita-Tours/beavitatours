@@ -24,6 +24,9 @@ export type TourTemplateProps = {
   /** Hero photograph. Served from /public. */
   image: string;
   imageAlt: string;
+  /** CSS `object-position` for the hero crop; the default suits a landscape
+      with its subject low in the frame. */
+  imagePosition?: string;
   children: React.ReactNode;
 };
 
@@ -33,6 +36,7 @@ export function TourTemplate({
   badge,
   image,
   imageAlt,
+  imagePosition = "50% 70%",
   children,
 }: TourTemplateProps) {
   return (
@@ -45,7 +49,8 @@ export function TourTemplate({
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[50%_70%]"
+            className="object-cover"
+            style={{ objectPosition: imagePosition }}
           />
           <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
         </div>
@@ -92,11 +97,8 @@ export function TourDescription({
   );
 }
 
-/**
- * The copy-and-gallery layout on its own, for a `TourSection` that wants its
- * photographs beside its prose the way the opening description has them.
- */
-export function TourCopy({
+/** The copy-and-gallery layout inside `TourDescription`. */
+function TourCopy({
   gallery = [],
   children,
 }: {
@@ -109,7 +111,10 @@ export function TourCopy({
     <div
       className={cn(
         "mx-auto max-w-6xl gap-10 lg:gap-14",
-        hasGallery && "grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
+        // Copy and photographs centred against each other: the copy is
+        // often the shorter of the two, and top-aligned it left a block of
+        // white beneath it (client, 2026-09-29).
+        hasGallery && "grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-center"
       )}
     >
       {/* Without photographs the prose keeps a reading measure but stays on
@@ -179,45 +184,5 @@ export function TourTagList({ label, items }: { label: string; items: readonly s
         ))}
       </ul>
     </div>
-  );
-}
-
-/**
- * An editorial sub-section on a theme page: a heading, an optional one-line
- * tagline, the copy, and whatever follows. The Food & Wine page is two of
- * these — the Prosecco hills, then everything else — and Active & Adventure
- * uses one for the list of things you can do.
- */
-export function TourSection({
-  id,
-  heading,
-  tagline,
-  tinted = false,
-  children,
-}: {
-  id: string;
-  heading: string;
-  tagline?: string;
-  /** Sit the section on the muted band, to alternate with its neighbours. */
-  tinted?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <section
-      aria-labelledby={id}
-      className={cn("py-14 md:py-16", tinted ? "border-t border-border bg-muted/30" : "bg-background")}
-    >
-      <div className="container mx-auto px-4">
-        <div className="mx-auto mb-8 max-w-6xl space-y-3">
-          <h2 id={id} className="text-3xl font-bold tracking-tight md:text-4xl">
-            {heading}
-          </h2>
-          {tagline ? (
-            <p className="max-w-3xl text-balance text-xl text-muted-foreground">{tagline}</p>
-          ) : null}
-        </div>
-        {children}
-      </div>
-    </section>
   );
 }

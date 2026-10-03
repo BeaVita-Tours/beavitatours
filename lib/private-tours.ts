@@ -29,18 +29,24 @@ export const PRIVATE_TOUR_FORMATS: readonly PrivateTourFormat[] = [
 ];
 
 export const PRIVATE_TOUR_INCLUDED: readonly string[] = [
-  "A fluent English-speaking driver-guide, with you all day",
-  "A comfortable, air-conditioned car or van",
+  "A local driver, with you all day",
+  "A comfortable, air-conditioned van or bus",
   "An itinerary planned around what you want to see",
   "Taxes, VAT and motorway tolls",
 ];
 
-export const PRIVATE_TOUR_NOT_INCLUDED: readonly string[] = [
-  "Entrance fees to museums and attractions",
-  "Wine tastings, meals and drinks",
+/** Extras added to the quote when asked for (was "Not included" until the
+    client's revision of 2026-09-29). */
+export const PRIVATE_TOUR_ON_REQUEST: readonly string[] = [
+  "Guide in your own language",
+  "Luxury car",
   "Overnight stays on multi-day tours",
-  "Tips and gratuities",
+  "Pick-up from your hotel",
 ];
+
+/** The line beside "Ask for a quote". */
+export const PRIVATE_TOUR_BOOKING_TERMS =
+  "20% deposit to confirm. Free cancellation up to 48h before.";
 
 /** Photos for the private-tours page. Paths under `public/`. */
 export interface PrivateTourPhoto {
@@ -49,13 +55,15 @@ export interface PrivateTourPhoto {
 }
 
 /**
- * The gallery on the tailor-made offer. First one is the lead image. Swap in
- * photos of the vehicles and of private groups as they become available —
- * the layout takes any four.
+ * The gallery on the tailor-made offer. First one is the lead image. Moments,
+ * not landscapes (client, 2026-09-29): the photos should say "this day is
+ * yours", which a view of the Dolomites does not. Swap in photos of the
+ * vehicles and of private groups as they become available — the layout takes
+ * any four.
  */
 export const PRIVATE_TOUR_PHOTOS: readonly PrivateTourPhoto[] = [
-  { src: "/IMG_2240.jpg", alt: "Cortina d'Ampezzo beneath the Tofane peaks" },
-  { src: "/landing/broll3.jpg", alt: "Your guide at a viewpoint over the Prosecco hills" },
-  { src: "/landing/tourpics/review3.webp", alt: "A private tasting at a family-run winery" },
-  { src: "/landing/tourpics/gyg1.webp", alt: "The church of San Vigilio above the vineyards" },
+  { src: "/landing/broll14.jpg", alt: "Guests with a glass of Prosecco at a private tasting in the hills" },
+  { src: "/tourwines.jpg", alt: "A table laid for a private tasting above the vineyards" },
+  { src: "/landing/tourpics/review3.webp", alt: "A tasting table laid inside a family-run winery" },
+  { src: "/landing/tourpics/gyg2.webp", alt: "Prosecco and a board of local cured meats and cheese" },
 ];

@@ -141,7 +141,7 @@ export default async function TourPage({ params }: PageProps) {
       <nav aria-label="Breadcrumb" className="mb-6">
         <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
           {trail.map((crumb, index) => (
-            <li key={crumb.href} className="flex items-center gap-1">
+            <li key={crumb.href} className="flex min-w-0 max-w-full items-center gap-1">
               {index > 0 ? <ChevronRight className="size-3.5" aria-hidden="true" /> : null}
               {index === trail.length - 1 ? (
                 <span aria-current="page" className="truncate text-foreground">
@@ -160,7 +160,7 @@ export default async function TourPage({ params }: PageProps) {
       {/* Image left, essentials + CTA right. Stacks on mobile: photo, then
           the box — the booking panel sits inline under the title there. */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-10">
-        <TourGallery images={tour.gallery} title={tour.title} layout="stacked" />
+        <TourGallery images={tour.gallery} title={tour.title} />
 
         <div className="flex flex-col gap-5 rounded-2xl border bg-card p-5 shadow-sm md:p-6">
           <header className="space-y-3">

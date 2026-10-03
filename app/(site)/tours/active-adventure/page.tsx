@@ -17,7 +17,7 @@ const gallery: GalleryImage[] = [
 ];
 
 const activities = [
-  "Dolomites",
+  "e-bike",
   "hiking & trekking",
   "via ferrata",
   "cycling",
@@ -58,8 +58,9 @@ export default function ActiveAdventureTourPage() {
     <TourTemplate
       title="Active & Adventure"
       subtitle="Make your day as active as you like."
-      image="/imgs/adventure.jpeg"
-      imageAlt="Active & Adventure"
+      image="/imgs/adventure/via-ferrata.jpg"
+      imageAlt="A climber in a helmet on a via ferrata above a Dolomites valley"
+      imagePosition="50% 60%"
     >
       <TourDescription gallery={gallery}>
         <p className="leading-relaxed">

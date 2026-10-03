@@ -3,7 +3,14 @@
 import { Suspense } from "react";
 import { ReportNotice } from "@/components/report-notice";
 import { TravelAgencyForm } from "@/components/travel-agency-form";
-import { Mail } from "lucide-react";
+import { Handshake, Map, Ticket } from "lucide-react";
+
+/** Which address is for what (client revision, 2026-09-29). */
+const contactEmails = [
+  { icon: Map, question: "Looking for information about our tours?", email: "info@beavitatours.com" },
+  { icon: Handshake, question: "Interested in working with us?", email: "business@beavitatours.com" },
+  { icon: Ticket, question: "Have a question about your booking?", email: "booking@beavitatours.com" },
+] as const;
 
 export default function TravelAgencyPage() {
   return (
@@ -17,15 +24,28 @@ export default function TravelAgencyPage() {
 
           {/* Contact Info for Normal Clients */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-8">Contact Us</h1>
+            {/* One row per address — question on the left, address on the
+                right — so no address ever has to wrap. */}
+            <ul className="mb-8 divide-y divide-border rounded-2xl border border-border bg-card text-left">
+              {contactEmails.map(({ icon: Icon, question, email }) => (
+                <li key={email}>
+                  <a
+                    href={`mailto:${email}`}
+                    className="group flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                  >
+                    <span className="flex items-center gap-3 text-muted-foreground">
+                      <Icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
+                      {question}
+                    </span>
+                    <span className="pl-8 font-semibold text-foreground group-hover:text-primary-strong sm:pl-0">
+                      {email}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-col gap-4 items-center">
-              <a
-                href="mailto:info@beavitatours.com"
-                className="flex items-center gap-3 text-lg hover:text-primary transition-colors"
-              >
-                <Mail className="w-5 h-5" />
-                <span>info@beavitatours.com</span>
-              </a>
               <a
                 href="https://wa.me/393930022220"
                 target="_blank"

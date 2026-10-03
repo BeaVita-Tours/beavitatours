@@ -19,7 +19,7 @@ export const COLLECTIONS = {
     label: "Group tours",
     heading: "Beyond Venice, with good company. Come along for the ride.",
     intro: [
-      "From the Dolomites to the Prosecco Hills to the streets of Verona, our group tours take you into the Veneto region — the places we know first-hand.",
+      "From the Dolomites to the Prosecco Hills, from the streets of Verona to Treviso's piazzas, our group tours take you into the Veneto region — the places we know first-hand.",
       "No complicated planning. Just a fixed date, a group of fellow travelers, an English-speaking local guide, and a day we've taken care of from start to finish.",
     ],
     /** The closing line of the intro, set in bold (client revision, 2026-09-15). */
@@ -126,10 +126,13 @@ export const THEME_UPSELLS = {
       "Everything above is a two-hour drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
     productIds: ["300877", "298190", "341597", "298188", "339660", "341596", "326843"],
   },
+  // Keyed `prosecco` for the redirect and the tests, but it is the Food &
+  // Wine page's one tour list, and the client wants it to read as the whole
+  // theme's (new food & wine tours are due in 2027), not as Prosecco's.
   prosecco: {
-    heading: "Day trips to the Prosecco Hills",
+    heading: "Day trips to taste the region",
     intro:
-      "Everything above is under an hour's drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
+      "These are the departures that take you there and back — leaving Venice in the morning, home again by evening.",
     productIds: ["326845", "307882", "298188", "326844"],
   },
   "active-adventure": {

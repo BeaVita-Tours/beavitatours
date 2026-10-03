@@ -19,8 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { ArrowRight, BadgePercent, Check, Copy, Ticket, X } from "lucide-react";
-
-export const DIRECT_BOOKING_CODE = "BEAVITA10";
+import { DIRECT_BOOKING_CODE } from "@/lib/promo";
 
 const PROMO_STORAGE_KEY = "beavita_direct_booking_promo_v1";
 const SECOND_POPUP_MIN_DELAY_MS = 40_000;
