@@ -1,6 +1,6 @@
 import tourWines from "@/public/tourwines.jpg";
 import viaFerrata from "@/public/imgs/adventure/via-ferrata-tre-cime.jpg";
-import veronaArena from "@/public/imgs/cultural/verona-arena.jpg";
+import trevisoCanal from "@/public/imgs/cultural/treviso.jpg";
 
 /**
  * The homepage's "where do you want to go?" tiles — one per theme page.
@@ -29,7 +29,7 @@ export const tours = [
   {
     title: "Culture & History",
     href: "/tours/cultural",
-    image: veronaArena,
+    image: trevisoCanal,
   },
 ];
 

@@ -9,7 +9,6 @@ their origin stays traceable. Downscaled and re-encoded before committing.
 |---|---|---|---|
 | `public/imgs/adventure/via-ferrata.jpg` | <https://www.pexels.com/photo/man-in-blue-jacket-rock-climbing-3880017/> | Davidson Free Media | Pexels |
 | `public/imgs/adventure/via-ferrata-tre-cime.jpg` | <https://unsplash.com/photos/iRmWs27EpLM> | Powrock Mountain Guides | Unsplash |
-| `public/imgs/cultural/verona-arena.jpg` | <https://unsplash.com/photos/kTA8aBHO3xk> | Alessandro Carrarini | Unsplash |
 | `public/imgs/about/asolo.jpg` | <https://www.pexels.com/photo/perched-italian-village-with-bell-tower-29458874/> | Cătălin Todosia | Pexels |
 | `public/imgs/wine-food/tiramisu.jpg` | <https://unsplash.com/photos/tAW0OPqDhuI> | Rasa Kasparaviciene | Unsplash |
 | `public/imgs/wine-food/grappa.jpg` | <https://unsplash.com/photos/hCKppMX5rcU> | Connie Perez | Unsplash |
@@ -33,6 +32,7 @@ Free Pexels photos standing in for the stock photos in the client's proposal PDF
 | `public/images/hero/private-van.webp` | <https://www.pexels.com/photo/19003939/> | Pexels |
 | `public/images/hero/private-car.webp` | <https://www.pexels.com/photo/17822808/> | Pexels |
 | `public/images/hero/private-vineyard.webp` | <https://www.pexels.com/photo/35845676/> | Pexels |
+| `public/imgs/cultural/treviso.jpg` | <https://www.pexels.com/photo/city-buildings-beside-the-river-14581509/> | Pexels |
 
 ## TO FIX BEFORE GO-LIVE: found via Google Images, licence not checked
 

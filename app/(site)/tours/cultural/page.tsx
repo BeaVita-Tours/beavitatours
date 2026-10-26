@@ -58,8 +58,8 @@ export default function CulturalTourPage() {
     <TourTemplate
       title="Culture & History"
       subtitle="See the Veneto region through the stories that shaped it."
-      image="/imgs/cultural/verona-arena.jpg"
-      imageAlt="The Arena of Verona lit up at dusk, across the cobbles of Piazza Bra"
+      image="/imgs/cultural/treviso.jpg"
+      imageAlt="The Cagnan canal in Treviso, with a brick bridge and pastel houses along the water"
       imagePosition="50% 35%"
     >
       <TourDescription gallery={gallery}>
