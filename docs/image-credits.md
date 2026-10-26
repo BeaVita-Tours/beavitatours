@@ -13,8 +13,34 @@ their origin stays traceable. Downscaled and re-encoded before committing.
 | `public/imgs/about/asolo.jpg` | <https://www.pexels.com/photo/perched-italian-village-with-bell-tower-29458874/> | Cătălin Todosia | Pexels |
 | `public/imgs/wine-food/tiramisu.jpg` | <https://unsplash.com/photos/tAW0OPqDhuI> | Rasa Kasparaviciene | Unsplash |
 | `public/imgs/wine-food/grappa.jpg` | <https://unsplash.com/photos/hCKppMX5rcU> | Connie Perez | Unsplash |
-| `public/imgs/wine-food/spritz.jpg` | <https://www.pexels.com/photo/a-tray-with-bread-cheese-and-a-drink-18582299/> | Bastian Riccardi | Pexels |
 | Sanity: cover of "The afternoon in Miami that changed my career" | <https://unsplash.com/photos/lLLZkSmxe7A> | Vitaly Gariev | Unsplash |
 
-`public/imgs/about/logo-sketch.webp` is the client's own pencil sketch of the
-logo, scanned and cleaned up (paper evened out to white).
+`public/imgs/about/logo-sketch.webp` is the client's own photo of their pencil
+sketch of the logo on a desk (client, 26 October 2026).
+
+## Pexels photos added 26 October 2026
+
+Free Pexels photos standing in for the stock photos in the client's proposal PDF
+("Proposta immagini group&private tours"). Hero slideshows, `components/home-hero.tsx`.
+
+| File | Source (Pexels photo ID) | Licence |
+|---|---|---|
+| `public/images/hero/group-coach.webp` | <https://www.pexels.com/photo/34358239/> | Pexels |
+| `public/images/hero/group-friends-van.webp` | <https://www.pexels.com/photo/12801985/> | Pexels |
+| `public/images/hero/group-toast.webp` | <https://www.pexels.com/photo/4833961/> | Pexels |
+| `public/images/hero/group-hikers.webp` | <https://www.pexels.com/photo/38790896/> | Pexels |
+| `public/images/hero/private-boat.webp` | <https://www.pexels.com/photo/6328308/> | Pexels |
+| `public/images/hero/private-van.webp` | <https://www.pexels.com/photo/19003939/> | Pexels |
+| `public/images/hero/private-car.webp` | <https://www.pexels.com/photo/17822808/> | Pexels |
+| `public/images/hero/private-vineyard.webp` | <https://www.pexels.com/photo/35845676/> | Pexels |
+
+## TO FIX BEFORE GO-LIVE: found via Google Images, licence not checked
+
+The site is not public yet, so these were taken from Google Images without
+checking the licence (client call, 26 October 2026). Each one needs to be
+licensed, replaced with a free photo, or swapped for one of the company's own
+before launch.
+
+| File | Where it is used | Original source | Replace with |
+|---|---|---|---|
+| `public/imgs/wine-food/spritz.jpg` | Food & Wine page, "Spritz & cicchetti" tile | Getty Images stock photo (spritz and cicchetti on a Venetian canal edge), seen on <https://www.lacucinaitaliana.it/gallery/cicchetti-venezia-veneto-aperitivo-tapas-crostini/> | a licensed or own photo |

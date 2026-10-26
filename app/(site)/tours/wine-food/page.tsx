@@ -13,7 +13,7 @@ const tastes: (GalleryImage & { label: string })[] = [
   { src: "/tourprosecco.jpg", alt: "Prosecco poured on a terrace above the vineyards", label: "Prosecco" },
   { src: "/imgs/wine-food/tiramisu.jpg", alt: "A layered slice of tiramisù dusted with cocoa", label: "Tiramisù" },
   { src: "/imgs/wine-food/grappa.jpg", alt: "Clear grappa in tulip glasses", label: "Grappa" },
-  { src: "/imgs/wine-food/spritz.jpg", alt: "A spritz beside a tray of cicchetti", label: "Spritz & cicchetti" },
+  { src: "/imgs/wine-food/spritz.jpg", alt: "A spritz beside cicchetti on the stone edge of a Venetian canal", label: "Spritz & cicchetti" },
 ];
 
 const metadata: Metadata = {
