@@ -1,12 +1,15 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { pagePaths } from "./routes";
-import { siteUrl } from "./config";
+import { publishablePaths } from "./routes";
+import { workspaceSiteUrl } from "./config";
 
 const path = z
   .string()
   .max(500)
-  .refine((value) => pagePaths.includes(value), "Unsupported website page");
+  .refine(
+    (value) => publishablePaths.includes(value),
+    "Unsupported website page",
+  );
 const articleSchema = z
   .object({
     id: z.string().min(1).max(100),
@@ -69,7 +72,7 @@ export const snapshotSchema = z
     protocol: z.literal(1),
     mode: z.enum(["preview", "live"]),
     contentHash: z.string().regex(/^[a-f0-9]{64}$/),
-    siteUrl: z.literal(siteUrl),
+    siteUrl: z.literal(workspaceSiteUrl),
     articles: z.array(articleSchema).max(500),
     pages: z.array(pageSchema).max(300),
   })
@@ -86,19 +89,24 @@ export const snapshotSchema = z
       new Set(snapshot.pages.map((p) => p.path)).size !== snapshot.pages.length
     )
       reject();
+    // Legacy (/en/guides/...) or English-only (/guides/...) addresses.
     for (const article of snapshot.articles)
       if (
         article.canonical !==
-        `${siteUrl}/${article.language}/guides/${article.slug}`
+          `${workspaceSiteUrl}/${article.language}/guides/${article.slug}` &&
+        !(
+          article.language === "en" &&
+          article.canonical === `${workspaceSiteUrl}/guides/${article.slug}`
+        )
       )
         reject();
     for (const page of snapshot.pages) {
       const canonical = new URL(page.canonical);
       if (
-        canonical.origin !== siteUrl ||
+        canonical.origin !== workspaceSiteUrl ||
         canonical.search ||
         canonical.hash ||
-        !pagePaths.includes(canonical.pathname)
+        !publishablePaths.includes(canonical.pathname)
       )
         reject();
       if (
@@ -106,13 +114,15 @@ export const snapshotSchema = z
         page.alternates.length
       )
         reject();
+      // A locale-prefixed alternate must be in its own language; unprefixed
+      // (English-only site) paths can only be English.
       if (
-        page.alternates.some(
-          (a) =>
-            a.language !== "x-default" &&
-            !a.path.startsWith(`/${a.language}/`) &&
-            a.path !== `/${a.language}`,
-        )
+        page.alternates.some((a) => {
+          const prefix = /^\/(en|it|zh|ja)(?:\/|$)/.exec(a.path)?.[1];
+          return prefix
+            ? a.language !== "x-default" && a.language !== prefix
+            : a.language === "it";
+        })
       )
         reject();
     }

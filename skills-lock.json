@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "skills": {
+    "next-cache-components-adoption": {
+      "source": "vercel/next.js",
+      "sourceType": "github",
+      "skillPath": "skills/next-cache-components-adoption/SKILL.md",
+      "computedHash": "a66447c52ddb998ee78eb7f9867b5287c461c5c4316ee70b0d7836eea91c5b21"
+    },
+    "next-dev-loop": {
+      "source": "vercel/next.js",
+      "ref": "canary",
+      "sourceType": "github",
+      "skillPath": "skills/next-dev-loop/SKILL.md",
+      "computedHash": "5b567d2e521056db6b8b37c46c6b2b9c72de5192c0daeb351c966d61e0702630"
+    }
+  }
+}

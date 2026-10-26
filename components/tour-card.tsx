@@ -1,11 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-
-import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Link } from "@/i18n/navigation";
 
 interface TourCardProps {
   title: string;
@@ -14,20 +12,18 @@ interface TourCardProps {
 }
 
 export function TourCard({ title, href, image }: TourCardProps) {
-  const t = useTranslations("tours");
-
   return (
     <Link
       href={href}
-      aria-label={`${t("viewDetails")} ${title}`}
+      aria-label={`View details ${title}`}
       className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      <Card className="relative mt-0 block aspect-4/3 overflow-hidden p-0 transition-shadow duration-300 ease-out hover:shadow-md cursor-default">
+      <Card className="relative mt-0 block aspect-4/3 overflow-hidden p-0 lg:aspect-4/5 transition-shadow duration-300 ease-out hover:shadow-md cursor-default">
         <Image
           src={image}
           alt={title}
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
 
@@ -48,7 +44,7 @@ export function TourCard({ title, href, image }: TourCardProps) {
                 <ArrowRight />
               </span>
             </Button>
-            <span className="sr-only">{t("viewDetails")}</span>
+            <span className="sr-only">View details</span>
           </div>
         </div>
       </Card>

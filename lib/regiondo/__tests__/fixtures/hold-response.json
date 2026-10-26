@@ -1,0 +1,40 @@
+{
+  "reservation_data": {
+    "reservation_code": "74600000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "product_id": "298190",
+    "option_id": "2028639",
+    "qty": 1,
+    "reservation_end": "2026-09-06 23:03",
+    "timezone": "Europe/Berlin",
+    "ticket_codes_reference": [{ "reference_id": "87100000" }]
+  },
+  "date_time": "2026-09-19 08:00",
+  "opened_till": null,
+  "totals": {
+    "subtotal": 144.5455,
+    "tax": { "title": "Tax", "value": 14.4545 },
+    "grand_total": 159,
+    "currency": "EUR"
+  },
+  "contact_data_required": ["firstname", "lastname", "email", "telephone"],
+  "buyer_data_required": [
+    { "title": "First name", "field_id": "1", "type": "text", "required": true, "value": "" },
+    { "title": "Last name", "field_id": "2", "type": "text", "required": true, "value": "" },
+    { "title": "Email", "field_id": "3", "type": "text", "required": true, "value": "" },
+    { "title": "Telephone", "field_id": "4", "type": "text", "required": true, "value": "" }
+  ],
+  "per_item_info": [
+    {
+      "product_id": "298190",
+      "option_id": "2028639",
+      "date": "2026-09-19",
+      "time": "08:00:00",
+      "is_gift": false,
+      "qty": 1,
+      "base_price": 144.5455,
+      "price": 144.5455,
+      "discount_amount": 0,
+      "discount_percent": 0
+    }
+  ]
+}

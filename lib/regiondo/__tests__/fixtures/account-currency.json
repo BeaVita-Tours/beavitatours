@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "currency_code": "EUR",
+      "symbol": "€",
+      "display_name": "Euro",
+      "pattern": "%01.2f EUR",
+      "is_base": 1
+    }
+  ]
+}

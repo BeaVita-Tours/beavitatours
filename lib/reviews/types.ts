@@ -1,0 +1,78 @@
+/**
+ * Shared types for the Reviews section.
+ *
+ * `Review` is the single normalized shape used by all review sources:
+ *   - live Google Reviews (fetched in `google-reviews.ts`)
+ *   - hand-curated manual reviews (`manual-reviews.ts`)
+ *   - per-tour Regiondo reviews (`lib/regiondo/reviews.ts`), shown on tour pages
+ *   - (static platform badges use `PlatformStat`, not `Review`)
+ */
+
+import type { OTAId } from "@/lib/ota-wordmarks";
+
+/** Platforms that can appear on a stat badge. */
+export type PlatformId = OTAId;
+
+/**
+ * A single review, regardless of where it came from.
+ *
+ * `source` is *how the review got into the system*: "google" (live fetch),
+ * "manual" (hand-added in `manual-reviews.ts`) or "regiondo" (left by a guest
+ * who booked directly, pulled from the booking system). The platform is carried
+ * separately by `platformLabel` for manual reviews — e.g. "TripAdvisor",
+ * "GetYourGuide", "Facebook". That label is matched against the OTA wordmark
+ * set to render the platform's logo, falling back to plain text when there's
+ * no logo for it.
+ *
+ * `date` must be a full ISO timestamp (e.g. "2026-05-14T10:00:00.000Z") so
+ * reviews sort correctly by date — ISO strings compare lexicographically.
+ */
+/** A photo attached to a review — either a guest upload (Google) or a
+ * hand-added local image (`/landing/...`). */
+export type ReviewPhoto = {
+  /** Absolute URL (Google-hosted) or a site-relative path under `public/`. */
+  url: string;
+  /** Short description for the `alt` text; falls back to a generic label. */
+  alt?: string;
+};
+
+export type Review = {
+  /** Stable React key, e.g. "google:Author:1690000000" or "manual-1". */
+  id: string;
+  source: "google" | "manual" | "regiondo";
+  /** Real platform name for manual reviews (e.g. "Facebook", "TripAdvisor"). */
+  platformLabel?: string;
+  authorName: string;
+  authorPhotoUrl?: string;
+  /** 1–5. */
+  rating: number;
+  /** Optional one-line headline (Regiondo asks guests for one; Google doesn't). */
+  title?: string;
+  text: string;
+  /** The operator's public reply, where the platform supports one. */
+  ownerResponse?: string;
+  /** Full ISO timestamp (see note above). */
+  date: string;
+  /** Optional deep link to the original review. */
+  sourceUrl?: string;
+  /**
+   * Photos the guest attached. Cards show a "+N photos" chip, the inspector
+   * shows them in full, and `featured` reviews show the first one directly.
+   */
+  photos?: ReviewPhoto[];
+  /**
+   * Hand-picked for the "verified guests" row under the marquee — a review
+   * with a photo (ideally of the vehicle / the day itself) that is shown as a
+   * photo card rather than only inside the scrolling strip.
+   */
+  featured?: boolean;
+};
+
+/** A static platform badge (rating may be a number or a label like "NEW"). */
+export type PlatformStat = {
+  platform: PlatformId;
+  name: string;
+  href?: string;
+  rating: number | string;
+  count?: number | undefined;
+};

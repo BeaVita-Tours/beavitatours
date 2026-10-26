@@ -16,7 +16,7 @@ function getClientIp(headers: Headers) {
 
 function buildLeadEmailText(data: z.infer<typeof travelAgencyLeadSchema>) {
   return [
-    "Qualcuno ha inviato una richiesta tramite il modulo di contatto sul sito BeaVitaTours.",
+    "Qualcuno ha inviato una richiesta tramite il modulo di contatto sul sito beaVita Tours.",
     "",
     `Nome completo: ${data.fullName}`,
     `Nome azienda: ${data.companyName ?? "(n/a)"}`,
@@ -41,7 +41,7 @@ async function sendEmailStub(params: {
     });
 
     await resend.emails.send({
-      from: `BeaVitaTours Form <${process.env.TRAVEL_AGENCY_FROM_EMAIL}>`,
+      from: `beaVita Tours Form <${process.env.TRAVEL_AGENCY_FROM_EMAIL}>`,
       to: params.to,
       subject: params.subject,
       text: params.text,

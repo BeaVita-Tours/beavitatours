@@ -1,0 +1,23 @@
+{
+  "data": {
+    "2305148": {
+      "option_id": "2305148",
+      "variation_id": "818816",
+      "name": "Group",
+      "sort_order": "0",
+      "min_qty_to_sell": "1",
+      "max_qty_to_sell": "8",
+      "original_price": "989.00",
+      "regiondo_price": "900.00",
+      "vat_percentage_val": "10.00",
+      "duration_value": "9.00",
+      "duration_type": "hour",
+      "description": "Group (up to 8px MAX)",
+      "sales_start_dt": null,
+      "sales_end_dt": null,
+      "capacity": 5,
+      "booking_notice_period": 1,
+      "qty_left": 5
+    }
+  }
+}

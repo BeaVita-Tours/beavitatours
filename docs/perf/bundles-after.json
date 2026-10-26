@@ -1,0 +1,42 @@
+{
+  "label": "after",
+  "origin": "http://localhost:3100",
+  "measuredAt": "2026-09-06T22:27:12.008Z",
+  "results": {
+    "home": {
+      "url": "/",
+      "chunks": 14,
+      "rawKb": 769,
+      "gzipKb": 240,
+      "htmlKb": 363
+    },
+    "collection": {
+      "url": "/tours/group-tours",
+      "chunks": 13,
+      "rawKb": 693,
+      "gzipKb": 217,
+      "htmlKb": 152
+    },
+    "landing": {
+      "url": "/lp/from-venice",
+      "chunks": 13,
+      "rawKb": 721,
+      "gzipKb": 225,
+      "htmlKb": 177
+    },
+    "tour": {
+      "url": "/tours/venice-dolomites-cortina-misurina-day-trip",
+      "chunks": 13,
+      "rawKb": 705,
+      "gzipKb": 221,
+      "htmlKb": 232
+    },
+    "catalog": {
+      "url": "/tours",
+      "chunks": 12,
+      "rawKb": 691,
+      "gzipKb": 216,
+      "htmlKb": 205
+    }
+  }
+}

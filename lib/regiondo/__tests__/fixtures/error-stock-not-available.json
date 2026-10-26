@@ -1,0 +1,12 @@
+{
+  "data": {
+    "result": "stock_not_available",
+    "message": "Requested quantity is not available",
+    "available_items": [
+      { "product_id": 298190, "option_id": 2028639, "date_time": "2026-09-19 08:00", "qty": 2 }
+    ],
+    "not_available_items": [
+      { "product_id": 298190, "option_id": 2028639, "date_time": "2026-09-19 08:00", "qty": 5 }
+    ]
+  }
+}
