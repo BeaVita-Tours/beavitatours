@@ -174,17 +174,16 @@ export default function AboutPage() {
             </div>
 
             <div className="flex flex-col gap-6 lg:justify-center">
-              {/* The first pencil sketch of the logo (client, 2026-09-29), on
-                  a white sheet; the scan's paper is evened out to white, and
-                  `mix-blend-multiply` drops what is left into the card. */}
-              <figure className="rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-6">
+              {/* The first pencil sketch of the logo, photographed on the desk
+                  it was drawn at, next to a map of the Venetian hinterland. */}
+              <figure className="overflow-hidden rounded-2xl border border-border bg-white p-3 shadow-sm sm:p-4">
                 <Image
                   src="/imgs/about/logo-sketch.webp"
-                  alt="A pencil sketch of the beaVita logo: the word beaVita with a smiling face held in the V, and Venezia written beneath"
-                  width={1538}
-                  height={496}
+                  alt="A pencil sketch of the beaVita logo on a sheet of paper, beside a keyboard, a pencil and a map of the Venice lagoon"
+                  width={2048}
+                  height={1152}
                   sizes="(min-width: 1024px) 440px, 90vw"
-                  className="h-auto w-full mix-blend-multiply"
+                  className="h-auto w-full rounded-xl"
                 />
                 <figcaption className="mt-4 text-center text-sm text-muted-foreground">
                   Where it started: the first sketch of the beaVita logo.
