@@ -60,10 +60,15 @@ export interface PrivateTourPhoto {
  * yours", which a view of the Dolomites does not. Swap in photos of the
  * vehicles and of private groups as they become available — the layout takes
  * any four.
+ *
+ * Revision of 2026-10-26: the four were all Prosecco, and the client read the
+ * page as offering only that. The mix now follows the homepage hero — the
+ * Dolomites as the lead, then one photo each for wine, the mountains and
+ * culture.
  */
 export const PRIVATE_TOUR_PHOTOS: readonly PrivateTourPhoto[] = [
+  { src: "/images/private-tours.webp", alt: "The Dolomites rising behind Cortina d'Ampezzo at sunset" },
   { src: "/landing/broll14.jpg", alt: "Guests with a glass of Prosecco at a private tasting in the hills" },
-  { src: "/tourwines.jpg", alt: "A table laid for a private tasting above the vineyards" },
-  { src: "/landing/tourpics/review3.webp", alt: "A tasting table laid inside a family-run winery" },
-  { src: "/landing/tourpics/gyg2.webp", alt: "Prosecco and a board of local cured meats and cheese" },
+  { src: "/tourcustom.jpg", alt: "The Olympic rings in Cortina d'Ampezzo, with the Dolomites behind" },
+  { src: "/imgs/cultural/padova1.jpeg", alt: "The frescoed ceiling of the Scrovegni Chapel in Padua" },
 ];
