@@ -24,14 +24,8 @@ Free Pexels photos standing in for the stock photos in the client's proposal PDF
 
 | File | Source (Pexels photo ID) | Licence |
 |---|---|---|
-| `public/images/hero/group-coach.webp` | <https://www.pexels.com/photo/34358239/> | Pexels |
-| `public/images/hero/group-friends-van.webp` | <https://www.pexels.com/photo/12801985/> | Pexels |
 | `public/images/hero/group-toast.webp` | <https://www.pexels.com/photo/4833961/> | Pexels |
-| `public/images/hero/group-hikers.webp` | <https://www.pexels.com/photo/38790896/> | Pexels |
 | `public/images/hero/private-boat.webp` | <https://www.pexels.com/photo/6328308/> | Pexels |
-| `public/images/hero/private-van.webp` | <https://www.pexels.com/photo/19003939/> | Pexels |
-| `public/images/hero/private-car.webp` | <https://www.pexels.com/photo/17822808/> | Pexels |
-| `public/images/hero/private-vineyard.webp` | <https://www.pexels.com/photo/35845676/> | Pexels |
 | `public/imgs/cultural/treviso.jpg` | <https://www.pexels.com/photo/city-buildings-beside-the-river-14581509/> | Pexels |
 
 ## TO FIX BEFORE GO-LIVE: found via Google Images, licence not checked

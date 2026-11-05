@@ -80,29 +80,19 @@ const heroPanels: HeroPanelContent[] = [
 ];
 
 /**
- * Three photos per panel (client, 2026-09-29). Private: the day as yours —
- * the view, a table set for two, the Prosecco poured. Group: real guests on
- * the road, at a winery terrace and under the Dolomites.
- *
- * Revision of 2026-10-26: the client's own list of proposed photos (a PDF of
- * stock images) is followed slide for slide, with free Pexels photos of the
- * same kind standing in for the stock ones; the guests on the terrace and the
- * group on the Dolomites are the company's own.
+ * Only the photos the client approved (2026-11-05). The Prosecco slide is a crop
+ * of the repo's still from that shoot; the client's own image is a later moment,
+ * the guests clinking glasses, so swap it in if the original turns up. The hero
+ * copy covers the bottom of each panel: keep the subject above it.
  */
 const privateSlides: HeroSlide[] = [
   { src: "/images/hero/private-boat.webp", alt: "A couple in a small boat on a still lake below rock cliffs" },
-  { src: "/images/hero/private-van.webp", alt: "A guest relaxing in the open door of a private minivan" },
-  { src: "/landing/broll14.jpg", alt: "Guests with a glass of Prosecco at a private tasting in the hills" },
-  { src: "/images/hero/private-car.webp", alt: "A couple sitting on their car in an open mountain landscape" },
-  { src: "/images/hero/private-vineyard.webp", alt: "A smiling couple embracing in a vineyard" },
+  { src: "/images/hero/private-prosecco.webp", alt: "Guests with a glass of Prosecco at a table in the hills" },
 ];
 
 const groupSlides: HeroSlide[] = [
   { src: "/images/group-tours.webp", alt: "A beaVita group smiling on a Dolomites day trip" },
-  { src: "/images/hero/group-coach.webp", alt: "A coach on a mountain road below rocky peaks" },
-  { src: "/images/hero/group-friends-van.webp", alt: "A group of friends laughing beside a van on a day out" },
   { src: "/images/hero/group-toast.webp", alt: "Friends clinking glasses of white wine outdoors" },
-  { src: "/images/hero/group-hikers.webp", alt: "A gravel path beside a turquoise mountain lake" },
 ];
 
 /** Two-panel split hero: full-bleed photo panels with title, description and
