@@ -10,8 +10,7 @@ import {
 /**
  * The page the tour page frames: Regiondo's booking widget and nothing else.
  *
- *   /embed/regiondo-booking?widget=<uuid>                        a dashboard widget
- *   /embed/regiondo-booking?provider=BE116&product=298190   a product, by id
+ *   /embed/regiondo-booking?widget=<uuid>    a widget made in the Regiondo dashboard
  *
  * Why a frame of our own rather than the element dropped straight into the
  * tour page: Regiondo's loader initialises once per document (it keeps a
@@ -51,14 +50,9 @@ export function GET(request: NextRequest) {
 }
 
 function widgetElement(target: BookingWidgetTarget): string {
-  // Every value was validated against a strict pattern, so none of them can
-  // break out of the attribute. Escaped anyway: defence in depth costs nothing.
-  if (target.kind === "widget") {
-    return `<booking-widget widget-id="${escapeAttr(target.widgetId)}"></booking-widget>`;
-  }
-  return `<booking-widget customer-code="${escapeAttr(target.provider)}" product="${escapeAttr(
-    target.productId
-  )}" locale="${escapeAttr(target.locale)}"></booking-widget>`;
+  // The id was validated against a strict pattern, so it cannot break out of
+  // the attribute. Escaped anyway: defence in depth costs nothing.
+  return `<booking-widget widget-id="${escapeAttr(target.widgetId)}"></booking-widget>`;
 }
 
 function renderPage(target: BookingWidgetTarget): string {
@@ -93,7 +87,9 @@ ${widgetElement(target)}
     return settled.status === "ready" ? { status: "ready" } : { status: "failed", reason: settled.reason };
   }
   function settle(status, reason) {
-    if (settled) return;
+    // Once failed, stay failed. A "ready" can still turn into "failed": the
+    // widget sometimes draws its frame first and its error screen after.
+    if (settled && (settled.status === "failed" || status === "ready")) return;
     settled = { status: status, reason: reason };
     post(settledMessage());
   }
@@ -109,12 +105,14 @@ ${widgetElement(target)}
     if (lastHeight) post({ status: "height", height: lastHeight });
   });
 
-  // Regiondo renders "Network Error" in place of the calendar when its booking
-  // backend cannot be reached. That is a failure as far as the visitor is
-  // concerned, so it hands over to the fallback like any other.
+  // Regiondo renders its own error screens in place of the calendar: "Network
+  // Error" from the older widget, "Unable to load / It seems that the server
+  // is unreachable" or "The page is gone" from the current one. To the visitor
+  // those are failures, so they hand over to the fallback like any other.
+  var ERROR_TEXT = /network error|unable to load|server is unreachable|page is gone|doesn't exist anymore/i;
   function rootOf(node) { return node.shadowRoot || node; }
   function text() { return (rootOf(el).textContent || "").trim(); }
-  function hasError() { return /network error/i.test(text()); }
+  function hasError() { return ERROR_TEXT.test(text()); }
   function hasContent() {
     var root = rootOf(el);
     if (root.querySelector && root.querySelector("input, button, select, table, [class*='DayPicker'], [class*='calendar']")) return true;
@@ -123,11 +121,15 @@ ${widgetElement(target)}
 
   var started = Date.now();
   var poll = setInterval(function () {
-    if (hasError()) { clearInterval(poll); settle("failed", "network"); return; }
+    if (hasError()) { clearInterval(poll); settle("failed", "widget-error"); return; }
     // Give a rendered widget a moment: the error replaces a spinner, not the
     // calendar, so content that has stayed put for a second is the real thing.
-    if (hasContent() && Date.now() - started > 1500) { clearInterval(poll); settle("ready"); return; }
-    if (Date.now() - started > 20000) { clearInterval(poll); settle("failed", "timeout"); }
+    if (hasContent() && Date.now() - started > 1500) settle("ready");
+    // Keep watching for an error screen until the deadline, even after ready.
+    if (Date.now() - started > 20000) {
+      clearInterval(poll);
+      if (!settled) settle("failed", "timeout");
+    }
   }, 300);
 
   window.addEventListener("vite:preloadError", function () { settle("failed", "chunk"); });

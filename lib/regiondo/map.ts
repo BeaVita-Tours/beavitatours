@@ -154,8 +154,6 @@ export function toTourDetail(raw: RegiondoProductDetail): TourDetail {
     timezone: raw.timezone ?? "Europe/Rome",
     bookingNoticeHours: raw.booking_notice_period ?? 0,
     provider: brandize(raw.provider),
-    sku: raw.sku,
-    operatorCode: raw.operator_information?.code ?? null,
     // meta_description comes back wrapped in <p>, which would render literally
     // in a <meta> tag.
     metaTitle: brandize(raw.meta_title),

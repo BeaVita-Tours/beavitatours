@@ -170,8 +170,6 @@ export const productDetailSchema = z.object({
   ...productCoreShape,
   provider: nullableString,
   product_supplier_id: id.nullish(),
-  /** `code` is the account code Regiondo's booking widget calls a customer code. */
-  operator_information: z.object({ code: nullableString.optional() }).nullish(),
   category_titles: nullableString,
   location_specific_info: stringOrEmpty,
   parking_options_comment: stringOrEmpty,

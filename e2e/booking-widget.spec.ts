@@ -19,7 +19,7 @@ function fakeLoader(body: string, height = 720) {
   return `customElements.define("booking-widget", class extends HTMLElement {
     connectedCallback() {
       const root = this.attachShadow({ mode: "open" });
-      const attrs = ["widget-id", "customer-code", "product", "locale"]
+      const attrs = ["widget-id"]
         .map((name) => name + "=" + (this.getAttribute(name) || ""))
         .join(" ");
       root.innerHTML = '<div style="height:${height}px"><p class="attrs">' + attrs + '</p>${body}</div>';
@@ -51,20 +51,21 @@ test.beforeEach(async ({ page }) => {
   ]);
 });
 
-test("the booking box is Regiondo's widget, for the tour's own product", async ({ page }) => {
+const WIDGET_ID = "0b1e2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d";
+
+test("the booking box is the tour's dashboard Booking widget", async ({ page }) => {
   await serveLoader(page, fakeLoader("<button>Pick a date</button>"));
   await page.goto(TOUR);
 
   const box = page.locator('[data-booking-widget="ready"]');
   await expect(box).toBeVisible({ timeout: 20_000 });
 
-  // No dashboard widget in the mock, so the product form: account code from
-  // the product, and the product id (not the SKU, which the widget 404s on).
+  // The mock lists a Booking widget and a newer Button widget for this
+  // product; only the Booking one may be used.
   const frame = box.locator("iframe");
-  await expect(frame).toHaveAttribute("src", /provider=BE116&product=298190&locale=en_US/);
-  const widget = page.frameLocator('[data-booking-widget] iframe');
-  await expect(widget.locator("booking-widget")).toHaveAttribute("customer-code", "BE116");
-  await expect(widget.locator("booking-widget")).toHaveAttribute("product", "298190");
+  await expect(frame).toHaveAttribute("src", `/embed/regiondo-booking?widget=${WIDGET_ID}`);
+  const widget = page.frameLocator("[data-booking-widget] iframe");
+  await expect(widget.locator("booking-widget")).toHaveAttribute("widget-id", WIDGET_ID);
 
   // The frame takes the widget's height instead of scrolling inside itself.
   await expect
@@ -89,18 +90,26 @@ test("falls back to the API panel when the widget script cannot load", async ({ 
   await expect(page.locator("[data-booking-widget] iframe")).toHaveCount(0);
 });
 
-test("falls back when Regiondo's booking backend is unreachable", async ({ page }) => {
-  // What the real widget renders when its backend calls fail.
-  await serveLoader(page, fakeLoader("<p>Network Error</p>", 80));
-  await page.goto(TOUR);
+for (const [label, screen] of [
+  ["Network Error", "<p>Network Error</p>"],
+  [
+    "Unable to load",
+    "<h2>Unable to load</h2><p>It seems that the server is unreachable.</p><button>reload page</button>",
+  ],
+] as const) {
+  test(`falls back when the widget shows "${label}"`, async ({ page }) => {
+    // Regiondo's own error screens, verbatim from its bundle.
+    await serveLoader(page, fakeLoader(screen, 120));
+    await page.goto(TOUR);
 
-  await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
-    timeout: 20_000,
+    await expect(page.getByRole("button", { name: /reserve your places/i })).toBeEnabled({
+      timeout: 20_000,
+    });
   });
-});
+}
 
 test("the embed page refuses anything but a well-formed widget", async ({ page }) => {
-  const ok = await page.request.get("/embed/regiondo-booking?provider=BE116&product=298190");
+  const ok = await page.request.get(`/embed/regiondo-booking?widget=${WIDGET_ID}`);
   expect(ok.status()).toBe(200);
   expect(ok.headers()["x-robots-tag"]).toMatch(/noindex/);
   expect(ok.headers()["content-security-policy"]).toContain("frame-ancestors 'self'");
@@ -108,8 +117,7 @@ test("the embed page refuses anything but a well-formed widget", async ({ page }
   for (const query of [
     "",
     "widget=%22%3E%3Cscript%3Ealert(1)%3C%2Fscript%3E",
-    "provider=BE116&product=T-BE116-321530",
-    "provider=%3Cb%3E&product=298190",
+    "provider=BE116&product=298190",
   ]) {
     const response = await page.request.get(`/embed/regiondo-booking?${query}`);
     expect(response.status(), query).toBe(400);

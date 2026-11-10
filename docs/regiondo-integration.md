@@ -52,26 +52,26 @@ tour page ── <iframe src="/embed/regiondo-booking?…"> ── <booking-widg
 |---|---|---|
 | 1 | `REGIONDO_BOOKING_WIDGETS=off` | none, API panel everywhere (kill switch) |
 | 2 | `BOOKING_WIDGET_PINS` (checked in) | `<booking-widget widget-id="…">` |
-| 3 | newest **Booking** widget from `GET /products/{id}/widgets` (dashboard-made) | `<booking-widget widget-id="…">` |
-| 4 | the product's account code + product id | `<booking-widget customer-code="BE116" product="298190">` |
-| 5 | no account code at all | API panel |
+| 3 | newest **Booking** widget from `GET /products/{id}/widgets` | `<booking-widget widget-id="…">` |
+| 4 | no dashboard widget | API panel, as before |
 
-Row 4 is the same element Regiondo's own catalog widget uses to open the
-booking box for a product, so **every tour has a widget without anything being
-created in the dashboard**. Creating one in the dashboard (Shop → Website
-integration → Booking widget, connected to the product) switches that tour to
-row 3 automatically, so the dashboard's styling and settings apply: within an
-hour, or at once after the revalidate call above. The API cannot create
-widgets; it can only list them. `product` takes the numeric product id. The
-SKU (`T-BE116-…`) gets a 404 from Regiondo.
+Widgets are made in the Regiondo dashboard (Shop → Website integration →
+Booking widget), one per product. The API cannot create them, only list them.
+A new one is picked up within an hour, or at once after the revalidate call
+above, or immediately once its id is added to `BOOKING_WIDGET_PINS`.
+
+The element also accepts `customer-code="BE116" product="<id>"` without a
+widget id. **Do not use it**: for real visitors it renders Regiondo's
+"Unable to load — It seems that the server is unreachable" screen.
 
 **Why a frame of our own.** Regiondo's loader initialises once per document
 and binds to the first widget it finds, and the site navigates between tours
 on the client. A fresh same-origin document per widget
 (`app/embed/regiondo-booking/route.ts`) keeps every tour page working, and
 keeps their CSS and ours apart. That page reports to the tour page over
-`postMessage`: `ready`, `failed` (script error, Regiondo's "Network Error",
-or nothing within 20 s) and its height, so the box grows with the checkout
+`postMessage`: `ready`, `failed` (script error, one of Regiondo's error
+screens — "Network Error", "Unable to load", "The page is gone" — even after
+first rendering, or nothing within 20 s) and its height, so the box grows with the checkout
 steps. The tour page says `hello` once hydrated, so a result sent before it
 was listening is not lost.
 

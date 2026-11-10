@@ -83,10 +83,6 @@ export interface TourDetail extends TourSummary {
   /** Hours of lead time the supplier needs before departure. */
   readonly bookingNoticeHours: number;
   readonly provider: string | null;
-  /** e.g. "T-BE116-321530". */
-  readonly sku: string | null;
-  /** The Regiondo account code, e.g. "BE116"; the booking widget's customer code. */
-  readonly operatorCode: string | null;
   readonly metaTitle: string | null;
   readonly metaDescription: string | null;
   readonly createdAt: string | null;

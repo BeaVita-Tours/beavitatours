@@ -23,9 +23,7 @@ import type { TourDetail } from "./types";
  *   2. `BOOKING_WIDGET_PINS` below: a checked-in override per product.
  *   3. `GET /products/{id}/widgets`: the newest "Booking" widget connected to
  *      the product in the Regiondo dashboard.
- *   4. The product form of the same widget (account code + product id), which
- *      needs nothing in the dashboard. Every tour gets at least this.
- *   5. None, only if Regiondo gave us no account code: the API panel.
+ *   4. None: the API panel, exactly as before.
  *
  * Whatever is chosen, the API panel stays the fallback in the browser: if the
  * widget does not render, the tour page swaps it in.
@@ -50,12 +48,7 @@ export function bookingWidgetsEnabled(): boolean {
 /** The widget a tour page embeds, or null for the API panel. */
 export async function getBookingWidgetTarget(tour: TourDetail): Promise<BookingWidgetTarget | null> {
   if (!bookingWidgetsEnabled()) return null;
-  return bookingWidgetTargetFor({
-    widgetId: await getBookingWidgetId(tour.id),
-    productId: tour.id,
-    provider: tour.operatorCode,
-    sku: tour.sku,
-  });
+  return bookingWidgetTargetFor(await getBookingWidgetId(tour.id));
 }
 
 export async function getBookingWidgetId(productId: string): Promise<string | null> {
