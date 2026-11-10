@@ -503,3 +503,36 @@ export const accountCurrencySchema = z.array(
 export const accountLocaleSchema = z.array(
   z.object({ locale_code: z.string(), locale_name: stringOrEmpty })
 );
+
+/* -------------------------------------------------------------------------- */
+/* widgets                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * One widget from `GET /products/{id}/widgets`. Widgets are created and edited
+ * in the Regiondo dashboard (Shop -> Website integration); the API can only
+ * list them. `type` is "Booking", "Product" or "Button" per the OpenAPI
+ * document; it is compared case-insensitively in case that drifts.
+ */
+export const widgetSchema = z.object({
+  widget_id: z.string().min(1),
+  name: stringOrEmpty,
+  type: z.string(),
+  product_id: idNumber.optional(),
+  created_at: stringOrEmpty,
+});
+export type RegiondoWidget = z.infer<typeof widgetSchema>;
+
+/**
+ * Lenient on purpose: one malformed entry drops that entry, not the list, so a
+ * widget Regiondo describes oddly cannot take every tour page back to the
+ * fallback panel.
+ */
+export const widgetListSchema = z
+  .union([z.array(z.unknown()), z.null()])
+  .transform((items) =>
+    (items ?? []).flatMap((item) => {
+      const parsed = widgetSchema.safeParse(item);
+      return parsed.success ? [parsed.data] : [];
+    })
+  );

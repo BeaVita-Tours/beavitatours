@@ -6,7 +6,8 @@ import { connection } from "next/server";
 import { ChevronRight } from "lucide-react";
 
 import { BookingPanel } from "@/components/tours/booking-panel";
-import { PriceDisplay } from "@/components/tours/price-display";
+import { BookingSkeleton, NoDatesNotice, UnbookableNotice } from "@/components/tours/booking-notices";
+import { RegiondoBookingWidget } from "@/components/tours/regiondo-booking-widget";
 import { RatingStars } from "@/components/tours/rating-stars";
 import {
   TourBadges,
@@ -18,18 +19,13 @@ import {
 import { TourGallery } from "@/components/tours/tour-gallery";
 import { TourGrid } from "@/components/tours/tour-grid";
 import { TourReviews } from "@/components/tours/tour-reviews";
-import { Skeleton } from "@/components/ui/skeleton";
 import { BRAND_FULL } from "@/lib/brand";
 import { SITE_URL } from "@/lib/constants";
-import { getConfig, isNativeBookingEnabled } from "@/lib/regiondo/config";
+import { loadBookingPanelData } from "@/lib/regiondo/booking-panel-data";
+import { bookingWidgetEmbedHref } from "@/lib/regiondo/booking-widget";
+import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { collectionForTour } from "@/lib/regiondo/collections";
-import {
-  getAvailability,
-  getRelatedTours,
-  getSlot,
-  getTourBySlug,
-  getTourReviews,
-} from "@/lib/regiondo/products";
+import { getRelatedTours, getTourBySlug, getTourReviews } from "@/lib/regiondo/products";
 import { productIdForSlug, TOUR_SLUGS } from "@/lib/regiondo/slugs";
 import {
   breadcrumbJsonLd,
@@ -39,6 +35,7 @@ import {
 import { truncate } from "@/lib/regiondo/sanitize";
 import type { TourDetail } from "@/lib/regiondo/types";
 import { cn } from "@/lib/utils";
+import { getBookingWidgetTarget } from "@/lib/regiondo/widgets";
 
 /**
  * Tour detail page.
@@ -52,9 +49,13 @@ import { cn } from "@/lib/utils";
  *
  * Structure follows from Cache Components: everything above the fold — title,
  * price, gallery, key facts, the description — is cached catalog data and
- * lands in the prerendered shell. The booking panel is the only part that
- * depends on live inventory, so it is the only part inside a Suspense boundary.
- * A visitor sees the whole page immediately and the calendar fills in.
+ * lands in the prerendered shell.
+ *
+ * The booking box is Regiondo's hosted booking widget (Regiondo's request),
+ * framed into the box; the rest of the page is ours. The widget choice is
+ * catalog data too, so the frame is in the shell. Where a tour has no widget,
+ * or the widget fails in the browser, the API-driven panel takes its place;
+ * that depends on live inventory, so it sits inside a Suspense boundary.
  */
 
 interface PageProps {
@@ -179,9 +180,7 @@ export default async function TourPage({ params }: PageProps) {
 
           <div className="border-t pt-5">
             <h2 className="sr-only">Book this tour</h2>
-            <Suspense fallback={<BookingPanelFallback tour={tour} />}>
-              <LiveBookingPanel tour={tour} />
-            </Suspense>
+            <BookingBox tour={tour} />
           </div>
         </div>
       </div>
@@ -251,9 +250,35 @@ export default async function TourPage({ params }: PageProps) {
 }
 
 /**
- * Live half of the page. Availability and seat counts are never cached, so this
- * component is uncached by construction and streams in behind Suspense — it
- * cannot hold up the static shell.
+ * The booking box: Regiondo's widget for every tour that has one, which with
+ * the product-id form is every tour Regiondo gave an account code for. The
+ * widget component falls back to the API panel by itself if it fails to load.
+ */
+async function BookingBox({ tour }: { tour: TourDetail }) {
+  const target = await getBookingWidgetTarget(tour);
+
+  if (target) {
+    return (
+      <RegiondoBookingWidget
+        src={bookingWidgetEmbedHref(target)}
+        slug={tour.slug}
+        title={tour.title}
+        priceFrom={tour.priceFrom}
+      />
+    );
+  }
+
+  return (
+    <Suspense fallback={<BookingSkeleton priceFrom={tour.priceFrom} />}>
+      <LiveBookingPanel tour={tour} />
+    </Suspense>
+  );
+}
+
+/**
+ * The API-driven panel, for a tour with no widget. Availability and seat
+ * counts are never cached, so this component is uncached by construction and
+ * streams in behind Suspense: it cannot hold up the static shell.
  */
 async function LiveBookingPanel({ tour }: { tour: TourDetail }) {
   // Everything below depends on "now" and on live stock, neither of which can
@@ -263,84 +288,22 @@ async function LiveBookingPanel({ tour }: { tour: TourDetail }) {
   // instead of blocking the build.
   await connection();
 
-  const variation = tour.variations[0];
-  if (!variation) {
-    return <p className="text-sm text-muted-foreground">This tour is not bookable online.</p>;
-  }
-
-  const today = new Date();
-  const from = toDateKey(addDays(today, Math.ceil(tour.bookingNoticeHours / 24)));
-  // Three months covers the overwhelming majority of bookings; the panel can
-  // fetch further out on demand.
-  const to = toDateKey(addDays(today, 100));
-
-  const availability = await getAvailability(variation.id, from, to);
-  const firstDate = Object.keys(availability).sort()[0] ?? null;
-  const firstTime = firstDate ? (availability[firstDate]?.[0] ?? null) : null;
-
-  const slot =
-    firstDate && firstTime
-      ? await getSlot(variation.id, firstDate, firstTime)
-      : { options: [], seatsLeft: null };
-
-  if (Object.keys(availability).length === 0) {
-    return (
-      <div className="space-y-3">
-        <PriceDisplay price={tour.priceFrom} showFrom size="lg" unit="per person" />
-        <p className="text-sm text-muted-foreground">
-          No dates are open for online booking at the moment.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex text-sm font-medium text-primary-strong underline-offset-4 hover:underline"
-        >
-          Ask us about a private departure
-        </Link>
-      </div>
-    );
-  }
+  const data = await loadBookingPanelData(tour);
+  if (data.kind === "unbookable") return <UnbookableNotice />;
+  if (data.kind === "no-dates") return <NoDatesNotice priceFrom={data.priceFrom} />;
 
   return (
     <BookingPanel
-      slug={tour.slug}
-      tour={{ id: tour.id, title: tour.title, category: tour.collections[0] }}
-      variations={tour.variations}
-      availability={availability}
-      initialOptions={slot.options}
-      initialSeatsLeft={slot.seatsLeft}
-      initialDate={firstDate}
-      initialTime={firstTime}
-      currency={getConfig().currency}
-      bookingNoticeHours={tour.bookingNoticeHours}
+      slug={data.slug}
+      tour={data.tour}
+      variations={data.variations}
+      availability={data.availability}
+      initialOptions={data.initialOptions}
+      initialSeatsLeft={data.initialSeatsLeft}
+      initialDate={data.initialDate}
+      initialTime={data.initialTime}
+      currency={data.currency}
+      bookingNoticeHours={data.bookingNoticeHours}
     />
   );
-}
-
-/**
- * The fallback shows the real starting price from cached catalog data, so the
- * most important number on the page is in the static HTML even while live
- * availability is still loading.
- */
-function BookingPanelFallback({ tour }: { tour: TourDetail }) {
-  return (
-    <div className="space-y-5">
-      <PriceDisplay price={tour.priceFrom} showFrom size="lg" unit="per person" />
-      <Skeleton className="h-10 w-full" />
-      <Skeleton className="h-10 w-2/3" />
-      <Skeleton className="h-11 w-full" />
-      <p className="text-center text-xs text-muted-foreground">Checking live availability…</p>
-    </div>
-  );
-}
-
-function addDays(date: Date, days: number): Date {
-  const next = new Date(date);
-  next.setDate(next.getDate() + Math.max(0, days));
-  return next;
-}
-
-function toDateKey(date: Date): string {
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${date.getFullYear()}-${month}-${day}`;
 }

@@ -169,6 +169,19 @@ const server = createServer(async (req, res) => {
     return json(res, 200, { ...TIMESLOTS, data: [slot] });
   }
   if (path === "/v1/reviews") return json(res, 200, REVIEWS);
+  // Widgets made in the Regiondo dashboard. Product 298190 (the tour the specs
+  // use) has a booking widget, plus a Button widget that must be ignored.
+  const widgets = /^\/v1\/products\/(\d+)\/widgets$/.exec(path);
+  if (widgets) {
+    const list =
+      widgets[1] === "298190"
+        ? [
+            { widget_id: "0b1e2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d", name: "Booking", type: "Booking", product_id: 298190, created_at: "2026-11-10 09:00:00" },
+            { widget_id: "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee", name: "Button", type: "Button", product_id: 298190, created_at: "2026-11-10 10:00:00" },
+          ]
+        : [];
+    return json(res, 200, list);
+  }
   if (path.startsWith("/v1/products/")) return json(res, 200, PRODUCT_DETAIL);
 
   // --- checkout ----------------------------------------------------------

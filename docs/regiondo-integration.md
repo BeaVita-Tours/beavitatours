@@ -33,6 +33,65 @@ exactly what it rendered before this project existed.
 
 ---
 
+## Booking widget (the tour page's booking box)
+
+Regiondo asked us to book through the booking widget they host, not through the
+API. So the booking box on `/tours/[slug]` is now Regiondo's **booking widget**
+— the calendar-and-checkout box only, not their catalog or product-details
+widget. The rest of the tour page is unchanged and still ours.
+
+```
+tour page ── <iframe src="/embed/regiondo-booking?…"> ── <booking-widget …>
+                                                          + widgets.regiondo.net loader
+          └─ if the widget fails: the API booking panel, loaded on demand
+```
+
+**Which widget a tour gets** (`lib/regiondo/widgets.ts`), first match wins:
+
+| | source | embed |
+|---|---|---|
+| 1 | `REGIONDO_BOOKING_WIDGETS=off` | none, API panel everywhere (kill switch) |
+| 2 | `BOOKING_WIDGET_PINS` (checked in) | `<booking-widget widget-id="…">` |
+| 3 | newest **Booking** widget from `GET /products/{id}/widgets` | `<booking-widget widget-id="…">` |
+| 4 | no dashboard widget | API panel, as before |
+
+Widgets are made in the Regiondo dashboard (Shop → Website integration →
+Booking widget), one per product. The API cannot create them, only list them.
+A new one is picked up within an hour, or at once after the revalidate call
+above, or immediately once its id is added to `BOOKING_WIDGET_PINS`.
+
+The element also accepts `customer-code="BE116" product="<id>"` without a
+widget id. **Do not use it**: for real visitors it renders Regiondo's
+"Unable to load — It seems that the server is unreachable" screen.
+
+**Why a frame of our own.** Regiondo's loader initialises once per document
+and binds to the first widget it finds, and the site navigates between tours
+on the client. A fresh same-origin document per widget
+(`app/embed/regiondo-booking/route.ts`) keeps every tour page working, and
+keeps their CSS and ours apart. That page reports to the tour page over
+`postMessage`: `ready`, `failed` (script error, one of Regiondo's error
+screens — "Network Error", "Unable to load", "The page is gone" — even after
+first rendering, or nothing within 20 s) and its height, so the box grows with the checkout
+steps. The tour page says `hello` once hydrated, so a result sent before it
+was listening is not lost.
+
+**Fallback.** On `failed`, or silence for 25 s, the frame is replaced by the
+API panel, fetched through the `loadFallbackBooking` Server Action. A working
+widget therefore costs no availability calls at all; the API panel is only
+paid for when it is needed.
+
+**Known trade-offs.**
+
+- Checkout happens inside Regiondo's widget, so our `begin_checkout` /
+  payment-handoff events and `/book/confirmation` do not fire for widget
+  bookings. Tracking for those comes from Regiondo's side (its dashboard
+  has the widget's analytics settings).
+- The widget loads Regiondo's script on the tour page regardless of cookie
+  consent, as the booking box is strictly necessary for the booking the
+  visitor asked for. The API panel did not need a third-party script.
+
+---
+
 ## Authentication, and the one thing that will catch you out
 
 Every request carries three headers:
@@ -255,6 +314,7 @@ invalidates in-flight booking sessions, which last twenty minutes — a fair tra
 | `REGIONDO_WIDGET_OFFER_IDS` | the live product ids |
 | `REGIONDO_PAYMENT_MODE` | `hosted` — the only value implemented |
 | `REGIONDO_NATIVE_BOOKING` | the feature flag. Off by default. |
+| `REGIONDO_BOOKING_WIDGETS` | `off` forces the API panel instead of Regiondo's booking widget. On by default. |
 | `REGIONDO_API_BASE_URL` | **test only.** Refuses non-localhost outside `NODE_ENV=test`. |
 
 Validation is strict but only *enforced* when the flag is on, so a build without
