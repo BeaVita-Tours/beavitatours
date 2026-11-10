@@ -38,7 +38,19 @@ import type { TourDetail } from "./types";
  * product has a test widget newer than the real one). Leave empty otherwise:
  * discovery keeps it in step with the dashboard without a deploy.
  */
-export const BOOKING_WIDGET_PINS: Readonly<Record<string, string>> = {};
+export const BOOKING_WIDGET_PINS: Readonly<Record<string, string>> = {
+  // Created 2026-11-10 in the Regiondo Widget Editor (type Booking, en_US,
+  // design "Bea Vita Teal #4FA9A1"). Pinned so they apply on deploy rather
+  // than on the next catalog revalidation. Products 341599, 339660, 341596,
+  // 326843 and 326844 are not offered by the editor (inactive or not on this
+  // sales channel), so they have no widget and keep the API panel.
+  "298190": "a7b3bd01-82ad-4997-9f86-4452722c8934", // Dolomites, Cortina and 2 lakes
+  "300877": "4dee03fa-6bd2-4cd0-9fc3-6ca5c264f221", // Best of the Dolomites (Tronchetto)
+  "341597": "3add633d-d028-4c6e-82b7-ee01e312994d", // Lake Braies and Tre Cime
+  "326845": "62698e05-12b0-4384-9565-a094b352eb6e", // Prosecco Hills and wine tasting
+  "307882": "2f4bb112-a1d5-47f3-b66f-8a2663e6d4c6", // Prosecco Hills, Spritz and Asolo
+  "298188": "e8e6b5df-0209-4e17-a51e-bd0a3d87951e", // Dolomites and Prosecco (private)
+};
 
 export function bookingWidgetsEnabled(): boolean {
   const raw = process.env.REGIONDO_BOOKING_WIDGETS?.trim().toLowerCase();

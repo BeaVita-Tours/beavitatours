@@ -82,6 +82,7 @@ ${widgetElement(target)}
   }
 
   var el = document.querySelector("booking-widget");
+  var started = Date.now();
   var settled = null;
   function settledMessage() {
     return settled.status === "ready" ? { status: "ready" } : { status: "failed", reason: settled.reason };
@@ -109,7 +110,56 @@ ${widgetElement(target)}
   // Error" from the older widget, "Unable to load / It seems that the server
   // is unreachable" or "The page is gone" from the current one. To the visitor
   // those are failures, so they hand over to the fallback like any other.
-  var ERROR_TEXT = /network error|unable to load|server is unreachable|page is gone|doesn't exist anymore/i;
+  // Matched in English and German: the widget falls back to German when it
+  // cannot load its translations, which is exactly when it is failing.
+  var ERROR_TEXT = /network error|unable to load|server is unreachable|page is gone|doesn't exist anymore|kann nicht geladen werden|nicht erreichbar|netzwerkfehler/i;
+
+  // The language-independent check: watch the widget's own requests. A
+  // Regiondo request that fails outright (network error, CORS refusal,
+  // timeout) or with a 5xx while the widget is starting means the visitor is
+  // about to see Regiondo's error screen, whatever language it is in. Only
+  // Regiondo's hosts count, so an ad blocker eating an analytics call does not
+  // take the widget away. Aborted requests are ignored: the widget cancels
+  // superseded requests itself.
+  var REGIONDO_HOST = /(^|\.)regiondo\.(com|de|net)$/i;
+  var STARTUP_MS = 20000;
+  function requestFailed(url, why) {
+    if (Date.now() - started > STARTUP_MS) return;
+    var host = "";
+    try { host = new URL(url, window.location.href).hostname; } catch (e) { return; }
+    if (REGIONDO_HOST.test(host)) settle("failed", "request:" + why + ":" + host);
+  }
+  var xhrOpen = XMLHttpRequest.prototype.open;
+  var xhrSend = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.open = function (method, url) {
+    this.__regiondoUrl = String(url);
+    return xhrOpen.apply(this, arguments);
+  };
+  XMLHttpRequest.prototype.send = function () {
+    var xhr = this;
+    xhr.addEventListener("error", function () { requestFailed(xhr.__regiondoUrl, "network"); });
+    xhr.addEventListener("timeout", function () { requestFailed(xhr.__regiondoUrl, "timeout"); });
+    xhr.addEventListener("load", function () {
+      if (xhr.status >= 500) requestFailed(xhr.__regiondoUrl, String(xhr.status));
+    });
+    return xhrSend.apply(this, arguments);
+  };
+  if (window.fetch) {
+    var realFetch = window.fetch;
+    window.fetch = function (input) {
+      var url = typeof input === "string" ? input : (input && input.url) || "";
+      return realFetch.apply(this, arguments).then(
+        function (response) {
+          if (response.status >= 500) requestFailed(url, String(response.status));
+          return response;
+        },
+        function (error) {
+          if (!error || error.name !== "AbortError") requestFailed(url, "network");
+          throw error;
+        }
+      );
+    };
+  }
   function rootOf(node) { return node.shadowRoot || node; }
   function text() { return (rootOf(el).textContent || "").trim(); }
   function hasError() { return ERROR_TEXT.test(text()); }
@@ -119,7 +169,6 @@ ${widgetElement(target)}
     return text().length > 40;
   }
 
-  var started = Date.now();
   var poll = setInterval(function () {
     if (hasError()) { clearInterval(poll); settle("failed", "widget-error"); return; }
     // Give a rendered widget a moment: the error replaces a spinner, not the

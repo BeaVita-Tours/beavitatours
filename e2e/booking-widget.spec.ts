@@ -51,7 +51,8 @@ test.beforeEach(async ({ page }) => {
   ]);
 });
 
-const WIDGET_ID = "0b1e2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d";
+/** Pinned for product 298190 in BOOKING_WIDGET_PINS; a pin beats the API list. */
+const WIDGET_ID = "a7b3bd01-82ad-4997-9f86-4452722c8934";
 
 test("the booking box is the tour's dashboard Booking widget", async ({ page }) => {
   await serveLoader(page, fakeLoader("<button>Pick a date</button>"));
@@ -60,8 +61,7 @@ test("the booking box is the tour's dashboard Booking widget", async ({ page }) 
   const box = page.locator('[data-booking-widget="ready"]');
   await expect(box).toBeVisible({ timeout: 20_000 });
 
-  // The mock lists a Booking widget and a newer Button widget for this
-  // product; only the Booking one may be used.
+  // The pin wins over the mock's own widget list for this product.
   const frame = box.locator("iframe");
   await expect(frame).toHaveAttribute("src", `/embed/regiondo-booking?widget=${WIDGET_ID}`);
   const widget = page.frameLocator("[data-booking-widget] iframe");
