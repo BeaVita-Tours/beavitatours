@@ -26,8 +26,8 @@ export const privacyPolicy: PrivacyPolicyContent = {
     "This notice explains how BEA VITA TOURS processes personal data when you browse the website, contact us, or use the cookie preferences provided on this site.",
   versionLabel: "Version",
   lastUpdatedLabel: "Last updated",
-  version: "1.1",
-  lastUpdated: "29 June 2026",
+  version: "1.2",
+  lastUpdated: "10 November 2026",
   sections: [
     {
       heading: "1. Controller",
@@ -71,7 +71,7 @@ export const privacyPolicy: PrivacyPolicyContent = {
         "Umami Analytics for privacy-friendly usage statistics.",
         "Meta Pixel for marketing and conversion measurement, only after marketing consent.",
         "Google Tag Manager as a container for consent-based tags, only after the relevant consent is granted.",
-        "Regiondo GmbH, a European company based in Germany, as our booking provider. Tour availability and prices are requested from Regiondo by our servers, so no data leaves your browser for that. When you complete a booking you are taken to Regiondo's own secure checkout to enter your contact and payment details, which are processed by them under their privacy policy — we never receive or store your card details. Some pages may still embed a Regiondo booking widget, which can set its own cookies.",
+        "Regiondo GmbH, a European company based in Germany, as our booking provider. The booking box on each tour page is Regiondo's booking widget, loaded from Regiondo's servers: your browser connects to Regiondo to show availability, and the details you enter to book, including payment, go directly to Regiondo and are processed by them under their privacy policy. The widget may set its own cookies needed for the booking. If the widget cannot load, availability is requested from Regiondo by our servers instead and you complete the booking on Regiondo's own secure checkout. Either way, we never receive or store your card details.",
       ],
     },
     {

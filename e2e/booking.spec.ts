@@ -49,6 +49,11 @@ test.beforeEach(async ({ page }) => {
   await setScenario(page, "happy");
   await page.context().clearCookies();
   await acceptCookies(page);
+  // Tour pages book through Regiondo's hosted widget now. These specs are
+  // about the API-driven panel, which is what the page falls back to when the
+  // widget cannot load, so block the widget and exercise exactly that path.
+  // The widget itself is covered in booking-widget.spec.ts.
+  await page.route("https://widgets.regiondo.net/**", (route) => route.abort());
 });
 
 test.afterAll(async ({ playwright }) => {

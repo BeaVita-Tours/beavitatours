@@ -3,8 +3,9 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 
+import { type BookingPanelData, loadBookingPanelData } from "@/lib/regiondo/booking-panel-data";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
-import { getAvailability, getSlot } from "@/lib/regiondo/products";
+import { getAvailability, getSlot, getTourBySlug } from "@/lib/regiondo/products";
 import type { TourOption } from "@/lib/regiondo/types";
 import { consumeRateLimit } from "@/lib/rate-limit";
 
@@ -108,4 +109,41 @@ export async function loadAvailability(input: {
   );
 
   return { availability };
+}
+
+const slugSchema = z.string().regex(/^[a-z0-9-]{1,120}$/);
+
+export type FallbackBookingResult = BookingPanelData | { readonly kind: "error"; readonly message: string };
+
+/**
+ * The API booking panel, on demand.
+ *
+ * Tour pages book through Regiondo's hosted widget. When that widget fails to
+ * load in the visitor's browser (blocked script, Regiondo outage, timeout), the
+ * page calls this to open the API-driven panel in its place. It is only ever
+ * called on failure, so a working widget costs no API requests at all.
+ */
+export async function loadFallbackBooking(slug: string): Promise<FallbackBookingResult> {
+  if (!isNativeBookingEnabled()) return { kind: "error", message: "Booking is unavailable." };
+
+  const parsed = slugSchema.safeParse(slug);
+  if (!parsed.success) return { kind: "error", message: "Unknown tour." };
+
+  // Each call costs two or three Regiondo requests. Before the widget, every
+  // tour page view cost the same with no limit at all, so this only has to
+  // stop a loop, not ration normal use. Same ceiling as loadSlotOptions.
+  const limit = consumeRateLimit(await rateLimitKey("regiondo:fallback"), {
+    windowMs: 60 * 1000,
+    max: 40,
+  });
+  if (!limit.ok) return { kind: "error", message: "Too many requests — try again in a minute." };
+
+  const tour = await getTourBySlug(parsed.data);
+  if (!tour) return { kind: "error", message: "We cannot reach our booking system right now." };
+
+  try {
+    return await loadBookingPanelData(tour);
+  } catch {
+    return { kind: "error", message: "We cannot reach our booking system right now." };
+  }
 }
