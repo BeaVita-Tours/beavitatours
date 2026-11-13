@@ -2,6 +2,7 @@ import "server-only";
 import * as sanity from "../sanity/queries";
 import type { Category, Post, PostSummary } from "../sanity/types";
 import { getSnapshot, getOptionalSnapshot } from "../seo/client";
+import { seoConfig } from "../seo/config";
 import type { PublishedArticle } from "../seo/contract";
 import {
   assertNoBlogConflicts,
@@ -96,9 +97,13 @@ export async function getPosts({
   };
 }
 export async function getPost(slug: string): Promise<BlogPost | null> {
+  const config = seoConfig();
+  // Keep the existing Sanity blog available while the legacy service is being
+  // replaced. The scoped connection requires a valid snapshot for ownership.
+  const legacy = config && new URL(config.studioUrl).pathname === "/";
   const [post, snapshot] = await Promise.all([
     sanity.getPost(slug),
-    getSnapshot(),
+    legacy ? getOptionalSnapshot() : getSnapshot(),
   ]);
   const article = snapshot && findPublication(snapshot, `/blog/${slug}`);
   if (article && post) throw new Error("Conflicting blog publication.");
