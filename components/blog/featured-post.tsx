@@ -1,7 +1,6 @@
-import Image from "next/image";
+import { BlogImage } from "./blog-image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { PostSummary } from "@/lib/sanity/types";
@@ -44,8 +43,8 @@ export function FeaturedPost({ post }: { post: PostSummary }) {
         >
           {mainImage?.asset?.url ? (
             <>
-              <Image
-                src={urlFor(mainImage).width(1600).url()}
+              <BlogImage
+                image={mainImage}
                 alt={mainImage.alt ?? post.title}
                 fill
                 sizes="(min-width: 768px) 80vw, 100vw"

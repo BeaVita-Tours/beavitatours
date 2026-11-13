@@ -34,7 +34,7 @@ function normalizeVatInput(input: string) {
   const compact = input
     .trim()
     .toUpperCase()
-    .replace(/[\s\-\.\/]/g, "");
+    .replace(/[\s./-]/g, "");
   // Allow Italy VAT pasted as just 11 digits.
   if (/^\d{11}$/.test(compact)) return `IT${compact}`;
   return compact;
@@ -67,7 +67,7 @@ export const travelAgencyLeadSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   companyName: z.preprocess(
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.string().trim().min(2).max(120).optional()
+    z.string().trim().min(2).max(120).optional(),
   ),
   vatNumber: z.preprocess(
     (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
@@ -77,7 +77,7 @@ export const travelAgencyLeadSchema = z.object({
       .refine(isValidEUVatNumber, {
         message: "Invalid EU VAT number.",
       })
-      .optional()
+      .optional(),
   ),
   phone: z.string().trim().min(5).max(40),
   email: z.string().trim().email().max(254),
@@ -86,3 +86,4 @@ export const travelAgencyLeadSchema = z.object({
 });
 
 export type TravelAgencyLeadInput = z.infer<typeof travelAgencyLeadSchema>;
+export type TravelAgencyFormInput = z.input<typeof travelAgencyLeadSchema>;

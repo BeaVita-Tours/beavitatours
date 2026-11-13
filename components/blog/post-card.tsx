@@ -1,6 +1,5 @@
-import Image from "next/image";
+import { BlogImage } from "./blog-image";
 import Link from "next/link";
-import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { PostSummary } from "@/lib/sanity/types";
@@ -21,8 +20,9 @@ function AuthorBadge({ post }: { post: PostSummary }) {
   return (
     <span className="flex items-center gap-2">
       {imageUrl ? (
-        <Image
-          src={imageUrl}
+        <BlogImage
+          image={post.author.image!}
+          imageWidth={112}
           alt={post.author.image?.alt ?? post.author.name}
           width={28}
           height={28}

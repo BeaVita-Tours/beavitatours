@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/constants";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 import { listAllTours } from "@/lib/regiondo/products";
 import { assertSlugRegistry } from "@/lib/regiondo/slugs";
-import { getCategories, getPostSitemapEntries } from "@/lib/sanity/queries";
+import { getCategories, getPostSitemapEntries } from "@/lib/blog/catalog";
 import { getOptionalSnapshot } from "@/lib/seo/client";
 import { isSeoPreview, workspaceSiteUrl } from "@/lib/seo/config";
 import { findPage, listGuides } from "@/lib/seo/publications";
@@ -106,7 +106,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
         },
         ...guides.map((guide) => ({
           url: guide.url,
-          lastModified: guide.publishedAt,
+          lastModified: guide.modifiedAt ?? guide.publishedAt,
           changeFrequency: "monthly" as const,
           priority: 0.7,
         })),
@@ -141,7 +141,9 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     url: `${SITE_URL}${tour.href}`,
     // Regiondo's own updated_at, so a re-crawl is prompted by a real edit
     // rather than by every deploy.
-    lastModified: tour.updatedAt ? new Date(tour.updatedAt.replace(" ", "T") + "Z") : new Date(),
+    lastModified: tour.updatedAt
+      ? new Date(tour.updatedAt.replace(" ", "T") + "Z")
+      : new Date(),
     changeFrequency: "weekly",
     priority: 0.9,
   }));

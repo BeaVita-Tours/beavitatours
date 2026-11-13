@@ -1,7 +1,6 @@
-import Image from "next/image";
+import { BlogImage } from "./blog-image";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
-import { urlFor } from "@/lib/sanity/image";
 import { formatDate } from "@/lib/sanity/format-date";
 import { readingTimeInMinutes } from "@/lib/sanity/reading-time";
 import type { Post } from "@/lib/sanity/types";
@@ -12,6 +11,8 @@ import { AuthorCard } from "./author-card";
 import { ShareRow } from "./share-row";
 import { RelatedPosts } from "./related-posts";
 import { BlogCta } from "./blog-cta";
+import type { PublishedArticle } from "@/lib/seo/contract";
+import { GuideBody } from "@/components/seo/guide-body";
 
 /**
  * The article page — centered header (category pills, bold title, byline with
@@ -19,7 +20,13 @@ import { BlogCta } from "./blog-cta";
  * row, related stories, and the closing CTA. Same layout and typography
  * language as the rest of the site.
  */
-export function PostArticle({ post }: { post: Post }) {
+export function PostArticle({
+  post,
+  publication,
+}: {
+  post: Post;
+  publication?: PublishedArticle;
+}) {
   const minutes = readingTimeInMinutes(post.bodyText);
 
   return (
@@ -62,20 +69,25 @@ export function PostArticle({ post }: { post: Post }) {
           {post.author ? (
             <span className="flex items-center gap-2">
               {post.author.image?.asset?.url ? (
-                <Image
-                  src={post.author.image.asset.url}
+                <BlogImage
+                  image={post.author.image}
+                  imageWidth={64}
                   alt={post.author.image.alt ?? post.author.name}
                   width={32}
                   height={32}
                   className="size-8 rounded-full object-cover"
                 />
               ) : null}
-              <span className="font-medium text-foreground">{post.author.name}</span>
+              <span className="font-medium text-foreground">
+                {post.author.name}
+              </span>
             </span>
           ) : null}
           <span className="flex items-center gap-1.5">
             <CalendarDays className="size-4" />
-            <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+            <time dateTime={post.publishedAt}>
+              {formatDate(post.publishedAt)}
+            </time>
           </span>
           {minutes > 0 ? (
             <span className="flex items-center gap-1.5">
@@ -87,8 +99,8 @@ export function PostArticle({ post }: { post: Post }) {
 
         {post.mainImage?.asset?.url ? (
           <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl">
-            <Image
-              src={urlFor(post.mainImage).width(1600).url()}
+            <BlogImage
+              image={post.mainImage}
               alt={post.mainImage.alt ?? post.title}
               fill
               priority
@@ -99,7 +111,14 @@ export function PostArticle({ post }: { post: Post }) {
         ) : null}
 
         <div className="prose prose-blog prose-lg mx-auto mt-10 max-w-none">
-          <PortableTextBody value={post.body} />
+          {publication ? (
+            <GuideBody
+              body={publication.body}
+              images={publication.blog?.inlineImages}
+            />
+          ) : (
+            <PortableTextBody value={post.body} />
+          )}
         </div>
 
         <AuthorCard author={post.author} />

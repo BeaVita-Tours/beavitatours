@@ -30,7 +30,11 @@ async function handle(request: Request) {
         { error: "Unauthorized." },
         { status: 401, headers },
       );
-    if (request.headers.has("origin") || request.headers.has("sec-fetch-site"))
+    if (
+      request.headers.has("origin") ||
+      request.headers.has("sec-fetch-site") ||
+      request.headers.has("cookie")
+    )
       return Response.json(
         { error: "Server-to-server requests only." },
         { status: 403, headers },

@@ -5,11 +5,7 @@ import { CategoryFilter } from "@/components/blog/category-filter";
 import { FeaturedPost } from "@/components/blog/featured-post";
 import { Pagination } from "@/components/blog/pagination";
 import { PostList } from "@/components/blog/post-list";
-import {
-  getCategories,
-  getPosts,
-  POSTS_PER_PAGE,
-} from "@/lib/sanity/queries";
+import { getCategories, getPosts, POSTS_PER_PAGE } from "@/lib/blog/catalog";
 
 export const metadata: Metadata = {
   title: "The beaVita Blog — beaVita Tours",
@@ -28,7 +24,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const params = await searchParams;
 
   const category = params.category;
-  const requestedPage = Math.max(1, Number.parseInt(params.page ?? "1", 10) || 1);
+  const requestedPage = Math.max(
+    1,
+    Number.parseInt(params.page ?? "1", 10) || 1,
+  );
 
   const [result, categories] = await Promise.all([
     getPosts({ page: requestedPage, category }),
@@ -39,7 +38,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   // Out-of-range page numbers (e.g. ?page=99) clamp silently to the last page.
   const currentPage = Math.min(requestedPage, totalPages);
 
-  const activeCategory = categories.some((c) => c.slug === category) ? category : undefined;
+  const activeCategory = categories.some((c) => c.slug === category)
+    ? category
+    : undefined;
 
   // The featured "latest story" is the newest post, only on the unfiltered
   // first page; page 1 then shows 8 grid cards + 1 featured = POSTS_PER_PAGE.

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { BlogImage } from "./blog-image";
 import { PortableText } from "@portabletext/react";
 import type { Author } from "@/lib/sanity/types";
 
@@ -13,14 +13,18 @@ export function AuthorCard({ author }: { author?: Author }) {
   const imageUrl = author.image?.asset?.url;
 
   return (
-    <section className="mt-12 rounded-2xl border border-border bg-card p-6" aria-label={`About ${author.name}`}>
+    <section
+      className="mt-12 rounded-2xl border border-border bg-card p-6"
+      aria-label={`About ${author.name}`}
+    >
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         About the author
       </p>
       <div className="mt-4 flex items-start gap-4">
         {imageUrl ? (
-          <Image
-            src={imageUrl}
+          <BlogImage
+            image={author.image!}
+            imageWidth={112}
             alt={author.image?.alt ?? author.name}
             width={56}
             height={56}

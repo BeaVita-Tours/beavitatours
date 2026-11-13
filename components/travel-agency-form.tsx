@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type TravelAgencyLeadInput,
+  type TravelAgencyFormInput,
   travelAgencyLeadSchema,
 } from "@/lib/travel-agency";
 import { Button } from "@/components/ui/button";
@@ -49,10 +50,10 @@ export function TravelAgencyForm() {
       message: "",
       website: "",
     }),
-    []
+    [],
   );
 
-  const form = useForm<TravelAgencyLeadInput>({
+  const form = useForm<TravelAgencyFormInput, unknown, TravelAgencyLeadInput>({
     resolver: zodResolver(travelAgencyLeadSchema),
     defaultValues,
     mode: "onTouched",
@@ -104,9 +105,7 @@ export function TravelAgencyForm() {
     <Card>
       <CardHeader>
         <CardTitle className="text-xl">Contact details</CardTitle>
-        <CardDescription>
-          Fields marked with * are required.
-        </CardDescription>
+        <CardDescription>Fields marked with * are required.</CardDescription>
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
         <CardContent className="mb-4">

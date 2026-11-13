@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import { GuideBody } from "@/components/seo/guide-body";
 import { GuideImage } from "@/components/seo/guide-image";
 import { Button } from "@/components/ui/button";
 import { getSnapshot } from "@/lib/seo/client";
 import { workspaceSiteUrl } from "@/lib/seo/config";
-import { guideMetadata } from "@/lib/seo/metadata";
+import { guideMetadata, articleStructuredData } from "@/lib/seo/metadata";
 import { findGuide } from "@/lib/seo/publications";
 
 // Guides render on demand, reading the cached snapshot (lib/seo/client).
@@ -32,6 +32,8 @@ async function guideFor(params: Props["params"]) {
   const snapshot = await getSnapshot();
   const guide = snapshot && findGuide(snapshot, slug);
   if (!guide) notFound();
+  const path = new URL(guide.url).pathname;
+  if (path !== `/guides/${slug}`) permanentRedirect(path);
   return guide;
 }
 
@@ -42,14 +44,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function GuidePage({ params }: Props) {
   const guide = await guideFor(params);
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: guide.title,
-    description: guide.summary,
-    inLanguage: "en",
-    datePublished: guide.publishedAt,
-    mainEntityOfPage: guide.url,
-    ...(guide.coverImage ? { image: guide.coverImage.url } : {}),
+    ...articleStructuredData(guide),
     publisher: {
       "@type": "Organization",
       name: "BeaVitaTours",
@@ -99,8 +94,22 @@ export default async function GuidePage({ params }: Props) {
           )}
 
           <div className="mt-10">
-            <GuideBody body={guide.body} />
+            <GuideBody body={guide.body} images={guide.blog?.inlineImages} />
           </div>
+
+          {guide.blog && (
+            <aside className="mt-8 rounded-2xl border border-border p-6">
+              <h2 className="text-xl font-semibold">
+                {guide.blog.author.name}
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                {guide.blog.author.bio}
+              </p>
+              <p className="mt-3 text-sm">
+                {guide.blog.categories.map((c) => c.title).join(", ")}
+              </p>
+            </aside>
+          )}
 
           <aside className="mt-12 rounded-2xl border border-border bg-card p-6">
             <h2 className="text-xl font-semibold">Plan your experience</h2>

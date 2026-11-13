@@ -1,11 +1,13 @@
-import { snapshotSchema } from "./contract";
-import type { SeoConfig } from "./config";
+import { validateSnapshot } from "./contract";
+import { contentEndpoint, workspaceSiteUrl, type SeoConfig } from "./config";
+import { getPostSlugs } from "../sanity/queries";
+import { assertNoBlogConflicts } from "./publications";
 
 export async function fetchSnapshot(
   config: SeoConfig,
   fetcher: typeof fetch = fetch,
 ) {
-  const response = await fetcher(`${config.studioUrl}/api/website/content`, {
+  const response = await fetcher(contentEndpoint(config.studioUrl), {
     headers: {
       Authorization: `Bearer ${config.readToken}`,
       Accept: "application/json",
@@ -36,10 +38,12 @@ export async function fetchSnapshot(
     await reader.cancel();
     throw error;
   }
-  const snapshot = snapshotSchema.parse(
+  const snapshot = validateSnapshot(
     JSON.parse(Buffer.concat(chunks).toString("utf8")),
+    config.siteUrl ?? workspaceSiteUrl,
   );
   if (snapshot.mode !== config.mode)
     throw new Error("Website publication mode does not match SEO Workspace.");
+  assertNoBlogConflicts(snapshot, await getPostSlugs());
   return snapshot;
 }

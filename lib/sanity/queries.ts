@@ -18,6 +18,22 @@ import type { Category, Post, PostListResult, PostSummary } from "./types";
 
 export const POSTS_PER_PAGE = 9;
 
+/** Bounded summaries for the combined Sanity and SEO Controls archive. */
+export async function getAllPosts(): Promise<PostSummary[]> {
+  "use cache";
+  cacheLife("blog");
+  cacheTag(BLOG_TAG);
+  if (!client) return [];
+  const posts = await client.fetch<PostSummary[]>(POSTS_QUERY, {
+    start: 0,
+    end: 1001,
+    category: null,
+  });
+  if (posts.length > 1000)
+    throw new Error("The blog archive exceeds the supported catalogue size.");
+  return brandizeDeep(posts);
+}
+
 const BLOG_TAG = "blog";
 
 /** Paginated list of published posts, most recent first, optional category. */
@@ -199,7 +215,11 @@ export async function getPost(slug: string): Promise<Post | null> {
   cacheTag(BLOG_TAG);
 
   if (!client) return null;
-  return brandizeDeep(await client.fetch<Post | null>(POST_BY_SLUG_QUERY, { slug })) ?? null;
+  return (
+    brandizeDeep(
+      await client.fetch<Post | null>(POST_BY_SLUG_QUERY, { slug }),
+    ) ?? null
+  );
 }
 
 export async function getPostSlugs(): Promise<string[]> {
@@ -248,7 +268,11 @@ export async function getCategory(slug: string): Promise<Category | null> {
   cacheTag(BLOG_TAG);
 
   if (!client) return null;
-  return brandizeDeep(await client.fetch<Category | null>(CATEGORY_BY_SLUG_QUERY, { slug })) ?? null;
+  return (
+    brandizeDeep(
+      await client.fetch<Category | null>(CATEGORY_BY_SLUG_QUERY, { slug }),
+    ) ?? null
+  );
 }
 
 export async function getRelatedPosts(opts: {

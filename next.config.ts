@@ -5,6 +5,8 @@ const LEGACY_LOCALES = "(en|it|zh|ja)";
 const nextConfig: NextConfig = {
   typedRoutes: false,
   cacheComponents: true,
+  // Preserve this existing site's navigation behavior during the security update.
+  partialPrefetching: false,
   // Blog cache-life profile: serve stale for an hour while revalidating in
   // the background, fall back to a full revalidation every day, hard-expire
   // after 30 days. A Sanity webhook (app/api/revalidate) busts the cache

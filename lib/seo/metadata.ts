@@ -48,6 +48,13 @@ export function guideMetadata(guide: Guide): Metadata {
       description: guide.metaDescription,
       url: guide.url,
       publishedTime: guide.publishedAt,
+      ...(guide.modifiedAt ? { modifiedTime: guide.modifiedAt } : {}),
+      ...(guide.blog
+        ? {
+            authors: [guide.blog.author.name],
+            tags: guide.blog.categories.map((c) => c.title),
+          }
+        : {}),
       locale: "en",
       ...(guide.coverImage
         ? {
@@ -63,6 +70,26 @@ export function guideMetadata(guide: Guide): Metadata {
             description: guide.metaDescription,
             images: [{ url: guide.coverImage.url, alt: guide.coverImage.alt }],
           },
+        }
+      : {}),
+  };
+}
+
+export function articleStructuredData(guide: Guide) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: guide.title,
+    description: guide.summary,
+    inLanguage: guide.language,
+    datePublished: guide.publishedAt,
+    dateModified: guide.modifiedAt ?? guide.publishedAt,
+    mainEntityOfPage: guide.url,
+    ...(guide.coverImage ? { image: guide.coverImage.url } : {}),
+    ...(guide.blog
+      ? {
+          author: { "@type": "Person", name: guide.blog.author.name },
+          articleSection: guide.blog.categories.map((c) => c.title),
         }
       : {}),
   };
