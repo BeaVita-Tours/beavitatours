@@ -12,8 +12,8 @@ interface CollectionPageProps {
   lead?: string;
   /** Short name for the ItemList markup. */
   title: string;
-  /** The Regiondo tag the page lists. */
-  tagId: string;
+  /** The products a `catalog` view lists, by id. (The `themed` view reads its own tags.) */
+  productIds?: readonly string[];
   /**
    * What sits under the header: the collection as one grid (default), the same
    * tours grouped under the four theme headings (`/tours/group-tours`), or
@@ -40,7 +40,7 @@ export function CollectionPage({
   intro,
   lead,
   title,
-  tagId,
+  productIds = [],
   view = "catalog",
   children,
 }: CollectionPageProps) {
@@ -68,7 +68,7 @@ export function CollectionPage({
       {view === "catalog" ? (
         <Suspense fallback={<TourGridSkeleton />}>
           <CatalogView
-            tagId={tagId}
+            productIds={productIds}
             listName={title}
             emptyTitle="No departures online right now"
             emptyBody="Ask us for a tailor-made day instead."
@@ -78,7 +78,7 @@ export function CollectionPage({
 
       {view === "themed" ? (
         <Suspense fallback={<TourGridSkeleton />}>
-          <ThemedCollection tagId={tagId} listName={title} />
+          <ThemedCollection listName={title} />
         </Suspense>
       ) : null}
 

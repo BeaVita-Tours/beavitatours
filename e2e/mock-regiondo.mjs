@@ -118,12 +118,16 @@ const server = createServer(async (req, res) => {
   if (path === "/v1/products") {
     let data = PRODUCTS.data;
 
-    // The two collections. The fixture products carry no tag data, but the
-    // real account's split is exactly the "(PRIVATE)" suffix in the name, so
-    // that is what stands in for the tag here. Ids from fixtures/tags.json.
+    // The two theme tags. The fixture products carry no tag data, so the
+    // theme is read off the name: "Dolomites" (45420) and "Food & Wine"
+    // (45421), which on the real account hold only the group departures — the
+    // private ones ("(PRIVATE)" in the name) carry neither tag. Ids from
+    // fixtures/tags.json.
     const tag = url.searchParams.get("tag");
-    if (tag === "45420") data = data.filter((p) => !/\(PRIVATE\)/i.test(p.name));
-    if (tag === "45421") data = data.filter((p) => /\(PRIVATE\)/i.test(p.name));
+    const isGroup = (p) => !/\(PRIVATE\)/i.test(p.name);
+    const isDolomites = (p) => /dolomites/i.test(p.name);
+    if (tag === "45420") data = data.filter((p) => isGroup(p) && isDolomites(p));
+    if (tag === "45421") data = data.filter((p) => isGroup(p) && !isDolomites(p));
 
     // Curated sets (theme upsells, landing pages) filter by id.
     const ids = url.searchParams.get("product_ids");

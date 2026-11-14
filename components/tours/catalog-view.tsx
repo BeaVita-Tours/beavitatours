@@ -3,8 +3,8 @@ import { listTours } from "@/lib/regiondo/products";
 import { itemListJsonLd, jsonLdScriptProps } from "@/lib/regiondo/structured-data";
 
 interface CatalogViewProps {
-  /** The Regiondo tag whose tours are listed. */
-  tagId: string;
+  /** The Regiondo products listed, by id. */
+  productIds: readonly string[];
   listName: string;
   emptyTitle?: string;
   emptyBody?: string;
@@ -20,8 +20,13 @@ interface CatalogViewProps {
  * A Server Component with no client JavaScript — the cards are static and the
  * links are links.
  */
-export async function CatalogView({ tagId, listName, emptyTitle, emptyBody }: CatalogViewProps) {
-  const { tours, degraded } = await listTours({ tag: tagId, sort: "popular", limit: 250 });
+export async function CatalogView({
+  productIds,
+  listName,
+  emptyTitle,
+  emptyBody,
+}: CatalogViewProps) {
+  const { tours, degraded } = await listTours({ productIds, sort: "popular", limit: 250 });
 
   return (
     <div className="space-y-8">

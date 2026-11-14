@@ -3,7 +3,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { request, tryRequest } from "./client";
-import { COLLECTIONS } from "./collections";
+import { COLLECTIONS, themeForTag } from "./collections";
 import { getConfig } from "./config";
 import { toTourDetail, toTourOption, toTourReview, toTourSummary } from "./map";
 import {
@@ -90,9 +90,7 @@ export async function getCollections(): Promise<readonly TourCollection[]> {
     title: tag.name,
     // The collection page for this tag, if we have one; the catalog index
     // that used to take `?collection=` is gone.
-    href:
-      Object.values(COLLECTIONS).find((c) => c.tagId === tag.tag_id)?.href ??
-      COLLECTIONS.shared.href,
+    href: themeForTag(tag.tag_id)?.href ?? COLLECTIONS.shared.href,
   }));
 }
 

@@ -54,9 +54,12 @@ export const TOUR_SLUGS: Readonly<Record<string, string>> = {
   // Shared departures from Venice
   "venice-dolomites-cortina-misurina-day-trip": "298190",
   "venice-best-of-the-dolomites-day-trip": "300877",
+  "venice-best-of-the-dolomites-mestre-day-trip": "347533",
   "venice-dolomites-lake-braies-tre-cime": "341597",
   "venice-prosecco-hills-wine-tasting": "326845",
   "venice-prosecco-hills-wine-spritz-asolo": "307882",
+  "venice-prosecco-hills-wine-tiramisu-day-trip": "347919",
+  "venice-prosecco-hills-wine-tiramisu-full-day-trip": "347921",
 
   // Private departures from Venice
   "venice-dolomites-prosecco-hills-private-tour": "298188",

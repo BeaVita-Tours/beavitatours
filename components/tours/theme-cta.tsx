@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
-  COLLECTIONS,
   type CollectionKey,
+  isPrivateTour,
   THEME_UPSELLS,
   type ThemePageSlug,
   themePage,
@@ -15,16 +15,15 @@ import { closingBandFor, type PrivateCopy } from "@/lib/regiondo/theme-cta";
 /**
  * The closing band of a theme page, adapted to how that theme can be booked.
  *
- * Which of the theme's departures are group and which are private is a fact
- * about the catalog, not about the page, so it is read from Regiondo rather
- * than written into each page: the theme's product set is filtered by the
- * shared tag and by the private tag, and `closingBandFor` picks the heading
- * and cards for whichever routes come back non-empty. Retag a tour in the
- * Regiondo dashboard and the band follows.
+ * Which of the theme's departures are group and which are private decides the
+ * band: the theme's product set is fetched (so only tours that are active in
+ * Regiondo count), each one is private if it is in `PRIVATE_PRODUCT_IDS` and a
+ * group departure otherwise, and `closingBandFor` picks the heading and cards
+ * for whichever routes come back non-empty. (The Regiondo tags are the client's
+ * themes now, so they say nothing about group versus private.)
  *
- * The one exception is a theme marked `privateOnly` in `THEME_PAGES`: that is
- * an editorial fact the catalog currently gets wrong (see the flag's comment),
- * so it wins over the tags.
+ * A theme marked `privateOnly` in `THEME_PAGES` is an editorial fact, so it
+ * wins over the catalog.
  *
  * The private card's copy can be given per page, because the client wrote a
  * line for each private-only theme ("Plan your private adventure").
@@ -43,12 +42,8 @@ async function travelStylesFor(page: ThemePageSlug): Promise<ReadonlySet<Collect
   const productIds = theme.sets.flatMap((set) => THEME_UPSELLS[set].productIds);
   const styles = new Set<CollectionKey>();
 
-  await Promise.all(
-    (Object.keys(COLLECTIONS) as CollectionKey[]).map(async (key) => {
-      const { tours } = await listTours({ tag: COLLECTIONS[key].tagId, productIds, limit: 250 });
-      if (tours.length > 0) styles.add(key);
-    })
-  );
+  const { tours } = await listTours({ productIds, limit: 250 });
+  for (const tour of tours) styles.add(isPrivateTour(tour.id) ? "private" : "shared");
 
   return styles;
 }

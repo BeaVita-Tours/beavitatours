@@ -2,15 +2,18 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { TourGrid } from "@/components/tours/tour-grid";
-import { THEME_PAGES, THEME_UPSELLS, type ThemePage } from "@/lib/regiondo/collections";
+import {
+  isPrivateTour,
+  THEME_PAGES,
+  THEME_UPSELLS,
+  type ThemePage,
+} from "@/lib/regiondo/collections";
 import { listTours } from "@/lib/regiondo/products";
 import { itemListJsonLd, jsonLdScriptProps } from "@/lib/regiondo/structured-data";
 import type { TourSummary } from "@/lib/regiondo/types";
 import { cn } from "@/lib/utils";
 
 interface ThemedCollectionProps {
-  /** The Regiondo tag whose tours are grouped. */
-  tagId: string;
   listName: string;
 }
 
@@ -20,54 +23,65 @@ interface ThemeGroup {
 }
 
 /**
- * A collection split by theme rather than shown as one flat list.
+ * The group tours, split by theme rather than shown as one flat list.
  *
- * Used by `/tours/group-tours`: the client did not want the shared departures
- * repeated as a wall of cards, but offered under the four themes the homepage
- * asks about — Dolomites, Food & Wine, Active & Adventure, Culture & History —
- * so the page answers "where?" the same way the rest of the site does.
+ * Used by `/tours/group-tours` (the page "Book Now" opens). The client did not
+ * want the departures repeated as a wall of cards, but offered under the
+ * themes the homepage asks about — Dolomites, Food & Wine, Active & Adventure,
+ * Culture & History — so the page answers "where?" the same way the rest of
+ * the site does.
  *
- * All four themes are always listed, in the homepage order, each with a
+ * **Each section is a Regiondo tag.** The client files a tour under
+ * "Dolomites" or "Food & Wine" in the Regiondo dashboard and it appears under
+ * that heading here (`tagId` on `THEME_PAGES`). Nothing is placed by a list in
+ * this repo, and there is no catch-all "More day trips": a tour in neither tag
+ * is not a group departure the client has filed, so it is not on the page.
+ *
+ * All four themes are always named, in the homepage order, each with a
  * one-line blurb and a link into its theme page (client revision,
- * 2026-09-15). A theme sold as private days only (`privateOnly`) is still
- * named — it exists, and group departures may come — but is marked "Private
- * only" and shows the pointer instead of cards, so a private tour never sits
- * on the group page.
+ * 2026-09-15). A theme with no tag (`privateOnly`) is marked "Private only"
+ * and shows the pointer instead of cards, so a private tour never sits on the
+ * group page — nor does a private tour that someone tagged by mistake.
  *
- * Membership comes from the curated theme sets (`THEME_UPSELLS`) via the
- * page → sets map (`THEME_PAGES`), so a tour is grouped exactly where its theme
- * page lists it. Anything in the collection that no theme claims falls into a
- * trailing "More day trips" group rather than vanishing.
+ * Within a section the curated theme order is kept where the tour is in the
+ * theme's set (shared, lower-priced first); anything else follows in the
+ * order Regiondo returns it.
  *
- * No filters: the collection is five or six tours, and a filter panel over a
- * page that already sorts itself into four headings would be noise.
+ * No filters: a handful of tours under four headings does not need them.
  *
  * A Server Component with no client JavaScript, like `CatalogView`.
  */
-export async function ThemedCollection({ tagId, listName }: ThemedCollectionProps) {
-  const { tours, degraded } = await listTours({ tag: tagId, limit: 250 });
+export async function ThemedCollection({ listName }: ThemedCollectionProps) {
+  const results = await Promise.all(
+    THEME_PAGES.map(async (page: ThemePage) => {
+      if (page.privateOnly || !page.tagId) return { page, tours: [], degraded: false };
+      const { tours, degraded } = await listTours({ tag: page.tagId, limit: 250 });
+      return { page, tours, degraded };
+    })
+  );
 
-  if (tours.length === 0) {
-    // The grid carries the "cannot reach the booking system" message.
-    return <TourGrid tours={[]} degraded={degraded} regionLabel={listName} />;
-  }
+  const degraded = results.some((result) => result.degraded);
 
-  const groups: ThemeGroup[] = THEME_PAGES.map((page: ThemePage) => {
+  const groups: ThemeGroup[] = results.map(({ page, tours }) => {
     const ids: readonly string[] = page.sets.flatMap((set) => THEME_UPSELLS[set].productIds);
     const rank = new Map(ids.map((id, index) => [id, index]));
     const members = tours
-      .filter((tour) => rank.has(tour.id))
-      .sort((a, b) => (rank.get(a.id) ?? 0) - (rank.get(b.id) ?? 0));
-    // A private-only theme's tours are claimed (so they do not resurface
-    // under "More day trips") but not shown.
-    return { page, tours: page.privateOnly ? [] : members };
+      .filter((tour) => !isPrivateTour(tour.id))
+      // Array#sort is stable, so tours outside the curated set keep Regiondo's
+      // order, after the ones that have a place in it.
+      .sort(
+        (a, b) =>
+          (rank.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (rank.get(b.id) ?? Number.MAX_SAFE_INTEGER)
+      );
+    return { page, tours: members };
   });
 
-  const claimed = new Set<string>(
-    THEME_PAGES.flatMap((page) => page.sets.flatMap((set) => THEME_UPSELLS[set].productIds))
-  );
-  const unplaced = tours.filter((tour) => !claimed.has(tour.id));
-  const listed = groups.flatMap((group) => group.tours).concat(unplaced);
+  const listed = groups.flatMap((group) => group.tours);
+
+  if (listed.length === 0 && degraded) {
+    // The grid carries the "cannot reach the booking system" message.
+    return <TourGrid tours={[]} degraded={degraded} regionLabel={listName} />;
+  }
 
   return (
     <div className="space-y-14">
@@ -104,15 +118,6 @@ export async function ThemedCollection({ tagId, listName }: ThemedCollectionProp
           </Link>
         </section>
       ))}
-
-      {unplaced.length > 0 ? (
-        <section aria-labelledby="theme-more">
-          <h2 id="theme-more" className="mb-6 text-2xl font-bold tracking-tight md:text-3xl">
-            More day trips
-          </h2>
-          <TourGrid tours={unplaced} degraded={degraded} headingId="theme-more" />
-        </section>
-      ) : null}
     </div>
   );
 }
