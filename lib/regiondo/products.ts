@@ -95,6 +95,52 @@ export async function getCollections(): Promise<readonly TourCollection[]> {
 }
 
 /**
+ * The Regiondo tag the client uses to keep a product off the website while it
+ * stays active (and so on sale) everywhere else, OTAs included. Matched by its
+ * `url_key`, not its id, so nothing here changes when she adds or removes it
+ * from a product — that is the whole point. Tag created 2026-11-14 as
+ * "Nascosti" (id 47819).
+ */
+export const HIDDEN_TAG_URL_KEY = "nascosti";
+
+/**
+ * Ids of the products carrying the hidden tag.
+ *
+ * Fails open on purpose: if Regiondo cannot be reached the caller gets an empty
+ * list, because the alternative is an empty site. The failed lookup is not
+ * cached (the cached half throws and this wrapper swallows it), so the next
+ * request tries again instead of showing hidden tours for an hour.
+ */
+async function getHiddenProductIds(): Promise<readonly string[]> {
+  try {
+    return await fetchHiddenProductIds();
+  } catch {
+    return [];
+  }
+}
+
+async function fetchHiddenProductIds(): Promise<readonly string[]> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag(TOUR_CATALOG_TAG);
+
+  const tags = await tryRequest("/tags", { schema: tagListSchema, params: { limit: 250 } }, []);
+  if (tags.degraded) throw new Error("Regiondo /tags unavailable");
+
+  const hidden = tags.data.find((tag) => tag.url_key === HIDDEN_TAG_URL_KEY);
+  if (!hidden) return [];
+
+  const products = await tryRequest(
+    "/products",
+    { schema: productListSchema, params: { tag: hidden.tag_id, limit: 250 } },
+    []
+  );
+  if (products.degraded) throw new Error("Regiondo /products unavailable");
+
+  return products.data.map((product) => toTourSummary(product).id);
+}
+
+/**
  * Fetch the catalog.
  *
  * Filtering and sorting go to the API wherever it supports them. Two do not,
@@ -140,7 +186,8 @@ export async function listTours(filters: CatalogFilters = {}): Promise<CatalogRe
     []
   );
 
-  let tours = data.map(toTourSummary);
+  const hidden = new Set(await getHiddenProductIds());
+  let tours = data.map(toTourSummary).filter((tour) => !hidden.has(tour.id));
 
   if (filters.priceMin !== undefined) {
     tours = tours.filter((t) => t.priceFrom.amount >= filters.priceMin!);
@@ -191,6 +238,8 @@ export async function getTour(productId: string): Promise<TourDetail | null> {
   );
 
   if (degraded || !data) return null;
+  // A hidden product has no page either: the direct URL 404s like the rest.
+  if ((await getHiddenProductIds()).includes(String(data.product_id))) return null;
   return toTourDetail(data);
 }
 
