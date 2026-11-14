@@ -1,17 +1,23 @@
 /**
- * The two Regiondo tags the site browses by, and the product sets behind the
- * paid landing pages.
+ * The two collection pages, the Regiondo theme tags behind the group page, the
+ * private departures, and the product sets behind the paid landing pages.
  *
- * Tag ids are stable account data (`GET /tags`), so they are pinned here rather
- * than looked up on every render — a collection page that silently empties
- * because a tag was renamed is worse than one that fails loudly.
+ * **The two Regiondo tags are themes, not "group" and "private".** The client
+ * owns them in the Regiondo dashboard: tag 45420 is "Dolomites" and tag 45421
+ * is "Food & Wine", and a tour belongs on the group page under the heading its
+ * tag names. (They were once read as "shared" and "private"; that is not what
+ * they mean any more, and reading them that way put Prosecco tours on the
+ * private page.) Tag ids are stable account data (`GET /tags`), so they are
+ * pinned on `THEME_PAGES` below rather than looked up on every render.
+ *
+ * Whether a tour is private is a separate fact, written down in
+ * `PRIVATE_PRODUCT_IDS`.
  *
  * Not `server-only`: page components need these to build links.
  */
 
 export const COLLECTIONS = {
   shared: {
-    tagId: "45420",
     title: "Shared Tours from Venice",
     /** Existing URL — the page that hosts the Regiondo widget today. */
     href: "/tours/group-tours",
@@ -26,7 +32,6 @@ export const COLLECTIONS = {
     lead: "Choose your tour and let's see Veneto together.",
   },
   private: {
-    tagId: "45421",
     title: "Private Tours from Venice",
     href: "/tours/private-tours",
     label: "Private tours",
@@ -37,6 +42,33 @@ export const COLLECTIONS = {
 } as const;
 
 export type CollectionKey = keyof typeof COLLECTIONS;
+
+/**
+ * The private departures, by product id — the source of `/tours/private-tours`
+ * and of "is this theme bookable privately?" on the theme pages' closing bands.
+ *
+ * Curated rather than read from a tag, for the same reason as the theme sets
+ * below: the tags are the client's themes now, so nothing in the catalog says
+ * "private" except the "(PRIVATE)" in a name. Ids that are inactive in Regiondo
+ * are listed on purpose — the API drops them (`active_only`), and they come
+ * back by themselves if the client reactivates them.
+ *
+ * A new private tour needs its id added here (and a slug in `slugs.ts`).
+ */
+export const PRIVATE_PRODUCT_IDS = [
+  "341596", // Via Ferrata in the Dolomites with Alpine Guide
+  "339660", // Lake Sorapis hike with Alpine Guide
+  "341599", // Medieval Hill Towns
+  "298188", // Dolomites and Prosecco hills
+  "326843", // Jesolo / Cavallino — Dolomites
+  "326844", // Jesolo / Cavallino — Prosecco hills
+] as const;
+
+const PRIVATE_IDS: ReadonlySet<string> = new Set(PRIVATE_PRODUCT_IDS);
+
+export function isPrivateTour(productId: string | number): boolean {
+  return PRIVATE_IDS.has(String(productId));
+}
 
 /**
  * The collection page a tour belongs to, from the category titles Regiondo
@@ -124,7 +156,7 @@ export const THEME_UPSELLS = {
     heading: "Day trips to the Dolomites",
     intro:
       "Everything above is a two-hour drive away. These are the departures that take you there — leaving Venice in the morning and back the same evening.",
-    productIds: ["300877", "298190", "341597", "298188", "339660", "341596", "326843"],
+    productIds: ["300877", "298190", "341597", "347533", "298188", "339660", "341596", "326843"],
   },
   // Keyed `prosecco` for the redirect and the tests, but it is the Food &
   // Wine page's one tour list, and the client wants it to read as the whole
@@ -133,7 +165,7 @@ export const THEME_UPSELLS = {
     heading: "Day trips to taste the region",
     intro:
       "These are the departures that take you there and back — leaving Venice in the morning, home again by evening.",
-    productIds: ["326845", "307882", "298188", "326844"],
+    productIds: ["326845", "307882", "347919", "347921", "298188", "326844"],
   },
   "active-adventure": {
     heading: "Guided days in the mountains",
@@ -167,6 +199,13 @@ export interface ThemePage {
   /** Short name, as used on the homepage tiles and the group-tours headings. */
   readonly title: string;
   readonly sets: readonly ThemeKey[];
+  /**
+   * The Regiondo tag whose tours the group-tours page lists under this theme's
+   * heading. The client files a tour under a theme in the Regiondo dashboard
+   * and the group page follows; there is no list to keep in step. Themes sold
+   * as private days only have no tag.
+   */
+  readonly tagId?: string;
   /** One line under the theme's heading on the group-tours page. */
   readonly blurb: string;
   /**
@@ -191,6 +230,7 @@ export const THEME_PAGES = [
     href: "/tours/dolomites",
     title: "Dolomites",
     sets: ["dolomites"],
+    tagId: "45420", // Regiondo tag "Dolomites"
     blurb:
       "Jagged peaks, mountain lakes and the roads that connect them — one of our most requested day trips.",
   },
@@ -199,6 +239,7 @@ export const THEME_PAGES = [
     href: "/tours/wine-food",
     title: "Food & Wine",
     sets: ["prosecco"],
+    tagId: "45421", // Regiondo tag "Food & Wine"
     blurb:
       "Rolling hills, family-run wineries and a glass of Prosecco in the place where it's made.",
   },
@@ -222,6 +263,11 @@ export const THEME_PAGES = [
 ] as const satisfies readonly ThemePage[];
 
 export type ThemePageSlug = (typeof THEME_PAGES)[number]["slug"];
+
+/** The theme whose Regiondo tag this is, if the group page lists it. */
+export function themeForTag(tagId: string): ThemePage | undefined {
+  return (THEME_PAGES as readonly ThemePage[]).find((page) => page.tagId === tagId);
+}
 
 export function themePage(slug: ThemePageSlug): ThemePage {
   // The slug type guarantees a match; the throw is for a runtime caller

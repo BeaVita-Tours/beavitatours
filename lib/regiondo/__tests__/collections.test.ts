@@ -2,9 +2,13 @@ import { describe, expect, it } from "vitest";
 
 import {
   COLLECTIONS,
+  isPrivateTour,
   LANDING_PRODUCT_SETS,
+  PRIVATE_PRODUCT_IDS,
   THEME_PAGES,
   THEME_UPSELLS,
+  themeForTag,
+  type ThemePage,
 } from "@/lib/regiondo/collections";
 import { RESERVED_TOUR_SLUGS, slugForProductId, TOUR_SLUGS } from "@/lib/regiondo/slugs";
 
@@ -93,10 +97,44 @@ describe("landing page product sets", () => {
   });
 });
 
+describe("theme tags", () => {
+  it("gives every group-page theme a numeric Regiondo tag, and each tag once", () => {
+    // The group page fills a section from the tag of the same name. A theme
+    // without one (privateOnly) shows only its pointer; a tag used by two
+    // themes would list the same tours twice.
+    const pages: readonly ThemePage[] = THEME_PAGES;
+    const tags = pages.flatMap((page) => (page.tagId ? [page.tagId] : []));
+    for (const tag of tags) expect(tag).toMatch(/^\d+$/);
+    expect(new Set(tags).size).toBe(tags.length);
+    expect(tags).toEqual(["45420", "45421"]);
+    for (const page of pages) {
+      if (page.privateOnly) expect(page.tagId, `${page.slug} is private-only`).toBeUndefined();
+    }
+    expect(themeForTag("45420")?.slug).toBe("dolomites");
+    expect(themeForTag("45421")?.slug).toBe("wine-food");
+    expect(themeForTag("1")).toBeUndefined();
+  });
+});
+
+describe("private departures", () => {
+  it("are known products with curated URLs, listed once", () => {
+    expect(new Set(PRIVATE_PRODUCT_IDS).size).toBe(PRIVATE_PRODUCT_IDS.length);
+    for (const id of PRIVATE_PRODUCT_IDS) {
+      expect(KNOWN_PRODUCT_IDS.has(id), `private list references unknown product ${id}`).toBe(true);
+      expect(isPrivateTour(id)).toBe(true);
+    }
+  });
+
+  it("do not include the group departures", () => {
+    for (const id of ["298190", "300877", "341597", "347533", "326845", "307882", "347919", "347921"]) {
+      expect(isPrivateTour(id), `${id} is a group departure`).toBe(false);
+    }
+  });
+});
+
 describe("collections", () => {
   it("points at real, non-shadowed routes", () => {
     for (const collection of Object.values(COLLECTIONS)) {
-      expect(collection.tagId).toMatch(/^\d+$/);
       expect(collection.href).toMatch(/^\/tours\/[a-z-]+$/);
       // Both collection hrefs are static /tours/* children, so they must be
       // reserved — otherwise a tour slug could shadow one.

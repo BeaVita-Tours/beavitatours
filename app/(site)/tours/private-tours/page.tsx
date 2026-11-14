@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo/metadata";
 import { CollectionPage } from "@/components/tours/collection-page";
 import { PrivateTourRates } from "@/components/tours/private-tour-rates";
 import { SITE_URL } from "@/lib/constants";
-import { COLLECTIONS } from "@/lib/regiondo/collections";
+import { COLLECTIONS, PRIVATE_PRODUCT_IDS } from "@/lib/regiondo/collections";
 import { isNativeBookingEnabled } from "@/lib/regiondo/config";
 
 /**
@@ -45,7 +45,7 @@ export default function PrivateToursPage() {
       heading={collection.heading}
       intro={collection.intro}
       title={collection.label}
-      tagId={collection.tagId}
+      productIds={PRIVATE_PRODUCT_IDS}
       view={isNativeBookingEnabled() ? "catalog" : "none"}
     >
       <PrivateTourRates />

@@ -13,11 +13,11 @@ import { LegacyGroupToursWidgetPage } from "./legacy-widget-page";
 /**
  * Group / shared tours.
  *
- * The URL does not change — the nav, the homepage hero and the footer all
- * point at it. It is the native "Shared Tours from Venice" collection (tag
- * 45420), shown grouped under the four theme headings rather than as a flat
- * catalog — see `ThemedCollection`. With `REGIONDO_NATIVE_BOOKING` off it
- * falls back to the legacy Regiondo widget. See D-004.
+ * The URL does not change — the nav ("Book Now"), the homepage hero and the
+ * footer all point at it. The tours are grouped under the theme headings, each
+ * one filled from the Regiondo tag of the same name ("Dolomites", "Food &
+ * Wine") — see `ThemedCollection`. With `REGIONDO_NATIVE_BOOKING` off it falls
+ * back to the legacy Regiondo widget. See D-004.
  *
  * Closes with a "Ready to book?" band pointing at the private tours (client
  * revision, 2026-09-15) — the page had no ending before it.
@@ -54,7 +54,6 @@ export default function GroupToursPage() {
       intro={collection.intro}
       lead={collection.lead}
       title={collection.label}
-      tagId={collection.tagId}
       view="themed"
     >
       <section
